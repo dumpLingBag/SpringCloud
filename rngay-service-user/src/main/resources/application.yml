@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: service-user
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+server:
+  port: 8080

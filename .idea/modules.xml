@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/SpringCloud.iml" filepath="$PROJECT_DIR$/.idea/SpringCloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-feign-interface/feign-interface.iml" filepath="$PROJECT_DIR$/rngay-feign-interface/feign-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-parent-common/parent-common.iml" filepath="$PROJECT_DIR$/rngay-parent-common/parent-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-parent-service/parent-service.iml" filepath="$PROJECT_DIR$/rngay-parent-service/parent-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-platform/platform.iml" filepath="$PROJECT_DIR$/rngay-platform/platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-service-common-jpa/rngay-service-common-jpa.iml" filepath="$PROJECT_DIR$/rngay-service-common-jpa/rngay-service-common-jpa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-service-authority/service-authority.iml" filepath="$PROJECT_DIR$/rngay-service-authority/service-authority.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-service-common/service-common.iml" filepath="$PROJECT_DIR$/rngay-service-common/service-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-service-eureka/service-eureka.iml" filepath="$PROJECT_DIR$/rngay-service-eureka/service-eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-service-user/service-user.iml" filepath="$PROJECT_DIR$/rngay-service-user/service-user.iml" />
+    </modules>
+  </component>
+</project>

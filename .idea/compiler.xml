@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="feign-interface" />
+        <module name="platform" />
+        <module name="rngay-feign-interface" />
+        <module name="rngay-platform" />
+        <module name="rngay-service-authority" />
+        <module name="rngay-service-common" />
+        <module name="rngay-service-common-jpa" />
+        <module name="rngay-service-eureka" />
+        <module name="rngay-service-user" />
+        <module name="service-authority" />
+        <module name="service-common" />
+        <module name="service-eureka" />
+        <module name="service-user" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="feign-interface" target="1.8" />
+      <module name="parent-common" target="1.8" />
+      <module name="parent-service" target="1.8" />
+      <module name="platform" target="1.8" />
+      <module name="rngay-feign-interface" target="1.8" />
+      <module name="rngay-platform" target="1.8" />
+      <module name="rngay-service-authority" target="1.8" />
+      <module name="rngay-service-common" target="1.8" />
+      <module name="rngay-service-common-jpa" target="1.8" />
+      <module name="rngay-service-eureka" target="1.8" />
+      <module name="rngay-service-user" target="1.8" />
+      <module name="service-authority" target="1.8" />
+      <module name="service-common" target="1.8" />
+      <module name="service-eureka" target="1.8" />
+      <module name="service-user" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="feign-interface" options="-parameters" />
+      <module name="platform" options="-parameters" />
+      <module name="rngay-feign-interface" options="-parameters" />
+      <module name="rngay-platform" options="-parameters" />
+      <module name="rngay-service-authority" options="-parameters" />
+      <module name="rngay-service-common" options="-parameters" />
+      <module name="rngay-service-common-jpa" options="-parameters" />
+      <module name="rngay-service-eureka" options="-parameters" />
+      <module name="rngay-service-user" options="-parameters" />
+      <module name="service-authority" options="-parameters" />
+      <module name="service-common" options="-parameters" />
+      <module name="service-eureka" options="-parameters" />
+      <module name="service-user" options="-parameters" />
+    </option>
+  </component>
+</project>
