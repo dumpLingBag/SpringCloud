@@ -17,6 +17,7 @@
         <module name="rngay-service-user" />
         <module name="service-authority" />
         <module name="service-common" />
+        <module name="service-common-jpa" />
         <module name="service-eureka" />
         <module name="service-user" />
       </profile>
@@ -35,6 +36,7 @@
       <module name="rngay-service-user" target="1.8" />
       <module name="service-authority" target="1.8" />
       <module name="service-common" target="1.8" />
+      <module name="service-common-jpa" target="1.8" />
       <module name="service-eureka" target="1.8" />
       <module name="service-user" target="1.8" />
     </bytecodeTargetLevel>
@@ -52,6 +54,7 @@
       <module name="rngay-service-user" options="-parameters" />
       <module name="service-authority" options="-parameters" />
       <module name="service-common" options="-parameters" />
+      <module name="service-common-jpa" options="-parameters" />
       <module name="service-eureka" options="-parameters" />
       <module name="service-user" options="-parameters" />
     </option>

@@ -51,7 +51,7 @@
 
         <dependency>
             <groupId>com.rngay</groupId>
-            <artifactId>common-jpa</artifactId>
+            <artifactId>service-common-jpa</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
@@ -61,6 +61,20 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+
+                <configuration>
+                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <!-- 指定该Main Class为全局的唯一入口 -->
+                    <mainClass>com.rngay.UserApplication</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal><!--可以把依赖的包都打包到生成的Jar包中 -->
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

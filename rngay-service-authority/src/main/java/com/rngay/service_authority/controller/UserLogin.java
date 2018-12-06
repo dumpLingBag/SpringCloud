@@ -1,6 +1,6 @@
-package com.rngay.authority.controller;
+package com.rngay.service_authority.controller;
 
-import com.rngay.authority.service.UserService;
+import com.rngay.service_authority.service.UserService;
 import com.rngay.common.vo.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public class RedisDistributedLockHandler {
 
     @Resource
-    private StringRedisTemplate redisTemplate;
+    private StringRedisTemplate template;
 
     private boolean tryLock(Lock lock){
         try {
@@ -44,10 +44,10 @@ public class RedisDistributedLockHandler {
     }
 
     private boolean getLock(Lock lock) {
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        ValueOperations<String, String> ops = template.opsForValue();
         Boolean lean = ops.setIfAbsent(lock.getName(), lock.getValue());
         if (lean != null && lean) {
-            redisTemplate.expire(lock.getName(), lock.getExpire(), TimeUnit.MILLISECONDS);
+            template.expire(lock.getName(), lock.getExpire(), TimeUnit.MILLISECONDS);
             return true;
         }
         return false;
@@ -58,7 +58,7 @@ public class RedisDistributedLockHandler {
      * */
     private void releaseLock(Lock lock){
         if (!StringUtils.isEmpty(lock.getName())){
-            redisTemplate.delete(lock.getName());
+            template.delete(lock.getName());
         }
     }
 

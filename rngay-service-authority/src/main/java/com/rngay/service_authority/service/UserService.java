@@ -1,4 +1,4 @@
-package com.rngay.authority.service;
+package com.rngay.service_authority.service;
 
 import java.util.Map;
 

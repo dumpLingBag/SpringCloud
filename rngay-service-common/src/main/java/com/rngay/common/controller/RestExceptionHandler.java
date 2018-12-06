@@ -36,7 +36,4 @@ public class RestExceptionHandler implements ErrorController {
         return "/error";
     }
 
-    public static void main(String[] args) {
-        
-    }
 }

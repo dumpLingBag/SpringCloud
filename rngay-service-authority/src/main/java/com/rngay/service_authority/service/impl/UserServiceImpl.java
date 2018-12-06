@@ -1,7 +1,7 @@
-package com.rngay.authority.service.impl;
+package com.rngay.service_authority.service.impl;
 
-import com.rngay.authority.dao.UserDao;
-import com.rngay.authority.service.UserService;
+import com.rngay.service_authority.dao.UserDao;
+import com.rngay.service_authority.service.UserService;
 import com.rngay.common.jpa.SQLDao;
 import org.springframework.stereotype.Service;
 

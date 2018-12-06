@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/rngay-service-common-jpa/rngay-service-common-jpa.iml" filepath="$PROJECT_DIR$/rngay-service-common-jpa/rngay-service-common-jpa.iml" />
       <module fileurl="file://$PROJECT_DIR$/rngay-service-authority/service-authority.iml" filepath="$PROJECT_DIR$/rngay-service-authority/service-authority.iml" />
       <module fileurl="file://$PROJECT_DIR$/rngay-service-common/service-common.iml" filepath="$PROJECT_DIR$/rngay-service-common/service-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rngay-service-common-jpa/service-common-jpa.iml" filepath="$PROJECT_DIR$/rngay-service-common-jpa/service-common-jpa.iml" />
       <module fileurl="file://$PROJECT_DIR$/rngay-service-eureka/service-eureka.iml" filepath="$PROJECT_DIR$/rngay-service-eureka/service-eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/rngay-service-user/service-user.iml" filepath="$PROJECT_DIR$/rngay-service-user/service-user.iml" />
     </modules>

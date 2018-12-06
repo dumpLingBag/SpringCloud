@@ -1,4 +1,4 @@
-package com.rngay.authority.dao;
+package com.rngay.service_authority.dao;
 
 import java.util.Map;
 

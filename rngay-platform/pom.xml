@@ -27,6 +27,12 @@
             <artifactId>service-authority</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.49</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -54,7 +60,7 @@
                 <configuration>
                     <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.rngay.platform.PlatformApplication</mainClass>
+                    <mainClass>com.rngay.PlatformApplication</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
