@@ -5,7 +5,7 @@ spring:
     active: dev
     include: feign-${spring.profiles.active}
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: true
     database: mysql
@@ -15,6 +15,12 @@ spring:
     static-locations: classpath:/static/, classpath:/views/
 server:
   port: 9090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
 
 jwt:
   secret: f4e2e52034348f86b67cde581c0f9eb5

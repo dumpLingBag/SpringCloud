@@ -1,13 +1,13 @@
 eureka:
   instance:
-    prefer-ip-address: false
+    prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance-id}:${server.port}
     hostname: ${spring.cloud.client.ip-address}
     lease-renewal-interval-in-seconds: 1
     lease-expiration-duration-in-seconds: 2
   client:
-    service-url:
-      default-zone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9001/eureka/
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9001/eureka/
 
 spring:
   security:
@@ -15,6 +15,6 @@ spring:
       name: admin
       password: 123456
   datasource:
-    url: jdbc:mysql://localhost:3306/riicy_user?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://localhost:3306/riicy_platform?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
-    password: 123456
+    password: root2850

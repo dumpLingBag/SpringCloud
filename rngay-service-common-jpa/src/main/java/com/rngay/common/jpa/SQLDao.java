@@ -1,9 +1,11 @@
 package com.rngay.common.jpa;
 
+import org.springframework.jdbc.core.JdbcOperations;
+
 import java.util.List;
 import java.util.Map;
 
-public interface SQLDao {
+public interface SQLDao extends JdbcOperations {
 
     /**
     * table 表中添加单条数据，字段名为 map 的 key，字段值为 map 的 value
@@ -18,7 +20,5 @@ public interface SQLDao {
     * @Date: 2018/12/5
     */
     int insert(String table, List<Map<String, Object>> mapList);
-
-
 
 }

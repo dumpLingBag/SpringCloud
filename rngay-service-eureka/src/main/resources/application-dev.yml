@@ -7,10 +7,10 @@ eureka:
     instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance-id}:${server.port}
     hostname: ${spring.cloud.client.ip-address}
   client:
-    fetch-registry: false #是否从eureka上获取注册信息
-    register-with-eureka: false #是否注册自己到eureka服务器
-    service_url:
-      default_zone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9001/eureka/
+    fetchRegistry: false #是否从eureka上获取注册信息
+    registerWithEureka: false #是否注册自己到eureka服务器
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9001/eureka/
 
 spring:
   security:
