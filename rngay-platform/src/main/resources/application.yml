@@ -13,6 +13,8 @@ spring:
       ddl-auto: update
   resources:
     static-locations: classpath:/static/, classpath:/views/
+  main:
+    allow-bean-definition-overriding: true
 server:
   port: 9090
 

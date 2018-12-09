@@ -1,4 +1,4 @@
-package com.rngay.feign.user;
+package com.rngay.feign;
 
 import com.rngay.common.vo.Result;
 import org.springframework.cloud.openfeign.FeignClient;

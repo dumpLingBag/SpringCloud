@@ -27,8 +27,8 @@ public class RestExceptionHandler implements ErrorController {
     }
 
     @RequestMapping(value = "/error")
-    public String errorHtml404() {
-        return "/error/404.html";
+    public String handleError() {
+        return "/index.html";
     }
 
     @Override

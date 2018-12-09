@@ -1,9 +1,9 @@
 package com.rngay.service_authority.interceptor;
 
+import com.rngay.common.cache.RedisUtil;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
 import com.rngay.common.exception.BaseException;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -17,7 +17,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
     @Resource
     private JwtUtil jwtUtil;
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisUtil redisUtil;
 
 
     @Override
