@@ -1,6 +1,6 @@
 package com.rngay.service_authority.util;
 
-import com.rngay.common.jpa.SQLDao;
+import com.rngay.common.jpa.dao.SQLDao;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

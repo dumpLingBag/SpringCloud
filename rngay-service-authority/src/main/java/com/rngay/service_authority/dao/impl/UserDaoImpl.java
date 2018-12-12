@@ -1,7 +1,7 @@
 package com.rngay.service_authority.dao.impl;
 
 import com.rngay.service_authority.dao.UserDao;
-import com.rngay.common.jpa.SQLDao;
+import com.rngay.common.jpa.dao.SQLDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

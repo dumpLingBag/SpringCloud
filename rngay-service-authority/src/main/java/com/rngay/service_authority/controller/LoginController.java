@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "user")
-public class UserLogin {
+@RequestMapping(value = "authorityLogin")
+public class LoginController {
 
     @Resource
     private UserService userService;
