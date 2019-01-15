@@ -1,17 +1,17 @@
 package com.rngay.service_authority.dao.impl;
 
 import com.rngay.service_authority.dao.UserDao;
-import com.rngay.common.jpa.dao.SQLDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.rngay.common.jpa.dao.SqlDao;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
-    private SQLDao sqlDao;
+    @Resource
+    private SqlDao sqlDao;
 
     @Override
     public int saveUser(Map<String, Object> map) {

@@ -11,7 +11,7 @@ public class MapUtil {
     * @Author pengcheng
     * @Date 2018/12/6
     **/
-    public static Map entityToMap(Object obj){
+    public static Map<String, Object> entityToMap(Object obj){
         Map<String, Object> reMap = new HashMap<>();
         if (obj == null)
             return null;
@@ -21,7 +21,9 @@ public class MapUtil {
             for (Field f : fields) {
                 f.setAccessible(true);
                 Object o = f.get(obj);
-                reMap.put(HumpUtil.humpToLine(f.getName()), o);
+                if (o != null && !"".equals(o)) {
+                    reMap.put(HumpUtil.humpToLine(f.getName()), o);
+                }
             }
         } catch (IllegalAccessException e){
             e.printStackTrace();

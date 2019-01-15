@@ -15,6 +15,11 @@ spring:
     static-locations: classpath:/static/, classpath:/views/
   main:
     allow-bean-definition-overriding: true
+  mvc:
+    dispatch-options-request: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 server:
   port: 9090
 
