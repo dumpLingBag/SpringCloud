@@ -1,6 +1,6 @@
 package com.rngay.service_authority.service.impl;
 
-import com.rngay.common.jpa.dao.SqlDao;
+import com.rngay.common.jpa.util.SqlDao;
 import com.rngay.service_authority.service.UAMenuService;
 import org.springframework.stereotype.Service;
 
