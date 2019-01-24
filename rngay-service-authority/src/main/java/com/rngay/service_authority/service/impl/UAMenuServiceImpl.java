@@ -1,6 +1,6 @@
 package com.rngay.service_authority.service.impl;
 
-import com.rngay.common.jpa.util.SqlDao;
+import com.rngay.common.jpa.dao.SqlDao;
 import com.rngay.service_authority.service.UAMenuService;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +42,7 @@ public class UAMenuServiceImpl implements UAMenuService {
             Map<String, Object> map = new HashMap<>();
             map.put("keepAlive", menu.get("keepAlive"));
             map.put("auth", menu.get("auth"));
+            map.put("title", menu.get("title"));
             menuChildren.put("meta", map);
             menuChildren.put("children", getChildren((Integer) menu.get("id")));
             list.add(menuChildren);
@@ -78,6 +79,7 @@ public class UAMenuServiceImpl implements UAMenuService {
         Map<String, Object> map = new HashMap<>();
         map.put("keepAlive", menu.get("keepAlive"));
         map.put("auth", menu.get("auth"));
+        map.put("title", menu.get("title"));
         menuChildren.put("meta", map);
         menuChildren.put("children", getChildren((Integer) menu.get("id")));
         return menuChildren;

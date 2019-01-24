@@ -1,7 +1,7 @@
 package com.rngay.service_authority.service.impl;
 
 import com.rngay.common.cache.RedisUtil;
-import com.rngay.common.jpa.util.SqlDao;
+import com.rngay.common.jpa.dao.SqlDao;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;

@@ -17,4 +17,5 @@ public class UserDaoImpl implements UserDao {
     public int saveUser(Map<String, Object> map) {
         return sqlDao.insert("ua_user", map);
     }
+
 }

@@ -1,6 +1,6 @@
 package com.rngay.service_user.dao.impl;
 
-import com.rngay.common.jpa.util.SqlDao;
+import com.rngay.common.jpa.dao.SqlDao;
 import com.rngay.service_user.dao.UAIconDao;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +18,5 @@ public class UAIconDaoImpl implements UAIconDao {
     public List<Map<String, Object>> loadIcon() {
         return sqlDao.queryForList("select * from ua_icon");
     }
+
 }
