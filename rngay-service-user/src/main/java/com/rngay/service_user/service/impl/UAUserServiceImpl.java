@@ -27,6 +27,16 @@ public class UAUserServiceImpl implements UAUserService {
     }
 
     @Override
+    public Map<String, Object> findByAccount(String account) {
+        return uaUserDao.findByAccount(account);
+    }
+
+    @Override
+    public Map<String, Object> findByMobile(String mobile) {
+        return uaUserDao.findByMobile(mobile);
+    }
+
+    @Override
     public int insertUser(Map<String, Object> map) {
         return uaUserDao.insertUser(map);
     }
@@ -54,5 +64,10 @@ public class UAUserServiceImpl implements UAUserService {
     @Override
     public int updatePassword(UpdatePassword password) {
         return uaUserDao.updatePassword(password);
+    }
+
+    @Override
+    public int delete(Integer id) {
+        return uaUserDao.delete(id);
     }
 }

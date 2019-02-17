@@ -32,12 +32,28 @@ public interface PFUserService {
     Result<Map<String, Object>> findById(@PathVariable Integer id);
 
     /**
+     * 通过账号查询信息
+     * @Author: pengcheng
+     * @Date: 2019/2/2
+     */
+    @RequestMapping(value = "/user/findByAccount", method = RequestMethod.POST)
+    Result<Map<String, Object>> findByAccount(@RequestParam String account);
+
+    /**
+     * 通过手机号查询信息
+     * @Author: pengcheng
+     * @Date: 2019/2/2
+     */
+    @RequestMapping(value = "/user/findByMobile", method = RequestMethod.POST)
+    Result<Map<String, Object>> findByMobile(@RequestParam String mobile);
+
+    /**
     * 添加一个用户
     * @Author: pengcheng
     * @Date: 2018/12/16
     */
     @RequestMapping(value = "/user/save", method = RequestMethod.POST)
-    Result<Integer> save(UASaveUserDTO saveUserDTO);
+    Result<Integer> save(@RequestBody UASaveUserDTO saveUserDTO);
 
     /**
     * 修改用户信息
@@ -45,7 +61,7 @@ public interface PFUserService {
     * @Date: 2018/12/28
     */
     @RequestMapping(value = "/user/update", method = RequestMethod.POST)
-    Result<Integer> update(UAUpdateUserDTO updateUserDTO);
+    Result<Integer> update(@RequestBody UAUpdateUserDTO updateUserDTO);
 
     /**
     * 加载 icon 图标
@@ -61,7 +77,7 @@ public interface PFUserService {
     * @Date: 2018/12/27
     */
     @RequestMapping(value = "/user/pageList", method = RequestMethod.POST)
-    Result<PageList<Map<String, Object>>> pageList(UAUserPageListDTO pageListDTO);
+    Result<PageList<Map<String, Object>>> pageList(@RequestBody UAUserPageListDTO pageListDTO);
 
     /**
     * 重置用户密码
@@ -86,5 +102,13 @@ public interface PFUserService {
     */
     @RequestMapping(value = "/user/updatePassword")
     Result<Integer> updatePassword(@RequestBody UpdatePassword password);
+    
+    /** 
+    * 通过id删除用户
+    * @Author: pengcheng 
+    * @Date: 2019/2/3 
+    */
+    @RequestMapping(value = "/user/delete/{id}")
+    Result<Integer> delete(@PathVariable Integer id);
 
 }

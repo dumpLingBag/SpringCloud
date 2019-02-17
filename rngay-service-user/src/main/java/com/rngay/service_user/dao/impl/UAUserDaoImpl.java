@@ -30,6 +30,16 @@ public class UAUserDaoImpl implements UAUserDao {
     }
 
     @Override
+    public Map<String, Object> findByAccount(String account) {
+        return sqlDao.queryForMap("select * from ua_user where account = ?");
+    }
+
+    @Override
+    public Map<String, Object> findByMobile(String mobile) {
+        return sqlDao.queryForMap("select * from ua_user where mobile = ?");
+    }
+
+    @Override
     public int insertUser(Map<String, Object> map) {
         return sqlDao.insert("ua_user", map);
     }
@@ -70,6 +80,11 @@ public class UAUserDaoImpl implements UAUserDao {
 
     @Override
     public int updatePassword(UpdatePassword password) {
-        return sqlDao.update("update up_user set password = ? where id = ?", password.getUserId(), password.getPassword());
+        return sqlDao.update("update ua_user set password = ? where id = ?", password.getUserId(), password.getPassword());
+    }
+
+    @Override
+    public int delete(Integer id) {
+        return sqlDao.delete("ua_user", id);
     }
 }

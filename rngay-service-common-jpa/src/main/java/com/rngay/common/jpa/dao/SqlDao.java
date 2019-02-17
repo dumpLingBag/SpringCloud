@@ -93,6 +93,12 @@ public interface SqlDao extends JdbcOperations {
 
     Map<String, Object> find(String table, Map<String, Object> colMap);
 
+    <T> T find(Class<T> clazz);
+
+    <T> T findById(Class<T> clazz, Integer var1);
+
+    <T> T findById(Class<T> clazz, Integer var1, String var2);
+
     Map<String, Object> findById(String table, Integer id);
 
     List<Map<String, Object>> query(String table, Map<String, Object> colMap);

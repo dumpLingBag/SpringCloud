@@ -1,7 +1,11 @@
 package com.rngay.common.jpa.dao.impl;
 
-import com.rngay.common.jpa.dao.SqlDao;
+import com.rngay.common.exception.BaseException;
+import com.rngay.common.jpa.dao.*;
+import com.rngay.common.jpa.dao.sql.SqlType;
 import com.rngay.common.jpa.util.AppendKey;
+import com.rngay.common.jpa.util.SimpleCriteria;
+import com.rngay.common.jpa.util.cri.OrderBySet;
 import com.rngay.common.vo.PageList;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import javax.persistence.Table;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
@@ -22,6 +27,14 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
         super.setDataSource(dataSource);
+    }
+
+    private <T> String tableName(Class<T> clazz) {
+        String tableName = clazz.getAnnotation(Table.class).name();
+        if (!"".equals(tableName)) {
+            return tableName;
+        }
+        throw new BaseException(500, "不存在表名!");
     }
 
     @Override
@@ -40,7 +53,7 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
                 }
             }
 
-            String sql = "insert into "+ table +"("+ columns.toString() +") values ("+ values.toString() +")";
+            String sql = "INSERT INTO "+ table +"("+ columns.toString() +") VALUES ("+ values.toString() +")";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             for (int i = 0; i < list.size(); i++) {
                 Object x = list.get(i);
@@ -94,11 +107,11 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
             AppendKey.append(columns, values, key);
         }
 
-        StringBuilder sql = new StringBuilder("insert into "+ table +"("+ columns.toString() +") values ");
+        StringBuilder sql = new StringBuilder("INSERT INTO "+ table +"("+ columns.toString() +") VALUES ");
         List<Object> paramList = new ArrayList<>();
         for (Map<String, Object> map : resultList) {
             if (map != null && !map.isEmpty()) {
-                if(!sql.toString().equals("insert into "+ table +"("+ columns.toString() +") values "))
+                if(!sql.toString().equals("INSERT INTO "+ table +"("+ columns.toString() +") VALUES "))
                     sql.append(",");
                 sql.append("(").append(values.toString()).append(")");
                 for (String key : keyList) {
@@ -112,12 +125,12 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
 
     @Override
     public int delete(String table, Integer id) {
-        return update("delete from "+ table +" where id = ?", id);
+        return update("DELETE FROM "+ table +" WHERE id = ?", id);
     }
 
     @Override
     public int delete(String table, String column, Object value) {
-        return update("delete from "+ table +" where "+ column +" = ?", value);
+        return update("DELETE FROM "+ table +" WHERE "+ column +" = ?", value);
     }
 
     @Override
@@ -143,7 +156,7 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
         }
         array[index] = map.get(primaryKey);
 
-        return update("update "+ table +" set "+ setKeyVal +" where "+ primaryKey +" = ?", array);
+        return update("UPDATE "+ table +" SET "+ setKeyVal +" WHERE "+ primaryKey +" = ?", array);
     }
 
     @Override
@@ -167,7 +180,7 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
                     if (whereString.length() <= 0) {
                         whereString.append(key).append(" = ? ");
                     } else {
-                        whereString.append(" and ").append(key).append(" = ? ");
+                        whereString.append(" AND ").append(key).append(" = ? ");
                     }
                     whereList.add(map.get(key));
                 } else {
@@ -185,7 +198,7 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
                 for (int i = 0; i < setList.size(); i++) {
                     array[i] = setList.get(i);
                 }
-                return update("update "+ table +" set "+ setString +" where "+ whereString, array);
+                return update("UPDATE "+ table +" SET "+ setString +" WHERE "+ whereString, array);
             }
         }
         return 0;
@@ -235,7 +248,7 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
 
     @Override
     public int insertOrUpdate(String table, String primaryKey, Map<String, Object> map) {
-        long count = queryForLong("select count(*) from "+ table +" where "+ primaryKey + " = ?", map.get(primaryKey));
+        long count = queryForLong("SELECT COUNT(*) FROM "+ table +" WHERE "+ primaryKey + " = ?", map.get(primaryKey));
         if (count > 0){
             return updateMap(table, primaryKey, map);
         } else {
@@ -289,12 +302,34 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
         StringBuilder column = new StringBuilder();
         List<Object> value = new ArrayList<>();
         entry(column, value, colMap);
-        return queryForMap("select * from "+ table + column, value.toArray());
+        return queryForMap("SELECT * FROM "+ table + column, value.toArray());
+    }
+
+    @Override
+    public <T> T find(Class<T> clazz) {
+        return queryForObject(tableName(clazz), clazz);
+    }
+
+    @Override
+    public <T> T findById(Class<T> clazz, Integer var1) {
+        return this.findById(clazz, var1, " * ");
+    }
+
+    @Override
+    public <T> T findById(Class<T> clazz, Integer id, String fields) {
+        return queryForObject(SqlType.SELECT + fields + " FROM " + tableName(clazz), clazz, id);
+    }
+
+    public static void cdn(Condition cdn) {
+        SimpleCriteria criteria = (SimpleCriteria) cdn;
+        OrderBySet orderBy = (OrderBySet) criteria.getOrderBy();
+        System.out.println(orderBy.getNames());
+        System.out.println(criteria.where().getSql());
     }
 
     @Override
     public Map<String, Object> findById(String table, Integer id) {
-        return queryForMap("select * from "+ table + " where id = ?", id);
+        return queryForMap(SqlType.SELECT+" * FROM "+ table + " WHERE id = ?", id);
     }
 
     @Override
@@ -302,12 +337,12 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
         StringBuilder column = new StringBuilder();
         List<Object> value = new ArrayList<>();
         entry(column, value, colMap);
-        return queryForList("select * from "+ table + column, value.toArray());
+        return queryForList("SELECT * FROM "+ table + column, value.toArray());
     }
 
     @Override
     public PageList<Map<String, Object>> pageList(String sql, Integer currentPage, Integer pageSize, Object... args) {
-        String countSql = "select count(*) from ("+sql+") as alias_name";
+        String countSql = "SELECT COUNT(*) FROM ("+sql+") AS alias_name";
         return pageList(sql, countSql, currentPage, pageSize, args);
     }
 
@@ -319,7 +354,7 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
         if (pageSize == null){
             pageSize = 10;
         }
-        sql = sql + " limit " + (currentPage - 1) * pageSize + "," + pageSize;
+        sql = sql + " LIMIT " + (currentPage - 1) * pageSize + "," + pageSize;
         long totalSize = queryForLong(countSql, args);
         List<Map<String, Object>> list = queryForList(sql, args);
         PageList<Map<String, Object>> pageList = new PageList<>(currentPage, totalSize, pageSize);
@@ -330,10 +365,10 @@ public class SqlDaoImpl extends JdbcTemplate implements SqlDao {
     private void entry(StringBuilder column, List<Object> value, Map<String, Object> colMap){
         for (Map.Entry<String, Object> entry : colMap.entrySet()) {
             if (column.length() > 0){
-                column.append(" and ").append(entry.getKey()).append(" = ").append("?");
+                column.append(" AND ").append(entry.getKey()).append(" = ").append("?");
                 value.add(entry.getValue());
             } else {
-                column.append(" where ").append(entry.getKey()).append(" = ").append("?");
+                column.append(" WHERE ").append(entry.getKey()).append(" = ").append("?");
                 value.add(entry.getValue());
             }
         }

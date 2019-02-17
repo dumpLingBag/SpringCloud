@@ -23,6 +23,20 @@ public interface UAUserService {
     Map<String, Object> findUser(String account, String password);
 
     /**
+    * 通过账号查询信息
+    * @Author: pengcheng
+    * @Date: 2019/2/2
+    */
+    Map<String, Object> findByAccount(String account);
+
+    /**
+    * 通过手机号查询信息
+    * @Author: pengcheng
+    * @Date: 2019/2/2
+    */
+    Map<String, Object> findByMobile(String mobile);
+
+    /**
      * 添加一个用户
      * @Author: pengcheng
      * @Date: 2018/12/16
@@ -63,5 +77,12 @@ public interface UAUserService {
     * @Date: 2019/1/14
     */
     int updatePassword(UpdatePassword password);
+
+    /**
+    * 根据id删除用户
+    * @Author: pengcheng
+    * @Date: 2019/2/3
+    */
+    int delete(Integer id);
 
 }
