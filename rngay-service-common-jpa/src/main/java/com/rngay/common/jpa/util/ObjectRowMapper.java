@@ -1,5 +1,6 @@
 package com.rngay.common.jpa.util;
 
+import com.sun.org.apache.xpath.internal.operations.String;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.lang.reflect.Field;
@@ -26,7 +27,6 @@ public class ObjectRowMapper<T> implements RowMapper<T> {
 
             Field[] fields = t.getClass().getDeclaredFields();
             for (Field field: fields) {
-                System.out.println(field.getName());
                 int column = resultSet.findColumn(field.getName());
                 if (column > 0) {
                     boolean accessible = field.isAccessible();
@@ -50,7 +50,7 @@ public class ObjectRowMapper<T> implements RowMapper<T> {
             field.set(t, rs.getInt(field.getName()));
         } else if (type == String.class) {
             field.set(t, rs.getString(field.getName()));
-        } else if (type == Date.class || type == java.sql.Date.class) {
+        } else if (type == Date.class || type == java.sql.Date.class || type == Timestamp.class) {
             field.set(t, rs.getTimestamp(field.getName()));
         } else if (type == boolean.class || type == Boolean.class) {
             field.set(t, rs.getBoolean(field.getName()));
@@ -62,8 +62,6 @@ public class ObjectRowMapper<T> implements RowMapper<T> {
             field.set(t, rs.getBigDecimal(field.getName()));
         } else if (type == short.class || type == Short.class) {
             field.set(t, field.getShort(field.getName()));
-        } else if (type == Timestamp.class) {
-            field.set(t, rs.getTimestamp(field.getName()));
         } else if (type == long.class) {
             field.set(t, rs.getLong(field.getName()));
         }

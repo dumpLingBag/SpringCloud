@@ -2,8 +2,11 @@ package com.rngay.feign.user.dto;
 
 import com.rngay.feign.dto.CommonDTO;
 
+import javax.persistence.Table;
 import javax.validation.constraints.*;
+import java.util.Date;
 
+@Table(name = "ua_user")
 public class UASaveUserDTO extends CommonDTO {
 
     private Integer id;
@@ -28,6 +31,10 @@ public class UASaveUserDTO extends CommonDTO {
 
     @NotNull(message = "请选择账号状态")
     private Integer enable;
+
+    private Date update_time;
+
+    private Date create_time;
 
     public Integer getId() {
         return id;
@@ -83,5 +90,21 @@ public class UASaveUserDTO extends CommonDTO {
 
     public void setEnable(Integer enable) {
         this.enable = enable;
+    }
+
+    public Date getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(Date update_time) {
+        this.update_time = update_time;
+    }
+
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
     }
 }

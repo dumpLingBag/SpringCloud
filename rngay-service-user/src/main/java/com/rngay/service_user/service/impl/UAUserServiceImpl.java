@@ -1,10 +1,10 @@
 package com.rngay.service_user.service.impl;
 
-import com.rngay.common.vo.PageList;
-import com.rngay.feign.user.dto.UAUserPageListDTO;
-import com.rngay.feign.user.dto.UpdatePassword;
+import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.dao.UAUserDao;
+import com.rngay.service_user.model.UAUser;
 import com.rngay.service_user.service.UAUserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,37 +17,37 @@ public class UAUserServiceImpl implements UAUserService {
     private UAUserDao uaUserDao;
 
     @Override
-    public Map<String, Object> findUserById(Integer id) {
+    public UAUserDTO findUserById(Integer id) {
         return uaUserDao.findUserById(id);
     }
 
     @Override
-    public Map<String, Object> findUser(String account, String password) {
+    public UAUserDTO findUser(String account, String password) {
         return uaUserDao.findUser(account, password);
     }
 
     @Override
-    public Map<String, Object> findByAccount(String account) {
+    public UAUserDTO findByAccount(String account) {
         return uaUserDao.findByAccount(account);
     }
 
     @Override
-    public Map<String, Object> findByMobile(String mobile) {
+    public UAUserDTO findByMobile(String mobile) {
         return uaUserDao.findByMobile(mobile);
     }
 
     @Override
-    public int insertUser(Map<String, Object> map) {
-        return uaUserDao.insertUser(map);
+    public int insertUser(UASaveUserDTO userDTO) {
+        return uaUserDao.insertUser(userDTO);
     }
 
     @Override
-    public int updateUser(Map<String, Object> map) {
-        return uaUserDao.updateUser(map);
+    public int updateUser(UAUpdateUserDTO userDTO) {
+        return uaUserDao.updateUser(userDTO);
     }
 
     @Override
-    public PageList<Map<String, Object>> pageList(UAUserPageListDTO pageListDTO) {
+    public Page<UAUserDTO> pageList(UAUserPageListDTO pageListDTO) {
         return uaUserDao.pageList(pageListDTO);
     }
 

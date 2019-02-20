@@ -6,8 +6,6 @@ import com.rngay.common.jpa.dao.sql.OrderBy;
 import com.rngay.common.jpa.util.SimpleCriteria;
 import com.rngay.common.jpa.util.cri.SqlExpressionGroup;
 
-import java.util.*;
-
 public class Cnd implements Criteria, OrderBy, GroupBy {
 
     protected SimpleCriteria cri;
