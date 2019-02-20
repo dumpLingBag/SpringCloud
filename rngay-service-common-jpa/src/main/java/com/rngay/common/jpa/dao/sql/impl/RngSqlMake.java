@@ -6,7 +6,6 @@ import com.rngay.common.jpa.dao.Condition;
 import com.rngay.common.jpa.dao.sql.SqlMake;
 import com.rngay.common.jpa.util.Maker;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import java.util.Map;
 

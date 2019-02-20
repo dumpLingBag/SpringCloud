@@ -1,6 +1,8 @@
 package com.rngay.common.jpa.dao.sql;
 
-public interface OrderBy {
+import com.rngay.common.jpa.dao.Condition;
+
+public interface OrderBy extends Condition {
 
     OrderBy asc(String var1);
 
