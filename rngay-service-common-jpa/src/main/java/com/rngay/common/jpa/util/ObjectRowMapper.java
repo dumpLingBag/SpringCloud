@@ -1,5 +1,6 @@
 package com.rngay.common.jpa.util;
 
+import com.sun.org.apache.xpath.internal.operations.String;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.lang.reflect.Field;

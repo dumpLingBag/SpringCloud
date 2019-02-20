@@ -125,6 +125,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
             StringBuilder sql = new StringBuilder();
             Field[] fields = obj.getClass().getDeclaredFields();
             for (Field field : fields) {
+                boolean accessible = field.isAccessible();
                 field.setAccessible(true);
                 boolean idAnn = field.isAnnotationPresent(Id.class);
                 try {
@@ -141,6 +142,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                             val.add(o);
                         }
                     }
+                    field.setAccessible(accessible);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

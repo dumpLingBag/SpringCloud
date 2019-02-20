@@ -1,6 +1,7 @@
 package com.rngay.service_user.service.impl;
 
 import com.rngay.service_user.dao.UAIconDao;
+import com.rngay.service_user.model.UAIcons;
 import com.rngay.service_user.service.UAIconService;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class UAIconServiceImpl implements UAIconService {
     private UAIconDao iconDao;
 
     @Override
-    public List<Map<String, Object>> loadIcon() {
+    public List<UAIcons> loadIcon() {
         return iconDao.loadIcon();
     }
 }

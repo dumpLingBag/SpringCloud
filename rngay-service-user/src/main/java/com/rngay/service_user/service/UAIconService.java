@@ -1,7 +1,8 @@
 package com.rngay.service_user.service;
 
+import com.rngay.service_user.model.UAIcons;
+
 import java.util.List;
-import java.util.Map;
 
 public interface UAIconService {
 
@@ -10,6 +11,6 @@ public interface UAIconService {
     * @Author: pengcheng
     * @Date: 2018/12/22
     */
-    List<Map<String, Object>> loadIcon();
+    List<UAIcons> loadIcon();
 
 }
