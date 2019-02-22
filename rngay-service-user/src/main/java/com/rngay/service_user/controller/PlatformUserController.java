@@ -1,5 +1,6 @@
 package com.rngay.service_user.controller;
 
+import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.jpa.dao.impl.SqlDao;
 import com.rngay.common.util.MapUtil;
 import com.rngay.common.vo.Result;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "user")
