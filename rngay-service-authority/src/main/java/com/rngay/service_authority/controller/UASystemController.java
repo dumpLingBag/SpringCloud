@@ -1,6 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
+import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.service.UASystemService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "authoritySys")
@@ -21,8 +21,8 @@ public class UASystemController {
 
     @RequestMapping(value = "getForMenu")
     public Result<?> loadForMenu(HttpServletRequest request){
-        Map<String, Object> currentUser = systemService.getCurrentUser(request);
-        if (currentUser == null || currentUser.isEmpty()){
+        UAUserDTO currentUser = systemService.getCurrentUser(request);
+        if (currentUser == null){
             return Result.fail("加载菜单失败");
         }
 

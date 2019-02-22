@@ -1,6 +1,7 @@
 package com.rngay.service_authority.interceptor;
 
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
@@ -12,7 +13,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.Map;
 
 @Component
 public class OperatorInterceptor extends HandlerInterceptorAdapter {
@@ -60,11 +60,11 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
                 throw new BaseException(401, "账号在其他设备上登录");
             }
 
-            Map<String, Object> currentUser = systemService.getCurrentUser(request);
+            UAUserDTO currentUser = systemService.getCurrentUser(request);
             if (currentUser == null) {
                 throw new BaseException(401, "请重新登录");
             }
-            if (currentUser.get("enable").equals(1)){
+            if (currentUser.getEnable().equals(1)){
                 if (!isAuthorized(request)) {
                     throw new BaseException(403, "访问受限");
                 }
@@ -79,9 +79,9 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
      * 判断是否有访问权限
      * */
     private boolean isAuthorized(HttpServletRequest request){
-        Map<String, Object> currentUser = systemService.getCurrentUser(request);
-        if (currentUser != null && !currentUser.isEmpty()) {
-            return currentUser.get("account").equals("admin");
+        UAUserDTO currentUser = systemService.getCurrentUser(request);
+        if (currentUser != null) {
+            return currentUser.getAccount().equals("admin");
         }
         return false;
     }

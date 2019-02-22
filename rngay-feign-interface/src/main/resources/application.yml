@@ -39,5 +39,5 @@ ribbon:
   ConnectTimeout: 500
   ReadTimeout: 3000
   OkToRetryOnAllOperations: true
-  MaxAutoRetriesNextServer: 1
+  MaxAutoRetriesNextServer: 3
   MaxAutoRetries: 1

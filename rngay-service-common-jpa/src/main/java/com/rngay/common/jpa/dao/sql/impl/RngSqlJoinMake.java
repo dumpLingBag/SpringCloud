@@ -36,22 +36,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
 
         if (null != cnd) {
             if (cnd instanceof Condition) {
-                Criteria criteria = (Criteria) cnd;
-                Maker sql = criteria.where().getSql();
-                if (null != sql.getSqlName() && sql.getSqlName().length() != 0) {
-                    sqlN.append(sql.getSqlName());
-                }
-                GroupBySet groupBy = (GroupBySet) criteria.getGroupBy();
-                if (null != groupBy.getGroupBy()) {
-                    sqlN.append(groupBy.getGroupBy().getSqlName());
-                    sql.getSqlVal().addAll(groupBy.getGroupBy().getSqlVal());
-                }
-                OrderBySet orderBy = (OrderBySet) criteria.getOrderBy();
-                if (null != orderBy.getNames() && !"".equals(orderBy.getNames())) {
-                    sqlN.append(orderBy.getNames());
-                }
-                maker.setSqlName(sqlN);
-                maker.setSqlVal(sql.getSqlVal());
+                cdn(maker, sqlN, (Condition) cnd);
             } else {
                 if (cnd instanceof Integer) {
                     List<Object> list = new ArrayList<>();
@@ -76,6 +61,27 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
     }
 
     @Override
+    public Maker makeJoinCount(String tableName, Condition cdn) {
+        if (null == tableName || "".equals(tableName)) {
+            throw new BaseException(500, "不存在更新实体表!");
+        }
+
+        Maker maker = new Maker();
+        StringBuilder sqlN = count(tableName);
+        if (null != cdn) {
+            Criteria criteria = (Criteria) cdn;
+            Maker sql = criteria.where().getSql();
+            if (null != sql.getSqlName() && sql.getSqlName().length() != 0) {
+                sqlN.append(sql.getSqlName());
+            }
+            maker.setSqlVal(sql.getSqlVal());
+        }
+        maker.setSqlName(sqlN);
+
+        return maker;
+    }
+
+    @Override
     public Maker makeJoinUpdate(Object obj, Condition cnd) {
         if (null == obj) {
             throw new NullPointerException("不存在要更新的数据!");
@@ -87,13 +93,15 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
         int id = 0;
         if (obj instanceof Map) {
             Map<?, ?> map = (Map)obj;
-            if (null == map.get("id")) {
-                throw new BaseException(500, "主键不存在!");
+            if (null == cnd) {
+                if (null == map.get("id")) {
+                    throw new BaseException(500, "主键不存在!");
+                }
             }
             if (null == map.get(".table") || "".equals(map.get(".table"))) {
                 throw new BaseException(500, ".table不存在!");
             }
-            StringBuilder sqlN = insert((String) map.get(".table"));
+            StringBuilder sqlN = update((String) map.get(".table"));
             StringBuilder where = new StringBuilder();
             for (Map.Entry<?, ?> m : map.entrySet()) {
                 if (!"id".equals(m.getKey()) && !".table".equals(m.getKey())) {
@@ -258,6 +266,43 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
         }
 
         return maker;
+    }
+
+    @Override
+    public Maker makeJoinPager(String tableName, int pageNumber, int pageSize, Condition cdn) {
+        if (null == tableName || "".equals(tableName)) {
+            throw new BaseException(500, "表名为空!");
+        }
+
+        Maker maker = new Maker();
+        StringBuilder sqlN = query(tableName);
+        if (cdn != null) {
+            cdn(maker, sqlN, cdn);
+        } else {
+            maker.setSqlName(sqlN);
+        }
+        maker.setSqlName(maker.getSqlName().append(' ').append("LIMIT").append(' ').append((pageNumber - 1) * pageSize).append(",").append(pageSize));
+
+        return maker;
+    }
+
+    private void cdn(Maker maker, StringBuilder sqlN, Condition cdn) {
+        Criteria criteria = (Criteria) cdn;
+        Maker sql = criteria.where().getSql();
+        if (null != sql.getSqlName() && sql.getSqlName().length() != 0) {
+            sqlN.append(sql.getSqlName());
+        }
+        GroupBySet groupBy = (GroupBySet) criteria.getGroupBy();
+        if (null != groupBy.getGroupBy()) {
+            sqlN.append(groupBy.getGroupBy().getSqlName());
+            sql.getSqlVal().addAll(groupBy.getGroupBy().getSqlVal());
+        }
+        OrderBySet orderBy = (OrderBySet) criteria.getOrderBy();
+        if (null != orderBy.getNames() && !"".equals(orderBy.getNames())) {
+            sqlN.append(orderBy.getNames());
+        }
+        maker.setSqlName(sqlN);
+        maker.setSqlVal(sql.getSqlVal());
     }
 
 }

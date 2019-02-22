@@ -53,6 +53,26 @@ public class RngSqlMake extends RngSqlJoinMake implements SqlMake {
     }
 
     @Override
+    public Maker makeCount(Class<?> clazz) {
+        return this.makeJoinCount(tableName(clazz), null);
+    }
+
+    @Override
+    public Maker makeCount(String tableName) {
+        return this.makeJoinCount(tableName, null);
+    }
+
+    @Override
+    public Maker makeCount(Class<?> clazz, Condition cdn) {
+        return this.makeJoinCount(tableName(clazz), cdn);
+    }
+
+    @Override
+    public Maker makeCount(String tableName, Condition cdn) {
+        return this.makeJoinCount(tableName, cdn);
+    }
+
+    @Override
     public Maker makeUpdate(Object obj) {
         return this.makeJoinUpdate(obj, null);
     }
@@ -101,6 +121,26 @@ public class RngSqlMake extends RngSqlJoinMake implements SqlMake {
     @Override
     public Maker makeInsert(Object obj) {
         return this.makeJoinInsert(obj);
+    }
+
+    @Override
+    public Maker makePager(String tableName, int pageNumber, int pageSize) {
+        return this.makeJoinPager(tableName, pageNumber, pageSize, null);
+    }
+
+    @Override
+    public Maker makePager(String tableName, int pageNumber, int pageSize, Condition cdn) {
+        return this.makeJoinPager(tableName, pageNumber, pageSize, cdn);
+    }
+
+    @Override
+    public Maker makePager(Class<?> clazz, int pageNumber, int pageSize) {
+        return this.makeJoinPager(tableName(clazz), pageNumber, pageSize, null);
+    }
+
+    @Override
+    public Maker makePager(Class<?> clazz, int pageNumber, int pageSize, Condition cdn) {
+        return this.makeJoinPager(tableName(clazz), pageNumber, pageSize, cdn);
     }
 
 }

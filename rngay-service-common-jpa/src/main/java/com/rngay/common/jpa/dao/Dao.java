@@ -1,5 +1,7 @@
 package com.rngay.common.jpa.dao;
 
+import com.rngay.common.vo.PageList;
+import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.JdbcOperations;
 
@@ -38,6 +40,12 @@ public interface Dao extends JdbcOperations {
 
     Map<String, Object> find(String var1, Condition var2);
 
-    <T> Page<T> paginate(Class<T> var1, int currentPage, int pageSize, Condition var2);
+    <T> PageList<T> paginate(Class<T> var1, int pageNumber, int pageSize);
+
+    PageList<Map<String, Object>> paginate(String var1, int pageNumber, int pageSize);
+
+    <T> PageList<T> paginate(Class<T> var1, int pageNumber, int pageSize, Condition var2);
+
+    PageList<Map<String, Object>> paginate(String var1, int pageNumber, int pageSize, Condition var2);
 
 }

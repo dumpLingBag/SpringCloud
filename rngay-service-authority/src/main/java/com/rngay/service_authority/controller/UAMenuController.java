@@ -1,6 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
+import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.service_authority.service.UAMenuService;
 import com.rngay.service_authority.service.UASystemService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +37,7 @@ public class UAMenuController {
     public Result<?> getAllMenu(HttpServletRequest request){
         Map<String, Object> map = new HashMap<>();
         List<Map<String, Object>> allMenu = menuService.getAllMenu();
-        Map<String, Object> currentUser = systemService.getCurrentUser(request);
+        UAUserDTO currentUser = systemService.getCurrentUser(request);
         map.put("menu", allMenu);
         map.put("user", currentUser);
         return Result.success(map);

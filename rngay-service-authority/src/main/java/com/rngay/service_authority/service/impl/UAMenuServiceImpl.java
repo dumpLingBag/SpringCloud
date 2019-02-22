@@ -1,6 +1,7 @@
 package com.rngay.service_authority.service.impl;
 
-import com.rngay.common.jpa.dao.SqlDao;
+import com.rngay.common.jpa.dao.Cnd;
+import com.rngay.common.jpa.dao.Dao;
 import com.rngay.service_authority.service.UAMenuService;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public class UAMenuServiceImpl implements UAMenuService {
 
     @Resource
-    private SqlDao sqlDao;
+    private Dao dao;
 
     @Override
     public Integer save(String name, Integer pid, Integer sort) {
@@ -22,13 +23,13 @@ public class UAMenuServiceImpl implements UAMenuService {
         map.put("name", name);
         map.put("pid", pid);
         map.put("sort", sort);
-        return sqlDao.insert("ua_menu", map);
+        return dao.insert(map, "ua_menu");
     }
 
     @Override
     public List<Map<String, Object>> getAllMenu() {
         List<Map<String, Object>> list = new ArrayList<>();
-        List<Map<String, Object>> menus = sqlDao.queryForList("select * from ua_menu where pid = 0");
+        List<Map<String, Object>> menus = dao.query("ua_menu", Cnd.where("pid", "=", 0));
         for (Map<String, Object> menu : menus) {
             Map<String, Object> menuChildren = new HashMap<>();
             menuChildren.put("id", menu.get("id"));
@@ -57,7 +58,7 @@ public class UAMenuServiceImpl implements UAMenuService {
 
     private List<Object> getChildren(Integer parentId){
         List<Object> list = new ArrayList<>();
-        List<Map<String, Object>> children = sqlDao.queryForList("select * from ua_menu where pid = ?", parentId);
+        List<Map<String, Object>> children = dao.query("ua_menu", Cnd.where("pid", "=", parentId));
         for (Map<String, Object> menu : children) {
             if (parentId.equals(menu.get("pid"))) {
                 list.add(children(menu));

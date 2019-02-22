@@ -6,6 +6,10 @@ public interface SqlBuilder {
 
     StringBuilder query(String tableName);
 
+    StringBuilder count(String tableName, String field);
+
+    StringBuilder count(String tableName);
+
     StringBuilder insert(String tableName);
 
     StringBuilder insert(String tableName, String fields, String value);

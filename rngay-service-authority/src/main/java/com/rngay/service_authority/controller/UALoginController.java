@@ -1,6 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.common.vo.Result;
 import com.rngay.service_authority.service.UASystemService;
@@ -45,7 +46,7 @@ public class UALoginController {
             return Result.fail("出错次数过多，请两小时后再试！");
         }
 
-        Map<String, Object> userResult = userService.find(account, password).getData();
+        UAUserDTO userResult = userService.find(account, password).getData();
         if (userResult == null) {
             value ++;
             if (value >= 5) {
@@ -53,11 +54,11 @@ public class UALoginController {
             }
             return Result.fail("用户名或密码错误");
         } else {
-            if (!account.equals("admin") && userResult.get("enable").equals(0)){
+            if (!account.equals("admin") && userResult.getEnable().equals(0)){
                 return Result.fail("账号被禁用！");
             }
             redisUtil.del(key);
-            String token = jwtUtil.generateToken(userResult.get("id"));
+            String token = jwtUtil.generateToken(userResult.getId());
             systemService.insertToken(request, userResult, token);
 
             Map<String, Object> map = new HashMap<>();

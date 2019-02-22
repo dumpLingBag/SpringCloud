@@ -19,6 +19,17 @@ public class RngSqlBuilder implements SqlBuilder {
     }
 
     @Override
+    public StringBuilder count(String tableName, String field) {
+        return new StringBuilder(String.valueOf(SqlType.SELECT)).append(' ').append("COUNT").append("(").append(field)
+                .append(")").append(' ').append("FROM").append(' ').append(tableName);
+    }
+
+    @Override
+    public StringBuilder count(String tableName) {
+        return count(tableName, "*");
+    }
+
+    @Override
     public StringBuilder insert(String tableName) {
         return new StringBuilder(String.valueOf(SqlType.INSERT)).append(' ').append("INTO").append(' ');
     }

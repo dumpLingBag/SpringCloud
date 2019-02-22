@@ -1,5 +1,6 @@
 package com.rngay.feign.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rngay.feign.dto.CommonDTO;
 
 import javax.persistence.Table;
@@ -24,8 +25,9 @@ public class UAUserDTO extends CommonDTO {
 
     private Integer enable;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date update_time;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date create_time;
 
     public Integer getId() {

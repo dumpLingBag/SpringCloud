@@ -1,5 +1,6 @@
 package com.rngay.service_user.dao;
 
+import com.rngay.common.vo.PageList;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.model.UAUser;
 import org.springframework.data.domain.Page;
@@ -55,7 +56,7 @@ public interface UAUserDao {
     * @Author: pengcheng
     * @Date: 2018/12/27
     */
-    Page<UAUserDTO> pageList(UAUserPageListDTO pageListDTO);
+    PageList<UAUserDTO> pageList(UAUserPageListDTO pageListDTO);
 
     /**
      * 重置用户密码

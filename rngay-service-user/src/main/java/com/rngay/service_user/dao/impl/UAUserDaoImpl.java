@@ -3,15 +3,13 @@ package com.rngay.service_user.dao.impl;
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.jpa.util.SimpleCriteria;
+import com.rngay.common.vo.PageList;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.dao.UAUserDao;
-import com.rngay.service_user.model.UAUser;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 @Repository
 public class UAUserDaoImpl implements UAUserDao {
@@ -50,16 +48,16 @@ public class UAUserDaoImpl implements UAUserDao {
     }
 
     @Override
-    public Page<UAUserDTO> pageList(UAUserPageListDTO pageListDTO) {
+    public PageList<UAUserDTO> pageList(UAUserPageListDTO pageListDTO) {
         SimpleCriteria cri = new SimpleCriteria();
         if (StringUtils.isNotEmpty(pageListDTO.getAccount())){
-            cri.where().and("u.account","like","%"+pageListDTO.getAccount()+"%");
+            cri.where().and("account","like","%"+pageListDTO.getAccount()+"%");
         }
         if (StringUtils.isNotEmpty(pageListDTO.getName())){
-            cri.where().and("u.name","like","%"+pageListDTO.getName()+"%");
+            cri.where().and("name","like","%"+pageListDTO.getName()+"%");
         }
         if (pageListDTO.getEnable() != null){
-            cri.where().and("u.enable","=", pageListDTO.getEnable());
+            cri.where().and("enable","=", pageListDTO.getEnable());
         }
         return dao.paginate(UAUserDTO.class, pageListDTO.getCurrentPage(), pageListDTO.getPageSize(), cri);
     }

@@ -2,10 +2,7 @@ package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
-import com.rngay.feign.user.dto.UASaveUserDTO;
-import com.rngay.feign.user.dto.UAUpdateUserDTO;
-import com.rngay.feign.user.dto.UAUserPageListDTO;
-import com.rngay.feign.user.dto.UpdatePassword;
+import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.common.util.BindingUtils;
 import org.springframework.validation.BindingResult;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "user")
@@ -34,7 +30,7 @@ public class UAUserController {
     }
 
     @RequestMapping(value = "pageList")
-    public Result<PageList<Map<String, Object>>> pageList(@RequestBody UAUserPageListDTO pageListDTO){
+    public Result<PageList<UAUserDTO>> pageList(@RequestBody UAUserPageListDTO pageListDTO){
         return pfUserService.pageList(pageListDTO);
     }
 
@@ -46,21 +42,21 @@ public class UAUserController {
         if (repeat.getCode() != 0){
             return repeat;
         }
-        Map<String, Object> user = pfUserService.findById(updateUserDTO.getId()).getData();
-        if (user != null && !user.isEmpty()){
-            if (user.get("account").equals("admin") && !updateUserDTO.getAccount().equals("admin")){
+        UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
+        if (user != null){
+            if (user.getAccount().equals("admin") && !updateUserDTO.getAccount().equals("admin")){
                 return Result.fail("禁止修改管理员账户名称");
             }
             StringBuilder builder = new StringBuilder();
-            if (!user.get("account").equals(updateUserDTO.getAccount())){
-                Result<Map<String, Object>> byAccount = pfUserService.findByAccount(updateUserDTO.getAccount());
-                if (byAccount.getData() != null && !byAccount.getData().isEmpty()){
+            if (!user.getAccount().equals(updateUserDTO.getAccount())){
+                Result<UAUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getAccount());
+                if (byAccount.getData() != null){
                     builder.append("account").append(":").append("此账号名称已经存在");
                 }
             }
-            if (!user.get("mobile").equals(updateUserDTO.getMobile())){
-                Result<Map<String, Object>> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
-                if (byMobile.getData() != null && !byMobile.getData().isEmpty()){
+            if (!user.getMobile().equals(updateUserDTO.getMobile())){
+                Result<UAUserDTO> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
+                if (byMobile.getData() != null){
                     builder.append("mobile").append(":").append("此手机号码已经存在");
                 }
             }
@@ -91,11 +87,11 @@ public class UAUserController {
 
     @RequestMapping(value = "updatePassword")
     public Result<Integer> updatePassword(@RequestBody UpdatePassword password){
-        Map<String, Object> user = pfUserService.findById(password.getUserId()).getData();
-        if (user == null || user.isEmpty()){
+        UAUserDTO user = pfUserService.findById(password.getUserId()).getData();
+        if (user == null){
             return Result.fail("不存在该用户，修改失败");
         }
-        if (!user.get("password").equals(password.getOldPassword())){
+        if (!user.getPassword().equals(password.getOldPassword())){
             return Result.fail("旧密码输入不正确");
         }
         return pfUserService.updatePassword(password);
@@ -108,12 +104,12 @@ public class UAUserController {
 
     private Result<String> repeat(String account,String mobile){
         StringBuilder builder = new StringBuilder();
-        Result<Map<String, Object>> byAccount = pfUserService.findByAccount(account);
-        if (byAccount.getData() != null && !byAccount.getData().isEmpty()){
+        Result<UAUserDTO> byAccount = pfUserService.findByAccount(account);
+        if (byAccount.getData() != null){
             builder.append("account").append(":").append("此账号名称已经存在");
         }
-        Result<Map<String, Object>> byMobile = pfUserService.findByMobile(mobile);
-        if (byMobile.getData() != null && !byMobile.getData().isEmpty()){
+        Result<UAUserDTO> byMobile = pfUserService.findByMobile(mobile);
+        if (byMobile.getData() != null){
             builder.append("mobile").append(":").append("此手机号码已经存在");
         }
 

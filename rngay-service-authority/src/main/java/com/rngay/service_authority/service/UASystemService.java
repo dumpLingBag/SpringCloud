@@ -1,5 +1,7 @@
 package com.rngay.service_authority.service;
 
+import com.rngay.feign.user.dto.UAUserDTO;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,7 @@ public interface UASystemService {
     * @Author: pengcheng
     * @Date: 2018/12/14
     */
-    int insertToken(HttpServletRequest request, Map<String, Object> map, String token);
+    int insertToken(HttpServletRequest request, UAUserDTO userDTO, String token);
 
     /**
     * 从数据库删除 token 并更新 redis 缓存
@@ -33,7 +35,7 @@ public interface UASystemService {
     * @Author: pengcheng
     * @Date: 2018/12/16
     */
-    Map<String, Object> getCurrentUser(HttpServletRequest request);
+    UAUserDTO getCurrentUser(HttpServletRequest request);
 
     /**
     * 获取当前登录用户 id
@@ -48,12 +50,5 @@ public interface UASystemService {
     * @Date: 2018/12/19
     */
     List<Map<String, Object>> loadForMenu(Map<String, Object> user);
-
-    /**
-    * 加载 icon 图标
-    * @Author: pengcheng
-    * @Date: 2018/12/22
-    */
-    List<Map<String, Object>> loadIcon();
 
 }

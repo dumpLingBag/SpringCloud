@@ -1,14 +1,12 @@
 package com.rngay.service_user.service.impl;
 
+import com.rngay.common.vo.PageList;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.dao.UAUserDao;
-import com.rngay.service_user.model.UAUser;
 import com.rngay.service_user.service.UAUserService;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 @Service
 public class UAUserServiceImpl implements UAUserService {
@@ -47,7 +45,7 @@ public class UAUserServiceImpl implements UAUserService {
     }
 
     @Override
-    public Page<UAUserDTO> pageList(UAUserPageListDTO pageListDTO) {
+    public PageList<UAUserDTO> pageList(UAUserPageListDTO pageListDTO) {
         return uaUserDao.pageList(pageListDTO);
     }
 

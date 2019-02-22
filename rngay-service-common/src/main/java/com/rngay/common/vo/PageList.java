@@ -11,26 +11,29 @@ import java.util.List;
 */
 public class PageList<T> implements Serializable {
 
+    private final static int DEFAULT_PAGE_NUMBER = 1;
+    private final static int DEFAULT_PAGE_SIZE = 10;
+
     /**
     * 当前页
     * @Author: pengcheng
     * @Date: 2018/12/26
     */
-    private int currentPage = 1;
+    private int pageNumber;
 
     /**
     * 每页显示数量
     * @Author: pengcheng
     * @Date: 2018/12/26
     */
-    private int pageSize = 10;
+    private int pageSize;
 
     /**
     * 总记录数
     * @Author: pengcheng
     * @Date: 2018/12/26
     */
-    private Long totalSize = 0L;
+    private long totalSize = 0L;
 
     /**
     * 总页数
@@ -46,41 +49,45 @@ public class PageList<T> implements Serializable {
     */
     private List<T> list = new ArrayList<>();
 
-    public PageList(){}
+    public PageList(){
+        this.pageNumber = DEFAULT_PAGE_NUMBER;
+        this.pageSize = DEFAULT_PAGE_SIZE;
+    }
 
-    public PageList(Integer currentPage, Long totalSize, Integer pageSize){
-        if (currentPage == null){
-            currentPage = 1;
+    public PageList(int pageNumber, long totalSize, int pageSize){
+        if (pageNumber < 1){
+            pageNumber = DEFAULT_PAGE_NUMBER;
         }
-        if (pageSize == null){
-            pageSize = this.pageSize;
+        if (pageSize < 1){
+            pageSize = DEFAULT_PAGE_SIZE;
         }
-        this.currentPage = currentPage;
+        this.pageNumber = pageNumber;
         this.totalSize = totalSize;
         this.pageSize = pageSize;
+        this.totalPage = getTotalPage();
     }
 
-    public static Integer getCurrentPage(Integer currentPage) {
-        return currentPage != null && currentPage >= 0 ? currentPage : 1;
+    public static int getPageNumber(int pageNumber) {
+        return pageNumber > 0 ? pageNumber : DEFAULT_PAGE_NUMBER;
     }
 
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
-    public static Integer getPageSize(Integer pageSize) {
-        return pageSize != null && pageSize > 0 ? pageSize : 10;
+    public static int getPageSize(int pageSize) {
+        return pageSize > 0 ? pageSize : DEFAULT_PAGE_SIZE;
     }
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
 
-    public Long getTotalSize() {
+    public long getTotalSize() {
         return totalSize;
     }
 
-    public void setTotalSize(Long totalSize) {
+    public void setTotalSize(long totalSize) {
         this.totalSize = totalSize;
     }
 

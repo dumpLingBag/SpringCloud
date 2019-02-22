@@ -1,10 +1,8 @@
 package com.rngay.service_user.dao;
 
-import com.rngay.service_user.model.UAIcons;
-import com.rngay.service_user.model.UAUser;
+import com.rngay.feign.user.dto.UAIconDTO;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UAIconDao {
 
@@ -13,6 +11,6 @@ public interface UAIconDao {
      * @Author: pengcheng
      * @Date: 2018/12/22
      */
-    List<UAIcons> loadIcon();
+    List<UAIconDTO> loadIcon();
 
 }

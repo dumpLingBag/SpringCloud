@@ -2,10 +2,7 @@ package com.rngay.feign.user.service;
 
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
-import com.rngay.feign.user.dto.UASaveUserDTO;
-import com.rngay.feign.user.dto.UAUpdateUserDTO;
-import com.rngay.feign.user.dto.UAUserPageListDTO;
-import com.rngay.feign.user.dto.UpdatePassword;
+import com.rngay.feign.user.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +18,7 @@ public interface PFUserService {
     * @Date: 2018/12/13
     */
     @RequestMapping(value = "/user/find", method = RequestMethod.POST)
-    Result<Map<String, Object>> find(@RequestParam String account, @RequestParam String password);
+    Result<UAUserDTO> find(@RequestParam("account") String account, @RequestParam("password") String password);
 
     /**
     * 通过id查询用户信息
@@ -29,7 +26,7 @@ public interface PFUserService {
     * @Date: 2019/1/9
     */
     @RequestMapping(value = "/user/findById/{id}", method = RequestMethod.GET)
-    Result<Map<String, Object>> findById(@PathVariable Integer id);
+    Result<UAUserDTO> findById(@PathVariable Integer id);
 
     /**
      * 通过账号查询信息
@@ -37,7 +34,7 @@ public interface PFUserService {
      * @Date: 2019/2/2
      */
     @RequestMapping(value = "/user/findByAccount", method = RequestMethod.POST)
-    Result<Map<String, Object>> findByAccount(@RequestParam String account);
+    Result<UAUserDTO> findByAccount(@RequestParam("account") String account);
 
     /**
      * 通过手机号查询信息
@@ -45,7 +42,7 @@ public interface PFUserService {
      * @Date: 2019/2/2
      */
     @RequestMapping(value = "/user/findByMobile", method = RequestMethod.POST)
-    Result<Map<String, Object>> findByMobile(@RequestParam String mobile);
+    Result<UAUserDTO> findByMobile(@RequestParam("mobile") String mobile);
 
     /**
     * 添加一个用户
@@ -69,7 +66,7 @@ public interface PFUserService {
     * @Date: 2018/12/22
     */
     @RequestMapping(value = "/user/icon", method = RequestMethod.POST)
-    Result<List<Map<String, Object>>> loadIcon();
+    Result<List<UAIconDTO>> loadIcon();
 
     /**
     * 分页加载用户信息
@@ -77,7 +74,7 @@ public interface PFUserService {
     * @Date: 2018/12/27
     */
     @RequestMapping(value = "/user/pageList", method = RequestMethod.POST)
-    Result<PageList<Map<String, Object>>> pageList(@RequestBody UAUserPageListDTO pageListDTO);
+    Result<PageList<UAUserDTO>> pageList(@RequestBody UAUserPageListDTO pageListDTO);
 
     /**
     * 重置用户密码

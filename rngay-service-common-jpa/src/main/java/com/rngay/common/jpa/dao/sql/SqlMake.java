@@ -15,30 +15,46 @@ public interface SqlMake {
 
     Maker makeQuery(Class<?> clazz, long id);
 
-    Maker makeQuery(String tableName, Condition cnd);
+    Maker makeQuery(String tableName, Condition cdn);
 
-    Maker makeQuery(Class<?> clazz, Condition cnd);
+    Maker makeQuery(Class<?> clazz, Condition cdn);
 
     Maker makeQuery(String tableName, String sql);
 
     Maker makeQuery(Class<?> clazz, String sql);
 
+    Maker makeCount(Class<?> clazz);
+
+    Maker makeCount(String tableName);
+
+    Maker makeCount(Class<?> clazz, Condition cdn);
+
+    Maker makeCount(String tableName, Condition cdn);
+
     Maker makeUpdate(Object obj);
 
-    Maker makeUpdate(Object obj, Condition cnd);
+    Maker makeUpdate(Object obj, Condition cdn);
 
     Maker makeDelete(Class<?> clazz, long id);
 
-    Maker makeDelete(Class<?> clazz, Condition cnd);
+    Maker makeDelete(Class<?> clazz, Condition cdn);
 
     Maker makeDelete(String tableName, long id);
 
-    Maker makeDelete(String tableName, Condition cnd);
+    Maker makeDelete(String tableName, Condition cdn);
 
     Maker makeInsert(String tableName, Map<String, Object> map);
 
     Maker makeInsert(Class<?> clazz, Map<String, Object> map);
 
     Maker makeInsert(Object obj);
+
+    Maker makePager(String tableName, int pageNumber, int pageSize);
+    
+    Maker makePager(String tableName, int pageNumber, int pageSize, Condition cdn);
+
+    Maker makePager(Class<?> clazz, int pageNumber, int pageSize);
+
+    Maker makePager(Class<?> clazz, int pageNumber, int pageSize, Condition cdn);
 
 }
