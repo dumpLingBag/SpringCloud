@@ -133,13 +133,13 @@ public class RngSqlMake extends RngSqlJoinMake implements SqlMake {
     }
 
     @Override
-    public Maker makeUpdate(Object obj) {
-        return this.makeJoinUpdate(obj, null);
+    public Maker makeUpdate(Object obj, boolean isNUll) {
+        return this.makeJoinUpdate(obj, null, isNUll);
     }
 
     @Override
-    public Maker makeUpdate(Object obj, Condition cnd) {
-        return this.makeJoinUpdate(obj, cnd);
+    public Maker makeUpdate(Object obj, Condition cnd, boolean isNull) {
+        return this.makeJoinUpdate(obj, cnd, isNull);
     }
 
     @Override

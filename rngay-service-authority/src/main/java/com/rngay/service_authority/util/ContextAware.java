@@ -1,6 +1,6 @@
 package com.rngay.service_authority.util;
 
-import com.rngay.common.jpa.dao.SqlDao;
+import com.rngay.common.jpa.dao.Dao;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -56,8 +56,8 @@ public class ContextAware implements ApplicationContextAware, ServletContextAwar
         return applicationContext.getBean(name);
     }
 
-    public static SqlDao getSQLDao() {
-        return applicationContext.getBean(SqlDao.class);
+    public static Dao getSQLDao() {
+        return applicationContext.getBean(Dao.class);
     }
 
     public static String firstCharToLowerCase(String string) {

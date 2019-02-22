@@ -55,9 +55,9 @@ public interface SqlMake {
 
     Maker makeCount(String tableName, Condition cdn, String field);
 
-    Maker makeUpdate(Object obj);
+    Maker makeUpdate(Object obj, boolean isNull);
 
-    Maker makeUpdate(Object obj, Condition cdn);
+    Maker makeUpdate(Object obj, Condition cdn, boolean isNull);
 
     Maker makeDelete(Class<?> clazz, long id);
 

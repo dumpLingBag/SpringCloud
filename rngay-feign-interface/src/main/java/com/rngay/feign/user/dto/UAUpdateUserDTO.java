@@ -2,6 +2,7 @@ package com.rngay.feign.user.dto;
 
 import com.rngay.feign.dto.CommonDTO;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.*;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Table(name = "ua_user")
 public class UAUpdateUserDTO extends CommonDTO {
 
+    @Id
     @NotNull(message = "用户ID为空")
     private Integer id;
 

@@ -33,12 +33,12 @@ public class RngSqlBuilder implements SqlBuilder {
 
     @Override
     public StringBuilder insert(String tableName) {
-        return new StringBuilder(String.valueOf(SqlType.INSERT)).append(' ').append("INTO").append(' ');
+        return new StringBuilder(String.valueOf(SqlType.INSERT)).append(' ').append("INTO").append(' ').append(tableName).append(' ');
     }
 
     @Override
     public StringBuilder insert(String tableName, String fields, String value) {
-        return insert(tableName).append("(").append(fields).append(")").append("VALUES").append(' ').append("(").append(value).append(")");
+        return insert(tableName).append("(").append(fields).append(")").append(" VALUES ").append("(").append(value).append(")");
     }
 
     @Override

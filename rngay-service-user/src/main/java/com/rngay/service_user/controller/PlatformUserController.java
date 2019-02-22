@@ -1,6 +1,5 @@
 package com.rngay.service_user.controller;
 
-import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
@@ -17,12 +16,6 @@ public class PlatformUserController {
     @Resource
     private UAUserService uaUserService;
 
-    private Dao dao;
-
-    public void dd() {
-        dao.count(int.class);
-    }
-
     @RequestMapping(value = "find")
     public Result<UAUserDTO> find(@RequestParam("account") String account, @RequestParam("password") String password){
         return Result.success(uaUserService.findUser(account, password));
@@ -34,12 +27,12 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "findByAccount", method = RequestMethod.POST)
-    public Result<UAUserDTO> findByAccount(@RequestParam String account){
+    public Result<UAUserDTO> findByAccount(@RequestParam("account") String account){
         return Result.success(uaUserService.findByAccount(account));
     }
 
     @RequestMapping(value = "findByMobile", method = RequestMethod.POST)
-    public Result<UAUserDTO> findByMobile(String mobile){
+    public Result<UAUserDTO> findByMobile(@RequestParam("mobile") String mobile){
         return Result.success(uaUserService.findByMobile(mobile));
     }
 

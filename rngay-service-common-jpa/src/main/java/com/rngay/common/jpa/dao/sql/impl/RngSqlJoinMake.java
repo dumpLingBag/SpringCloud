@@ -82,7 +82,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
     }
 
     @Override
-    public Maker makeJoinUpdate(Object obj, Condition cnd) {
+    public Maker makeJoinUpdate(Object obj, Condition cnd, boolean isNull) {
         if (null == obj) {
             throw new NullPointerException("不存在要更新的数据!");
         }
@@ -129,7 +129,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
             if (null == tableName || "".equals(tableName)) {
                 throw new BaseException(500, "不存在表名");
             }
-            StringBuilder sqlN = insert(tableName);
+            StringBuilder sqlN = update(tableName);
             StringBuilder sql = new StringBuilder();
             Field[] fields = obj.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -145,9 +145,14 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                         }
                     } else {
                         Object o = field.get(obj);
-                        if (null != o && !"".equals(o)) {
+                        if (isNull) {
                             sql.append(field.getName()).append("=").append("?").append(",");
                             val.add(o);
+                        } else {
+                            if (null != o && !"".equals(o)) {
+                                sql.append(field.getName()).append("=").append("?").append(",");
+                                val.add(o);
+                            }
                         }
                     }
                     field.setAccessible(accessible);

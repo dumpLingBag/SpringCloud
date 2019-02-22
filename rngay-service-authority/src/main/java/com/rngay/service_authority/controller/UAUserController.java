@@ -22,9 +22,18 @@ public class UAUserController {
     public Result<?> save(@Valid @RequestBody UASaveUserDTO saveUserDTO, BindingResult result){
         if (BindingUtils.bindingResult(result).getCode() != 0)
             return BindingUtils.bindingResult(result);
-        Result<String> repeat = repeat(saveUserDTO.getAccount(), saveUserDTO.getMobile());
-        if (repeat.getCode() != 0){
-            return Result.fail(repeat.getMsg());
+        StringBuilder builder = new StringBuilder();
+        Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getAccount());
+        if (byAccount.getData() != null){
+            builder.append("account").append(":").append("此账号名称已经存在").append("_");
+        }
+        Result<UAUserDTO> byMobile = pfUserService.findByMobile(saveUserDTO.getMobile());
+        if (byMobile.getData() != null){
+            builder.append("mobile").append(":").append("此手机号码已经存在").append("_");
+        }
+        if (builder.length() != 0) {
+            builder.setCharAt(builder.length() - 1, ' ');
+            return Result.fail(builder.toString());
         }
         return pfUserService.save(saveUserDTO);
     }
@@ -38,10 +47,7 @@ public class UAUserController {
     public Result<?> update(@Valid @RequestBody UAUpdateUserDTO updateUserDTO, BindingResult result){
         if (BindingUtils.bindingResult(result).getCode() != 0)
             return BindingUtils.bindingResult(result);
-        Result<String> repeat = repeat(updateUserDTO.getAccount(), updateUserDTO.getMobile());
-        if (repeat.getCode() != 0){
-            return repeat;
-        }
+
         UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null){
             if (user.getAccount().equals("admin") && !updateUserDTO.getAccount().equals("admin")){
@@ -51,16 +57,17 @@ public class UAUserController {
             if (!user.getAccount().equals(updateUserDTO.getAccount())){
                 Result<UAUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getAccount());
                 if (byAccount.getData() != null){
-                    builder.append("account").append(":").append("此账号名称已经存在");
+                    builder.append("account").append(":").append("此账号名称已经存在").append("_");
                 }
             }
             if (!user.getMobile().equals(updateUserDTO.getMobile())){
                 Result<UAUserDTO> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
                 if (byMobile.getData() != null){
-                    builder.append("mobile").append(":").append("此手机号码已经存在");
+                    builder.append("mobile").append(":").append("此手机号码已经存在").append("_");
                 }
             }
             if (builder.length() > 0){
+                builder.setCharAt(builder.length() - 1, ' ');
                 return Result.fail(builder.toString());
             }
         } else {
@@ -100,24 +107,6 @@ public class UAUserController {
     @RequestMapping(value = "delete/{id}")
     public Result<Integer> delete(@PathVariable Integer id){
         return pfUserService.delete(id);
-    }
-
-    private Result<String> repeat(String account,String mobile){
-        StringBuilder builder = new StringBuilder();
-        Result<UAUserDTO> byAccount = pfUserService.findByAccount(account);
-        if (byAccount.getData() != null){
-            builder.append("account").append(":").append("此账号名称已经存在");
-        }
-        Result<UAUserDTO> byMobile = pfUserService.findByMobile(mobile);
-        if (byMobile.getData() != null){
-            builder.append("mobile").append(":").append("此手机号码已经存在");
-        }
-
-        if (builder.length() > 0){
-            return Result.fail(builder.toString());
-        }
-
-        return Result.success();
     }
 
 }

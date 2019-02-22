@@ -9,7 +9,7 @@ public interface SqlJoinMake {
 
     Maker makeJoinCount(String tableName, Condition cdn, String field);
 
-    Maker makeJoinUpdate(Object obj, Condition cdn);
+    Maker makeJoinUpdate(Object obj, Condition cdn, boolean isNull);
 
     Maker makeJoinDelete(String tableName, Condition cdn);
 

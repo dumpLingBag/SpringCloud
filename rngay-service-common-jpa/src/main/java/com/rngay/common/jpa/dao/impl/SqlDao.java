@@ -2,22 +2,16 @@ package com.rngay.common.jpa.dao.impl;
 
 import com.rngay.common.jpa.dao.Condition;
 import com.rngay.common.jpa.dao.Dao;
-import com.rngay.common.jpa.dao.sql.Criteria;
 import com.rngay.common.jpa.dao.sql.SqlMake;
 import com.rngay.common.jpa.dao.sql.impl.RngSqlMake;
 import com.rngay.common.jpa.util.Maker;
-import com.rngay.common.jpa.util.ObjectRowMapper;
 import com.rngay.common.vo.PageList;
-import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -38,39 +32,42 @@ public class SqlDao extends JdbcTemplate implements Dao {
 
     @Override
     public <T> int insert(T var1) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         Maker maker = sqlMake.makeInsert(var1);
-
-        update(connection -> connection.prepareStatement(maker.getSqlName().toString(), Statement.RETURN_GENERATED_KEYS), keyHolder);
-        if (keyHolder.getKey() == null) {
-            return 0;
-        }
-
-        return keyHolder.getKey().intValue();
+        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
     public int insert(Map<String, Object> var1, String var2) {
         Maker maker = sqlMake.makeInsert(var2, var1);
-        return update(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
     public int insert(Class<?> var1, Map<String, Object> var2) {
         Maker maker = sqlMake.makeInsert(var1, var2);
-        return update(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
     public int update(Object var1) {
-        Maker maker = sqlMake.makeUpdate(var1);
-        return update(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return this.update(var1, false);
     }
 
     @Override
     public int update(Object var1, Condition var2) {
-        Maker maker = sqlMake.makeUpdate(var1, var2);
-        return update(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return this.update(var1, var2, false);
+    }
+
+    @Override
+    public int update(Object var1, boolean isNull) {
+        Maker maker = sqlMake.makeUpdate(var1, isNull);
+        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
+    }
+
+    @Override
+    public int update(Object var1, Condition var2, boolean isNull) {
+        Maker maker = sqlMake.makeUpdate(var1, var2, isNull);
+        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
@@ -96,25 +93,25 @@ public class SqlDao extends JdbcTemplate implements Dao {
     @Override
     public <T> List<T> query(Class<T> var1, String... fields) {
         Maker maker = sqlMake.makeQuery(var1, fields);
-        return query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), maker.getSqlVal().toArray());
+        return query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), toArray(maker.getSqlVal()));
     }
 
     @Override
     public <T> List<T> query(Class<T> var1, Condition var2, String... fields) {
         Maker maker = sqlMake.makeQuery(var1, var2, fields);
-        return query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), maker.getSqlVal().toArray());
+        return query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), toArray(maker.getSqlVal()));
     }
 
     @Override
     public List<Map<String, Object>> query(String var1, String... fields) {
         Maker maker = sqlMake.makeQuery(var1, fields);
-        return queryForList(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return queryForList(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
     public List<Map<String, Object>> query(String var1, Condition var2, String... fields) {
         Maker maker = sqlMake.makeQuery(var1, var2, fields);
-        return queryForList(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return queryForList(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
@@ -154,75 +151,79 @@ public class SqlDao extends JdbcTemplate implements Dao {
     @Override
     public long count(Class<?> var1, Condition var2, String field) {
         Maker maker = sqlMake.makeCount(var1, var2, field);
-        Long count = queryForObject(maker.getSqlName().toString(), long.class, maker.getSqlVal().toArray());
+        Long count = queryForObject(maker.getSqlName().toString(), long.class, toArray(maker.getSqlVal()));
         return count != null && count > 0 ? count : 0;
     }
 
     @Override
     public long count(String var1, Condition var2, String field) {
         Maker maker = sqlMake.makeCount(var1, var2, field);
-        Long count = queryForObject(maker.getSqlName().toString(), long.class, maker.getSqlVal().toArray());
+        Long count = queryForObject(maker.getSqlName().toString(), long.class, toArray(maker.getSqlVal()));
         return count != null && count > 0 ? count : 0;
     }
 
     @Override
     public int delete(Class<?> var1, long var2) {
         Maker maker = sqlMake.makeDelete(var1, var2);
-        return update(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
     public int delete(Class<?> var1, Condition var2) {
         Maker maker = sqlMake.makeDelete(var1, var2);
-        return update(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
     public <T> T findById(Class<T> var1, long var2) {
         Maker maker = sqlMake.makeQuery(var1, var2);
-        return queryForObject(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), maker.getSqlVal().toArray());
+        List<T> query = query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), toArray(maker.getSqlVal()));
+        return query.size() > 0 ? query.get(0) : null;
     }
 
     @Override
     public <T> T find(Class<T> var1, Condition var2) {
         Maker maker = sqlMake.makeQuery(var1, var2);
-        return queryForObject(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), maker.getSqlVal().toArray());
+        List<T> query = query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), toArray(maker.getSqlVal()));
+        return query.size() > 0 ? query.get(0) : null;
     }
 
     @Override
     public Map<String, Object> findById(String var1, long var2) {
         Maker maker = sqlMake.makeQuery(var1, var2);
-        return queryForMap(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return queryForMap(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
     public Map<String, Object> find(String var1, Condition var2) {
         Maker maker = sqlMake.makeQuery(var1, var2);
-        return queryForMap(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+        return queryForMap(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
     @Override
-    public <T> T queryForObject(Class<T> var1) {
-        Maker maker = sqlMake.makeQuery(var1);
-        return queryForObject(maker.getSqlName().toString(), var1);
+    public <T> String queryForString(Class<T> var1, Condition var2, String field) {
+        Maker maker = sqlMake.makeQuery(var1, var2, field);
+        List<String> list = queryForList(maker.getSqlName().toString(), String.class, toArray(maker.getSqlVal()));
+        return list.size() > 0 ? list.get(0) : null;
     }
 
     @Override
-    public <T> List<T> queryForList(Class<T> var1) {
-        Maker maker = sqlMake.makeQuery(var1);
-        return queryForList(maker.getSqlName().toString(), var1);
+    public <T> List<String> queryForList(Class<T> var1, Condition var2, String field) {
+        Maker maker = sqlMake.makeQuery(var1, var2, field);
+        return queryForList(maker.getSqlName().toString(), String.class, toArray(maker.getSqlVal()));
     }
 
     @Override
-    public <T> T queryForObject(Class<T> var1, Condition var2) {
-        Maker maker = sqlMake.makeQuery(var1, var2);
-        return queryForObject(maker.getSqlName().toString(), var1, maker.getSqlVal().toArray());
+    public <T> T queryForObject(String tableName, Class<T> clazz, Condition cdn, String field) {
+        Maker maker = sqlMake.makeQuery(tableName, cdn, field);
+        List<T> list = queryForList(maker.getSqlName().toString(), clazz, toArray(maker.getSqlVal()));
+        return list.size() > 0 ? list.get(0) : null;
     }
 
     @Override
-    public <T> List<T> queryForList(Class<T> var1, Condition var2) {
-        Maker maker = sqlMake.makeQuery(var1, var2);
-        return queryForList(maker.getSqlName().toString(), var1, maker.getSqlVal().toArray());
+    public <T> List<T> queryForList(String tableName, Class<T> clazz, Condition cdn, String field) {
+        Maker maker = sqlMake.makeQuery(tableName, cdn, field);
+        return queryForList(maker.getSqlName().toString(), clazz, toArray(maker.getSqlVal()));
     }
 
 

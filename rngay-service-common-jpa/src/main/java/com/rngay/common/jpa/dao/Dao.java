@@ -21,6 +21,10 @@ public interface Dao extends JdbcOperations {
 
     int update(Object var1, Condition var2);
 
+    int update(Object var1, boolean isNull);
+
+    int update(Object var1, Condition var2, boolean isNull);
+
     <T> List<T> query(Class<T> var1);
 
     <T> List<T> query(Class<T> var1, Condition var2);
@@ -65,13 +69,13 @@ public interface Dao extends JdbcOperations {
 
     Map<String, Object> find(String var1, Condition var2);
 
-    <T> T queryForObject(Class<T> var1);
+    <T> String queryForString(Class<T> var1, Condition var2, String field);
 
-    <T> List<T> queryForList(Class<T> var1);
+    <T> List<String> queryForList(Class<T> var1, Condition var2, String field);
 
-    <T> T queryForObject(Class<T> var1, Condition var2);
+    <T> T queryForObject(String tableName, Class<T> clazz, Condition cdn, String field);
 
-    <T> List<T> queryForList(Class<T> var1, Condition var2);
+    <T> List<T> queryForList(String tableName, Class<T> clazz, Condition cdn, String field);
 
     <T> PageList<T> paginate(Class<T> var1, int pageNumber, int pageSize);
 

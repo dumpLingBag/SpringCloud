@@ -3,8 +3,8 @@ package com.rngay.service_authority.service.impl;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
-import com.rngay.common.jpa.dao.SqlDao;
 import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.service_authority.model.UAUserToken;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
@@ -31,26 +31,26 @@ public class UASystemServiceImpl implements UASystemService {
     public int insertToken(HttpServletRequest request, UAUserDTO userDTO, String token) {
         Integer userId = userDTO.getId();
 
-        Map<String, Object> map = new HashMap<>();
-        map.put(".table", "ua_user_token");
-        map.put("token", token);
+        UAUserToken userToken = new UAUserToken();
+        userToken.setUserId(userId);
+        userToken.setToken(token);
         Date date = new Date();
-        map.put("create_time", date);
-        map.put("update_time", date);
+        userToken.setUpdateTime(date);
 
         Date expireTime = jwtUtil.getExpiration(token);
-        map.put("expire_time", expireTime);
+        userToken.setExpireTime(expireTime);
 
         String key = request.getServerName() + "_" + userId;
         System.out.println("--->tokenKey:" + key);
 
         redisUtil.set(key, userDTO);
 
-        int user_id = dao.update(map, Cnd.where("user_id", "=", userId));
+        int user_id = dao.update(userToken, Cnd.where("user_id", "=", userId));
         if (user_id > 0) {
             return user_id;
         } else {
-            return dao.insert(map, "ua_user_token");
+            userToken.setCreateTime(date);
+            return dao.insert(userToken);
         }
     }
 
@@ -58,12 +58,14 @@ public class UASystemServiceImpl implements UASystemService {
     public int deleteToken(HttpServletRequest request, Integer userId) {
         String key = request.getServerName() + "_" + userId;
         redisUtil.del(key);
-        return dao.update("update ua_user_token set token = null where user_id = ?", userId);
+        UAUserToken user = dao.find(UAUserToken.class, Cnd.where("user_id", "=", userId));
+        user.setToken(null);
+        return dao.update(user, true);
     }
 
     @Override
     public String findToken(Integer userId, Date date) {
-        return dao.queryForObject("select token from ua_user_token where user_id = ? and expire_time > ?", String.class, userId, date);
+        return dao.queryForString(UAUserToken.class, Cnd.where("user_id","=", userId).and("expire_time",">", date), "token");
     }
 
     @SuppressWarnings("unchecked")
