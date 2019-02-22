@@ -4,6 +4,7 @@ import com.rngay.common.vo.PageList;
 import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,30 @@ public interface Dao extends JdbcOperations {
 
     List<Map<String, Object>> query(String var1, Condition var2);
 
+    <T> List<T> query(Class<T> var1, String... fields);
+
+    <T> List<T> query(Class<T> var1, Condition var2, String... fields);
+
+    List<Map<String, Object>> query(String var1, String... fields);
+
+    List<Map<String, Object>> query(String var1, Condition var2, String... fields);
+
+    long count(Class<?> var1);
+
+    long count(String var1);
+
+    long count(Class<?> var1, Condition var2);
+
+    long count(String var1, Condition var2);
+
+    long count(Class<?> var1, String field);
+
+    long count(String var1, String field);
+
+    long count(Class<?> var1, Condition var2, String field);
+
+    long count(String var1, Condition var2, String field);
+
     int delete(Class<?> var1, long var2);
 
     int delete(Class<?> var1, Condition var2);
@@ -39,6 +64,14 @@ public interface Dao extends JdbcOperations {
     Map<String, Object> findById(String var1, long var2);
 
     Map<String, Object> find(String var1, Condition var2);
+
+    <T> T queryForObject(Class<T> var1);
+
+    <T> List<T> queryForList(Class<T> var1);
+
+    <T> T queryForObject(Class<T> var1, Condition var2);
+
+    <T> List<T> queryForList(Class<T> var1, Condition var2);
 
     <T> PageList<T> paginate(Class<T> var1, int pageNumber, int pageSize);
 

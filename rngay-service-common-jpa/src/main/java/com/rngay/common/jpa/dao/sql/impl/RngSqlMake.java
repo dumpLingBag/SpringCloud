@@ -53,23 +53,83 @@ public class RngSqlMake extends RngSqlJoinMake implements SqlMake {
     }
 
     @Override
+    public Maker makeQuery(String tableName, long id, String... fields) {
+        return this.makeJoinQuery(tableName, id, fields);
+    }
+
+    @Override
+    public Maker makeQuery(String tableName, String... fields) {
+        return this.makeJoinQuery(tableName, null, fields);
+    }
+
+    @Override
+    public Maker makeQuery(Class<?> clazz, String... fields) {
+        return this.makeJoinQuery(tableName(clazz), null, fields);
+    }
+
+    @Override
+    public Maker makeQuery(Class<?> clazz, long id, String... fields) {
+        return this.makeJoinQuery(tableName(clazz), id, fields);
+    }
+
+    @Override
+    public Maker makeQuery(String tableName, Condition cdn, String... fields) {
+        return this.makeJoinQuery(tableName, cdn, fields);
+    }
+
+    @Override
+    public Maker makeQuery(Class<?> clazz, Condition cdn, String... fields) {
+        return this.makeJoinQuery(tableName(clazz), cdn, fields);
+    }
+
+    @Override
+    public Maker makeQuery(String tableName, String sql, String... fields) {
+        return this.makeJoinQuery(tableName, sql, fields);
+    }
+
+    @Override
+    public Maker makeQuery(Class<?> clazz, String sql, String... fields) {
+        return this.makeJoinQuery(tableName(clazz), sql, fields);
+    }
+
+    @Override
     public Maker makeCount(Class<?> clazz) {
-        return this.makeJoinCount(tableName(clazz), null);
+        return this.makeJoinCount(tableName(clazz), null, null);
     }
 
     @Override
     public Maker makeCount(String tableName) {
-        return this.makeJoinCount(tableName, null);
+        return this.makeJoinCount(tableName, null, null);
     }
 
     @Override
     public Maker makeCount(Class<?> clazz, Condition cdn) {
-        return this.makeJoinCount(tableName(clazz), cdn);
+        return this.makeJoinCount(tableName(clazz), cdn, null);
     }
 
     @Override
     public Maker makeCount(String tableName, Condition cdn) {
-        return this.makeJoinCount(tableName, cdn);
+        return this.makeJoinCount(tableName, cdn, null);
+    }
+
+    @Override
+    public Maker makeCount(Class<?> clazz, String field) {
+        return this.makeJoinCount(tableName(clazz),null, field);
+    }
+
+    @Override
+    public Maker makeCount(String tableName, String field) {
+        return this.makeJoinCount(tableName, null, field);
+    }
+
+    @Override
+    public Maker makeCount(Class<?> clazz, Condition cdn, String field) {
+        return this.makeJoinCount(tableName(clazz), cdn, field);
+    }
+
+    @Override
+    public Maker makeCount(String tableName, Condition cdn, String field) {
+        return this.makeJoinCount(tableName, cdn, field);
     }
 
     @Override

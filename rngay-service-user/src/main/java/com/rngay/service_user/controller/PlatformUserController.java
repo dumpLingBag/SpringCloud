@@ -17,6 +17,12 @@ public class PlatformUserController {
     @Resource
     private UAUserService uaUserService;
 
+    private Dao dao;
+
+    public void dd() {
+        dao.count(int.class);
+    }
+
     @RequestMapping(value = "find")
     public Result<UAUserDTO> find(@RequestParam("account") String account, @RequestParam("password") String password){
         return Result.success(uaUserService.findUser(account, password));

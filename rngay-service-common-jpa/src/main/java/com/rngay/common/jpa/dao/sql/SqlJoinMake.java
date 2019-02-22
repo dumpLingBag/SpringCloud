@@ -5,9 +5,9 @@ import com.rngay.common.jpa.util.Maker;
 
 public interface SqlJoinMake {
 
-    Maker makeJoinQuery(String tableName, Object cnd);
+    Maker makeJoinQuery(String tableName, Object cnd, String... fields);
 
-    Maker makeJoinCount(String tableName, Condition cdn);
+    Maker makeJoinCount(String tableName, Condition cdn, String field);
 
     Maker makeJoinUpdate(Object obj, Condition cdn);
 

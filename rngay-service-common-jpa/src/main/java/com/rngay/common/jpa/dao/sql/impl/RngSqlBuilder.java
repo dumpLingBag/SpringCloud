@@ -10,6 +10,7 @@ public class RngSqlBuilder implements SqlBuilder {
     @Override
     public StringBuilder query(String tableName, String... fields) {
         String f = Arrays.toString(fields).replace("[", "").replace("]", "");
+        f = f.length() == 0 ? "*" : f;
         return new StringBuilder(String.valueOf(SqlType.SELECT)).append(' ').append(f).append(' ').append("FROM").append(' ').append(tableName);
     }
 
@@ -20,6 +21,7 @@ public class RngSqlBuilder implements SqlBuilder {
 
     @Override
     public StringBuilder count(String tableName, String field) {
+        field = field == null || "".equals(field) ? "*" : field;
         return new StringBuilder(String.valueOf(SqlType.SELECT)).append(' ').append("COUNT").append("(").append(field)
                 .append(")").append(' ').append("FROM").append(' ').append(tableName);
     }

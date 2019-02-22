@@ -75,26 +75,94 @@ public class SqlDao extends JdbcTemplate implements Dao {
 
     @Override
     public <T> List<T> query(Class<T> var1) {
-        Maker maker = sqlMake.makeQuery(var1);
-        return query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1));
+        return query(var1, "");
     }
 
     @Override
     public <T> List<T> query(Class<T> var1, Condition var2) {
-        Maker maker = sqlMake.makeQuery(var1, var2);
-        return query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), maker.getSqlVal().toArray());
+        return query(var1, var2, "");
     }
 
     @Override
     public List<Map<String, Object>> query(String var1) {
-        Maker maker = sqlMake.makeQuery(var1);
-        return queryForList(maker.getSqlName().toString());
+        return query(var1, "");
     }
 
     @Override
     public List<Map<String, Object>> query(String var1, Condition var2) {
-        Maker maker = sqlMake.makeQuery(var1, var2);
+        return query(var1, var2, "");
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> var1, String... fields) {
+        Maker maker = sqlMake.makeQuery(var1, fields);
+        return query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), maker.getSqlVal().toArray());
+    }
+
+    @Override
+    public <T> List<T> query(Class<T> var1, Condition var2, String... fields) {
+        Maker maker = sqlMake.makeQuery(var1, var2, fields);
+        return query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), maker.getSqlVal().toArray());
+    }
+
+    @Override
+    public List<Map<String, Object>> query(String var1, String... fields) {
+        Maker maker = sqlMake.makeQuery(var1, fields);
         return queryForList(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+    }
+
+    @Override
+    public List<Map<String, Object>> query(String var1, Condition var2, String... fields) {
+        Maker maker = sqlMake.makeQuery(var1, var2, fields);
+        return queryForList(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+    }
+
+    @Override
+    public long count(Class<?> var1) {
+        return this.count(var1, "");
+    }
+
+    @Override
+    public long count(String var1) {
+        return this.count(var1, "");
+    }
+
+    @Override
+    public long count(Class<?> var1, Condition var2) {
+        return this.count(var1, var2, "");
+    }
+
+    @Override
+    public long count(String var1, Condition var2) {
+        return this.count(var1, var2, "");
+    }
+
+    @Override
+    public long count(Class<?> var1, String field) {
+        Maker maker = sqlMake.makeCount(var1, field);
+        Long count = queryForObject(maker.getSqlName().toString(), long.class);
+        return count != null && count > 0 ? count : 0;
+    }
+
+    @Override
+    public long count(String var1, String field) {
+        Maker maker = sqlMake.makeCount(var1, field);
+        Long count = queryForObject(maker.getSqlName().toString(), long.class);
+        return count != null && count > 0 ? count : 0;
+    }
+
+    @Override
+    public long count(Class<?> var1, Condition var2, String field) {
+        Maker maker = sqlMake.makeCount(var1, var2, field);
+        Long count = queryForObject(maker.getSqlName().toString(), long.class, maker.getSqlVal().toArray());
+        return count != null && count > 0 ? count : 0;
+    }
+
+    @Override
+    public long count(String var1, Condition var2, String field) {
+        Maker maker = sqlMake.makeCount(var1, var2, field);
+        Long count = queryForObject(maker.getSqlName().toString(), long.class, maker.getSqlVal().toArray());
+        return count != null && count > 0 ? count : 0;
     }
 
     @Override
@@ -134,11 +202,34 @@ public class SqlDao extends JdbcTemplate implements Dao {
     }
 
     @Override
-    public <T> PageList<T> paginate(Class<T> var1, int pageNumber, int pageSize) {
-        Maker count = sqlMake.makeCount(var1);
+    public <T> T queryForObject(Class<T> var1) {
+        Maker maker = sqlMake.makeQuery(var1);
+        return queryForObject(maker.getSqlName().toString(), var1);
+    }
 
-        Long totalSize = queryForObject(count.getSqlName().toString(), long.class);
-        if (totalSize == null) {
+    @Override
+    public <T> List<T> queryForList(Class<T> var1) {
+        Maker maker = sqlMake.makeQuery(var1);
+        return queryForList(maker.getSqlName().toString(), var1);
+    }
+
+    @Override
+    public <T> T queryForObject(Class<T> var1, Condition var2) {
+        Maker maker = sqlMake.makeQuery(var1, var2);
+        return queryForObject(maker.getSqlName().toString(), var1, maker.getSqlVal().toArray());
+    }
+
+    @Override
+    public <T> List<T> queryForList(Class<T> var1, Condition var2) {
+        Maker maker = sqlMake.makeQuery(var1, var2);
+        return queryForList(maker.getSqlName().toString(), var1, maker.getSqlVal().toArray());
+    }
+
+
+    @Override
+    public <T> PageList<T> paginate(Class<T> var1, int pageNumber, int pageSize) {
+        long totalSize = this.count(var1);
+        if (totalSize <= 0) {
             return null;
         }
 
@@ -156,10 +247,8 @@ public class SqlDao extends JdbcTemplate implements Dao {
 
     @Override
     public PageList<Map<String, Object>> paginate(String var1, int pageNumber, int pageSize) {
-        Maker count = sqlMake.makeCount(var1);
-
-        Long totalSize = queryForObject(count.getSqlName().toString(), long.class);
-        if (totalSize == null) {
+        long totalSize = this.count(var1);
+        if (totalSize <= 0) {
             return null;
         }
 
@@ -177,10 +266,8 @@ public class SqlDao extends JdbcTemplate implements Dao {
 
     @Override
     public <T> PageList<T> paginate(Class<T> var1, int pageNumber, int pageSize, Condition var2) {
-        Maker count = sqlMake.makeCount(var1, var2);
-
-        Long totalSize = queryForObject(count.getSqlName().toString(), long.class, toArray(count.getSqlVal()));
-        if (totalSize == null) {
+        long totalSize = this.count(var1, var2);
+        if (totalSize <= 0) {
             return null;
         }
 
@@ -199,10 +286,8 @@ public class SqlDao extends JdbcTemplate implements Dao {
 
     @Override
     public PageList<Map<String, Object>> paginate(String var1, int pageNumber, int pageSize, Condition var2) {
-        Maker count = sqlMake.makeCount(var1, var2);
-
-        Long totalSize = queryForObject(count.getSqlName().toString(), long.class, toArray(count.getSqlVal()));
-        if (totalSize == null) {
+        long totalSize = this.count(var1, var2);
+        if (totalSize <= 0) {
             return null;
         }
 

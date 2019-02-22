@@ -26,13 +26,13 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
     }
 
     @Override
-    public Maker makeJoinQuery(String tableName, Object cnd) {
+    public Maker makeJoinQuery(String tableName, Object cnd, String... fields) {
         if (null == tableName || "".equals(tableName)) {
             throw new BaseException(500, "表名为空!");
         }
 
         Maker maker = new Maker();
-        StringBuilder sqlN = query(tableName);
+        StringBuilder sqlN = query(tableName, fields);
 
         if (null != cnd) {
             if (cnd instanceof Condition) {
@@ -61,13 +61,13 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
     }
 
     @Override
-    public Maker makeJoinCount(String tableName, Condition cdn) {
+    public Maker makeJoinCount(String tableName, Condition cdn, String field) {
         if (null == tableName || "".equals(tableName)) {
             throw new BaseException(500, "不存在更新实体表!");
         }
 
         Maker maker = new Maker();
-        StringBuilder sqlN = count(tableName);
+        StringBuilder sqlN = count(tableName, field);
         if (null != cdn) {
             Criteria criteria = (Criteria) cdn;
             Maker sql = criteria.where().getSql();

@@ -23,6 +23,22 @@ public interface SqlMake {
 
     Maker makeQuery(Class<?> clazz, String sql);
 
+    Maker makeQuery(String tableName, long id, String... fields);
+
+    Maker makeQuery(String tableName, String... fields);
+
+    Maker makeQuery(Class<?> clazz, String... fields);
+
+    Maker makeQuery(Class<?> clazz, long id, String... fields);
+
+    Maker makeQuery(String tableName, Condition cdn, String... fields);
+
+    Maker makeQuery(Class<?> clazz, Condition cdn, String... fields);
+
+    Maker makeQuery(String tableName, String sql, String... fields);
+
+    Maker makeQuery(Class<?> clazz, String sql, String... fields);
+
     Maker makeCount(Class<?> clazz);
 
     Maker makeCount(String tableName);
@@ -30,6 +46,14 @@ public interface SqlMake {
     Maker makeCount(Class<?> clazz, Condition cdn);
 
     Maker makeCount(String tableName, Condition cdn);
+
+    Maker makeCount(Class<?> clazz, String field);
+
+    Maker makeCount(String tableName, String field);
+
+    Maker makeCount(Class<?> clazz, Condition cdn, String field);
+
+    Maker makeCount(String tableName, Condition cdn, String field);
 
     Maker makeUpdate(Object obj);
 
