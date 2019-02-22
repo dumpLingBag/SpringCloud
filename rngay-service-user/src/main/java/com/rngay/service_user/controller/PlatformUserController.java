@@ -1,17 +1,14 @@
 package com.rngay.service_user.controller;
 
-import com.rngay.common.jpa.dao.impl.SqlDao;
-import com.rngay.common.util.MapUtil;
+import com.rngay.common.jpa.dao.Dao;
+import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
-import com.rngay.service_user.model.UAUser;
 import com.rngay.service_user.service.UAUserService;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "user")
@@ -19,14 +16,7 @@ public class PlatformUserController {
 
     @Resource
     private UAUserService uaUserService;
-    @Resource
-    private SqlDao sqlDao;
-
-    @RequestMapping(value = "sql")
-    public Result<?> sql(){
-        UAUser byId = sqlDao.findById(UAUser.class, 1);
-        return Result.success(byId);
-    }
+    private Dao dao;
 
     @RequestMapping(value = "find")
     public Result<UAUserDTO> find(@RequestParam String account, @RequestParam String password){
@@ -39,12 +29,12 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "findByAccount", method = RequestMethod.POST)
-    public Result<?> findByAccount(@RequestParam String account){
+    public Result<UAUserDTO> findByAccount(@RequestParam String account){
         return Result.success(uaUserService.findByAccount(account));
     }
 
     @RequestMapping(value = "findByMobile", method = RequestMethod.POST)
-    public Result<?> findByMobile(String mobile){
+    public Result<UAUserDTO> findByMobile(String mobile){
         return Result.success(uaUserService.findByMobile(mobile));
     }
 
@@ -61,7 +51,7 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "pageList")
-    public Result<Page<UAUserDTO>> pageList(@RequestBody UAUserPageListDTO pageListDTO){
+    public Result<PageList<UAUserDTO>> pageList(@RequestBody UAUserPageListDTO pageListDTO){
         return Result.success(uaUserService.pageList(pageListDTO));
     }
 
