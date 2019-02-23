@@ -1,10 +1,7 @@
 package com.rngay.common.jpa.dao;
 
 import com.rngay.common.vo.PageList;
-import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
-import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Map;
@@ -16,8 +13,6 @@ public interface Dao extends JdbcOperations {
     int insert(Map<String, Object> var1, String var2);
 
     int insert(Class<?> var1, Map<String, Object> var2);
-
-    <T> int[] batchInsert(T var1);
 
     int update(Object var1);
 
