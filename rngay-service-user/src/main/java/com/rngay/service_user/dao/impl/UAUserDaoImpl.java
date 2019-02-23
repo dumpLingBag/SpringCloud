@@ -64,17 +64,26 @@ public class UAUserDaoImpl implements UAUserDao {
 
     @Override
     public int reset(Integer id) {
-        return dao.update("update ua_user set password = 123456 where id = ?", id);
+        UAUserDTO userDTO = new UAUserDTO();
+        userDTO.setId(id);
+        userDTO.setPassword("123456");
+        return dao.update(userDTO);
     }
 
     @Override
     public int enable(Integer id, Integer enable) {
-        return dao.update("update ua_user set enable = ? where id = ?", enable, id);
+        UAUserDTO userDTO = new UAUserDTO();
+        userDTO.setEnable(enable);
+        userDTO.setId(id);
+        return dao.update(userDTO);
     }
 
     @Override
     public int updatePassword(UpdatePassword password) {
-        return dao.update("update ua_user set password = ? where id = ?", password.getUserId(), password.getPassword());
+        UAUserDTO userDTO = new UAUserDTO();
+        userDTO.setId(password.getUserId());
+        userDTO.setPassword(password.getPassword());
+        return dao.update(userDTO);
     }
 
     @Override

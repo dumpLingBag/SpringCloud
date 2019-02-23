@@ -4,10 +4,7 @@ import com.rngay.common.jpa.util.Maker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class SqlExpressionGroup {
 

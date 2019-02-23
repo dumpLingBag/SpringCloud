@@ -19,9 +19,11 @@ public class UAUserController {
     private PFUserService pfUserService;
 
     @RequestMapping(value = "save")
-    public Result<?> save(@Valid @RequestBody UASaveUserDTO saveUserDTO, BindingResult result){
-        if (BindingUtils.bindingResult(result).getCode() != 0)
-            return BindingUtils.bindingResult(result);
+    public Result<Integer> save(@Valid @RequestBody UASaveUserDTO saveUserDTO, BindingResult result){
+        String errorResult = BindingUtils.bindingResult(result);
+        if (errorResult != null) {
+            return Result.fail(errorResult);
+        }
         StringBuilder builder = new StringBuilder();
         Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getAccount());
         if (byAccount.getData() != null){
@@ -45,9 +47,10 @@ public class UAUserController {
 
     @RequestMapping(value = "update")
     public Result<?> update(@Valid @RequestBody UAUpdateUserDTO updateUserDTO, BindingResult result){
-        if (BindingUtils.bindingResult(result).getCode() != 0)
-            return BindingUtils.bindingResult(result);
-
+        String errorResult = BindingUtils.bindingResult(result);
+        if (errorResult != null) {
+            return Result.fail(errorResult);
+        }
         UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null){
             if (user.getAccount().equals("admin") && !updateUserDTO.getAccount().equals("admin")){

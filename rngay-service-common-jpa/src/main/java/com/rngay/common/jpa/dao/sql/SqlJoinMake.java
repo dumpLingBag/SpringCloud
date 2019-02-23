@@ -11,7 +11,9 @@ public interface SqlJoinMake {
 
     Maker makeJoinUpdate(Object obj, Condition cdn, boolean isNull);
 
-    Maker makeJoinDelete(String tableName, Condition cdn);
+    Maker makeJoinDelete(String tableName, Condition cdn, Integer batchNumber);
+
+    Maker makeJoinBatchDelete(String tableName, Object obj);
 
     Maker makeJoinInsert(Object obj);
 

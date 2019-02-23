@@ -5,13 +5,20 @@ import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.jpa.dao.sql.SqlMake;
 import com.rngay.common.jpa.dao.sql.impl.RngSqlMake;
 import com.rngay.common.jpa.util.Maker;
+import com.rngay.common.jpa.util.ObjectBatchPreparedStatementSetter;
+import com.rngay.common.jpa.util.ObjectParameterizedPreparedStatementSetter;
 import com.rngay.common.vo.PageList;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -172,6 +179,11 @@ public class SqlDao extends JdbcTemplate implements Dao {
     public int delete(Class<?> var1, Condition var2) {
         Maker maker = sqlMake.makeDelete(var1, var2);
         return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
+    }
+
+    @Override
+    public <T> int delete(List<? extends T> var1) {
+        return 0;
     }
 
     @Override

@@ -20,11 +20,10 @@ public class UASaveUserDTO extends CommonDTO {
     private String email;
 
     @NotEmpty(message = "手机号不能为空")
-    @Pattern(regexp = "^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$", message = "请输入正确的手机号")
+    @Pattern(regexp = "^((13\\d)|(14[5-9])|(15[0-35-9])|(166)|(17[0-8])|(18\\d)|(19[8-9]))\\d{8}$", message = "请输入正确的手机号")
     private String mobile;
 
     @NotEmpty(message = "密码不能为空")
-    @Length(min = 6, max = 16)
     private String password;
 
     @NotEmpty(message = "账户名称不能为空")

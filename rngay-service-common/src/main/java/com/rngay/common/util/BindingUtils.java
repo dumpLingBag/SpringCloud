@@ -8,16 +8,17 @@ import java.util.List;
 
 public class BindingUtils {
 
-    public static Result<?> bindingResult(BindingResult result){
+    public static String bindingResult(BindingResult result){
         if (result.hasErrors()){
             StringBuilder errors = new StringBuilder();
             List<FieldError> fieldErrors = result.getFieldErrors();
             for (FieldError fieldError: fieldErrors) {
-                errors.append(fieldError.getField()).append(":").append(fieldError.getDefaultMessage());
+                errors.append(fieldError.getField()).append(":").append(fieldError.getDefaultMessage()).append("_");
             }
-            return Result.fail(errors.toString());
+            errors.setCharAt(errors.length() - 1, ' ');
+            return errors.toString();
         }
-        return Result.success();
+        return null;
     }
 
 }

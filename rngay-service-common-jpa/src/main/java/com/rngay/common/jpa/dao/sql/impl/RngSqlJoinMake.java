@@ -183,7 +183,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
     }
 
     @Override
-    public Maker makeJoinDelete(String tableName, Condition cnd) {
+    public Maker makeJoinDelete(String tableName, Condition cnd, Integer batchNumber) {
         if (null == tableName || "".equals(tableName)) {
             throw new BaseException(500, "表名为空!");
         }
@@ -203,6 +203,11 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
         } else {
             throw new BaseException(500, "不存在删除条件!");
         }
+    }
+
+    @Override
+    public Maker makeJoinBatchDelete(String tableName, Object obj) {
+        return null;
     }
 
     @Override

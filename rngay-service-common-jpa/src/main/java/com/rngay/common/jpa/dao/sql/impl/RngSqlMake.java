@@ -149,17 +149,17 @@ public class RngSqlMake extends RngSqlJoinMake implements SqlMake {
 
     @Override
     public Maker makeDelete(Class<?> clazz, Condition cnd) {
-        return this.makeJoinDelete(tableName(clazz), cnd);
+        return this.makeJoinDelete(tableName(clazz), cnd, null);
     }
 
     @Override
     public Maker makeDelete(String tableName, long id) {
-        return this.makeJoinDelete(tableName, Cnd.where("id","=", id));
+        return this.makeJoinDelete(tableName, Cnd.where("id","=", id), null);
     }
 
     @Override
     public Maker makeDelete(String tableName, Condition cnd) {
-        return this.makeJoinDelete(tableName, cnd);
+        return this.makeJoinDelete(tableName, cnd, null);
     }
 
     @Override
