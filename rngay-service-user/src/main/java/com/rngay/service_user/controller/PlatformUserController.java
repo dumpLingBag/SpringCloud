@@ -1,5 +1,6 @@
 package com.rngay.service_user.controller;
 
+import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
@@ -7,7 +8,9 @@ import com.rngay.service_user.service.UAUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "user")
@@ -15,6 +18,23 @@ public class PlatformUserController {
 
     @Resource
     private UAUserService uaUserService;
+    @Resource
+    private Dao dao;
+
+    @RequestMapping(value = "batch")
+    public Result<?> batch() {
+        List<UAIconDTO> user = new ArrayList<>();
+        UAIconDTO iconDTO = new UAIconDTO();
+        iconDTO.setIcon("qqq");
+        iconDTO.setText("www");
+        user.add(iconDTO);
+        UAIconDTO dto = new UAIconDTO();
+        dto.setIcon("rrr");
+        dto.setText("ppp");
+        user.add(dto);
+        int[] ints = dao.batchInsert(user);
+        return Result.success(ints);
+    }
 
     @RequestMapping(value = "find")
     public Result<UAUserDTO> find(@RequestParam("account") String account, @RequestParam("password") String password){

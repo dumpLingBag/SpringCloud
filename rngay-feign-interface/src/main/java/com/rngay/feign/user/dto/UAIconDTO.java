@@ -1,10 +1,12 @@
 package com.rngay.feign.user.dto;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name = "ua_icon")
 public class UAIconDTO {
 
+    @Id
     private Integer id;
 
     private String icon;

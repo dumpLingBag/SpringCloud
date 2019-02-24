@@ -4,6 +4,7 @@ import com.rngay.common.jpa.dao.sql.SqlBuilder;
 import com.rngay.common.jpa.dao.sql.SqlType;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 public class RngSqlBuilder implements SqlBuilder {
 
@@ -49,6 +50,16 @@ public class RngSqlBuilder implements SqlBuilder {
     @Override
     public StringBuilder update(String tableName) {
         return new StringBuilder(String.valueOf(SqlType.UPDATE)).append(' ').append(tableName).append(" SET ");
+    }
+
+    @Override
+    public StringBuilder toSql(Object obj) {
+        if (obj instanceof Collection) {
+
+        } else {
+
+        }
+        return null;
     }
 
 }

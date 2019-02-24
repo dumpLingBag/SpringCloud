@@ -217,64 +217,67 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
         }
 
         Maker maker = new Maker();
-        if (obj instanceof Map) {
-            Map<?, ?> map = (Map)obj;
-            if (null == map.get(".table") || "".equals(map.get(".table"))) {
-                throw new BaseException(500, "不存在要更新的数据表!");
-            }
+        if (obj.getClass().isArray()) {
+            throw new BaseException(500, "该方式不支持批量操作!");
+        } else {
+            if (obj instanceof Map) {
+                Map<?, ?> map = (Map)obj;
+                if (null == map.get(".table") || "".equals(map.get(".table"))) {
+                    throw new BaseException(500, "不存在要更新的数据表!");
+                }
 
-            StringBuilder sqlN = new StringBuilder();
-            StringBuilder sqlV = new StringBuilder();
-            List<Object> ob = new ArrayList<>();
-            if (!map.isEmpty()) {
-                for (Map.Entry<?, ?> m : map.entrySet()) {
-                    sqlN.append(m.getKey()).append(",");
-                    sqlV.append("?").append(",");
-                    ob.add(m.getValue());
+                StringBuilder sqlN = new StringBuilder();
+                StringBuilder sqlV = new StringBuilder();
+                List<Object> ob = new ArrayList<>();
+                if (!map.isEmpty()) {
+                    for (Map.Entry<?, ?> m : map.entrySet()) {
+                        sqlN.append(m.getKey()).append(",");
+                        sqlV.append("?").append(",");
+                        ob.add(m.getValue());
+                    }
+
+                    sqlN.setCharAt(sqlN.length() - 1, ' ');
+                    sqlV.setCharAt(sqlV.length() - 1, ' ');
+
+                    StringBuilder val = insert((String) map.get(".table"), sqlN.toString().trim(), sqlV.toString().trim());
+                    maker.setSqlName(val);
+                    maker.setSqlVal(ob);
+                }
+            } else {
+                String tableName = tableName(obj.getClass());
+                if (null == tableName || "".equals(tableName)) {
+                    throw new BaseException(500, "不存在要更新的数据库表!");
+                }
+
+                StringBuilder sqlN = new StringBuilder();
+                StringBuilder sqlV = new StringBuilder();
+                List<Object> ob = new ArrayList<>();
+                Field[] fields = obj.getClass().getDeclaredFields();
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    boolean id = field.isAnnotationPresent(Id.class);
+                    if (!id) {
+                        try {
+                            Object o = field.get(obj);
+                            if (null != o && !"".equals(o)) {
+                                sqlN.append(field.getName()).append(",");
+                                sqlV.append("?").append(",");
+                                ob.add(o);
+                            }
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
                 sqlN.setCharAt(sqlN.length() - 1, ' ');
                 sqlV.setCharAt(sqlV.length() - 1, ' ');
 
-                StringBuilder val = insert((String) map.get(".table"), sqlN.toString(), sqlV.toString());
-                maker.setSqlName(val);
+                StringBuilder insert = insert(tableName, sqlN.toString().trim(), sqlV.toString().trim());
+                maker.setSqlName(insert);
                 maker.setSqlVal(ob);
             }
-        } else {
-            String tableName = tableName(obj.getClass());
-            if (null == tableName || "".equals(tableName)) {
-                throw new BaseException(500, "不存在要更新的数据库表!");
-            }
-
-            StringBuilder sqlN = new StringBuilder();
-            StringBuilder sqlV = new StringBuilder();
-            List<Object> ob = new ArrayList<>();
-            Field[] fields = obj.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                boolean id = field.isAnnotationPresent(Id.class);
-                if (!id) {
-                    try {
-                        Object o = field.get(obj);
-                        if (null != o && !"".equals(o)) {
-                            sqlN.append(field.getName()).append(",");
-                            sqlV.append("?").append(",");
-                            ob.add(o);
-                        }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            sqlN.setCharAt(sqlN.length() - 1, ' ');
-            sqlV.setCharAt(sqlV.length() - 1, ' ');
-
-            StringBuilder insert = insert(tableName, sqlN.toString(), sqlV.toString());
-            maker.setSqlName(insert);
-            maker.setSqlVal(ob);
         }
-
         return maker;
     }
 

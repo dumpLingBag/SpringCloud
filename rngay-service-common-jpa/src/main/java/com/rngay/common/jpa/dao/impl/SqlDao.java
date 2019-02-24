@@ -5,20 +5,15 @@ import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.jpa.dao.sql.SqlMake;
 import com.rngay.common.jpa.dao.sql.impl.RngSqlMake;
 import com.rngay.common.jpa.util.Maker;
-import com.rngay.common.jpa.util.ObjectBatchPreparedStatementSetter;
-import com.rngay.common.jpa.util.ObjectParameterizedPreparedStatementSetter;
+import com.rngay.common.jpa.util.batch.ObjectBatchPreparedStatementSetter;
+import com.rngay.common.jpa.util.batch.ObjectParameterizedPreparedStatementSetter;
 import com.rngay.common.vo.PageList;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +51,18 @@ public class SqlDao extends JdbcTemplate implements Dao {
     }
 
     @Override
+    public <T> int[] batchInsert(List<T> list) {
+        Maker maker = sqlMake.makeInsert(list.get(0));
+        return batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(list));
+    }
+
+    @Override
+    public <T> int[][] batchInsert(List<T> list, int batch) {
+        Maker maker = sqlMake.makeInsert(list.get(0));
+        return batchUpdate(maker.getSqlName().toString(), list, batch, new ObjectParameterizedPreparedStatementSetter<>());
+    }
+
+    @Override
     public int update(Object var1) {
         return this.update(var1, false);
     }
@@ -75,6 +82,18 @@ public class SqlDao extends JdbcTemplate implements Dao {
     public int update(Object var1, Condition var2, boolean isNull) {
         Maker maker = sqlMake.makeUpdate(var1, var2, isNull);
         return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
+    }
+
+    @Override
+    public <T> int[] batchUpdate(List<T> var1) {
+        Maker maker = sqlMake.makeUpdate(var1.get(0), false);
+        return batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(var1, null));
+    }
+
+    @Override
+    public <T> int[] batchUpdate(List<T> var1, Condition var2) {
+        Maker maker = sqlMake.makeUpdate(var1.get(0), false);
+        return batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(var1, var2));
     }
 
     @Override

@@ -14,6 +14,10 @@ public interface Dao extends JdbcOperations {
 
     int insert(Class<?> var1, Map<String, Object> var2);
 
+    <T> int[] batchInsert(List<T> list);
+
+    <T> int[][] batchInsert(List<T> list, int batch);
+
     int update(Object var1);
 
     int update(Object var1, Condition var2);
@@ -21,6 +25,10 @@ public interface Dao extends JdbcOperations {
     int update(Object var1, boolean isNull);
 
     int update(Object var1, Condition var2, boolean isNull);
+
+    <T> int[] batchUpdate(List<T> var1);
+
+    <T> int[] batchUpdate(List<T> var1, Condition var2);
 
     <T> List<T> query(Class<T> var1);
 
