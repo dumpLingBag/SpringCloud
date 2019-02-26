@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class SetPreparedStatement<T> {
 
@@ -21,8 +22,7 @@ public class SetPreparedStatement<T> {
 
                     Object o = field.get(t);
                     if (o != null && !"".equals(o)) {
-                        it = it + 1;
-                        ps.setObject(it, o);
+                        ps.setObject(it = it + 1, o);
                     }
 
                     field.setAccessible(accessible);
@@ -34,16 +34,13 @@ public class SetPreparedStatement<T> {
         return it;
     }
 
-    protected void setWhere(PreparedStatement ps, Condition cdn, int it) {
+    protected void setWhere(PreparedStatement ps, Condition cdn, int it) throws SQLException {
         Criteria cri = (Criteria)cdn;
         Maker sql = cri.where().getSql();
-        String trim = sql.getSqlName().toString().trim();
-
-    }
-
-    public static void main(String[] args) {
-        String a = " name = ? and age = ?";
-        System.out.println(a.trim());
+        List<Object> sqlVal = sql.getSqlVal();
+        for (Object val : sqlVal) {
+            ps.setObject(it = it + 1, val);
+        }
     }
 
 }

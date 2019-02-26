@@ -10,10 +10,17 @@ import com.rngay.common.jpa.util.batch.ObjectParameterizedPreparedStatementSette
 import com.rngay.common.vo.PageList;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -35,19 +42,33 @@ public class SqlDao extends JdbcTemplate implements Dao {
     @Override
     public <T> int insert(T var1) {
         Maker maker = sqlMake.makeInsert(var1);
-        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
+        return insert(maker);
     }
 
     @Override
     public int insert(Map<String, Object> var1, String var2) {
         Maker maker = sqlMake.makeInsert(var2, var1);
-        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
+        return insert(maker);
     }
 
     @Override
     public int insert(Class<?> var1, Map<String, Object> var2) {
         Maker maker = sqlMake.makeInsert(var1, var2);
-        return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
+        return insert(maker);
+    }
+
+    private int insert(Maker maker) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(maker.getSqlName().toString(), Statement.RETURN_GENERATED_KEYS);
+            List<Object> sqlVal = maker.getSqlVal();
+            int i = 0;
+            for (Object aSqlVal : sqlVal) {
+                statement.setObject(i = i + 1, aSqlVal);
+            }
+            return statement;
+        }, keyHolder);
+        return keyHolder.getKey() != null ? keyHolder.getKey().intValue() : 0;
     }
 
     @Override
@@ -92,7 +113,7 @@ public class SqlDao extends JdbcTemplate implements Dao {
 
     @Override
     public <T> int[] batchUpdate(List<T> var1, Condition var2) {
-        Maker maker = sqlMake.makeUpdate(var1.get(0), false);
+        Maker maker = sqlMake.makeUpdate(var1.get(0), var2, false);
         return batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(var1, var2));
     }
 
@@ -198,11 +219,6 @@ public class SqlDao extends JdbcTemplate implements Dao {
     public int delete(Class<?> var1, Condition var2) {
         Maker maker = sqlMake.makeDelete(var1, var2);
         return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
-    }
-
-    @Override
-    public <T> int delete(List<? extends T> var1) {
-        return 0;
     }
 
     @Override

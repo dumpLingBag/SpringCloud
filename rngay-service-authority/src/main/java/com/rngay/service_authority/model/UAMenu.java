@@ -11,8 +11,6 @@ public class UAMenu implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    private String title;
-
     private String name;
 
     private String url;
@@ -37,14 +35,6 @@ public class UAMenu implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getName() {

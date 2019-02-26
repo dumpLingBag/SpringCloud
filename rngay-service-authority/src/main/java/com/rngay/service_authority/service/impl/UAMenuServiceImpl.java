@@ -23,6 +23,8 @@ public class UAMenuServiceImpl implements UAMenuService {
         map.put("name", name);
         map.put("pid", pid);
         map.put("sort", sort);
+        map.put("keep_alive", 0);
+        map.put("auth", 1);
         return dao.insert(map, "ua_menu");
     }
 
@@ -41,9 +43,9 @@ public class UAMenuServiceImpl implements UAMenuService {
             menuChildren.put("path", menu.get("path"));
             menuChildren.put("component", menu.get("component"));
             Map<String, Object> map = new HashMap<>();
-            map.put("keepAlive", menu.get("keepAlive"));
+            map.put("keepAlive", menu.get("keep_alive"));
             map.put("auth", menu.get("auth"));
-            map.put("title", menu.get("title"));
+            map.put("title", menu.get("name"));
             menuChildren.put("meta", map);
             menuChildren.put("children", getChildren((Integer) menu.get("id")));
             list.add(menuChildren);

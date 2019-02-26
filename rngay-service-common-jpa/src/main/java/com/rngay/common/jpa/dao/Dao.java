@@ -66,8 +66,6 @@ public interface Dao extends JdbcOperations {
 
     int delete(Class<?> var1, Condition var2);
 
-    <T> int delete(List<? extends T> var1);
-
     <T> T findById(Class<T> var1, long var2);
 
     <T> T find(Class<T> var1, Condition var2);

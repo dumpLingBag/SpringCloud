@@ -24,6 +24,7 @@ public class ObjectBatchPreparedStatementSetter<T> extends SetPreparedStatement<
 
     public ObjectBatchPreparedStatementSetter(List<T> list, Condition cdn) {
         this.list = list;
+        this.it = 0;
         this.cdn = cdn;
     }
 

@@ -3,12 +3,14 @@ package com.rngay.feign.user.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rngay.feign.dto.CommonDTO;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
 @Table(name = "ua_user")
 public class UAUserDTO extends CommonDTO {
 
+    @Id
     private Integer id;
 
     private String account;

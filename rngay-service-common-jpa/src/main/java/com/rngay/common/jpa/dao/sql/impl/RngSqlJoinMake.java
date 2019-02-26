@@ -7,6 +7,7 @@ import com.rngay.common.jpa.dao.sql.SqlJoinMake;
 import com.rngay.common.jpa.util.Maker;
 import com.rngay.common.jpa.util.cri.GroupBySet;
 import com.rngay.common.jpa.util.cri.OrderBySet;
+import com.rngay.common.util.HumpUtil;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -105,7 +106,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
             StringBuilder where = new StringBuilder();
             for (Map.Entry<?, ?> m : map.entrySet()) {
                 if (!"id".equals(m.getKey()) && !".table".equals(m.getKey())) {
-                    where.append(m.getKey()).append("=").append("?").append(",");
+                    where.append(HumpUtil.humpToLine(String.valueOf(m.getKey()))).append("=").append("?").append(",");
                     val.add(m.getValue());
                 }
             }
@@ -146,11 +147,11 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                     } else {
                         Object o = field.get(obj);
                         if (isNull) {
-                            sql.append(field.getName()).append("=").append("?").append(",");
+                            sql.append(HumpUtil.humpToLine(field.getName())).append("=").append("?").append(",");
                             val.add(o);
                         } else {
                             if (null != o && !"".equals(o)) {
-                                sql.append(field.getName()).append("=").append("?").append(",");
+                                sql.append(HumpUtil.humpToLine(field.getName())).append("=").append("?").append(",");
                                 val.add(o);
                             }
                         }
@@ -231,9 +232,11 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                 List<Object> ob = new ArrayList<>();
                 if (!map.isEmpty()) {
                     for (Map.Entry<?, ?> m : map.entrySet()) {
-                        sqlN.append(m.getKey()).append(",");
-                        sqlV.append("?").append(",");
-                        ob.add(m.getValue());
+                        if (!".table".equals(m.getKey())) {
+                            sqlN.append(HumpUtil.humpToLine(String.valueOf(m.getKey()))).append(",");
+                            sqlV.append("?").append(",");
+                            ob.add(m.getValue());
+                        }
                     }
 
                     sqlN.setCharAt(sqlN.length() - 1, ' ');
@@ -260,7 +263,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                         try {
                             Object o = field.get(obj);
                             if (null != o && !"".equals(o)) {
-                                sqlN.append(field.getName()).append(",");
+                                sqlN.append(HumpUtil.humpToLine(field.getName())).append(",");
                                 sqlV.append("?").append(",");
                                 ob.add(o);
                             }
