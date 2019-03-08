@@ -18,6 +18,4 @@ public interface SqlBuilder {
 
     StringBuilder update(String tableName);
 
-    StringBuilder toSql(Object obj);
-
 }

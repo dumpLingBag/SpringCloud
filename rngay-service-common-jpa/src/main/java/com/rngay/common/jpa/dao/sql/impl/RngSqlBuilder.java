@@ -5,7 +5,11 @@ import com.rngay.common.jpa.dao.sql.SqlType;
 
 import java.util.Arrays;
 import java.util.Collection;
-
+/**
+* 主要是实现 SQL 头部
+* @Author pengcheng
+* @Date 2019/3/7
+**/
 public class RngSqlBuilder implements SqlBuilder {
 
     @Override
@@ -50,16 +54,6 @@ public class RngSqlBuilder implements SqlBuilder {
     @Override
     public StringBuilder update(String tableName) {
         return new StringBuilder(String.valueOf(SqlType.UPDATE)).append(' ').append(tableName).append(" SET ");
-    }
-
-    @Override
-    public StringBuilder toSql(Object obj) {
-        if (obj instanceof Collection) {
-
-        } else {
-
-        }
-        return null;
     }
 
 }

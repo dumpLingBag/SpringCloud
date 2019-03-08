@@ -10,16 +10,15 @@ import com.rngay.common.jpa.util.batch.ObjectParameterizedPreparedStatementSette
 import com.rngay.common.vo.PageList;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import javax.persistence.Id;
 import javax.sql.DataSource;
-import java.sql.Connection;
+import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
@@ -78,9 +77,38 @@ public class SqlDao extends JdbcTemplate implements Dao {
     }
 
     @Override
-    public <T> int[][] batchInsert(List<T> list, int batch) {
+    public <T> int[][] batchInsert(List<T> list, int batchSize) {
         Maker maker = sqlMake.makeInsert(list.get(0));
-        return batchUpdate(maker.getSqlName().toString(), list, batch, new ObjectParameterizedPreparedStatementSetter<>());
+        return batchUpdate(maker.getSqlName().toString(), list, batchSize, new ObjectParameterizedPreparedStatementSetter<>());
+    }
+
+    @Override
+    public <T> int insertOrUpdate(T var1) {
+        if (var1 == null) {
+            return 0;
+        } else {
+            try {
+                Field id = var1.getClass().getDeclaredField("id");
+                if (id != null) {
+                    Object o = id.get(var1);
+                    if (o != null && !"".equals(o)) {
+                        boolean b = id.isAnnotationPresent(Id.class);
+                        if (b) {
+                            Maker maker = sqlMake.makeUpdate(var1, false);
+                            return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        Maker maker = sqlMake.makeInsert(var1);
+                        return insert(maker);
+                    }
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -105,16 +133,19 @@ public class SqlDao extends JdbcTemplate implements Dao {
         return update(maker.getSqlName().toString(), toArray(maker.getSqlVal()));
     }
 
+    /**
+     * 批量更新只支持接收实体集合按id实现批量更新
+     * */
     @Override
     public <T> int[] batchUpdate(List<T> var1) {
         Maker maker = sqlMake.makeUpdate(var1.get(0), false);
-        return batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(var1, null));
+        return batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(var1,true));
     }
 
     @Override
-    public <T> int[] batchUpdate(List<T> var1, Condition var2) {
-        Maker maker = sqlMake.makeUpdate(var1.get(0), var2, false);
-        return batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(var1, var2));
+    public <T> int[][] batchUpdate(List<T> var1, int batchSize) {
+        Maker maker = sqlMake.makeUpdate(var1.get(0), false);
+        return batchUpdate(maker.getSqlName().toString(), var1, batchSize, new ObjectParameterizedPreparedStatementSetter<>(true));
     }
 
     @Override

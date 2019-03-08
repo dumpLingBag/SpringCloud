@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/**
+* 调用具体 SQL 实现
+* @Author pengcheng
+* @Date 2019/3/7
+**/
 @Component
 public class RngSqlMake extends RngSqlJoinMake implements SqlMake {
 

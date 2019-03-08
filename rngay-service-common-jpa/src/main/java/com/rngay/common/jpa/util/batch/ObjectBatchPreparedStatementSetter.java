@@ -13,6 +13,7 @@ public class ObjectBatchPreparedStatementSetter<T> extends SetPreparedStatement<
     private List<T> list;
     private int it;
     private Condition cdn;
+    private boolean boo = false;
 
     public ObjectBatchPreparedStatementSetter() {
     }
@@ -22,16 +23,16 @@ public class ObjectBatchPreparedStatementSetter<T> extends SetPreparedStatement<
         this.it = 0;
     }
 
-    public ObjectBatchPreparedStatementSetter(List<T> list, Condition cdn) {
+    public ObjectBatchPreparedStatementSetter(List<T> list, boolean isId) {
         this.list = list;
         this.it = 0;
-        this.cdn = cdn;
+        this.boo = isId;
     }
 
     @Override
     public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
         T t = this.list.get(i);
-        int it = setStatement(t, preparedStatement, this.it);
+        int it = setStatement(t, preparedStatement, this.it, this.boo);
         if (this.cdn != null) {
             setWhere(preparedStatement, this.cdn, it);
         }
