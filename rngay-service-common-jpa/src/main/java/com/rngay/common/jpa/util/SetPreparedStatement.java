@@ -11,21 +11,29 @@ import java.util.List;
 
 public class SetPreparedStatement<T> {
 
-    protected int setStatement(T t, PreparedStatement ps, int it) throws SQLException {
+    protected int setStatement(T t, PreparedStatement ps, int it, boolean boo) throws SQLException {
         Field[] fields = t.getClass().getDeclaredFields();
         try {
+            Object id = null;
             for (Field field : fields) {
                 boolean b = field.isAnnotationPresent(Id.class);
-                if (!b) {
-                    boolean accessible = field.isAccessible();
-                    field.setAccessible(true);
+                boolean accessible = field.isAccessible();
+                field.setAccessible(true);
 
-                    Object o = field.get(t);
+                Object o = field.get(t);
+                if (!b) {
                     if (o != null && !"".equals(o)) {
                         ps.setObject(it = it + 1, o);
                     }
+                } else {
+                    id = o;
+                }
 
-                    field.setAccessible(accessible);
+                field.setAccessible(accessible);
+            }
+            if (boo) {
+                if (id != null && !"".equals(id)) {
+                    ps.setObject(it = it + 1, id);
                 }
             }
         } catch (IllegalAccessException e) {
@@ -34,13 +42,33 @@ public class SetPreparedStatement<T> {
         return it;
     }
 
+    /**
+     * 好像没什么用，先留着
+     * */
     protected void setWhere(PreparedStatement ps, Condition cdn, int it) throws SQLException {
-        Criteria cri = (Criteria)cdn;
+        Criteria cri = (Criteria) cdn;
         Maker sql = cri.where().getSql();
         List<Object> sqlVal = sql.getSqlVal();
         for (Object val : sqlVal) {
             ps.setObject(it = it + 1, val);
         }
     }
+
+    /*private int field(T t, PreparedStatement ps, Field field, int it) throws SQLException {
+        try {
+            boolean accessible = field.isAccessible();
+            field.setAccessible(true);
+
+            Object o = field.get(t);
+            if (o != null && !"".equals(o)) {
+                ps.setObject(it = it + 1, o);
+            }
+
+            field.setAccessible(accessible);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return it;
+    }*/
 
 }

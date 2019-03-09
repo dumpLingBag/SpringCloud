@@ -15,11 +15,16 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+/**
+* SQL 的具体实现
+* @Author pengcheng
+* @Date 2019/3/7
+**/
 public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
 
-    public <T> String tableName(Class<T> clazz) {
-        String name = clazz.getAnnotation(Table.class).name();
+    @Override
+    public <T> String tableName(Class<T> tClass) {
+        String name = tClass.getAnnotation(Table.class).name();
         if (!"".equals(name)) {
             return name;
         }
@@ -159,6 +164,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                     field.setAccessible(accessible);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
+                    throw new BaseException(500, "安全权限异常");
                 }
             }
 
@@ -204,11 +210,6 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
         } else {
             throw new BaseException(500, "不存在删除条件!");
         }
-    }
-
-    @Override
-    public Maker makeJoinBatchDelete(String tableName, Object obj) {
-        return null;
     }
 
     @Override
@@ -269,6 +270,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                             }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
+                            throw new BaseException(500, "安全权限异常");
                         }
                     }
                 }
