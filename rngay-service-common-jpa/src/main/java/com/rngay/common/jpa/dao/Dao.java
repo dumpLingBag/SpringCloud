@@ -16,9 +16,15 @@ public interface Dao extends JdbcOperations {
 
     <T> int[] batchInsert(List<T> list);
 
+    int[] batchInsert(List<Map<String, Object>> list, String tableName);
+
     <T> int[][] batchInsert(List<T> list, int batchSize);
 
+    int[][] batchInsert(List<Map<String, Object>> list, String tableName, int batchSize);
+
     <T> int insertOrUpdate(T var1);
+
+    int insertOrUpdate(List<Map<String, Object>> var1, String tableName);
 
     int update(Object var1);
 

@@ -2,6 +2,7 @@ package com.rngay.service_authority.service.impl;
 
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
+import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.service.UAMenuService;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,14 @@ public class UAMenuServiceImpl implements UAMenuService {
     private Dao dao;
 
     @Override
-    public Integer save(String name, Integer pid, Integer sort) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("name", name);
-        map.put("pid", pid);
-        map.put("sort", sort);
-        map.put("keep_alive", 0);
-        map.put("auth", 1);
-        return dao.insert(map, "ua_menu");
+    public Integer save(UAMenu uaMenu) {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("name", name);
+//        map.put("pid", pid);
+//        map.put("sort", sort);
+//        map.put("keep_alive", 0);
+//        map.put("auth", 1);
+        return dao.insert(uaMenu);
     }
 
     @Override

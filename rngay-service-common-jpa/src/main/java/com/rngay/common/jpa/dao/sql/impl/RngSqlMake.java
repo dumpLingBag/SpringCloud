@@ -148,6 +148,26 @@ public class RngSqlMake extends RngSqlJoinMake implements SqlMake {
     }
 
     @Override
+    public Maker makeUpdate(Map<String, Object> map, String tableName, boolean isNull) {
+        if (null == tableName || "".equals(tableName)) {
+            throw new BaseException(500, "不存在数据库表!");
+        }
+
+        map.put(".table", tableName);
+        return this.makeJoinUpdate(map, null, isNull);
+    }
+
+    @Override
+    public Maker makeUpdate(Map<String, Object> map, String tableName, Condition cdn, boolean isNull) {
+        if (null == tableName || "".equals(tableName)) {
+            throw new BaseException(500, "不存在数据库表!");
+        }
+
+        map.put(".table", tableName);
+        return this.makeJoinUpdate(map, cdn, isNull);
+    }
+
+    @Override
     public Maker makeDelete(Class<?> clazz, long id) {
         return this.makeDelete(clazz, Cnd.where("id","=", id));
     }

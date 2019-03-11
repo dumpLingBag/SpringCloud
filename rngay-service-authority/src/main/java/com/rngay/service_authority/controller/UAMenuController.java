@@ -2,8 +2,10 @@ package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.service.UAMenuService;
 import com.rngay.service_authority.service.UASystemService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,10 +25,16 @@ public class UAMenuController {
     private UASystemService systemService;
 
     @RequestMapping(value = "save")
-    public Result<?> save(String name, Integer pid, Integer sort){
-        pid = pid == null ? 0 : pid;
-        sort = sort == null ? 0 : sort;
-        Integer menu = menuService.save(name, pid, sort);
+    public Result<?> save(@RequestBody UAMenu uaMenu){
+        if (uaMenu.getPid() == null) {
+            uaMenu.setPid(0);
+        }
+        if (uaMenu.getSort() == null) {
+            uaMenu.setSort(0);
+        }
+        //uaMenu.getPid() = uaMenu.pid == null ? 0 : pid;
+        //sort = sort == null ? 0 : sort;
+        Integer menu = menuService.save(uaMenu);
         if (menu == null) {
             return Result.fail("保存失败");
         }

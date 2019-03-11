@@ -59,6 +59,10 @@ public interface SqlMake {
 
     Maker makeUpdate(Object obj, Condition cdn, boolean isNull);
 
+    Maker makeUpdate(Map<String, Object> var1, String tableName, boolean isNull);
+
+    Maker makeUpdate(Map<String, Object> var1, String tableName, Condition cdn, boolean isNull);
+
     Maker makeDelete(Class<?> clazz, long id);
 
     Maker makeDelete(Class<?> clazz, Condition cdn);

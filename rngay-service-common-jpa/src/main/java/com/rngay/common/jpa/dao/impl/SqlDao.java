@@ -1,5 +1,6 @@
 package com.rngay.common.jpa.dao.impl;
 
+import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Condition;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.jpa.dao.sql.SqlMake;
@@ -20,6 +21,8 @@ import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,8 +80,20 @@ public class SqlDao extends JdbcTemplate implements Dao {
     }
 
     @Override
+    public int[] batchInsert(List<Map<String, Object>> list, String tableName) {
+        Maker maker = sqlMake.makeInsert(tableName, list.get(0));
+        return batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(list));
+    }
+
+    @Override
     public <T> int[][] batchInsert(List<T> list, int batchSize) {
         Maker maker = sqlMake.makeInsert(list.get(0));
+        return batchUpdate(maker.getSqlName().toString(), list, batchSize, new ObjectParameterizedPreparedStatementSetter<>());
+    }
+
+    @Override
+    public int[][] batchInsert(List<Map<String, Object>> list, String tableName, int batchSize) {
+        Maker maker = sqlMake.makeInsert(tableName, list.get(0));
         return batchUpdate(maker.getSqlName().toString(), list, batchSize, new ObjectParameterizedPreparedStatementSetter<>());
     }
 
@@ -109,6 +124,31 @@ public class SqlDao extends JdbcTemplate implements Dao {
             }
         }
         return 0;
+    }
+
+    @Override
+    public int insertOrUpdate(List<Map<String, Object>> var1, String tableName) {
+        if (var1.isEmpty()) {
+            return 0;
+        } else {
+            int i = 0;
+            List<Map<String, Object>> addList = new ArrayList<>();
+            for (Map<String, Object> map : var1) {
+                Maker maker = sqlMake.makeUpdate(var1.get(0), tableName, Cnd.where("id", "=", map.get("id")),false);
+                int id = update(maker.getSqlName().toString(), maker.getSqlVal().toArray());
+                if (id <= 0) {
+                    addList.add(map);
+                } else {
+                    i += id;
+                }
+            }
+            if (!addList.isEmpty()) {
+                Maker maker = sqlMake.makeInsert(tableName, addList.get(0));
+                batchUpdate(maker.getSqlName().toString(), new ObjectBatchPreparedStatementSetter<>(addList));
+                i += addList.size();
+            }
+            return i;
+        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.rngay.service_authority.service;
 
+import com.rngay.service_authority.model.UAMenu;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ public interface UAMenuService {
     * @Author: pengcheng
     * @Date: 2018/12/17
     */
-    Integer save(String name, Integer pid, Integer sort);
+    Integer save(UAMenu uaMenu);
 
     /**
     * 获取全部菜单

@@ -234,9 +234,11 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                 if (!map.isEmpty()) {
                     for (Map.Entry<?, ?> m : map.entrySet()) {
                         if (!".table".equals(m.getKey())) {
-                            sqlN.append(HumpUtil.humpToLine(String.valueOf(m.getKey()))).append(",");
-                            sqlV.append("?").append(",");
-                            ob.add(m.getValue());
+                            if (m.getValue() != null && !"".equals(m.getValue())) {
+                                sqlN.append(HumpUtil.humpToLine(String.valueOf(m.getKey()))).append(",");
+                                sqlV.append("?").append(",");
+                                ob.add(m.getValue());
+                            }
                         }
                     }
 
