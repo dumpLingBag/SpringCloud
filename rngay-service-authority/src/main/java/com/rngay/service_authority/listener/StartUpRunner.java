@@ -109,7 +109,7 @@ public class StartUpRunner implements CommandLineRunner {
                 sqlDao.insertOrUpdate(urlList, "ua_url");
             }
 
-            long url = sqlDao.count(UAMenu.class, Cnd.where("url", "=", "SysMenu"));
+            long url = sqlDao.count(UAMenu.class, Cnd.where("component", "=", "SysMenu"));
             if (url <= 0) {
                 UAMenu systemManage = new UAMenu();
                 systemManage.setName("开发者");

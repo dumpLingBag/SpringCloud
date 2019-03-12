@@ -36,7 +36,7 @@ spring:
       retry:
         enabled: true
 ribbon:
-  ConnectTimeout: 500
+  ConnectTimeout: 2000
   ReadTimeout: 3000
   OkToRetryOnAllOperations: true
   MaxAutoRetriesNextServer: 3

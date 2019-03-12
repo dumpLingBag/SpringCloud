@@ -20,12 +20,6 @@ public class UAMenuServiceImpl implements UAMenuService {
 
     @Override
     public Integer save(UAMenu uaMenu) {
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("name", name);
-//        map.put("pid", pid);
-//        map.put("sort", sort);
-//        map.put("keep_alive", 0);
-//        map.put("auth", 1);
         return dao.insert(uaMenu);
     }
 

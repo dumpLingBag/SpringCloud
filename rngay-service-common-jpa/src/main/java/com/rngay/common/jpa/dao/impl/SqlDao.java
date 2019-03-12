@@ -134,7 +134,7 @@ public class SqlDao extends JdbcTemplate implements Dao {
             int i = 0;
             List<Map<String, Object>> addList = new ArrayList<>();
             for (Map<String, Object> map : var1) {
-                Maker maker = sqlMake.makeUpdate(var1.get(0), tableName, Cnd.where("id", "=", map.get("id")),false);
+                Maker maker = sqlMake.makeUpdate(map, tableName, Cnd.where("id", "=", map.get("id")),false);
                 int id = update(maker.getSqlName().toString(), maker.getSqlVal().toArray());
                 if (id <= 0) {
                     addList.add(map);

@@ -26,14 +26,6 @@ public class UAMenuController {
 
     @RequestMapping(value = "save")
     public Result<?> save(@RequestBody UAMenu uaMenu){
-        if (uaMenu.getPid() == null) {
-            uaMenu.setPid(0);
-        }
-        if (uaMenu.getSort() == null) {
-            uaMenu.setSort(0);
-        }
-        //uaMenu.getPid() = uaMenu.pid == null ? 0 : pid;
-        //sort = sort == null ? 0 : sort;
         Integer menu = menuService.save(uaMenu);
         if (menu == null) {
             return Result.fail("保存失败");

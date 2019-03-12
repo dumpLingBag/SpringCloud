@@ -21,13 +21,13 @@ public class UAMenu implements Serializable {
 
     private String component;
 
-    private Integer keepAlive;
+    private Integer keepAlive = 0;
 
-    private Integer auth;
+    private Integer auth = 1;
 
-    private Integer sort;
+    private Integer sort = 0;
 
-    private Integer pid;
+    private Integer pid = 0;
 
     public Integer getId() {
         return id;
