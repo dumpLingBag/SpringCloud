@@ -31,6 +31,7 @@ public class HttpClientUtil {
         //将请求头部和参数合成一个请求
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
         //执行HTTP请求，将返回的结构使用String 类格式化（可设置为对应返回值格式的类）
+        template.postForEntity(url, requestEntity, t).getBody();
         return template.exchange(url, method, requestEntity, t).getBody();
     }
 
@@ -45,6 +46,7 @@ public class HttpClientUtil {
         //将请求头部和参数合成一个请求
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
         //执行HTTP请求，将返回的结构使用String 类格式化（可设置为对应返回值格式的类）
+        template.postForEntity(url, requestEntity, t);
         return template.exchange(url, method, requestEntity, t).getBody();
     }
 
