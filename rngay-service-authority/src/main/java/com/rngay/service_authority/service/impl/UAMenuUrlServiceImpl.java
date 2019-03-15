@@ -4,7 +4,6 @@ import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.service_authority.model.UAMenuUrl;
 import com.rngay.service_authority.service.UAMenuUrlService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,7 +36,7 @@ public class UAMenuUrlServiceImpl implements UAMenuUrlService {
 
     @Override
     public List<UAMenuUrl> loadUrl(Integer id) {
-        return dao.query(UAMenuUrl.class, Cnd.where("menu_id","=",id));
+        return dao.query(UAMenuUrl.class, Cnd.where("menu_id","=",id).and("checked","=",1));
     }
 
     private List<Object> getChildren(String parentId) {
