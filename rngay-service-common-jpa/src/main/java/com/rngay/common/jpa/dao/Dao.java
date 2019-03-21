@@ -26,6 +26,8 @@ public interface Dao extends JdbcOperations {
 
     int insertOrUpdate(List<Map<String, Object>> var1, String tableName);
 
+    <T> int insertOrUpdate(List<T> var1);
+
     int update(Object var1);
 
     int update(Object var1, Condition var2);

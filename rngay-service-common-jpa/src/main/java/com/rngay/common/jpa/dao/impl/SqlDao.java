@@ -152,6 +152,16 @@ public class SqlDao extends JdbcTemplate implements Dao {
     }
 
     @Override
+    public <T> int insertOrUpdate(List<T> var1) {
+        if (var1.isEmpty()) {
+            return 0;
+        } else {
+
+        }
+        return 0;
+    }
+
+    @Override
     public int update(Object var1) {
         return this.update(var1, false);
     }

@@ -11,6 +11,7 @@ import com.rngay.service_authority.util.HttpClientUtil;
 import com.rngay.service_authority.util.HttpsClientRequestFactory;
 import com.rngay.service_authority.util.JwtUtil;
 import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
