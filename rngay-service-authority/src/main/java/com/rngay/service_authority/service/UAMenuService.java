@@ -1,5 +1,6 @@
 package com.rngay.service_authority.service;
 
+import com.rngay.feign.platform.MenuIdListDTO;
 import com.rngay.service_authority.model.UAMenu;
 
 import java.util.List;
@@ -27,5 +28,7 @@ public interface UAMenuService {
     * @Date: 2018/12/19
     */
     List<Map<String, Object>> getUserForMenu();
+
+    Integer delete(MenuIdListDTO menuIdListDTO);
 
 }

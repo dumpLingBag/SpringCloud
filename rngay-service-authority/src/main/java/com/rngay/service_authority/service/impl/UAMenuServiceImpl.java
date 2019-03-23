@@ -2,6 +2,7 @@ package com.rngay.service_authority.service.impl;
 
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
+import com.rngay.feign.platform.MenuIdListDTO;
 import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.service.UAMenuService;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,14 @@ public class UAMenuServiceImpl implements UAMenuService {
     @Override
     public List<Map<String, Object>> getUserForMenu() {
         return null;
+    }
+
+    @Override
+    public Integer delete(MenuIdListDTO menuIdList) {
+        if (menuIdList.getMenuIdList().size() > 1) {
+            return dao.delete(UAMenu.class, Cnd.where("id","in", menuIdList.getMenuIdList()));
+        }
+        return dao.delete(UAMenu.class, menuIdList.getMenuIdList().get(0));
     }
 
     private List<Object> getChildren(Integer parentId){

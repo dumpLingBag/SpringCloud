@@ -20,7 +20,7 @@ public class HttpClientUtil {
         return httpClientUtil;
     }
 
-    public <T> T post(String url, MultiValueMap<String, String> params, Class<T> t) {
+    public static <T> T post(String url, MultiValueMap<String, String> params, Class<T> t) {
         RestTemplate template = new RestTemplate();
         //新建Http头，add方法可以添加参数
         HttpHeaders headers = new HttpHeaders();
@@ -35,7 +35,7 @@ public class HttpClientUtil {
         return template.exchange(url, method, requestEntity, t).getBody();
     }
 
-    public <T> T httpsPost(String url, MultiValueMap<String, String> params, Class<T> t) {
+    public static <T> T httpsPost(String url, MultiValueMap<String, String> params, Class<T> t) {
         RestTemplate template = new RestTemplate(new HttpsClientRequestFactory());
         //新建Http头，add方法可以添加参数
         HttpHeaders headers = new HttpHeaders();

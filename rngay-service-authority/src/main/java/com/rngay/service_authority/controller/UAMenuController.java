@@ -1,6 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
+import com.rngay.feign.platform.MenuIdListDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.service.UAMenuService;
@@ -46,6 +47,14 @@ public class UAMenuController {
     @RequestMapping(value = "loadForMenu")
     public Result<?> loadForMenu(){
         return Result.success();
+    }
+
+    @RequestMapping(value = "delete")
+    public Result<?> delete(@RequestBody MenuIdListDTO menuIdList) {
+        if (menuIdList == null || menuIdList.getMenuIdList().isEmpty()) {
+            return Result.fail("不存在要删除的菜单");
+        }
+        return Result.success(menuService.delete(menuIdList));
     }
 
 }

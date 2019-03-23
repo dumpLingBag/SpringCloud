@@ -303,6 +303,11 @@ public class SqlDao extends JdbcTemplate implements Dao {
     }
 
     @Override
+    public <T> int[] batchDelete(List<T> var1) {
+        return new int[0];
+    }
+
+    @Override
     public <T> T findById(Class<T> var1, long var2) {
         Maker maker = sqlMake.makeQuery(var1, var2);
         List<T> query = query(maker.getSqlName().toString(), BeanPropertyRowMapper.newInstance(var1), toArray(maker.getSqlVal()));

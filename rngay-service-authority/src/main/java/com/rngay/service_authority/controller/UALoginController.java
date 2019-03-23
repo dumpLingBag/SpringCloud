@@ -1,22 +1,14 @@
 package com.rngay.service_authority.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.common.vo.Result;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
-import com.rngay.service_authority.util.HttpClientUtil;
-import com.rngay.service_authority.util.HttpsClientRequestFactory;
 import com.rngay.service_authority.util.JwtUtil;
-import org.springframework.http.*;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
