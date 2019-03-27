@@ -31,12 +31,14 @@ public class SimpleCriteria implements Criteria, OrderBy, GroupBy {
 
     @Override
     public OrderBy asc(String name) {
-        return this.orderBy.asc(name);
+        this.orderBy.asc(name);
+        return this;
     }
 
     @Override
     public OrderBy desc(String name) {
-        return this.orderBy.desc(name);
+        this.orderBy.desc(name);
+        return this;
     }
 
     @Override

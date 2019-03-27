@@ -52,8 +52,7 @@ public class UASystemServiceImpl implements UASystemService {
         List<Map<String, Object>> mapList = new ArrayList<>();
         for (Map<String, Object> menu : menuList) {
             if (menu.get("pid") == null || menu.get("pid").equals(0)) {
-                menu.put("children", menuListChildren(menuList, menu));
-                mapList.add(menu);
+                mapList.add(mapToMenu(menuList, menu));
             }
         }
         return mapList;
@@ -63,11 +62,30 @@ public class UASystemServiceImpl implements UASystemService {
         List<Map<String, Object>> children = new ArrayList<>();
         for (Map<String, Object> pid : menuList) {
             if (pid.get("pid").equals(menu.get("id"))) {
-                children.add(pid);
+                children.add(mapToMenu(menuList, pid));
                 menuListChildren(menuList, pid);
             }
         }
         return children;
+    }
+
+    private Map<String, Object> mapToMenu(List<Map<String, Object>> menuList, Map<String, Object> menu) {
+        Map<String, Object> menuMap = new HashMap<>();
+        menuMap.put("id", menu.get("id"));
+        menuMap.put("name", menu.get("name"));
+        menuMap.put("pid", menu.get("pid"));
+        menuMap.put("sort", menu.get("sort"));
+        menuMap.put("url", menu.get("url"));
+        menuMap.put("icon", menu.get("icon"));
+        menuMap.put("path", menu.get("path"));
+        menuMap.put("component", menu.get("component"));
+        Map<String, Object> map = new HashMap<>();
+        map.put("keepAlive", menu.get("keep_alive"));
+        map.put("auth", menu.get("auth"));
+        map.put("title", menu.get("name"));
+        menuMap.put("meta", map);
+        menuMap.put("children", menuListChildren(menuList, menu));
+        return menuMap;
     }
 
     @Override

@@ -86,4 +86,5 @@ public class UAMenuServiceImpl implements UAMenuService {
         menuChildren.put("children", getChildren((Integer) menu.get("id")));
         return menuChildren;
     }
+
 }
