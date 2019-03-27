@@ -6,6 +6,9 @@ import com.rngay.feign.dto.CommonDTO;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Table(name = "ua_user")
 public class UAUserDTO extends CommonDTO {
@@ -19,6 +22,8 @@ public class UAUserDTO extends CommonDTO {
 
     private String name;
 
+    private Integer orgId;
+
     private String photo;
 
     private String email;
@@ -26,6 +31,10 @@ public class UAUserDTO extends CommonDTO {
     private String mobile;
 
     private Integer enable;
+
+    private List<Map<String, Object>> menuList;
+
+    private Set<String> urlSet;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date update_time;
@@ -62,6 +71,14 @@ public class UAUserDTO extends CommonDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
     }
 
     public String getPhoto() {
@@ -110,5 +127,21 @@ public class UAUserDTO extends CommonDTO {
 
     public void setCreate_time(Date create_time) {
         this.create_time = create_time;
+    }
+
+    public List<Map<String, Object>> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<Map<String, Object>> menuList) {
+        this.menuList = menuList;
+    }
+
+    public Set<String> getUrlSet() {
+        return urlSet;
+    }
+
+    public void setUrlSet(Set<String> urlSet) {
+        this.urlSet = urlSet;
     }
 }

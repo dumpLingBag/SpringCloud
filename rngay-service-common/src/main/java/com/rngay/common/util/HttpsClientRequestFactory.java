@@ -1,4 +1,4 @@
-package com.rngay.service_authority.util;
+package com.rngay.common.util;
 
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
@@ -21,7 +21,7 @@ public class HttpsClientRequestFactory extends SimpleClientHttpRequestFactory {
             TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        public X509Certificate[] getAcceptedIssuers() {
                             return null;
                         }
                         @Override

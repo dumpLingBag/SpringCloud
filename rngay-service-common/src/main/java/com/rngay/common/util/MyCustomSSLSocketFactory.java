@@ -1,4 +1,4 @@
-package com.rngay.service_authority.util;
+package com.rngay.common.util;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;

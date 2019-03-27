@@ -50,11 +50,6 @@ public class UAMenuServiceImpl implements UAMenuService {
     }
 
     @Override
-    public List<Map<String, Object>> getUserForMenu() {
-        return null;
-    }
-
-    @Override
     public Integer delete(MenuIdListDTO menuIdList) {
         if (menuIdList.getMenuIdList().size() > 1) {
             return dao.delete(UAMenu.class, Cnd.where("id","in", menuIdList.getMenuIdList()));

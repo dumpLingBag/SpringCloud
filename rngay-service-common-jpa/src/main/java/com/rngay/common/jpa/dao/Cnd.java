@@ -3,8 +3,8 @@ package com.rngay.common.jpa.dao;
 import com.rngay.common.jpa.dao.sql.Criteria;
 import com.rngay.common.jpa.dao.sql.GroupBy;
 import com.rngay.common.jpa.dao.sql.OrderBy;
-import com.rngay.common.jpa.util.SimpleCriteria;
-import com.rngay.common.jpa.util.cri.SqlExpressionGroup;
+import com.rngay.common.jpa.dao.util.cri.SqlExpressionGroup;
+import com.rngay.common.jpa.dao.util.cri.SimpleCriteria;
 
 public class Cnd implements Criteria, OrderBy, GroupBy {
 
@@ -12,6 +12,10 @@ public class Cnd implements Criteria, OrderBy, GroupBy {
 
     public static Cnd where(String name, String op, Object value) {
         return new Cnd(name, op, value);
+    }
+
+    public static SimpleCriteria cri() {
+        return new SimpleCriteria();
     }
 
     public Cnd and(String name, String op, Object value) {

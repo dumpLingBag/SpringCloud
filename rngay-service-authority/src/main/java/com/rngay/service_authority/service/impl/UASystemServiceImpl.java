@@ -4,6 +4,7 @@ import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.service_authority.dao.UARoleMenuDao;
 import com.rngay.service_authority.model.UAUserToken;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UASystemServiceImpl implements UASystemService {
@@ -22,9 +21,59 @@ public class UASystemServiceImpl implements UASystemService {
     @Resource
     private Dao dao;
     @Resource
+    private UARoleMenuDao roleMenuDao;
+    @Resource
     private JwtUtil jwtUtil;
     @Resource
     private RedisUtil redisUtil;
+
+    @Override
+    public List<Map<String, Object>> loadForMenu(UAUserDTO userDTO) {
+        if (userDTO == null) return null;
+
+        List<Map<String, Object>> allMenus = new ArrayList<>();
+        if ("admin".equals(userDTO.getAccount())) {
+            List<Map<String, Object>> menuList = roleMenuDao.loadMenuByOrgId(userDTO.getOrgId());
+            if (menuList != null && !menuList.isEmpty()) {
+                allMenus.addAll(menuList);
+            }
+        } else {
+            List<Map<String, Object>> menuList = roleMenuDao.loadMenuByUserId(userDTO.getOrgId(), userDTO.getId());
+            if (menuList != null && !menuList.isEmpty()) {
+                allMenus.addAll(menuList);
+            }
+        }
+
+        if (allMenus.isEmpty()) return null;
+        return menuList(allMenus);
+    }
+
+    private List<Map<String, Object>> menuList(List<Map<String, Object>> menuList) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        for (Map<String, Object> menu : menuList) {
+            if (menu.get("pid") == null || menu.get("pid").equals(0)) {
+                menu.put("children", menuListChildren(menuList, menu));
+                mapList.add(menu);
+            }
+        }
+        return mapList;
+    }
+
+    private List<Map<String, Object>> menuListChildren(List<Map<String, Object>> menuList, Map<String, Object> menu) {
+        List<Map<String, Object>> children = new ArrayList<>();
+        for (Map<String, Object> pid : menuList) {
+            if (pid.get("pid").equals(menu.get("id"))) {
+                children.add(pid);
+                menuListChildren(menuList, pid);
+            }
+        }
+        return children;
+    }
+
+    @Override
+    public Set<String> getUrlSet(UAUserDTO userDTO) {
+        return null;
+    }
 
     @Override
     public int insertToken(HttpServletRequest request, UAUserDTO userDTO, String token) {
@@ -80,18 +129,21 @@ public class UASystemServiceImpl implements UASystemService {
     }
 
     @Override
+    public int updateCurrentUser(HttpServletRequest request, UAUserDTO userDTO) {
+        if (userDTO != null) {
+            String key = request.getServerName() + "_" + userDTO.getId();
+            redisUtil.set(key, userDTO);
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
     public Integer getCurrentUserId(HttpServletRequest request) {
         UAUserDTO currentUser = getCurrentUser(request);
         if (currentUser != null) {
             return currentUser.getId();
         }
-        return null;
-    }
-
-    @Override
-    public List<Map<String, Object>> loadForMenu(Map<String, Object> user) {
-        Integer userId = (Integer) user.get("id");
-        String account = (String) user.get("account");
         return null;
     }
 

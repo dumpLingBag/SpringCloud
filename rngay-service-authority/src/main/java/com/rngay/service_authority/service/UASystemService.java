@@ -6,8 +6,23 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface UASystemService {
+
+    /**
+    * 加载指定用户的菜单数据
+    * @Author pengcheng
+    * @Date 2019/3/27
+    **/
+    List<Map<String, Object>> loadForMenu(UAUserDTO userDTO);
+    
+    /**
+    * 查询指定用户允许访问的 url地址
+    * @Author pengcheng
+    * @Date 2019/3/26
+    **/
+    Set<String> getUrlSet(UAUserDTO userDTO);
 
     /**
     * 保存用户 token 到数据库并更新 redis 缓存
@@ -38,17 +53,17 @@ public interface UASystemService {
     UAUserDTO getCurrentUser(HttpServletRequest request);
 
     /**
+    * 更新当前用户 redis 缓存
+    * @Author pengcheng
+    * @Date 2019/3/27
+    **/
+    int updateCurrentUser(HttpServletRequest request, UAUserDTO userDTO);
+
+    /**
     * 获取当前登录用户 id
     * @Author: pengcheng
     * @Date: 2018/12/19
     */
     Integer getCurrentUserId(HttpServletRequest request);
-
-    /**
-    * 根据用户加载菜单
-    * @Author: pengcheng
-    * @Date: 2018/12/19
-    */
-    List<Map<String, Object>> loadForMenu(Map<String, Object> user);
 
 }

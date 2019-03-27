@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "authoritySys")
@@ -19,14 +22,22 @@ public class UASystemController {
     @Resource
     private PFUserService userService;
 
-    @RequestMapping(value = "getForMenu")
+    @RequestMapping(value = "loadForMenu")
     public Result<?> loadForMenu(HttpServletRequest request){
         UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser == null){
-            return Result.fail("加载菜单失败");
+            return Result.success(null);
         }
 
-        return Result.success();
+        List<Map<String, Object>> menuList = systemService.loadForMenu(currentUser);
+        currentUser.setMenuList(menuList);
+
+        Set<String> urlSet = systemService.getUrlSet(currentUser);
+        currentUser.setUrlSet(urlSet);
+
+        systemService.updateCurrentUser(request, currentUser);
+
+        return Result.success(menuList);
     }
 
     @RequestMapping(value = "loadIcon")

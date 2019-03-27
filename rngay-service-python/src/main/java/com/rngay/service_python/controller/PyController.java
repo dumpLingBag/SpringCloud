@@ -17,4 +17,10 @@ public class PyController {
         return Result.success(pySidecarService.getUser());
     }
 
+    @RequestMapping(value = "api/login")
+    public Result<?> login() {
+        Object login = pySidecarService.login();
+        return Result.success(login);
+    }
+
 }

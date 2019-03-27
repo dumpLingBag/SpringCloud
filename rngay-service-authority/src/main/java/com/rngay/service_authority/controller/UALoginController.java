@@ -1,12 +1,14 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.exception.BaseException;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.common.vo.Result;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,25 +48,34 @@ public class UALoginController {
             return Result.fail("出错次数过多，请两小时后再试！");
         }
 
-        UAUserDTO userResult = userService.find(account, password).getData();
+        UAUserDTO userResult = userService.findByAccount(account).getData();
         if (userResult == null) {
             value ++;
             if (value >= 5) {
                 redisUtil.set(key, value, 7200);
             }
-            return Result.fail("用户名或密码错误");
+            return Result.fail("用户名不存在");
         } else {
-            if (!account.equals("admin") && userResult.getEnable().equals(0)){
-                return Result.fail("账号被禁用！");
-            }
-            redisUtil.del(key);
-            String token = jwtUtil.generateToken(userResult.getId());
-            systemService.insertToken(request, userResult, token);
+            try {
+                if (BCrypt.checkpw(password, userResult.getPassword())) {
+                    if (!account.equals("admin") && userResult.getEnable().equals(0)){
+                        return Result.fail("账号被禁用！");
+                    }
+                    redisUtil.del(key);
+                    String token = jwtUtil.generateToken(userResult.getId());
+                    systemService.insertToken(request, userResult, token);
 
-            Map<String, Object> map = new HashMap<>();
-            map.put("token", token);
-            map.put("userResult", userResult);
-            return Result.success(map);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("token", token);
+                    map.put("userResult", userResult);
+                    return Result.success(map);
+                } else {
+                    return Result.fail("账号或密码错误");
+                }
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                throw new BaseException(401, "账号或密码错误");
+            }
         }
     }
 

@@ -17,6 +17,9 @@ public class UAUser {
 
     private String name;
 
+    @Column(columnDefinition="int default 0")
+    private Integer orgId;
+
     private String photo;
 
     private String email;
@@ -60,6 +63,14 @@ public class UAUser {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
     }
 
     public String getPhoto() {

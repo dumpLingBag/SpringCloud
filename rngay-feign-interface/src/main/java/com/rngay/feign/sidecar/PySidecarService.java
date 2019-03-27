@@ -10,4 +10,7 @@ public interface PySidecarService {
     @RequestMapping(value = "getUser", method = RequestMethod.GET)
     String getUser();
 
+    @RequestMapping(value = "api/login", method = RequestMethod.POST)
+    Object login();
+
 }

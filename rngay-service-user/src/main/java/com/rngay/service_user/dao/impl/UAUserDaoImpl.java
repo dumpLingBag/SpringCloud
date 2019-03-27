@@ -2,11 +2,13 @@ package com.rngay.service_user.dao.impl;
 
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
-import com.rngay.common.jpa.util.SimpleCriteria;
+import com.rngay.common.jpa.dao.util.cri.SimpleCriteria;
+import com.rngay.common.util.CryptUtil;
 import com.rngay.common.vo.PageList;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.dao.UAUserDao;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -66,7 +68,7 @@ public class UAUserDaoImpl implements UAUserDao {
     public int reset(Integer id) {
         UAUserDTO userDTO = new UAUserDTO();
         userDTO.setId(id);
-        userDTO.setPassword("123456");
+        userDTO.setPassword(BCrypt.hashpw(CryptUtil.MD5encrypt("123456"), BCrypt.gensalt(12)));
         return dao.update(userDTO);
     }
 

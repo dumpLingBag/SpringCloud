@@ -4,6 +4,7 @@ import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.service.UAUserService;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -40,6 +41,7 @@ public class PlatformUserController {
 
     @RequestMapping(value = "save")
     public Result<Integer> save(@RequestBody UASaveUserDTO saveUserDTO){
+        saveUserDTO.setPassword(BCrypt.hashpw(saveUserDTO.getPassword(), BCrypt.gensalt(12)));
         saveUserDTO.setCreate_time(new Date());
         saveUserDTO.setUpdate_time(new Date());
         return Result.success(uaUserService.insertUser(saveUserDTO));
@@ -67,6 +69,7 @@ public class PlatformUserController {
 
     @RequestMapping(value = "updatePassword")
     public Result<Integer> updatePassword(@RequestBody UpdatePassword password){
+        password.setPassword(BCrypt.hashpw(password.getPassword(), BCrypt.gensalt(12)));
         return Result.success(uaUserService.updatePassword(password));
     }
 

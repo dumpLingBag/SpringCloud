@@ -11,7 +11,7 @@ public class UARole implements Serializable {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;
 	@Column(columnDefinition="int default 0")
-    private Integer orgid;
+    private Integer orgId;
 	private String name;
 	private Integer sort;
 	@Column(columnDefinition="int default 0")
@@ -22,6 +22,12 @@ public class UARole implements Serializable {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public Integer getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(Integer orgId) {
+		this.orgId = orgId;
 	}
 	public String getName() {
 		return name;

@@ -13,6 +13,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class OperatorInterceptor extends HandlerInterceptorAdapter {
@@ -81,7 +84,29 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
     private boolean isAuthorized(HttpServletRequest request){
         UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser != null) {
-            return currentUser.getAccount().equals("admin");
+            if (currentUser.getAccount().equals("admin")) {
+                return true;
+            }
+
+            String actionName = request.getRequestURI().replace(request.getContextPath(), "");
+            actionName = actionName.replaceAll("\\+", "/");
+            actionName = actionName.replaceAll("/+", "/");
+            actionName = actionName.substring(1, actionName.lastIndexOf(".") > 0 ? actionName.lastIndexOf(".") : actionName.length());
+
+            Object authUrl = redisUtil.get(AuthorityUtil.APPLICATION_COMMON_URL_KEY);
+            if (authUrl instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<Object, Object> commonUrl = (HashMap<Object, Object>) authUrl;
+                if (commonUrl.get(actionName) != null && commonUrl.get(actionName).equals(1)) {
+                    return true;
+                }
+                Set<String> urlSet = systemService.getUrlSet(currentUser);
+                if (urlSet == null || urlSet.isEmpty()) {
+                    return false;
+                }
+                return urlSet.contains(actionName);
+            }
+            return false;
         }
         return false;
     }

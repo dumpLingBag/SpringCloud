@@ -10,7 +10,7 @@ public class UAOrgRole implements Serializable {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;
-	private Integer orgid;
+	private Integer orgId;
 	private Integer roleId;
 	private Integer checked;
 
@@ -20,11 +20,11 @@ public class UAOrgRole implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getOrgid() {
-		return orgid;
+	public Integer getOrgId() {
+		return orgId;
 	}
-	public void setOrgid(Integer orgid) {
-		this.orgid = orgid;
+	public void setOrgId(Integer orgId) {
+		this.orgId = orgId;
 	}
 	public Integer getRoleId() {
 		return roleId;

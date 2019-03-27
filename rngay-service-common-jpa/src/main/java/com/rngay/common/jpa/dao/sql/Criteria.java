@@ -1,7 +1,7 @@
 package com.rngay.common.jpa.dao.sql;
 
 import com.rngay.common.jpa.dao.Condition;
-import com.rngay.common.jpa.util.cri.SqlExpressionGroup;
+import com.rngay.common.jpa.dao.util.cri.SqlExpressionGroup;
 
 public interface Criteria extends Condition {
 

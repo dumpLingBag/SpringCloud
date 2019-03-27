@@ -22,13 +22,6 @@ public interface UAMenuService {
     */
     List<Map<String, Object>> getAllMenu();
 
-    /**
-    * 根据用户获取菜单
-    * @Author: pengcheng
-    * @Date: 2018/12/19
-    */
-    List<Map<String, Object>> getUserForMenu();
-
     Integer delete(MenuIdListDTO menuIdListDTO);
 
 }

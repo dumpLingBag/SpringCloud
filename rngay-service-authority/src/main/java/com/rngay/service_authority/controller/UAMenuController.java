@@ -44,11 +44,6 @@ public class UAMenuController {
         return Result.success(map);
     }
 
-    @RequestMapping(value = "loadForMenu")
-    public Result<?> loadForMenu(){
-        return Result.success();
-    }
-
     @RequestMapping(value = "delete")
     public Result<?> delete(@RequestBody MenuIdListDTO menuIdList) {
         if (menuIdList == null || menuIdList.getMenuIdList().isEmpty()) {
