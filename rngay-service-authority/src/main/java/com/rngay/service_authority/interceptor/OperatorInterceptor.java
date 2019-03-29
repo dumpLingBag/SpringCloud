@@ -100,7 +100,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
                 if (commonUrl.get(actionName) != null && commonUrl.get(actionName).equals(1)) {
                     return true;
                 }
-                Set<String> urlSet = systemService.getUrlSet(currentUser);
+                Set<String> urlSet = currentUser.getUrlSet();
                 if (urlSet == null || urlSet.isEmpty()) {
                     return false;
                 }

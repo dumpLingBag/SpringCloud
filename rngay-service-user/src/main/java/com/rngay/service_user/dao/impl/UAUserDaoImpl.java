@@ -84,7 +84,7 @@ public class UAUserDaoImpl implements UAUserDao {
     public int updatePassword(UpdatePassword password) {
         UAUserDTO userDTO = new UAUserDTO();
         userDTO.setId(password.getUserId());
-        userDTO.setPassword(password.getPassword());
+        userDTO.setPassword(BCrypt.hashpw(password.getPassword(), BCrypt.gensalt(12)));
         return dao.update(userDTO);
     }
 

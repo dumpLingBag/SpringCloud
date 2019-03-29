@@ -5,6 +5,7 @@ import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.service_authority.dao.UARoleMenuDao;
+import com.rngay.service_authority.dao.UAUserRoleDao;
 import com.rngay.service_authority.model.UAUserToken;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
@@ -22,6 +23,8 @@ public class UASystemServiceImpl implements UASystemService {
     private Dao dao;
     @Resource
     private UARoleMenuDao roleMenuDao;
+    @Resource
+    private UAUserRoleDao userRoleDao;
     @Resource
     private JwtUtil jwtUtil;
     @Resource
@@ -55,7 +58,7 @@ public class UASystemServiceImpl implements UASystemService {
                 mapList.add(mapToMenu(menuList, menu));
             }
         }
-        return mapList;
+        return sort(mapList);
     }
 
     private List<Map<String, Object>> menuListChildren(List<Map<String, Object>> menuList, Map<String, Object> menu) {
@@ -63,10 +66,9 @@ public class UASystemServiceImpl implements UASystemService {
         for (Map<String, Object> pid : menuList) {
             if (pid.get("pid").equals(menu.get("id"))) {
                 children.add(mapToMenu(menuList, pid));
-                menuListChildren(menuList, pid);
             }
         }
-        return children;
+        return sort(children);
     }
 
     private Map<String, Object> mapToMenu(List<Map<String, Object>> menuList, Map<String, Object> menu) {
@@ -75,7 +77,6 @@ public class UASystemServiceImpl implements UASystemService {
         menuMap.put("name", menu.get("name"));
         menuMap.put("pid", menu.get("pid"));
         menuMap.put("sort", menu.get("sort"));
-        menuMap.put("url", menu.get("url"));
         menuMap.put("icon", menu.get("icon"));
         menuMap.put("path", menu.get("path"));
         menuMap.put("component", menu.get("component"));
@@ -88,9 +89,37 @@ public class UASystemServiceImpl implements UASystemService {
         return menuMap;
     }
 
+    /**
+     * 排序菜单数据
+     * @Author pengcheng
+     * @Date 2019/3/29
+     **/
+    private List<Map<String, Object>> sort(List<Map<String, Object>> mapList) {
+        mapList.sort((o1, o2) -> {
+            Integer column1 = Integer.valueOf(o1.get("sort").toString());
+            Integer column2 = Integer.valueOf(o2.get("sort").toString());
+            return column1.compareTo(column2);
+        });
+        return mapList;
+    }
+
     @Override
     public Set<String> getUrlSet(UAUserDTO userDTO) {
-        return null;
+        if (userDTO == null) return null;
+        Set<String> urlSet = new HashSet<>();
+
+        if (userDTO.getAccount() != null && "admin".equals(userDTO.getAccount())) {
+            List<String> urlList = userRoleDao.loadUrlByOrgId(userDTO.getOrgId());
+            if (urlList != null && !urlList.isEmpty()) {
+                urlSet.addAll(urlList);
+            }
+        } else {
+            List<String> urlList = userRoleDao.loadUrlByUserId(userDTO.getOrgId(), userDTO.getId());
+            if (urlList != null && !urlList.isEmpty()) {
+                urlSet.addAll(urlList);
+            }
+        }
+        return urlSet;
     }
 
     @Override

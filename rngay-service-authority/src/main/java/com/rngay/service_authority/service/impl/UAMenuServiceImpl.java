@@ -34,7 +34,6 @@ public class UAMenuServiceImpl implements UAMenuService {
             menuChildren.put("name", menu.get("name"));
             menuChildren.put("pid", menu.get("pid"));
             menuChildren.put("sort", menu.get("sort"));
-            menuChildren.put("url", menu.get("url"));
             menuChildren.put("icon", menu.get("icon"));
             menuChildren.put("path", menu.get("path"));
             menuChildren.put("component", menu.get("component"));
@@ -74,7 +73,6 @@ public class UAMenuServiceImpl implements UAMenuService {
         menuChildren.put("name", menu.get("name"));
         menuChildren.put("pid", menu.get("pid"));
         menuChildren.put("sort", menu.get("sort"));
-        menuChildren.put("url", menu.get("url"));
         menuChildren.put("icon", menu.get("icon"));
         menuChildren.put("path", menu.get("path"));
         menuChildren.put("component", menu.get("component"));

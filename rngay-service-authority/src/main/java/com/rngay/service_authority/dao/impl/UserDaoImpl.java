@@ -1,14 +1,14 @@
 package com.rngay.service_authority.dao.impl;
 
 import com.rngay.common.jpa.dao.Dao;
-import com.rngay.service_authority.dao.UserDao;
+import com.rngay.service_authority.dao.UAUserDao;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.Map;
 
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements UAUserDao {
 
     @Resource
     private Dao dao;
