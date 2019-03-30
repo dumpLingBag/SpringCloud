@@ -22,6 +22,11 @@ public interface UAMenuService {
     */
     List<Map<String, Object>> getAllMenu();
 
+    /**
+    * 删除指定菜单，同时删除关联信息，角色菜单数据，菜单 URL 数据
+    * @Author pengcheng
+    * @Date 2019/3/29
+    **/
     Integer delete(MenuIdListDTO menuIdListDTO);
 
 }
