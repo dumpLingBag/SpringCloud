@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "user")
@@ -22,19 +24,18 @@ public class UAUserController {
     private UASystemService systemService;
 
     @RequestMapping(value = "save")
-    public Result<Integer> save(@Valid @RequestBody UASaveUserDTO saveUserDTO){
-        StringBuilder builder = new StringBuilder();
+    public Result<?> save(@Valid @RequestBody UASaveUserDTO saveUserDTO){
+        Map<String, String> msg = new HashMap<>();
         Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getAccount());
         if (byAccount.getData() != null){
-            builder.append("account").append(":").append("此账号名称已经存在").append("_");
+            msg.put("account", "此账号名称已经存在");
         }
         Result<UAUserDTO> byMobile = pfUserService.findByMobile(saveUserDTO.getMobile());
         if (byMobile.getData() != null){
-            builder.append("mobile").append(":").append("此手机号码已经存在").append("_");
+            msg.put("mobile", "此手机号码已经存在");
         }
-        if (builder.length() != 0) {
-            builder.setCharAt(builder.length() - 1, ' ');
-            return Result.fail(builder.toString());
+        if (!msg.isEmpty()) {
+            return Result.fail(msg);
         }
         return pfUserService.save(saveUserDTO);
     }
@@ -49,7 +50,7 @@ public class UAUserController {
         UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null){
             if (user.getAccount().equals("admin") && !updateUserDTO.getAccount().equals("admin")){
-                return Result.fail("禁止修改管理员账户名称");
+                return Result.failMsg("禁止修改管理员账户名称");
             }
             StringBuilder builder = new StringBuilder();
             if (!user.getAccount().equals(updateUserDTO.getAccount())){
@@ -69,15 +70,16 @@ public class UAUserController {
                 return Result.fail(builder.toString());
             }
         } else {
-            return Result.fail("不存在该用户");
+            return Result.failMsg("不存在该用户");
         }
         return pfUserService.update(updateUserDTO);
     }
 
     @RequestMapping(value = "reset/{id}")
     public Result<Integer> reset(@PathVariable Integer id){
-        if (id == null)
-            return Result.fail("重置失败");
+        if (id == null) {
+            return Result.failMsg("重置失败");
+        }
         return pfUserService.reset(id);
     }
 
@@ -86,7 +88,7 @@ public class UAUserController {
         if (id != null && enable != null){
             return pfUserService.enable(id, enable);
         } else {
-            return Result.fail("缺少参数 { id , enable }");
+            return Result.failMsg("缺少参数 { id , enable }");
         }
     }
 
@@ -95,10 +97,10 @@ public class UAUserController {
         Integer userId = systemService.getCurrentUserId(request);
         UAUserDTO user = pfUserService.findById(userId).getData();
         if (user == null){
-            return Result.fail("不存在该用户，修改失败");
+            return Result.failMsg("不存在该用户，修改失败");
         }
         if (!BCrypt.checkpw(password.getOldPassword(), user.getPassword())) {
-            return Result.fail("旧密码输入不正确");
+            return Result.failMsg("旧密码输入不正确");
         }
         password.setUserId(userId);
         return pfUserService.updatePassword(password);
@@ -111,10 +113,10 @@ public class UAUserController {
             if (BCrypt.checkpw(password, currentUser.getPassword())) {
                 return Result.success("密码验证通过");
             } else {
-                return Result.fail("旧密码输入不正确");
+                return Result.failMsg("旧密码输入不正确");
             }
         }
-        return Result.fail("请输入旧密码");
+        return Result.failMsg("请输入旧密码");
     }
     
     @RequestMapping(value = "delete/{id}")

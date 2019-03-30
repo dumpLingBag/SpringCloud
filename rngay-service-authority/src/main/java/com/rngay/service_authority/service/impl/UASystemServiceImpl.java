@@ -194,4 +194,13 @@ public class UASystemServiceImpl implements UASystemService {
         return null;
     }
 
+    @Override
+    public Integer getCurrentOrgId(HttpServletRequest request) {
+        UAUserDTO currentUser = getCurrentUser(request);
+        if (currentUser != null && currentUser.getOrgId() != null) {
+            return currentUser.getOrgId();
+        }
+        return 0;
+    }
+
 }

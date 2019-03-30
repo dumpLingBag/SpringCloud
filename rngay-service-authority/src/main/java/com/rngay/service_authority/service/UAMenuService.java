@@ -16,6 +16,13 @@ public interface UAMenuService {
     Integer save(UAMenu uaMenu);
 
     /**
+    * 修改菜单
+    * @Author pengcheng
+    * @Date 2019/3/30
+    **/
+    Integer update(UAMenu uaMenu);
+
+    /**
     * 获取全部菜单
     * @Author: pengcheng
     * @Date: 2018/12/18

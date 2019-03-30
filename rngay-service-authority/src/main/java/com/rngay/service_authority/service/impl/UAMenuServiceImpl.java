@@ -25,6 +25,11 @@ public class UAMenuServiceImpl implements UAMenuService {
     }
 
     @Override
+    public Integer update(UAMenu uaMenu) {
+        return dao.update(uaMenu);
+    }
+
+    @Override
     public List<Map<String, Object>> getAllMenu() {
         List<Map<String, Object>> list = new ArrayList<>();
         List<Map<String, Object>> menus = dao.query("ua_menu", Cnd.where("pid", "=", 0));

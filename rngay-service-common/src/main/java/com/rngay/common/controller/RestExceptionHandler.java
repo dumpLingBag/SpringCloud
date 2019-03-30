@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @ControllerAdvice
@@ -42,11 +44,11 @@ public class RestExceptionHandler implements ErrorController {
             return Result.fail("服务未启动");
         }
         if (e instanceof MethodArgumentNotValidException) {
-            StringBuilder msg = new StringBuilder();
+            Map<String, String> errMsg = new HashMap<>();
             MethodArgumentNotValidException ex = (MethodArgumentNotValidException) e;
             List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-            fieldErrors.forEach(error -> msg.append(error.getField()).append(":").append(error.getDefaultMessage()).append("_"));
-            return Result.fail(msg.toString());
+            fieldErrors.forEach(error -> errMsg.put(error.getField(), error.getDefaultMessage()));
+            return Result.fail(errMsg);
         }
         if (exceptionMsg) e.printStackTrace();
 

@@ -11,18 +11,6 @@ import java.util.Map;
 
 public class HttpClientUtil {
 
-    private HttpClientUtil() {
-    }
-
-    private static HttpClientUtil httpClientUtil;
-
-    public static HttpClientUtil getInstance() {
-        if (httpClientUtil == null) {
-            httpClientUtil = new HttpClientUtil();
-        }
-        return httpClientUtil;
-    }
-
     public static <T> T post(String url, MultiValueMap<String, String> params, Class<T> t) {
         RestTemplate template = new RestTemplate();
         //新建Http头，add方法可以添加参数

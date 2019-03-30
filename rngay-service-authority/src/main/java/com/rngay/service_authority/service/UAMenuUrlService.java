@@ -8,10 +8,25 @@ import java.util.Map;
 
 public interface UAMenuUrlService {
 
+    /**
+    * 加载所有 url 地址
+    * @Author pengcheng
+    * @Date 2019/3/30
+    **/
     List<Map<String, Object>> load();
 
+    /**
+    * 根据 menu_id 加载关联的 url 地址
+    * @Author pengcheng
+    * @Date 2019/3/30
+    **/
     List<UAMenuUrl> loadUrl(Integer id);
 
+    /**
+    * 插入或更新所选菜单的 url 地址
+    * @Author pengcheng
+    * @Date 2019/3/30
+    **/
     Integer update(UpdateUrlDTO updateUrlDTO);
 
 }

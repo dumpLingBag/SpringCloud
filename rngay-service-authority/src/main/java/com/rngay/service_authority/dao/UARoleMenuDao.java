@@ -19,4 +19,11 @@ public interface UARoleMenuDao {
     **/
     List<Map<String, Object>> loadMenuByUserId(Integer orgId, Integer userId);
 
+    /**
+    * 根据 roleId 加载对应的菜单
+    * @Author pengcheng
+    * @Date 2019/3/30
+    **/
+    List<Map<String, Object>> loadMenuByRoleId(Integer roleId);
+
 }

@@ -65,5 +65,12 @@ public interface UASystemService {
     * @Date: 2018/12/19
     */
     Integer getCurrentUserId(HttpServletRequest request);
+    
+    /**
+    * 获取当前登录用户的 orgId
+    * @Author pengcheng
+    * @Date 2019/3/30
+    **/
+    Integer getCurrentOrgId(HttpServletRequest request);
 
 }

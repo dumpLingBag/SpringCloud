@@ -5,6 +5,7 @@ import com.rngay.common.jpa.dao.Dao;
 import com.rngay.service_authority.dao.UARoleMenuDao;
 import com.rngay.service_authority.dao.sql.RoleMenuSql;
 import com.rngay.service_authority.model.UAOrgRole;
+import com.rngay.service_authority.model.UARole;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -60,6 +61,17 @@ public class RoleMenuDaoImpl implements UARoleMenuDao {
         String result = roleMenuSql.result(userId);
         if (result != null) {
             return dao.queryForList(result);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> loadMenuByRoleId(Integer roleId) {
+        if (roleId == null) return null;
+
+        UARole role = dao.findById(UARole.class, roleId);
+        if (role.getOrgId() > 0) {
+
         }
         return null;
     }
