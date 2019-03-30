@@ -4,10 +4,8 @@ import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
-import com.rngay.common.util.BindingUtils;
 import com.rngay.service_authority.service.UASystemService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,11 +22,7 @@ public class UAUserController {
     private UASystemService systemService;
 
     @RequestMapping(value = "save")
-    public Result<Integer> save(@Valid @RequestBody UASaveUserDTO saveUserDTO, BindingResult result){
-        String errorResult = BindingUtils.bindingResult(result);
-        if (errorResult != null) {
-            return Result.fail(errorResult);
-        }
+    public Result<Integer> save(@Valid @RequestBody UASaveUserDTO saveUserDTO){
         StringBuilder builder = new StringBuilder();
         Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getAccount());
         if (byAccount.getData() != null){
@@ -51,11 +45,7 @@ public class UAUserController {
     }
 
     @RequestMapping(value = "update")
-    public Result<?> update(@Valid @RequestBody UAUpdateUserDTO updateUserDTO, BindingResult result){
-        String errorResult = BindingUtils.bindingResult(result);
-        if (errorResult != null) {
-            return Result.fail(errorResult);
-        }
+    public Result<?> update(@Valid @RequestBody UAUpdateUserDTO updateUserDTO){
         UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null){
             if (user.getAccount().equals("admin") && !updateUserDTO.getAccount().equals("admin")){
