@@ -71,9 +71,25 @@ public class RoleMenuDaoImpl implements UARoleMenuDao {
 
         UARole role = dao.findById(UARole.class, roleId);
         if (role.getOrgId() > 0) {
+            List<UAOrgRole> roles = dao.query(UAOrgRole.class, Cnd.where("checked", "=", 1).and("org_id", "=", role.getOrgId()));
+            if (roles != null && !roles.isEmpty()) {
+                StringBuilder sqlRole = new StringBuilder();
+                for (UAOrgRole orgRole : roles) {
+                    if (sqlRole.length() != 0) {
+                        sqlRole.append(" UNION ");
+                    }
+                    sqlRole.append(roleMenuSql.sql(orgRole.getRoleId()));
+                }
 
+                String finalSql = "SELECT sm.* FROM ("+ sqlRole.toString() +") AS pm JOIN ("+ roleMenuSql.sql(roleId) +") AS sm ON sm.id = pm.id ORDER BY sm.pid, sm.sort";
+                return dao.queryForList(finalSql);
+            }
+        } else {
+            return null;
         }
-        return null;
+
+        String sql = "SELECT r_t.* FROM ("+ roleMenuSql.sql(roleId) +" r_t ORDER BY r_t.pid, r_t.sort";
+        return dao.queryForList(sql);
     }
 
 }

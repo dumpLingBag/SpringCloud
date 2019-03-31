@@ -33,7 +33,7 @@ public class UALoginController {
     @RequestMapping(value = "login")
     public Result<Map<String, Object>> login(HttpServletRequest request, String account, String password){
         if (account == null || "".equals(account) || password == null || "".equals(password)) {
-            return Result.fail("账号或密码不能为空");
+            return Result.failMsg("账号或密码不能为空");
         }
 
         String key = request.getServerName() + "_" + AuthorityUtil.getIPAddress(request) + "_" + account;
@@ -45,7 +45,7 @@ public class UALoginController {
 
         if (value >= 5) {
             //超过次数进行操作，限制登录，或者验证码登录
-            return Result.fail("出错次数过多，请两小时后再试！");
+            return Result.failMsg("出错次数过多，请两小时后再试！");
         }
 
         UAUserDTO userResult = userService.findByAccount(account).getData();
@@ -54,7 +54,7 @@ public class UALoginController {
             if (value >= 5) {
                 redisUtil.set(key, value, 7200);
             }
-            return Result.fail("用户名不存在");
+            return Result.failMsg("用户名不存在");
         } else {
             try {
                 if (BCrypt.checkpw(password, userResult.getPassword())) {
@@ -70,7 +70,7 @@ public class UALoginController {
                     map.put("userResult", userResult);
                     return Result.success(map);
                 } else {
-                    return Result.fail("账号或密码错误");
+                    return Result.failMsg("账号或密码错误");
                 }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();

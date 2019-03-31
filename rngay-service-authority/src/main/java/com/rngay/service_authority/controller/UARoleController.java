@@ -37,7 +37,7 @@ public class UARoleController {
         if (role == null) {
             return Result.failMsg("角色添加失败");
         }
-        return Result.success();
+        return Result.success(role);
     }
 
     @RequestMapping(value = "update")
@@ -46,7 +46,7 @@ public class UARoleController {
         if (role == null) {
             return Result.failMsg("角色修改失败");
         }
-        return Result.success();
+        return Result.success(role);
     }
 
 }

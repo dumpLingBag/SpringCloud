@@ -4,8 +4,11 @@ import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.feign.platform.MenuIdListDTO;
 import com.rngay.service_authority.model.UAMenu;
+import com.rngay.service_authority.model.UAMenuUrl;
+import com.rngay.service_authority.model.UARoleMenu;
 import com.rngay.service_authority.service.UAMenuService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -53,12 +56,23 @@ public class UAMenuServiceImpl implements UAMenuService {
         return list;
     }
 
+    @Transactional
     @Override
     public Integer delete(MenuIdListDTO menuIdList) {
         if (menuIdList.getMenuIdList().size() > 1) {
-            return dao.delete(UAMenu.class, Cnd.where("id","in", menuIdList.getMenuIdList()));
+            dao.delete(UAMenuUrl.class, Cnd.where("menu_id","in", menuIdList.getMenuIdList()));
+            dao.delete(UARoleMenu.class, Cnd.where("menu_id","in", menuIdList.getMenuIdList()));
+            dao.delete(UAMenu.class, Cnd.where("id","in", menuIdList.getMenuIdList()));
+            return menuIdList.getMenuIdList().size();
         }
-        return dao.delete(UAMenu.class, menuIdList.getMenuIdList().get(0));
+        UAMenu menu = dao.findById(UAMenu.class, menuIdList.getMenuIdList().get(0));
+        if (menu != null) {
+            dao.delete(UAMenuUrl.class, Cnd.where("menu_id","=", menu.getId()));
+            dao.delete(UARoleMenu.class, Cnd.where("menu_id","=", menu.getId()));
+            dao.delete(UAMenu.class, menu.getId());
+            return 1;
+        }
+        return 0;
     }
 
     private List<Object> getChildren(Integer parentId){

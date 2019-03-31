@@ -10,6 +10,7 @@ import com.rngay.service_authority.model.UAUserToken;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
+import com.rngay.service_authority.util.SortUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -58,7 +59,7 @@ public class UASystemServiceImpl implements UASystemService {
                 mapList.add(mapToMenu(menuList, menu));
             }
         }
-        return sort(mapList);
+        return SortUtil.mapSort(mapList);
     }
 
     private List<Map<String, Object>> menuListChildren(List<Map<String, Object>> menuList, Map<String, Object> menu) {
@@ -68,7 +69,7 @@ public class UASystemServiceImpl implements UASystemService {
                 children.add(mapToMenu(menuList, pid));
             }
         }
-        return sort(children);
+        return SortUtil.mapSort(children);
     }
 
     private Map<String, Object> mapToMenu(List<Map<String, Object>> menuList, Map<String, Object> menu) {
@@ -87,20 +88,6 @@ public class UASystemServiceImpl implements UASystemService {
         menuMap.put("meta", map);
         menuMap.put("children", menuListChildren(menuList, menu));
         return menuMap;
-    }
-
-    /**
-     * 排序菜单数据
-     * @Author pengcheng
-     * @Date 2019/3/29
-     **/
-    private List<Map<String, Object>> sort(List<Map<String, Object>> mapList) {
-        mapList.sort((o1, o2) -> {
-            Integer column1 = Integer.valueOf(o1.get("sort").toString());
-            Integer column2 = Integer.valueOf(o2.get("sort").toString());
-            return column1.compareTo(column2);
-        });
-        return mapList;
     }
 
     @Override

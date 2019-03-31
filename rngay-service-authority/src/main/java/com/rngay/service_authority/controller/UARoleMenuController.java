@@ -19,15 +19,17 @@ public class UARoleMenuController {
     private UARoleMenuService roleMenuService;
 
     @RequestMapping(value = "load")
-    public Result<?> load(Integer roleId) {
-        return Result.success(roleMenuService.load(roleId));
+    public Result<?> load(HttpServletRequest request) {
+        Integer orgId = systemService.getCurrentOrgId(request);
+        return Result.success(roleMenuService.load(orgId));
     }
 
     @RequestMapping(value = "loadMenu")
-    public Result<?> loadMenu(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
-
-        return Result.success();
+    public Result<?> loadMenu(Integer roleId) {
+        if (roleId == null) {
+            return Result.failMsg("加载菜单失败");
+        }
+        return Result.success(roleMenuService.loadMenu(roleId));
     }
 
 }
