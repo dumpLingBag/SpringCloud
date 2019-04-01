@@ -28,8 +28,20 @@ public class UARoleServiceImpl implements UARoleService {
     }
 
     @Override
-    public List<UARole> loadByPid(Integer orgId) {
-        return dao.query(UARole.class, Cnd.where("org_id","=", orgId).and("pid","<>", 0));
+    public List<Map<String, Object>> loadByPid(Integer orgId) {
+        List<Map<String, Object>> maps = new ArrayList<>();
+        List<UARole> rolePid = dao.query(UARole.class, Cnd.where("org_id", "=", orgId).and("pid", "=", 0));
+        if (rolePid != null && !rolePid.isEmpty()) {
+            rolePid.forEach(k -> {
+                List<UARole> role = dao.query(UARole.class, Cnd.where("org_id", "=", orgId).and("pid","=", k.getId()));
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", k.getId());
+                map.put("name", k.getName());
+                map.put("children", role);
+                maps.add(map);
+            });
+        }
+        return maps;
     }
 
     private List<Map<String, Object>> roleList(List<Map<String, Object>> roles) {

@@ -20,7 +20,7 @@ public interface UARoleService {
     * @Author pengcheng
     * @Date 2019/4/1
     **/
-    List<UARole> loadByPid(Integer orgId);
+    List<Map<String, Object>> loadByPid(Integer orgId);
 
     /**
     * 添加一个角色信息
