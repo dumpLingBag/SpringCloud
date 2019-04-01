@@ -40,19 +40,19 @@ public class UAMenuController {
         return Result.success(menu);
     }
 
-    @RequestMapping(value = "getAllMenu")
+    @RequestMapping(value = "load")
     public Result<?> getAllMenu(HttpServletRequest request){
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId.equals(0)) {
-            return Result.success(menuService.getAllMenu());
+            return Result.success(menuService.load());
         }
-        return Result.success(null);
+        return Result.failMsg("菜单加载失败");
     }
 
     @RequestMapping(value = "delete")
     public Result<?> delete(@RequestBody MenuIdListDTO menuIdList) {
         if (menuIdList == null || menuIdList.getMenuIdList().isEmpty()) {
-            return Result.failMsg("不存在要删除的菜单");
+            return Result.failMsg("删除菜单失败");
         }
         return Result.success(menuService.delete(menuIdList));
     }

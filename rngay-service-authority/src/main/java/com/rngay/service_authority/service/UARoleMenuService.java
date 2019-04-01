@@ -1,5 +1,8 @@
 package com.rngay.service_authority.service;
 
+import com.rngay.feign.platform.UpdateRoleMenuDTO;
+import com.rngay.service_authority.model.UARoleMenu;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +20,13 @@ public interface UARoleMenuService {
     * @Author: pengcheng
     * @Date: 2019/3/31
     */
-    List<Map<String, Object>> loadMenu(Integer roleId);
+    List<UARoleMenu> loadMenu(Integer roleId);
+
+    /**
+    * 根据 roleId 插入或更新所选的菜单
+    * @Author pengcheng
+    * @Date 2019/4/1
+    **/
+    Integer update(UpdateRoleMenuDTO roleMenu);
 
 }

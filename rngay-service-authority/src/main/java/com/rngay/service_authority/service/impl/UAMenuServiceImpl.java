@@ -33,7 +33,7 @@ public class UAMenuServiceImpl implements UAMenuService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllMenu() {
+    public List<Map<String, Object>> load() {
         List<Map<String, Object>> list = new ArrayList<>();
         List<Map<String, Object>> menus = dao.query("ua_menu", Cnd.where("pid", "=", 0));
         for (Map<String, Object> menu : menus) {
@@ -66,11 +66,20 @@ public class UAMenuServiceImpl implements UAMenuService {
             return menuIdList.getMenuIdList().size();
         }
         UAMenu menu = dao.findById(UAMenu.class, menuIdList.getMenuIdList().get(0));
-        if (menu != null) {
+        if (menu != null && menu.getPid().equals(0)) {
             dao.delete(UAMenuUrl.class, Cnd.where("menu_id","=", menu.getId()));
             dao.delete(UARoleMenu.class, Cnd.where("menu_id","=", menu.getId()));
             dao.delete(UAMenu.class, menu.getId());
-            return 1;
+            if (!menu.getPid().equals(0)) {
+                List<UAMenu> pid = dao.query(UAMenu.class, Cnd.where("pid", "=", menu.getPid()).and("sort",">", menu.getSort()));
+                if (pid != null && !pid.isEmpty()) {
+                    StringBuilder sort = new StringBuilder();
+                    pid.forEach(kev -> sort.append(kev.getId()).append(","));
+                    sort.deleteCharAt(sort.length() - 1);
+                    dao.update("UPDATE ua_menu SET sort = sort - 1 WHERE id IN ("+sort.toString()+")");
+                }
+                return 1;
+            }
         }
         return 0;
     }

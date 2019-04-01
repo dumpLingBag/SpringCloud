@@ -1,8 +1,10 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
+import com.rngay.feign.platform.UpdateRoleMenuDTO;
 import com.rngay.service_authority.service.UARoleMenuService;
 import com.rngay.service_authority.service.UASystemService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,11 @@ public class UARoleMenuController {
             return Result.failMsg("加载菜单失败");
         }
         return Result.success(roleMenuService.loadMenu(roleId));
+    }
+
+    @RequestMapping(value = "update")
+    public Result<?> update(@RequestBody UpdateRoleMenuDTO roleMenu) {
+        return Result.success(roleMenuService.update(roleMenu));
     }
 
 }

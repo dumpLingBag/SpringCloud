@@ -1,6 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
+import com.rngay.feign.platform.RoleIdListDTO;
 import com.rngay.service_authority.model.UARole;
 import com.rngay.service_authority.service.UARoleService;
 import com.rngay.service_authority.service.UASystemService;
@@ -23,7 +24,19 @@ public class UARoleController {
     @RequestMapping(value = "load")
     public Result<?> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
+        if (orgId == null) {
+            return Result.failMsg("角色查询失败");
+        }
         return Result.success(roleService.load(orgId));
+    }
+
+    @RequestMapping(value = "loadByPid")
+    public Result<?> loadByPid(HttpServletRequest request) {
+        Integer orgId = systemService.getCurrentOrgId(request);
+        if (orgId != null) {
+            return Result.success(roleService.loadByPid(orgId));
+        }
+        return Result.failMsg("角色加载失败");
     }
 
     @RequestMapping(value = "save")
@@ -47,6 +60,14 @@ public class UARoleController {
             return Result.failMsg("角色修改失败");
         }
         return Result.success(role);
+    }
+
+    @RequestMapping(value = "delete")
+    public Result<?> delete(@RequestBody RoleIdListDTO listDTO) {
+        if (listDTO.getRoleIdList() == null || listDTO.getRoleIdList().isEmpty()) {
+            return Result.failMsg("删除角色失败");
+        }
+        return Result.success(roleService.delete(listDTO));
     }
 
 }

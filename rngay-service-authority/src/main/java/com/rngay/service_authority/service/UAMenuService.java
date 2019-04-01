@@ -27,10 +27,11 @@ public interface UAMenuService {
     * @Author: pengcheng
     * @Date: 2018/12/18
     */
-    List<Map<String, Object>> getAllMenu();
+    List<Map<String, Object>> load();
 
     /**
-    * 删除指定菜单，同时删除关联信息，角色菜单数据，菜单 URL 数据
+    * 删除指定菜单，同时删除关联信息，角色菜单数据，菜单 URL 数据。
+    * 如果要删除的数组长度大于一说明是删除全部包括子菜单。否则删除一个并修改 sort 排序
     * @Author pengcheng
     * @Date 2019/3/29
     **/

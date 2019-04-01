@@ -2,10 +2,12 @@ package com.rngay.service_authority.service.impl;
 
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
+import com.rngay.feign.platform.RoleIdListDTO;
 import com.rngay.service_authority.model.UARole;
 import com.rngay.service_authority.service.UARoleService;
 import com.rngay.service_authority.util.SortUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -23,6 +25,11 @@ public class UARoleServiceImpl implements UARoleService {
     public List<Map<String, Object>> load(Integer orgId) {
         List<Map<String, Object>> roles = dao.query("ua_role", Cnd.where("org_id", "=", orgId).asc("sort"));
         return roleList(roles);
+    }
+
+    @Override
+    public List<UARole> loadByPid(Integer orgId) {
+        return dao.query(UARole.class, Cnd.where("org_id","=", orgId).and("pid","<>", 0));
     }
 
     private List<Map<String, Object>> roleList(List<Map<String, Object>> roles) {
@@ -64,6 +71,15 @@ public class UARoleServiceImpl implements UARoleService {
     @Override
     public Integer update(UARole uaRole) {
         return dao.update(uaRole);
+    }
+
+    @Transactional
+    @Override
+    public Integer delete(RoleIdListDTO listDTO) {
+        if (listDTO.getRoleIdList().size() > 1) {
+
+        }
+        return null;
     }
 
 }

@@ -7,6 +7,7 @@ import com.rngay.feign.platform.UpdateUrlDTO;
 import com.rngay.service_authority.model.UAMenuUrl;
 import com.rngay.service_authority.service.UAMenuUrlService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class UAMenuUrlServiceImpl implements UAMenuUrlService {
         return dao.query(UAMenuUrl.class, Cnd.where("menu_id","=",id).and("checked","=",1));
     }
 
+    @Transactional
     @Override
     public Integer update(UpdateUrlDTO updateUrlDTO) {
         if (!updateUrlDTO.getMenuUrl().isEmpty() && updateUrlDTO.getMenuId() != null) {

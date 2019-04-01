@@ -23,7 +23,7 @@ public interface UAMenuUrlService {
     List<UAMenuUrl> loadUrl(Integer id);
 
     /**
-    * 插入或更新所选菜单的 url 地址
+    * 根据 menuId 插入或更新所选菜单的 url 地址
     * @Author pengcheng
     * @Date 2019/3/30
     **/
