@@ -109,7 +109,7 @@ public class StartUpRunner implements CommandLineRunner {
                 sqlDao.insertOrUpdate(urlList, "ua_url");
             }
 
-            long url = sqlDao.count(UAMenu.class, Cnd.where("component", "=", "SysMenu"));
+            long url = sqlDao.count(UAMenu.class, Cnd.where("component", "=", "AuthorityMenu"));
             if (url <= 0) {
                 UAMenu systemManage = new UAMenu();
                 systemManage.setName("开发者");
@@ -122,11 +122,10 @@ public class StartUpRunner implements CommandLineRunner {
                     menuManage.setName("菜单管理");
                     menuManage.setSort(0);
                     menuManage.setPid(id);
-                    menuManage.setPath("/system");
-                    menuManage.setComponent("SysMenu");
+                    menuManage.setPath("/authority");
+                    menuManage.setComponent("AuthorityMenu");
                     sqlDao.insert(menuManage);
                 }
-
             }
         }
 

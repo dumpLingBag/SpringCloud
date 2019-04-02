@@ -56,6 +56,11 @@ public class UAMenuServiceImpl implements UAMenuService {
         return list;
     }
 
+    @Override
+    public List<UAMenu> loadByPid() {
+        return dao.query(UAMenu.class, Cnd.where("pid","=",0));
+    }
+
     @Transactional
     @Override
     public Integer delete(MenuIdListDTO menuIdList) {

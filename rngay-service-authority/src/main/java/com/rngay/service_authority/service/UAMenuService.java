@@ -28,6 +28,13 @@ public interface UAMenuService {
     * @Date: 2018/12/18
     */
     List<Map<String, Object>> load();
+    
+    /** 
+    * 
+    * @Author: pengcheng 
+    * @Date: 2019/4/2 
+    */
+    List<UAMenu> loadByPid();
 
     /**
     * 删除指定菜单，同时删除关联信息，角色菜单数据，菜单 URL 数据。

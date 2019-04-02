@@ -42,10 +42,19 @@ public class UAMenuController {
     }
 
     @RequestMapping(value = "load", method = RequestMethod.GET)
-    public Result<?> getAllMenu(HttpServletRequest request){
+    public Result<?> load(HttpServletRequest request){
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId.equals(0)) {
             return Result.success(menuService.load());
+        }
+        return Result.failMsg("菜单加载失败");
+    }
+
+    @RequestMapping(value = "loadByPid", method = RequestMethod.GET)
+    public Result<?> loadByPid(HttpServletRequest request) {
+        Integer orgId = systemService.getCurrentOrgId(request);
+        if (orgId != null && orgId.equals(0)) {
+            return Result.success(menuService.loadByPid());
         }
         return Result.failMsg("菜单加载失败");
     }
