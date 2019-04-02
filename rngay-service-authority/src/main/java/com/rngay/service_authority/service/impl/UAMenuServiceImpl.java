@@ -66,7 +66,7 @@ public class UAMenuServiceImpl implements UAMenuService {
             return menuIdList.getMenuIdList().size();
         }
         UAMenu menu = dao.findById(UAMenu.class, menuIdList.getMenuIdList().get(0));
-        if (menu != null && menu.getPid().equals(0)) {
+        if (menu != null) {
             dao.delete(UAMenuUrl.class, Cnd.where("menu_id","=", menu.getId()));
             dao.delete(UARoleMenu.class, Cnd.where("menu_id","=", menu.getId()));
             dao.delete(UAMenu.class, menu.getId());
@@ -77,8 +77,9 @@ public class UAMenuServiceImpl implements UAMenuService {
                     pid.forEach(kev -> sort.append(kev.getId()).append(","));
                     sort.deleteCharAt(sort.length() - 1);
                     dao.update("UPDATE ua_menu SET sort = sort - 1 WHERE id IN ("+sort.toString()+")");
+                    return 1;
                 }
-                return 1;
+                return 0;
             }
         }
         return 0;

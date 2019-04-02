@@ -3,7 +3,7 @@ package com.rngay.service_authority.service.impl;
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.feign.platform.RoleIdListDTO;
-import com.rngay.service_authority.model.UARole;
+import com.rngay.service_authority.model.*;
 import com.rngay.service_authority.service.UARoleService;
 import com.rngay.service_authority.util.SortUtil;
 import org.springframework.stereotype.Service;
@@ -89,9 +89,32 @@ public class UARoleServiceImpl implements UARoleService {
     @Override
     public Integer delete(RoleIdListDTO listDTO) {
         if (listDTO.getRoleIdList().size() > 1) {
-
+            dao.delete(UARole.class, Cnd.where("id","in", listDTO.getRoleIdList()));
+            dao.delete(UAOrgRole.class, Cnd.where("role_id","in", listDTO.getRoleIdList()));
+            dao.delete(UARoleMenu.class, Cnd.where("role_id","in", listDTO.getRoleIdList()));
+            dao.delete(UAUserRole.class, Cnd.where("role_id","in", listDTO.getRoleIdList()));
+            dao.delete(UADepartmentRole.class, Cnd.where("role_id","in", listDTO.getRoleIdList()));
         }
-        return null;
+        UARole role = dao.findById(UARole.class, listDTO.getRoleIdList().get(0));
+        if (role != null) {
+            dao.delete(UARole.class, Cnd.where("id","=", role.getId()));
+            dao.delete(UAOrgRole.class, Cnd.where("role_id","=", role.getId()));
+            dao.delete(UARoleMenu.class, Cnd.where("role_id","=", role.getId()));
+            dao.delete(UAUserRole.class, Cnd.where("role_id","=", role.getId()));
+            dao.delete(UADepartmentRole.class, Cnd.where("role_id","=", role.getId()));
+            if (!role.getPid().equals(0)) {
+                List<UARole> roles = dao.query(UARole.class, Cnd.where("pid", "=", role.getPid()).and("sort", ">", role.getSort()));
+                if (roles != null && !roles.isEmpty()) {
+                    StringBuilder sort = new StringBuilder();
+                    roles.forEach(key -> sort.append(key.getId()).append(","));
+                    sort.deleteCharAt(sort.length() - 1);
+                    dao.update("UPDATE ua_role SET sort = sort - 1 WHERE id IN ("+ sort.toString() +")");
+                }
+                return 0;
+            }
+            return 1;
+        }
+        return 0;
     }
 
 }

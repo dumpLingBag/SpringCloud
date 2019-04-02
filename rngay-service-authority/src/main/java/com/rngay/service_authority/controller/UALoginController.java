@@ -10,6 +10,7 @@ import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -30,7 +31,7 @@ public class UALoginController {
     @Resource
     private JwtUtil jwtUtil;
 
-    @RequestMapping(value = "login")
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     public Result<Map<String, Object>> login(HttpServletRequest request, String account, String password){
         if (account == null || "".equals(account) || password == null || "".equals(password)) {
             return Result.failMsg("账号或密码不能为空");

@@ -38,7 +38,7 @@ public class UARoleMenuServiceImpl implements UARoleMenuService {
     @Transactional
     @Override
     public Integer update(UpdateRoleMenuDTO roleMenu) {
-        if (!roleMenu.getRoleMenu().isEmpty() && roleMenu.getRoleId() != null) {
+        if (roleMenu.getRoleId() != null && !roleMenu.getRoleMenu().isEmpty()) {
             int i = 0;
             List<RoleMenuDTO> list = new ArrayList<>();
             for (RoleMenuDTO menu : roleMenu.getRoleMenu()) {

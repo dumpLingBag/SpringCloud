@@ -1,7 +1,8 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.platform.UpdateUrlDTO;
+import com.rngay.feign.platform.CommonUrlDTO;
+import com.rngay.service_authority.service.UACommonService;
 import com.rngay.service_authority.service.UAMenuUrlService;
 import com.rngay.service_authority.service.UASystemService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,37 +12,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "authorityMenuUrl")
-public class UAMenuUrlController {
+@RequestMapping(value = "authorityCommonUrl")
+public class UACommonController {
 
     @Resource
-    private UAMenuUrlService urlService;
-    @Resource
     private UASystemService systemService;
+    @Resource
+    private UACommonService commonService;
+    @Resource
+    private UAMenuUrlService menuUrlService;
 
     @RequestMapping(value = "load", method = RequestMethod.GET)
     public Result<?> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId.equals(0)) {
-            return Result.success(urlService.load());
+            return Result.success(menuUrlService.load());
         }
         return Result.success(null);
     }
 
-    @RequestMapping(value = "loadUrl", method = RequestMethod.GET)
-    public Result<?> loadUrl(Integer id) {
-        if (id != null) {
-            return Result.success(urlService.loadUrl(id));
+    @RequestMapping(value = "loadOpen", method = RequestMethod.GET)
+    public Result<?> loadOpen(HttpServletRequest request) {
+        Integer orgId = systemService.getCurrentOrgId(request);
+        if (orgId != null && orgId.equals(0)) {
+            return Result.success(commonService.loadOpen());
         }
-        return Result.failMsg("缺少 {id} 参数");
+        return Result.success(null);
     }
 
     @RequestMapping(value = "update", method = RequestMethod.POST)
-    public Result<?> update(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
-        return Result.success(urlService.update(updateUrlDTO));
+    public Result<?> update(@RequestBody CommonUrlDTO urlDTO) {
+        if (urlDTO.getUrlId() == null || urlDTO.getUrlId().isEmpty()) {
+            return Result.failMsg("公共权限修改失败");
+        }
+        return Result.success(commonService.update(urlDTO));
     }
 
 }

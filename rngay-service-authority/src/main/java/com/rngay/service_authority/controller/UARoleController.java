@@ -7,6 +7,7 @@ import com.rngay.service_authority.service.UARoleService;
 import com.rngay.service_authority.service.UASystemService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -21,7 +22,7 @@ public class UARoleController {
     @Resource
     private UARoleService roleService;
 
-    @RequestMapping(value = "load")
+    @RequestMapping(value = "load", method = RequestMethod.GET)
     public Result<?> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
@@ -30,7 +31,7 @@ public class UARoleController {
         return Result.success(roleService.load(orgId));
     }
 
-    @RequestMapping(value = "loadByPid")
+    @RequestMapping(value = "loadByPid", method = RequestMethod.GET)
     public Result<?> loadByPid(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null) {
@@ -39,7 +40,7 @@ public class UARoleController {
         return Result.failMsg("角色加载失败");
     }
 
-    @RequestMapping(value = "save")
+    @RequestMapping(value = "save", method = RequestMethod.POST)
     public Result<?> save(HttpServletRequest request, @RequestBody UARole uaRole) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
@@ -53,7 +54,7 @@ public class UARoleController {
         return Result.success(role);
     }
 
-    @RequestMapping(value = "update")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
     public Result<?> update(@RequestBody UARole uaRole) {
         Integer role = roleService.update(uaRole);
         if (role == null) {
@@ -62,7 +63,7 @@ public class UARoleController {
         return Result.success(role);
     }
 
-    @RequestMapping(value = "delete")
+    @RequestMapping(value = "delete", method = RequestMethod.POST)
     public Result<?> delete(@RequestBody RoleIdListDTO listDTO) {
         if (listDTO.getRoleIdList() == null || listDTO.getRoleIdList().isEmpty()) {
             return Result.failMsg("删除角色失败");

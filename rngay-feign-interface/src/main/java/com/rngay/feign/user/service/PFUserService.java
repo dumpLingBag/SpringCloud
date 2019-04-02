@@ -32,7 +32,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    @RequestMapping(value = "/user/findByAccount", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/findByAccount", method = RequestMethod.GET)
     Result<UAUserDTO> findByAccount(@RequestParam("account") String account);
 
     /**
@@ -40,7 +40,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    @RequestMapping(value = "/user/findByMobile", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/findByMobile", method = RequestMethod.GET)
     Result<UAUserDTO> findByMobile(@RequestParam("mobile") String mobile);
 
     /**
@@ -64,7 +64,7 @@ public interface PFUserService {
     * @Author: pengcheng
     * @Date: 2018/12/22
     */
-    @RequestMapping(value = "/user/icon", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/icon", method = RequestMethod.GET)
     Result<List<UAIconDTO>> loadIcon();
 
     /**
@@ -80,7 +80,7 @@ public interface PFUserService {
     * @Author: pengcheng
     * @Date: 2018/12/29
     */
-    @RequestMapping(value = "/user/reset/{id}")
+    @RequestMapping(value = "/user/reset/{id}", method = RequestMethod.GET)
     Result<Integer> reset(@PathVariable Integer id);
 
     /**
@@ -88,7 +88,7 @@ public interface PFUserService {
     * @Author: pengcheng
     * @Date: 2019/1/7
     */
-    @RequestMapping(value = "/user/enable/{id}/{enable}")
+    @RequestMapping(value = "/user/enable/{id}/{enable}", method = RequestMethod.GET)
     Result<Integer> enable(@PathVariable Integer id, @PathVariable Integer enable);
 
     /**
@@ -96,7 +96,7 @@ public interface PFUserService {
     * @Author: pengcheng
     * @Date: 2019/1/14
     */
-    @RequestMapping(value = "/user/updatePassword")
+    @RequestMapping(value = "/user/updatePassword", method = RequestMethod.GET)
     Result<Integer> updatePassword(@RequestBody UpdatePassword password);
     
     /** 
@@ -104,7 +104,7 @@ public interface PFUserService {
     * @Author: pengcheng 
     * @Date: 2019/2/3 
     */
-    @RequestMapping(value = "/user/delete/{id}")
+    @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.GET)
     Result<Integer> delete(@PathVariable Integer id);
 
 }

@@ -5,6 +5,7 @@ import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.service.UASystemService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -22,7 +23,7 @@ public class UASystemController {
     @Resource
     private PFUserService userService;
 
-    @RequestMapping(value = "loadForMenu")
+    @RequestMapping(value = "loadForMenu", method = RequestMethod.GET)
     public Result<?> loadForMenu(HttpServletRequest request){
         UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser == null){
@@ -40,7 +41,7 @@ public class UASystemController {
         return Result.success(menuList);
     }
 
-    @RequestMapping(value = "loadIcon")
+    @RequestMapping(value = "loadIcon", method = RequestMethod.GET)
     public Result<?> loadIcon(){
         return userService.loadIcon();
     }

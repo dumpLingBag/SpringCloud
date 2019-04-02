@@ -96,7 +96,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
         Maker maker = new Maker();
         List<Object> val = new ArrayList<>();
         boolean isId = false;
-        int id = 0;
+        String id = null;
         if (obj instanceof Map) {
             Map<?, ?> map = (Map)obj;
             if (null == cnd) {
@@ -147,7 +147,7 @@ public class RngSqlJoinMake extends RngSqlBuilder implements SqlJoinMake {
                         isId = true;
                         Object o = field.get(obj);
                         if (null != o && !"".equals(o)) {
-                            id = (int)o;
+                            id = String.valueOf(o);
                         }
                     } else {
                         Object o = field.get(obj);

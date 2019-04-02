@@ -23,7 +23,7 @@ public class UAUserController {
     @Resource
     private UASystemService systemService;
 
-    @RequestMapping(value = "save")
+    @RequestMapping(value = "save", method = RequestMethod.POST)
     public Result<?> save(@Valid @RequestBody UASaveUserDTO saveUserDTO){
         Map<String, String> msg = new HashMap<>();
         Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getAccount());
@@ -40,12 +40,12 @@ public class UAUserController {
         return pfUserService.save(saveUserDTO);
     }
 
-    @RequestMapping(value = "pageList")
+    @RequestMapping(value = "pageList", method = RequestMethod.POST)
     public Result<PageList<UAUserDTO>> pageList(@RequestBody UAUserPageListDTO pageListDTO){
         return pfUserService.pageList(pageListDTO);
     }
 
-    @RequestMapping(value = "update")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
     public Result<?> update(@Valid @RequestBody UAUpdateUserDTO updateUserDTO){
         UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null){
@@ -75,7 +75,7 @@ public class UAUserController {
         return pfUserService.update(updateUserDTO);
     }
 
-    @RequestMapping(value = "reset/{id}")
+    @RequestMapping(value = "reset/{id}", method = RequestMethod.GET)
     public Result<Integer> reset(@PathVariable Integer id){
         if (id == null) {
             return Result.failMsg("重置失败");
@@ -83,7 +83,7 @@ public class UAUserController {
         return pfUserService.reset(id);
     }
 
-    @RequestMapping(value = "enable/{id}/{enable}")
+    @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.GET)
     public Result<Integer> enable(@PathVariable Integer id, @PathVariable Integer enable){
         if (id != null && enable != null){
             return pfUserService.enable(id, enable);
@@ -92,7 +92,7 @@ public class UAUserController {
         }
     }
 
-    @RequestMapping(value = "updatePassword")
+    @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
     public Result<Integer> updatePassword(HttpServletRequest request, @RequestBody UpdatePassword password){
         Integer userId = systemService.getCurrentUserId(request);
         UAUserDTO user = pfUserService.findById(userId).getData();
@@ -106,7 +106,7 @@ public class UAUserController {
         return pfUserService.updatePassword(password);
     }
 
-    @RequestMapping(value = "checkPassword")
+    @RequestMapping(value = "checkPassword", method = RequestMethod.GET)
     public Result<String> checkPassword(HttpServletRequest request, @RequestParam("password") String password) {
         if (password != null && !"".equals(password)) {
             UAUserDTO currentUser = systemService.getCurrentUser(request);
@@ -119,7 +119,7 @@ public class UAUserController {
         return Result.failMsg("请输入旧密码");
     }
     
-    @RequestMapping(value = "delete/{id}")
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public Result<Integer> delete(@PathVariable Integer id){
         return pfUserService.delete(id);
     }

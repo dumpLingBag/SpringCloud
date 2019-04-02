@@ -45,7 +45,7 @@ public class UAMenuUrlServiceImpl implements UAMenuUrlService {
     @Transactional
     @Override
     public Integer update(UpdateUrlDTO updateUrlDTO) {
-        if (!updateUrlDTO.getMenuUrl().isEmpty() && updateUrlDTO.getMenuId() != null) {
+        if (updateUrlDTO.getMenuId() != null && !updateUrlDTO.getMenuUrl().isEmpty()) {
             int i = 0;
             List<MenuUrlDTO> list = new ArrayList<>();
             for (MenuUrlDTO url : updateUrlDTO.getMenuUrl()) {
