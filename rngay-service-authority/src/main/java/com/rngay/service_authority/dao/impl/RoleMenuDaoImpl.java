@@ -32,7 +32,7 @@ public class RoleMenuDaoImpl implements UARoleMenuDao {
                 if (sql.length() != 0) {
                     sql.append(" UNION ");
                 }
-                sql.append(roleMenuSql.sql(role.getRoleId()));
+                sql.append(roleMenuSql.roleMenu(role.getRoleId()));
             }
             return dao.queryForList(sql.toString());
         }
@@ -51,18 +51,14 @@ public class RoleMenuDaoImpl implements UARoleMenuDao {
                 if (sqlOrgRole.length() != 0) {
                     sqlOrgRole.append(" UNION ");
                 }
-                sqlOrgRole.append(roleMenuSql.sql(role.getRoleId()));
+                sqlOrgRole.append(roleMenuSql.roleMenu(role.getRoleId()));
             }
 
             String finalSql = "SELECT sm.* FROM ("+ sqlOrgRole.toString() + " AS pm JOIN ("+ roleMenuSql.result(userId) + " AS sm ON sm.id = pm.id";
             return dao.queryForList(finalSql);
         }
 
-        String result = roleMenuSql.result(userId);
-        if (result != null) {
-            return dao.queryForList(result);
-        }
-        return null;
+        return dao.queryForList(roleMenuSql.result(userId));
     }
 
     @Override
@@ -78,17 +74,17 @@ public class RoleMenuDaoImpl implements UARoleMenuDao {
                     if (sqlRole.length() != 0) {
                         sqlRole.append(" UNION ");
                     }
-                    sqlRole.append(roleMenuSql.sql(orgRole.getRoleId()));
+                    sqlRole.append(roleMenuSql.roleMenu(orgRole.getRoleId()));
                 }
 
-                String finalSql = "SELECT sm.* FROM ("+ sqlRole.toString() +") AS pm JOIN ("+ roleMenuSql.sql(roleId) +") AS sm ON sm.id = pm.id ORDER BY sm.pid, sm.sort";
+                String finalSql = "SELECT sm.* FROM ("+ sqlRole.toString() +") AS pm JOIN ("+ roleMenuSql.roleMenu(roleId) +") AS sm ON sm.id = pm.id ORDER BY sm.pid, sm.sort";
                 return dao.queryForList(finalSql);
             }
         } else {
             return null;
         }
 
-        String sql = "SELECT r_t.* FROM ("+ roleMenuSql.sql(roleId) +" r_t ORDER BY r_t.pid, r_t.sort";
+        String sql = "SELECT r_t.* FROM ("+ roleMenuSql.roleMenu(roleId) +" r_t ORDER BY r_t.pid, r_t.sort";
         return dao.queryForList(sql);
     }
 

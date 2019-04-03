@@ -17,8 +17,8 @@ public class RoleMenuSql {
                 "WHERE m.id = menuUrl.menu_id AND menuUrl.checked = 1 AND url.id = menuUrl.url_id";
     }
 
-    public String sql(Integer roleId) {
-        return "SELECT t.id,t.name,t.url,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid FROM (" +
+    public String roleMenu(Integer roleId) {
+        return "SELECT t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid FROM (" +
                 " SELECT m.* FROM ua_role_menu AS rm, ua_menu AS m WHERE rm.role_id = "+ roleId +" AND rm.menu_id = m.id AND rm.checked = 1" +
                 " GROUP BY m.id) AS t";
     }
@@ -39,7 +39,7 @@ public class RoleMenuSql {
             if (sqlUserRole.length() != 0) {
                 sqlUserRole.append(" UNION ");
             }
-            sqlUserRole.append(sql(id));
+            sqlUserRole.append(roleMenu(id));
         }
         return sqlUserRole.toString();
     }

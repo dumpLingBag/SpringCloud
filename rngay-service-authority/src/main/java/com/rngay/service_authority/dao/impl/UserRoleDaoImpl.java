@@ -30,7 +30,7 @@ public class UserRoleDaoImpl implements UAUserRoleDao {
                 if (sql.length() != 0) {
                     sql.append(" UNION ");
                 }
-                sql.append(roleMenuSql.sql(orgRole.getRoleId()));
+                sql.append(roleMenuSql.roleMenu(orgRole.getRoleId()));
             }
             return dao.queryForList(roleMenuSql.sqlUrl(sql.toString()), String.class);
         }
@@ -49,7 +49,7 @@ public class UserRoleDaoImpl implements UAUserRoleDao {
                 if (sql.length() != 0) {
                     sql.append(" UNION ");
                 }
-                sql.append(roleMenuSql.sql(orgRole.getRoleId()));
+                sql.append(roleMenuSql.roleMenu(orgRole.getRoleId()));
             }
             String finalSql = "SELECT sm.* FROM ("+ sql.toString() + " AS pm JOIN ("+ roleMenuSql.result(userId) + " AS sm ON sm.id = pm.id";
             return dao.queryForList(roleMenuSql.sqlUrl(finalSql), String.class);
