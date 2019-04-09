@@ -8,8 +8,8 @@ import com.rngay.service_authority.model.UAUrl;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.ContextAware;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.lang.reflect.Method;
 import java.util.*;
 
-@ConfigurationProperties(prefix = "platform")
 @Component
 public class StartUpRunner implements CommandLineRunner {
 
-    private String clearUrlOnRestart;
+    @Value(value = "${platform.clearUrlOnRestart}")
+    private Boolean clearUrlOnRestart;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -101,8 +101,7 @@ public class StartUpRunner implements CommandLineRunner {
                 map.put("common", commonMap.get(map.get("id")));
             }
 
-            boolean b = !"false".equals(clearUrlOnRestart);
-            if (b) {
+            if (clearUrlOnRestart) {
                 sqlDao.update("TRUNCATE TABLE ua_url");
                 sqlDao.batchInsert(urlList, "ua_url");
             } else {
@@ -141,11 +140,4 @@ public class StartUpRunner implements CommandLineRunner {
         }
     }
 
-    public String getClearUrlOnRestart() {
-        return clearUrlOnRestart;
-    }
-
-    public void setClearUrlOnRestart(String clearUrlOnRestart) {
-        this.clearUrlOnRestart = clearUrlOnRestart;
-    }
 }
