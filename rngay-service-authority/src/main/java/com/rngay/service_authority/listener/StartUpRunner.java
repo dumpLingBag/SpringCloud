@@ -28,7 +28,7 @@ public class StartUpRunner implements CommandLineRunner {
     private RedisUtil redisUtil;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Dao sqlDao = ContextAware.getSQLDao();
         ApplicationContext context = ContextAware.getContext();
         Map<String, Object> controllers = context.getBeansWithAnnotation(Controller.class);

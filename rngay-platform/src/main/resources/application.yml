@@ -23,6 +23,11 @@ spring:
 server:
   port: 9090
 
+netty-web-socket:
+  host: 127.0.0.1
+  path: /notice/socket
+  port: 9099
+
 jwt:
   secret: f4e2e52034348f86b67cde581c0f9eb5
   expire: 604800
