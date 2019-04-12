@@ -5,4 +5,4 @@ spring:
     active: dev
 
 server:
-  port: 9001
+  port: 9009
