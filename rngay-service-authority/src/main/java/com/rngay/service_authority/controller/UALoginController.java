@@ -76,7 +76,6 @@ public class UALoginController {
                     return Result.failMsg("账号或密码错误");
                 }
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
                 throw new BaseException(401, "账号或密码错误");
             }
         }
