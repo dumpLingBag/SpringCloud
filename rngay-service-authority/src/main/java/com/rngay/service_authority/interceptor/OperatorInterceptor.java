@@ -2,10 +2,12 @@ package com.rngay.service_authority.interceptor;
 
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.service_authority.contants.RedisKeys;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
 import com.rngay.common.exception.BaseException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -54,7 +56,11 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
                 throw new BaseException(500, e.getLocalizedMessage());
             }
 
-            String userToken = systemService.findToken(userId, new Date());
+            Object userToken = redisUtil.get(RedisKeys.getTokenKey(userId));
+            if (userToken == null || "".equals(userToken)) {
+                userToken = systemService.findToken(userId, new Date());
+            }
+
             if (userToken == null || "".equals(userToken)) {
                 throw new BaseException(401, "请重新登录");
             }

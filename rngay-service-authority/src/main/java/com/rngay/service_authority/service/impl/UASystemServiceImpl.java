@@ -4,6 +4,7 @@ import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.service_authority.contants.RedisKeys;
 import com.rngay.service_authority.dao.UARoleMenuDao;
 import com.rngay.service_authority.dao.UAUserRoleDao;
 import com.rngay.service_authority.model.UAUserToken;
@@ -125,7 +126,7 @@ public class UASystemServiceImpl implements UASystemService {
         String key = request.getServerName() + "_" + userId;
         System.out.println("--->tokenKey:" + key);
 
-        redisUtil.set(key, userDTO);
+        redisUtil.set(RedisKeys.getUserKey(key), userDTO);
 
         int user_id = dao.update(userToken, Cnd.where("user_id", "=", userId));
         if (user_id > 0) {

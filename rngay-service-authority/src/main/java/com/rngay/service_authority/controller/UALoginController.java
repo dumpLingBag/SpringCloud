@@ -5,6 +5,7 @@ import com.rngay.common.exception.BaseException;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.common.vo.Result;
+import com.rngay.service_authority.contants.RedisKeys;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
@@ -38,7 +39,7 @@ public class UALoginController {
         }
 
         String key = request.getServerName() + "_" + AuthorityUtil.getIPAddress(request) + "_" + account;
-        Object o = redisUtil.get(key);
+        Object o = redisUtil.get(RedisKeys.getFailCount(key));
         int value = 0;
         if (o instanceof Integer) {
             value = (int) o;
@@ -53,19 +54,20 @@ public class UALoginController {
         if (userResult == null) {
             value ++;
             if (value >= 5) {
-                redisUtil.set(key, value, 7200);
+                redisUtil.set(RedisKeys.getFailCount(key), value, 7200);
             }
             return Result.failMsg("用户名不存在");
         } else {
             try {
                 if (BCrypt.checkpw(password, userResult.getPassword())) {
+                    redisUtil.del(RedisKeys.getFailCount(key));
                     if (!account.equals("admin") && userResult.getEnable().equals(0)){
                         return Result.fail("账号被禁用！");
                     }
-                    redisUtil.del(key);
                     String token = jwtUtil.generateToken(userResult.getId());
                     systemService.insertToken(request, userResult, token);
 
+                    redisUtil.set(RedisKeys.getTokenKey(userResult.getId()), token);
                     Map<String, Object> map = new HashMap<>();
                     map.put("token", token);
                     map.put("userResult", userResult);
@@ -74,7 +76,6 @@ public class UALoginController {
                     return Result.failMsg("账号或密码错误");
                 }
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
                 throw new BaseException(401, "账号或密码错误");
             }
         }
