@@ -32,6 +32,8 @@ public class UASaveUserDTO extends CommonDTO {
     @NotNull(message = "请选择账号状态")
     private Integer enable;
 
+    private Integer orgId;
+
     private Date update_time;
 
     private Date create_time;
@@ -90,6 +92,14 @@ public class UASaveUserDTO extends CommonDTO {
 
     public void setEnable(Integer enable) {
         this.enable = enable;
+    }
+
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
     }
 
     public Date getUpdate_time() {

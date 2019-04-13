@@ -7,7 +7,7 @@ eureka:
     lease-expiration-duration-in-seconds: 2
   client:
     serviceUrl:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9001/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9009/eureka/
 
 spring:
   security:
