@@ -2,7 +2,7 @@ spring:
   application:
     name: platform
   profiles:
-    active: dev
+    active: prod
     include: feign-${spring.profiles.active}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
