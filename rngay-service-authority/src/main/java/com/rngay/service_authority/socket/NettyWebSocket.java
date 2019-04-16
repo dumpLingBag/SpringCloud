@@ -34,7 +34,7 @@ public class NettyWebSocket {
         this.session = session;
         webSocketSet.add(this);
         addOnlineCount();
-        log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount);
+        log.info("ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount);
     }
 
     /**

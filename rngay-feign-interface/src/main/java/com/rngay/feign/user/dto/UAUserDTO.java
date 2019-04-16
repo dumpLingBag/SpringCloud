@@ -32,6 +32,8 @@ public class UAUserDTO extends CommonDTO {
 
     private Integer enable;
 
+    private Integer isDelete;
+
     private List<Map<String, Object>> menuList;
 
     private Set<String> urlSet;
@@ -111,6 +113,14 @@ public class UAUserDTO extends CommonDTO {
 
     public void setEnable(Integer enable) {
         this.enable = enable;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     public Date getUpdate_time() {
