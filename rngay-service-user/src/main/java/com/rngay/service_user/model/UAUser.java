@@ -17,7 +17,7 @@ public class UAUser {
 
     private String name;
 
-    @Column(columnDefinition="int default 0")
+    @Column(columnDefinition= "int default 0")
     private Integer orgId;
 
     private String photo;
@@ -26,8 +26,11 @@ public class UAUser {
 
     private String mobile;
 
-    @Column(columnDefinition="int default 1")
+    @Column(columnDefinition= "int default 1")
     private Integer enable;
+
+    @Column(columnDefinition = "int default 1")
+    private Integer isDelete;
 
     private Date update_time;
 
@@ -103,6 +106,14 @@ public class UAUser {
 
     public void setEnable(Integer enable) {
         this.enable = enable;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     public Date getUpdate_time() {

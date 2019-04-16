@@ -26,17 +26,17 @@ public class UAUserDaoImpl implements UAUserDao {
 
     @Override
     public UAUserDTO findUser(String account, String password) {
-        return dao.find(UAUserDTO.class, Cnd.where("account","=", account).and("password","=", password));
+        return dao.find(UAUserDTO.class, Cnd.where("account","=", account).and("password","=", password).and("is_delete","=", 1));
     }
 
     @Override
     public UAUserDTO findByAccount(String account) {
-        return dao.find(UAUserDTO.class, Cnd.where("account","=", account));
+        return dao.find(UAUserDTO.class, Cnd.where("account","=", account).and("is_delete","=",1));
     }
 
     @Override
     public UAUserDTO findByMobile(String mobile) {
-        return dao.find(UAUserDTO.class, Cnd.where("mobile","=", mobile));
+        return dao.find(UAUserDTO.class, Cnd.where("mobile","=", mobile).and("is_delete","=",1));
     }
 
     @Override
@@ -61,6 +61,7 @@ public class UAUserDaoImpl implements UAUserDao {
         if (pageListDTO.getEnable() != null){
             cri.where().and("enable","=", pageListDTO.getEnable());
         }
+        cri.where().and("is_delete","=",1);
         return dao.paginate(UAUserDTO.class, pageListDTO.getCurrentPage(), pageListDTO.getPageSize(), cri);
     }
 
@@ -90,6 +91,8 @@ public class UAUserDaoImpl implements UAUserDao {
 
     @Override
     public int delete(Integer id) {
-        return dao.delete(UAUserDTO.class, id);
+        UAUserDTO userDTO = new UAUserDTO();
+        userDTO.setIsDelete(0);
+        return dao.update(userDTO, Cnd.where("id","=", id));
     }
 }
