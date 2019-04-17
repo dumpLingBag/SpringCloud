@@ -62,7 +62,7 @@ public class UALoginController {
                 if (BCrypt.checkpw(password, userResult.getPassword())) {
                     redisUtil.del(RedisKeys.getFailCount(key));
                     if (!account.equals("admin") && userResult.getEnable().equals(0)){
-                        return Result.fail("账号被禁用！");
+                        return Result.failMsg("账号被禁用！");
                     }
                     String token = jwtUtil.generateToken(userResult.getId());
                     systemService.insertToken(request, userResult, token);
