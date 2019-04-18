@@ -1,0 +1,43 @@
+feign:
+  httpclient:
+    enabled: true
+  client:
+    config:
+      default:
+        connect-timeout: 1000
+        read-timeout: 5000
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 4000
+      fallback:
+        isolation:
+          semaphore:
+            maxConcurrentRequests: 200
+      requestCache:
+        enabled: true
+      circuitBreaker:
+        forceClosed: false
+  threadpool:
+    default:
+      coreSize: 20
+      maximumSize: 200
+      maxQueueSize: 1000
+      queueSizeRejectionThreshold: 1000
+spring:
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+ribbon:
+  ConnectTimeout: 2000
+  ReadTimeout: 3000
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: 3
+  MaxAutoRetries: 1
