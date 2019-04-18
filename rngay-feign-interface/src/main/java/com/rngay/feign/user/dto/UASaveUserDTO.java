@@ -1,7 +1,6 @@
 package com.rngay.feign.user.dto;
 
 import com.rngay.feign.dto.CommonDTO;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Table;
 import javax.validation.constraints.*;
