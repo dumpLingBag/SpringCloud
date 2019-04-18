@@ -140,7 +140,7 @@ public class UASystemServiceImpl implements UASystemService {
     @Override
     public int deleteToken(HttpServletRequest request, Integer userId) {
         String key = request.getServerName() + "_" + userId;
-        redisUtil.del(key);
+        redisUtil.del(RedisKeys.getUserKey(key));
         UAUserToken user = dao.find(UAUserToken.class, Cnd.where("user_id", "=", userId));
         user.setToken(null);
         return dao.update(user, true);
@@ -158,7 +158,7 @@ public class UASystemServiceImpl implements UASystemService {
         if (token != null) {
             int userId = Integer.parseInt(jwtUtil.getSubject(token));
             String key = request.getServerName() + "_" + userId;
-            return (UAUserDTO) redisUtil.get(key);
+            return (UAUserDTO) redisUtil.get(RedisKeys.getUserKey(key));
         }
         return null;
     }
@@ -167,7 +167,7 @@ public class UASystemServiceImpl implements UASystemService {
     public int updateCurrentUser(HttpServletRequest request, UAUserDTO userDTO) {
         if (userDTO != null) {
             String key = request.getServerName() + "_" + userDTO.getId();
-            redisUtil.set(key, userDTO);
+            redisUtil.set(RedisKeys.getUserKey(key), userDTO);
             return 1;
         }
         return 0;
