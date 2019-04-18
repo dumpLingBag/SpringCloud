@@ -1,4 +1,4 @@
-package com.rngay.service_authority.config;
+package com.rngay.socket.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

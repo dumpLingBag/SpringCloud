@@ -40,4 +40,4 @@ ribbon:
   ReadTimeout: 3000
   OkToRetryOnAllOperations: true
   MaxAutoRetriesNextServer: 3
-  MaxAutoRetries: 1
+  MaxAutoRetries: 3

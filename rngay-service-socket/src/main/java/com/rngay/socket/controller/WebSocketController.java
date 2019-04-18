@@ -1,7 +1,7 @@
-package com.rngay.service_authority.controller;
+package com.rngay.socket.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.service_authority.socket.NettyWebSocket;
+import com.rngay.socket.NettyWebSocket;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;

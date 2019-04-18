@@ -1,4 +1,4 @@
-package com.rngay.service_authority.socket;
+package com.rngay.socket;
 
 import io.netty.handler.codec.http.HttpHeaders;
 import org.slf4j.Logger;
@@ -24,10 +24,10 @@ public class NettyWebSocket {
     private Session session;
 
     /**
-    * 当有新的WebSocket连接进入时，对该方法进行回调 注入参数的类型:Session、HttpHeaders、ParameterMap
-    * @Author pengcheng
-    * @Date 2019/4/10
-    **/
+     * 当有新的WebSocket连接进入时，对该方法进行回调 注入参数的类型:Session、HttpHeaders、ParameterMap
+     * @Author pengcheng
+     * @Date 2019/4/10
+     **/
     @OnOpen
     public void onOpen(Session session, HttpHeaders headers, ParameterMap parameterMap) throws IOException {
         this.userId = parameterMap.getParameter("userId");
@@ -38,10 +38,10 @@ public class NettyWebSocket {
     }
 
     /**
-    * 当有WebSocket连接关闭时，对该方法进行回调 注入参数的类型:Session
-    * @Author pengcheng
-    * @Date 2019/4/10
-    **/
+     * 当有WebSocket连接关闭时，对该方法进行回调 注入参数的类型:Session
+     * @Author pengcheng
+     * @Date 2019/4/10
+     **/
     @OnClose
     public void onClose(Session session) throws IOException {
         webSocketSet.remove(this);
@@ -50,10 +50,10 @@ public class NettyWebSocket {
     }
 
     /**
-    * 当有WebSocket抛出异常时，对该方法进行回调 注入参数的类型:Session、Throwable
-    * @Author pengcheng
-    * @Date 2019/4/10
-    **/
+     * 当有WebSocket抛出异常时，对该方法进行回调 注入参数的类型:Session、Throwable
+     * @Author pengcheng
+     * @Date 2019/4/10
+     **/
     @OnError
     public void onError(Session session, Throwable throwable) {
         session.sendText("消息出现异常");
@@ -61,10 +61,10 @@ public class NettyWebSocket {
     }
 
     /**
-    * 当接收到字符串消息时，对该方法进行回调 注入参数的类型:Session、String
-    * @Author pengcheng
-    * @Date 2019/4/10
-    **/
+     * 当接收到字符串消息时，对该方法进行回调 注入参数的类型:Session、String
+     * @Author pengcheng
+     * @Date 2019/4/10
+     **/
     @OnMessage
     public void OnMessage(Session session, String message) {
         log.info("收到新的消息 -> " + message);
@@ -72,10 +72,10 @@ public class NettyWebSocket {
     }
 
     /**
-    * 指定用户发送消息
-    * @Author pengcheng
-    * @Date 2019/4/10
-    **/
+     * 指定用户发送消息
+     * @Author pengcheng
+     * @Date 2019/4/10
+     **/
     public void sendUser(String message, String sendUserId) {
         for (NettyWebSocket item : webSocketSet) {
             if (item.userId.equals(sendUserId)) {
@@ -86,10 +86,10 @@ public class NettyWebSocket {
     }
 
     /**
-    * 群发消息
-    * @Author pengcheng
-    * @Date 2019/4/10
-    **/
+     * 群发消息
+     * @Author pengcheng
+     * @Date 2019/4/10
+     **/
     public void sendAll(String message) {
         for (NettyWebSocket item : webSocketSet) {
             item.session.sendText(message);

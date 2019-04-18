@@ -3,12 +3,13 @@ package com.rngay.feign.user.service;
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
+import com.rngay.feign.user.fallback.PFUserServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(value = "service-user")
+@FeignClient(value = "service-user", fallbackFactory = PFUserServiceFallback.class)
 public interface PFUserService {
 
     /**
