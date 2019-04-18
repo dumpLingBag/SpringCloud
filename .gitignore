@@ -1,7 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-/target/
-!.mvn/wrapper/maven-wrapper.jar
-/src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
