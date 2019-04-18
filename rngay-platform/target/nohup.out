@@ -1934,3 +1934,5 @@ java.lang.IllegalArgumentException: Invalid character found in method name. HTTP
 2019-04-18 10:36:00.694  INFO 23656 --- [trap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
 2019-04-18 10:41:00.695  INFO 23656 --- [trap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
 2019-04-18 10:46:00.695  INFO 23656 --- [trap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-04-18 10:51:00.695  INFO 23656 --- [trap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2019-04-18 10:56:00.697  INFO 23656 --- [trap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
