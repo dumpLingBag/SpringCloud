@@ -11,7 +11,7 @@ import org.yeauty.pojo.Session;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint(prefix = "netty-web-service_socket")
+@ServerEndpoint(prefix = "netty-web-socket")
 @Component
 public class NettyWebSocket {
 
