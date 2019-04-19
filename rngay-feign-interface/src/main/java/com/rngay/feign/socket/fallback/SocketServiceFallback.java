@@ -1,6 +1,7 @@
 package com.rngay.feign.socket.fallback;
 
 import com.rngay.common.vo.Result;
+import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.socket.dto.SendAllDTO;
 import com.rngay.feign.socket.dto.SendUserDTO;
 import com.rngay.feign.socket.service.SocketService;
@@ -18,6 +19,11 @@ public class SocketServiceFallback implements FallbackFactory<SocketService> {
 
             @Override
             public Result<?> sendAll(SendAllDTO sendAllDTO) {
+                return Result.failMsg(result);
+            }
+
+            @Override
+            public Result<?> getUser(PageQueryDTO queryDTO) {
                 return Result.failMsg(result);
             }
         };

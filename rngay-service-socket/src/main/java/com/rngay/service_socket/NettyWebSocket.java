@@ -1,7 +1,5 @@
 package com.rngay.service_socket;
 
-import com.rngay.common.exception.BaseException;
-import com.rngay.feign.socket.dto.SendUserDTO;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +10,7 @@ import org.yeauty.pojo.Session;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -36,11 +35,11 @@ public class NettyWebSocket {
     public void onOpen(Session session, HttpHeaders headers, ParameterMap parameterMap) throws IOException {
         String userId = parameterMap.getParameter("userId");
         if (userId != null && !"".equals(userId)) {
-            this.userId = parameterMap.getParameter("userId");
+            this.userId = userId;
             this.session = session;
             webSocketSet.add(this);
             addOnlineCount();
-            log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount);
+            log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount) ;
         }
     }
 
