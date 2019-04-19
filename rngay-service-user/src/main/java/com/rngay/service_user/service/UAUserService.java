@@ -3,6 +3,8 @@ package com.rngay.service_user.service;
 import com.rngay.common.vo.PageList;
 import com.rngay.feign.user.dto.*;
 
+import java.util.List;
+
 public interface UAUserService {
 
     /**
@@ -81,5 +83,12 @@ public interface UAUserService {
     * @Date: 2019/2/3
     */
     int delete(Integer id);
+
+    /**
+    * socket连接用户
+    * @Author pengcheng
+    * @Date 2019/4/19
+    **/
+    List<UAUserDTO> noticeUserList(List<String> userList);
 
 }

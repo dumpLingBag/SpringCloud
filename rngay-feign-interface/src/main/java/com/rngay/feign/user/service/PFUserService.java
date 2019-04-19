@@ -108,4 +108,12 @@ public interface PFUserService {
     @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.GET)
     Result<Integer> delete(@PathVariable Integer id);
 
+    /**
+    * socket连接用户
+    * @Author pengcheng
+    * @Date 2019/4/19
+    **/
+    @RequestMapping(value = "/user/noticeUserList", method = RequestMethod.POST)
+    Result<List<UAUserDTO>> noticeUserList(@RequestParam("userList") List<String> noticeUserList);
+
 }

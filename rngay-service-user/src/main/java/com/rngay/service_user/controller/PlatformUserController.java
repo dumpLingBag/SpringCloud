@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "user")
@@ -76,6 +77,11 @@ public class PlatformUserController {
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
     public Result<Integer> delete(@PathVariable Integer id){
         return Result.success(uaUserService.delete(id));
+    }
+
+    @RequestMapping(value = "noticeUserList", method = RequestMethod.POST)
+    public Result<List<UAUserDTO>> noticeUserList(@RequestParam("userList") List<String> userList) {
+        return Result.success(uaUserService.noticeUserList(userList));
     }
 
 }

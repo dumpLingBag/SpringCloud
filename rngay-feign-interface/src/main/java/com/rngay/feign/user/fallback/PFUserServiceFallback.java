@@ -74,6 +74,11 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             public Result<Integer> delete(Integer id) {
                 return Result.failMsg(result);
             }
+
+            @Override
+            public Result<List<UAUserDTO>> noticeUserList(List<String> noticeUserList) {
+                return Result.failMsg(result);
+            }
         };
     }
 }

@@ -1,5 +1,7 @@
 package com.rngay.service_socket;
 
+import com.rngay.common.exception.BaseException;
+import com.rngay.feign.socket.dto.SendUserDTO;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,8 @@ import org.yeauty.pojo.ParameterMap;
 import org.yeauty.pojo.Session;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(prefix = "netty-web-socket")
@@ -30,11 +34,14 @@ public class NettyWebSocket {
      **/
     @OnOpen
     public void onOpen(Session session, HttpHeaders headers, ParameterMap parameterMap) throws IOException {
-        this.userId = parameterMap.getParameter("userId");
-        this.session = session;
-        webSocketSet.add(this);
-        addOnlineCount();
-        log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount);
+        String userId = parameterMap.getParameter("userId");
+        if (userId != null && !"".equals(userId)) {
+            this.userId = parameterMap.getParameter("userId");
+            this.session = session;
+            webSocketSet.add(this);
+            addOnlineCount();
+            log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount);
+        }
     }
 
     /**
@@ -83,6 +90,19 @@ public class NettyWebSocket {
                 break;
             }
         }
+    }
+
+    /**
+    * 获取所有在线用户 Id
+    * @Author pengcheng
+    * @Date 2019/4/19
+    **/
+    public List<String> getUser() {
+        List<String> list = new ArrayList<>();
+        for (NettyWebSocket item : webSocketSet) {
+            list.add(item.userId);
+        }
+        return list;
     }
 
     /**

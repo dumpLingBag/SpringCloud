@@ -5,6 +5,7 @@ import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.model.UAUser;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UAUserDao {
@@ -85,5 +86,12 @@ public interface UAUserDao {
      * @Date: 2019/2/3
      */
     int delete(Integer id);
+
+    /**
+    * socket连接用户
+    * @Author pengcheng
+    * @Date 2019/4/19
+    **/
+    List<UAUserDTO> noticeUserList(List<String> userList);
 
 }

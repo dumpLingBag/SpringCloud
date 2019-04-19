@@ -7,6 +7,7 @@ import com.rngay.service_user.service.UAUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UAUserServiceImpl implements UAUserService {
@@ -67,5 +68,10 @@ public class UAUserServiceImpl implements UAUserService {
     @Override
     public int delete(Integer id) {
         return uaUserDao.delete(id);
+    }
+
+    @Override
+    public List<UAUserDTO> noticeUserList(List<String> userList) {
+        return uaUserDao.noticeUserList(userList);
     }
 }

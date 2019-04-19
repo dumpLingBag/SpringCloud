@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Repository
 public class UAUserDaoImpl implements UAUserDao {
@@ -94,5 +95,10 @@ public class UAUserDaoImpl implements UAUserDao {
         UAUserDTO userDTO = new UAUserDTO();
         userDTO.setIsDelete(0);
         return dao.update(userDTO, Cnd.where("id","=", id));
+    }
+
+    @Override
+    public List<UAUserDTO> noticeUserList(List<String> userList) {
+        return dao.query(UAUserDTO.class, Cnd.where("id","in", userList));
     }
 }

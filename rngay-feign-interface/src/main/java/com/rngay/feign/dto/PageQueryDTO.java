@@ -2,7 +2,7 @@ package com.rngay.feign.dto;
 
 public class PageQueryDTO extends CommonDTO {
 
-    private Integer currentPage;
+    private Integer currentPage = 1;
 
     private Integer pageSize = 10;
 
