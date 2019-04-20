@@ -5,6 +5,7 @@ import com.rngay.common.jpa.dao.sql.GroupBy;
 import com.rngay.common.jpa.dao.sql.OrderBy;
 import com.rngay.common.jpa.dao.util.cri.SqlExpressionGroup;
 import com.rngay.common.jpa.dao.util.cri.SimpleCriteria;
+import com.rngay.common.jpa.dao.util.cri.Static;
 
 public class Cnd implements Criteria, OrderBy, GroupBy {
 
@@ -20,6 +21,11 @@ public class Cnd implements Criteria, OrderBy, GroupBy {
 
     public Cnd and(String name, String op, Object value) {
         this.cri.where().and(name, op, value);
+        return this;
+    }
+
+    public Cnd and(Static sta) {
+        this.cri.where().and(sta);
         return this;
     }
 

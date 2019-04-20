@@ -23,7 +23,7 @@ public class UAMenuController {
     @Resource
     private UASystemService systemService;
 
-    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存菜单")
     public Result<?> save(@RequestBody UAMenu uaMenu){
         Integer menu = menuService.save(uaMenu);
         if (menu == null) {

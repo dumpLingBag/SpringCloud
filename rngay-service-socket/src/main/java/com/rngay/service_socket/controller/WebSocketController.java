@@ -22,14 +22,14 @@ public class WebSocketController {
 
     @RequestMapping(value = "sendUser", method = RequestMethod.POST)
     public Result<?> sendUser(@RequestParam("content") String content, @RequestParam("userId") String userId) {
-        nettyWebSocket.sendUser(content, userId);
-        return Result.success();
+        boolean b = nettyWebSocket.sendUser(content, userId);
+        return Result.success(b ? "发送成功" : "该账号已下线");
     }
 
     @RequestMapping(value = "sendAll", method = RequestMethod.POST)
     public Result<?> sendAll(@RequestParam("content") String content) {
-        nettyWebSocket.sendAll(content);
-        return Result.success();
+        boolean b = nettyWebSocket.sendAll(content);
+        return Result.success(b ? "群发消息成功" : "暂时没有用户在线");
     }
 
     @RequestMapping(value = "getUser", method = RequestMethod.POST)

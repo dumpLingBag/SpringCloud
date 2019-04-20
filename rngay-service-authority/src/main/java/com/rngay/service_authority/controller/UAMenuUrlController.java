@@ -31,12 +31,10 @@ public class UAMenuUrlController {
         return Result.success(null);
     }
 
-    @RequestMapping(value = "loadUrl", method = RequestMethod.GET)
-    public Result<?> loadUrl(Integer id) {
-        if (id != null) {
-            return Result.success(urlService.loadUrl(id));
-        }
-        return Result.failMsg("缺少 {id} 参数");
+    @RequestMapping(value = "loadUrl", method = RequestMethod.POST)
+    public Result<?> loadUrl(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
+        urlService.update(updateUrlDTO);
+        return Result.success(urlService.loadUrl(updateUrlDTO.getMenuId()));
     }
 
     @RequestMapping(value = "update", method = RequestMethod.POST)

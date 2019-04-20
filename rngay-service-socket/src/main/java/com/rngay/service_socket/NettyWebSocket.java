@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(prefix = "netty-web-socket")
@@ -39,7 +40,7 @@ public class NettyWebSocket {
             this.session = session;
             webSocketSet.add(this);
             addOnlineCount();
-            log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount) ;
+            log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount);
         }
     }
 
@@ -82,13 +83,14 @@ public class NettyWebSocket {
      * @Author pengcheng
      * @Date 2019/4/10
      **/
-    public void sendUser(String message, String sendUserId) {
+    public boolean sendUser(String message, String sendUserId) {
         for (NettyWebSocket item : webSocketSet) {
             if (item.userId.equals(sendUserId)) {
                 item.session.sendText(message);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     /**
@@ -109,10 +111,28 @@ public class NettyWebSocket {
      * @Author pengcheng
      * @Date 2019/4/10
      **/
-    public void sendAll(String message) {
-        for (NettyWebSocket item : webSocketSet) {
-            item.session.sendText(message);
+    public boolean sendAll(String message) {
+        if (webSocketSet.size() > 0) {
+            for (NettyWebSocket item : webSocketSet) {
+                try {
+                    item.session.sendText(message);
+                } catch (Exception e) {
+                    log.warn("ID为" + item.userId + "的用户消息发送失败");
+                }
+            }
+            return true;
         }
+        return false;
+    }
+
+    public boolean kickOut(String userId) {
+        for (NettyWebSocket item : webSocketSet) {
+            if (item.userId.equals(userId)) {
+                webSocketSet.remove(item);
+                return true;
+            }
+        }
+        return false;
     }
 
     public static synchronized int getOnlineCount() {

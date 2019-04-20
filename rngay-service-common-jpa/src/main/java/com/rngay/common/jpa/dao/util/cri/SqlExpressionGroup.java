@@ -47,6 +47,14 @@ public class SqlExpressionGroup {
         return this;
     }
 
+    public SqlExpressionGroup and(Static sta) {
+        if (sta != null) {
+            this.isWhere();
+            this.where.append(sta.toString());
+        }
+        return this;
+    }
+
     public SqlExpressionGroup andIn(String name, String... names) {
         return this;
     }

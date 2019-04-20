@@ -62,7 +62,7 @@ public class UALoginController {
                 if (BCrypt.checkpw(password, userResult.getPassword())) {
                     redisUtil.del(RedisKeys.getFailCount(key));
                     if (!account.equals("admin") && userResult.getEnable().equals(0)){
-                        return Result.fail("账号被禁用！");
+                        return Result.failMsg("账号被禁用！");
                     }
                     String token = jwtUtil.generateToken(userResult.getId());
                     systemService.insertToken(request, userResult, token);
@@ -73,6 +73,7 @@ public class UALoginController {
                     map.put("userResult", userResult);
                     return Result.success(map);
                 } else {
+                    redisUtil.set(RedisKeys.getFailCount(key), value);
                     return Result.failMsg("账号或密码错误");
                 }
             } catch (IllegalArgumentException e) {

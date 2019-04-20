@@ -2,6 +2,7 @@ package com.rngay.service_authority.service.impl;
 
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
+import com.rngay.common.jpa.dao.util.cri.Static;
 import com.rngay.feign.platform.MenuIdListDTO;
 import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.model.UAMenuUrl;
@@ -22,8 +23,12 @@ public class UAMenuServiceImpl implements UAMenuService {
     @Resource
     private Dao dao;
 
+    @Transactional
     @Override
     public Integer save(UAMenu uaMenu) {
+        UAMenu byId = dao.findById(UAMenu.class, uaMenu.getPid());
+        byId.setComponent(null);
+        dao.update(byId);
         return dao.insert(uaMenu);
     }
 
@@ -58,7 +63,7 @@ public class UAMenuServiceImpl implements UAMenuService {
 
     @Override
     public List<UAMenu> loadByPid() {
-        return dao.query(UAMenu.class, Cnd.where("pid","=",0));
+        return dao.query(UAMenu.class, Cnd.where("pid","=",0).and(new Static("component IS NULL")));
     }
 
     @Transactional
