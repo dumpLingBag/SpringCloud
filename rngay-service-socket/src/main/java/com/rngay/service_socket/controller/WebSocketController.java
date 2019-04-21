@@ -21,19 +21,19 @@ public class WebSocketController {
     private PFUserService userService;
 
     @RequestMapping(value = "sendUser", method = RequestMethod.POST)
-    public Result<?> sendUser(@RequestParam("content") String content, @RequestParam("userId") String userId) {
+    public Result<String> sendUser(@RequestParam("content") String content, @RequestParam("userId") String userId) {
         boolean b = nettyWebSocket.sendUser(content, userId);
         return Result.success(b ? "发送成功" : "该账号已下线");
     }
 
     @RequestMapping(value = "sendAll", method = RequestMethod.POST)
-    public Result<?> sendAll(@RequestParam("content") String content) {
+    public Result<String> sendAll(@RequestParam("content") String content) {
         boolean b = nettyWebSocket.sendAll(content);
         return Result.success(b ? "群发消息成功" : "暂时没有用户在线");
     }
 
     @RequestMapping(value = "getUser", method = RequestMethod.POST)
-    public Result<?> getUser(@RequestBody PageQueryDTO queryDTO) {
+    public Result<PageList<UAUserDTO>> getUser(@RequestBody PageQueryDTO queryDTO) {
         List<String> user = nettyWebSocket.getUser();
         if (user != null && !user.isEmpty()) {
             int current = (queryDTO.getCurrentPage() - 1) * queryDTO.getPageSize() - 1;
@@ -43,14 +43,20 @@ public class WebSocketController {
             List<String> list = user.size() >= pageSize ? user.subList(current, pageSize) : user;
 
             Result<List<UAUserDTO>> listResult = userService.noticeUserList(list);
-            PageList<UAUserDTO> pageList = new PageList<>();
-            pageList.setPageNumber(queryDTO.getCurrentPage());
-            pageList.setPageSize(queryDTO.getPageSize());
+            PageList<UAUserDTO> pageList = new PageList<>(queryDTO.getCurrentPage(), queryDTO.getPageSize(), user.size());
             pageList.setList(listResult.getData());
-            pageList.setTotalSize(user.size());
             return Result.success(pageList);
         }
         return Result.success(new PageList<>());
+    }
+
+    @RequestMapping(value = "kickOut", method = RequestMethod.GET)
+    public Result<String> kickOut(@RequestParam("userId") String userId) {
+        if (userId != null) {
+            boolean b = nettyWebSocket.kickOut(userId);
+            return Result.success(b ? "成功将用户踢下线" : "该用户已下线");
+        }
+        return Result.failMsg("请选择要踢出的用户");
     }
 
 }
