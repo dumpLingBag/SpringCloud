@@ -31,6 +31,7 @@ public class UAMenuUrlServiceImpl implements UAMenuUrlService {
             urlChildren.put("common", url.get("common"));
             urlChildren.put("pid", url.get("pid"));
             urlChildren.put("url", url.get("url"));
+            urlChildren.put("name", url.get("name"));
             urlChildren.put("children", getChildren(String.valueOf(url.get("id"))));
             list.add(urlChildren);
         }
@@ -83,6 +84,7 @@ public class UAMenuUrlServiceImpl implements UAMenuUrlService {
         urlChildren.put("common", url.get("common"));
         urlChildren.put("pid", url.get("pid"));
         urlChildren.put("url", url.get("url"));
+        urlChildren.put("name", url.get("name"));
         urlChildren.put("children", getChildren(String.valueOf(url.get("id"))));
         return urlChildren;
     }

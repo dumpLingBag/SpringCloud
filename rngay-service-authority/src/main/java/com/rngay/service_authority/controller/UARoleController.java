@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "authorityRole")
+@RequestMapping(value = "authorityRole", name = "角色管理")
 public class UARoleController {
 
     @Resource
@@ -22,7 +22,7 @@ public class UARoleController {
     @Resource
     private UARoleService roleService;
 
-    @RequestMapping(value = "load", method = RequestMethod.GET)
+    @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载角色")
     public Result<?> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
@@ -31,7 +31,7 @@ public class UARoleController {
         return Result.success(roleService.load(orgId));
     }
 
-    @RequestMapping(value = "loadByPid", method = RequestMethod.GET)
+    @RequestMapping(value = "loadByPid", method = RequestMethod.GET, name = "获取pid为0的角色")
     public Result<?> loadByPid(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null) {
@@ -40,7 +40,7 @@ public class UARoleController {
         return Result.failMsg("角色加载失败");
     }
 
-    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @RequestMapping(value = "save", method = RequestMethod.POST, name = "添加角色")
     public Result<?> save(HttpServletRequest request, @RequestBody UARole uaRole) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
@@ -54,7 +54,7 @@ public class UARoleController {
         return Result.success(role);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.POST, name = "修改角色")
     public Result<?> update(@RequestBody UARole uaRole) {
         Integer role = roleService.update(uaRole);
         if (role == null) {
@@ -63,7 +63,7 @@ public class UARoleController {
         return Result.success(role);
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "delete", method = RequestMethod.POST, name = "删除角色")
     public Result<?> delete(@RequestBody RoleIdListDTO listDTO) {
         if (listDTO.getRoleIdList() == null || listDTO.getRoleIdList().isEmpty()) {
             return Result.failMsg("删除角色失败");

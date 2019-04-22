@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "authorityLogin")
+@RequestMapping(value = "authorityLogin", name = "登录")
 public class UALoginController {
 
     @Resource
@@ -32,7 +32,7 @@ public class UALoginController {
     @Resource
     private JwtUtil jwtUtil;
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST, name = "用户登录")
     public Result<Map<String, Object>> login(HttpServletRequest request, String account, String password){
         if (account == null || "".equals(account) || password == null || "".equals(password)) {
             return Result.failMsg("账号或密码不能为空");

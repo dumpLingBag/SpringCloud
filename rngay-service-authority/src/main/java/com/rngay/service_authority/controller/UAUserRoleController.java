@@ -12,13 +12,13 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "authorityUserRole")
+@RequestMapping(value = "authorityUserRole", name = "用户角色")
 public class UAUserRoleController {
 
     @Resource
     private UAUserRoleService userRoleService;
 
-    @RequestMapping(value = "load", method = RequestMethod.GET)
+    @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载用户的权限")
     public Result<?> load(Integer userId) {
         if (userId != null) {
             return Result.success(userRoleService.load(userId));
@@ -26,7 +26,7 @@ public class UAUserRoleController {
         return Result.failMsg("获取用户角色失败");
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.POST, name = "更新用户角色")
     public Result<?> update(@Valid @RequestBody UserRoleUpdateDTO updateDTO) {
         return Result.success(userRoleService.update(updateDTO));
     }

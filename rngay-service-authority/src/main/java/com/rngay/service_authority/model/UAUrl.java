@@ -14,6 +14,7 @@ public class UAUrl implements Serializable {
     private String url;
     private String pid;
     private Integer common;
+    private String name;
 
     public String getId() {
         return id;
@@ -45,5 +46,13 @@ public class UAUrl implements Serializable {
 
     public void setCommon(Integer common) {
         this.common = common;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

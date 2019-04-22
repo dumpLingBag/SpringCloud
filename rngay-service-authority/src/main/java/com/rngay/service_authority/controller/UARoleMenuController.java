@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "authorityRoleMenu")
+@RequestMapping(value = "authorityRoleMenu", name = "角色菜单")
 public class UARoleMenuController {
 
     @Resource
@@ -22,13 +22,13 @@ public class UARoleMenuController {
     @Resource
     private UARoleMenuService roleMenuService;
 
-    @RequestMapping(value = "load", method = RequestMethod.GET)
+    @RequestMapping(value = "load", method = RequestMethod.GET, name = "根据orgId加载关联的菜单")
     public Result<?> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         return Result.success(roleMenuService.load(orgId));
     }
 
-    @RequestMapping(value = "loadMenu", method = RequestMethod.GET)
+    @RequestMapping(value = "loadMenu", method = RequestMethod.GET, name = "根据roleId加载菜单")
     public Result<?> loadMenu(Integer roleId) {
         if (roleId == null) {
             return Result.failMsg("加载菜单失败");
@@ -36,7 +36,7 @@ public class UARoleMenuController {
         return Result.success(roleMenuService.loadMenu(roleId));
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.POST, name = "更新角色选择菜单")
     public Result<?> update(@Valid @RequestBody UpdateRoleMenuDTO roleMenu) {
         return Result.success(roleMenuService.update(roleMenu));
     }

@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(value = "authorityCommonUrl")
+@RequestMapping(value = "authorityCommonUrl", name = "公共权限")
 public class UACommonController {
 
     @Resource
@@ -24,7 +24,7 @@ public class UACommonController {
     @Resource
     private UAMenuUrlService menuUrlService;
 
-    @RequestMapping(value = "load", method = RequestMethod.GET)
+    @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载权限")
     public Result<?> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId.equals(0)) {
@@ -33,7 +33,7 @@ public class UACommonController {
         return Result.success(null);
     }
 
-    @RequestMapping(value = "loadOpen", method = RequestMethod.GET)
+    @RequestMapping(value = "loadOpen", method = RequestMethod.GET, name = "选中的权限")
     public Result<?> loadOpen(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId.equals(0)) {
@@ -42,7 +42,7 @@ public class UACommonController {
         return Result.success(null);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.POST, name = "选中权限")
     public Result<?> update(@RequestBody CommonUrlDTO urlDTO) {
         if (urlDTO.getUrlId() == null || urlDTO.getUrlId().isEmpty()) {
             return Result.failMsg("公共权限修改失败");

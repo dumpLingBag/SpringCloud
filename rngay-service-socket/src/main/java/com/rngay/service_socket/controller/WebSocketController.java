@@ -1,11 +1,13 @@
 package com.rngay.service_socket.controller;
 
+import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_socket.NettyWebSocket;
+import com.rngay.service_socket.contants.RedisKeys;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,13 +21,22 @@ public class WebSocketController {
     private NettyWebSocket nettyWebSocket;
     @Resource
     private PFUserService userService;
+    @Resource
+    private RedisUtil redisUtil;
 
     @RequestMapping(value = "sendUser", method = RequestMethod.POST)
     public Result<String> sendUser(@RequestParam("content") String content, @RequestParam("userId") String userId) {
+        Object o = redisUtil.get(RedisKeys.getBanned(userId));
+        if (o != null) {
+            return Result.failMsg("该用户已被禁言");
+        }
         boolean b = nettyWebSocket.sendUser(content, userId);
         return Result.success(b ? "发送成功" : "该账号已下线");
     }
 
+    /*
+    * 禁言用户没下线也能接收到群发消息
+    * */
     @RequestMapping(value = "sendAll", method = RequestMethod.POST)
     public Result<String> sendAll(@RequestParam("content") String content) {
         boolean b = nettyWebSocket.sendAll(content);
@@ -56,7 +67,15 @@ public class WebSocketController {
             boolean b = nettyWebSocket.kickOut(userId);
             return Result.success(b ? "成功将用户踢下线" : "该用户已下线");
         }
-        return Result.failMsg("请选择要踢出的用户");
+        return Result.failMsg("操作失败");
+    }
+
+    @RequestMapping(value = "banned", method = RequestMethod.POST)
+    public Result<?> banned(@RequestParam("userId") String userId, @RequestParam("expire") Integer expire) {
+        if (userId != null) {
+            redisUtil.set(RedisKeys.getBanned(userId), userId, expire == null ? 1000 * 60 * 30 : expire);
+        }
+        return Result.failMsg("禁言用户失败");
     }
 
 }

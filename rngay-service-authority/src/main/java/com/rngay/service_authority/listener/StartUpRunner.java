@@ -52,6 +52,7 @@ public class StartUpRunner implements CommandLineRunner {
                                         for (String methodMapping : methodMappings) {
                                             Map<String, String> methodMappingMap = new HashMap<>();
                                             methodMappingMap.put("url", methodMapping);
+                                            methodMappingMap.put("name", methodAnnotation.name());
                                             methodMappingList.add(methodMappingMap);
                                         }
                                     }
@@ -65,6 +66,7 @@ public class StartUpRunner implements CommandLineRunner {
                                 Map<String, Object> classUrl = new HashMap<>();
                                 classUrl.put("id", classMapping);
                                 classUrl.put("url", classMapping);
+                                classUrl.put("name", classAnnotation.name());
                                 urlList.add(classUrl);
                                 Set<String> mappingUrlSet = new HashSet<>();
                                 for (Map<String, String> methodMappingMap : methodMappingList) {
@@ -78,6 +80,7 @@ public class StartUpRunner implements CommandLineRunner {
                                         methodUrl.put("id", classMapping+"_"+url);
                                         methodUrl.put("url", classMapping+"/"+url);
                                         methodUrl.put("pid", classMapping);
+                                        methodUrl.put("name", methodMappingMap.get("name"));
                                         urlList.add(methodUrl);
                                     }
                                 }
