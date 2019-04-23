@@ -24,7 +24,7 @@ public class UAMenuController {
     private UASystemService systemService;
 
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存菜单")
-    public Result<?> save(@RequestBody UAMenu uaMenu){
+    public Result<?> save(@RequestBody UAMenu uaMenu) {
         Integer menu = menuService.save(uaMenu);
         if (menu == null) {
             return Result.failMsg("保存失败");
@@ -42,7 +42,7 @@ public class UAMenuController {
     }
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载菜单")
-    public Result<?> load(HttpServletRequest request){
+    public Result<?> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId.equals(0)) {
             return Result.success(menuService.load());

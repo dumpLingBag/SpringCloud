@@ -1,17 +1,26 @@
 package com.rngay.service_socket;
 
+import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.jpa.dao.Dao;
+import com.rngay.common.vo.Result;
+import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.feign.user.service.PFUserService;
+import com.rngay.service_socket.contants.RedisKeys;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yeauty.annotation.*;
 import org.yeauty.pojo.ParameterMap;
 import org.yeauty.pojo.Session;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint(prefix = "netty-web-socket")
 @Component
@@ -19,7 +28,21 @@ public class NettyWebSocket {
 
     private Logger log = LoggerFactory.getLogger(NettyWebSocket.class);
 
-    private static CopyOnWriteArraySet<NettyWebSocket> webSocketSet = new CopyOnWriteArraySet<>();
+    public NettyWebSocket() {}
+
+    @Resource
+    public void setUserService(PFUserService userService) {
+        NettyWebSocket.userService = userService;
+    }
+
+    @Resource
+    public void setRedisUtil(RedisUtil redisUtil) {
+        NettyWebSocket.redisUtil = redisUtil;
+    }
+
+    private static RedisUtil redisUtil;
+    private static PFUserService userService;
+    private static ConcurrentHashMap<String, NettyWebSocket> webSocketSet = new ConcurrentHashMap<>();
     private static int onlineCount = 0;
 
     private String userId = "";
@@ -36,7 +59,7 @@ public class NettyWebSocket {
         if (userId != null && !"".equals(userId)) {
             this.userId = userId;
             this.session = session;
-            webSocketSet.add(this);
+            webSocketSet.put(userId, this);
             addOnlineCount();
             log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount);
         }
@@ -49,7 +72,7 @@ public class NettyWebSocket {
      **/
     @OnClose
     public void onClose(Session session) throws IOException {
-        webSocketSet.remove(this);
+        webSocketSet.remove(this.userId);
         subOnlineCount();
         log.info("有一连接关闭！当前在线人数为 -> " + getOnlineCount());
     }
@@ -82,13 +105,13 @@ public class NettyWebSocket {
      * @Date 2019/4/10
      **/
     public boolean sendUser(String message, String sendUserId) {
-        for (NettyWebSocket item : webSocketSet) {
-            if (item.userId.equals(sendUserId)) {
-                item.session.sendText(message);
-                return true;
-            }
+        try {
+            NettyWebSocket nettyWebSocket = webSocketSet.get(sendUserId);
+            nettyWebSocket.session.sendText(message);
+        } catch (Exception e) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -98,7 +121,7 @@ public class NettyWebSocket {
     **/
     public List<String> getUser() {
         List<String> list = new ArrayList<>();
-        for (NettyWebSocket item : webSocketSet) {
+        for (NettyWebSocket item : webSocketSet.values()) {
             list.add(item.userId);
         }
         return list;
@@ -111,7 +134,7 @@ public class NettyWebSocket {
      **/
     public boolean sendAll(String message) {
         if (webSocketSet.size() > 0) {
-            for (NettyWebSocket item : webSocketSet) {
+            for (NettyWebSocket item : webSocketSet.values()) {
                 try {
                     item.session.sendText(message);
                 } catch (Exception e) {
@@ -124,24 +147,19 @@ public class NettyWebSocket {
     }
 
     public boolean kickOut(String userId) {
-        for (NettyWebSocket item : webSocketSet) {
-            if (item.userId.equals(userId)) {
-                webSocketSet.remove(item);
-                return true;
-            }
-        }
-        return false;
+        NettyWebSocket remove = webSocketSet.remove(userId);
+        return remove == null;
     }
 
-    public static synchronized int getOnlineCount() {
+    private static synchronized int getOnlineCount() {
         return onlineCount;
     }
 
-    public static synchronized void addOnlineCount() {
+    private static synchronized void addOnlineCount() {
         NettyWebSocket.onlineCount++;
     }
 
-    public static synchronized void subOnlineCount() {
+    private static synchronized void subOnlineCount() {
         NettyWebSocket.onlineCount--;
     }
 

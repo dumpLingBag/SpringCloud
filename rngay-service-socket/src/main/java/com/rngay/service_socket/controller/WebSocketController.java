@@ -11,7 +11,9 @@ import com.rngay.service_socket.contants.RedisKeys;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "socket")
@@ -44,20 +46,28 @@ public class WebSocketController {
     }
 
     @RequestMapping(value = "getUser", method = RequestMethod.POST)
-    public Result<PageList<UAUserDTO>> getUser(@RequestBody PageQueryDTO queryDTO) {
-        List<String> user = nettyWebSocket.getUser();
-        if (user != null && !user.isEmpty()) {
-            int current = (queryDTO.getCurrentPage() - 1) * queryDTO.getPageSize() - 1;
-            current = current <= 0 ? 0 : current;
-
-            int pageSize = current + (queryDTO.getPageSize() - 1);
-            List<String> list = user.size() >= pageSize ? user.subList(current, pageSize) : user;
-
-            Result<List<UAUserDTO>> listResult = userService.noticeUserList(list);
-            PageList<UAUserDTO> pageList = new PageList<>(queryDTO.getCurrentPage(), queryDTO.getPageSize(), user.size());
-            pageList.setList(listResult.getData());
+    public Result<PageList<?>> getUser(@RequestBody PageQueryDTO queryDTO) {
+        Set<Object> key = redisUtil.range(RedisKeys.getSetKey("key"), 0, -1);
+        if (key.size() > 0) {
+            List<Object> list = new ArrayList<>(key);
+            PageList<Object> pageList = new PageList<>(queryDTO.getCurrentPage(), queryDTO.getPageSize(), key.size());
+            pageList.setList(list);
             return Result.success(pageList);
         }
+
+//        List<String> user = nettyWebSocket.getUser();
+//        if (user != null && !user.isEmpty()) {
+//            int current = (queryDTO.getCurrentPage() - 1) * queryDTO.getPageSize() - 1;
+//            current = current <= 0 ? 0 : current;
+//
+//            int pageSize = current + (queryDTO.getPageSize() - 1);
+//            List<String> list = user.size() >= pageSize ? user.subList(current, pageSize) : user;
+//
+//            Result<List<UAUserDTO>> listResult = userService.noticeUserList(list);
+//            PageList<UAUserDTO> pageList = new PageList<>(queryDTO.getCurrentPage(), queryDTO.getPageSize(), user.size());
+//            pageList.setList(listResult.getData());
+//            return Result.success(pageList);
+//        }
         return Result.success(new PageList<>());
     }
 
