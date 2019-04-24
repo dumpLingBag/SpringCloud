@@ -158,7 +158,11 @@ public class UASystemServiceImpl implements UASystemService {
         if (token != null) {
             int userId = Integer.parseInt(jwtUtil.getSubject(token));
             String key = request.getServerName() + "_" + userId;
-            return (UAUserDTO) redisUtil.get(RedisKeys.getUserKey(key));
+            Object user = redisUtil.get(RedisKeys.getUserKey(key));
+            if (user == null) {
+                return null;
+            }
+            return (UAUserDTO) user;
         }
         return null;
     }

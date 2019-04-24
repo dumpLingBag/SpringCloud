@@ -1,6 +1,8 @@
 package com.rngay.common.cache;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -150,4 +152,9 @@ public class RedisUtil {
     public Object leftPop(String key) {
         return redisTemplate.opsForList().leftPop(key);
     }
+
+    public Long getExpire(String key) {
+        return redisTemplate.getExpire(key);
+    }
+
 }

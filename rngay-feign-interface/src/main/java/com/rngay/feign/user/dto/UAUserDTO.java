@@ -1,6 +1,5 @@
 package com.rngay.feign.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rngay.feign.dto.CommonDTO;
 
 import javax.persistence.Id;
@@ -38,10 +37,11 @@ public class UAUserDTO extends CommonDTO {
 
     private Set<String> urlSet;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date update_time;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date create_time;
+    private Date updateTime;
+
+    private Date createTime;
+
+    private Date expireTime;
 
     public Integer getId() {
         return id;
@@ -123,20 +123,28 @@ public class UAUserDTO extends CommonDTO {
         this.isDelete = isDelete;
     }
 
-    public Date getUpdate_time() {
-        return update_time;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Date update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Date expireTime) {
+        this.expireTime = expireTime;
     }
 
     public List<Map<String, Object>> getMenuList() {
