@@ -5,22 +5,21 @@ import com.rngay.feign.platform.MenuIdListDTO;
 import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.service.UAMenuService;
 import com.rngay.service_authority.service.UASystemService;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "authorityMenu", name = "菜单管理")
 public class UAMenuController {
 
-    @Resource
+    @Autowired
     private UAMenuService menuService;
-    @Resource
+    @Autowired
     private UASystemService systemService;
 
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存菜单")

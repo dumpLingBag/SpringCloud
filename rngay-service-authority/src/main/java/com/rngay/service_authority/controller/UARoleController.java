@@ -5,21 +5,21 @@ import com.rngay.feign.platform.RoleIdListDTO;
 import com.rngay.service_authority.model.UARole;
 import com.rngay.service_authority.service.UARoleService;
 import com.rngay.service_authority.service.UASystemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "authorityRole", name = "角色管理")
 public class UARoleController {
 
-    @Resource
+    @Autowired
     private UASystemService systemService;
-    @Resource
+    @Autowired
     private UARoleService roleService;
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载角色")

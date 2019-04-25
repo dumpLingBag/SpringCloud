@@ -34,6 +34,11 @@ public class SocketServiceFallback implements FallbackFactory<SocketService> {
             public Result<?> banned(String userId, Integer expire) {
                 return Result.failMsg(result);
             }
+
+            @Override
+            public Result<?> getMessage(String userId) {
+                return Result.failMsg(result);
+            }
         };
     }
 }

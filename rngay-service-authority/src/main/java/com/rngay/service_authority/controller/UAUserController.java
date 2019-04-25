@@ -5,10 +5,10 @@ import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.service.UASystemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -18,9 +18,9 @@ import java.util.Map;
 @RequestMapping(value = "user", name = "用户管理")
 public class UAUserController {
 
-    @Resource
+    @Autowired
     private PFUserService pfUserService;
-    @Resource
+    @Autowired
     private UASystemService systemService;
 
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")

@@ -6,9 +6,9 @@ import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.service_socket.NettyWebSocket;
 import com.rngay.service_socket.contants.RedisKeys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -17,9 +17,9 @@ import java.util.Set;
 @RequestMapping(value = "socket")
 public class WebSocketController {
 
-    @Resource
+    @Autowired
     private NettyWebSocket nettyWebSocket;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
 
     @RequestMapping(value = "sendUser", method = RequestMethod.POST)
@@ -43,7 +43,11 @@ public class WebSocketController {
 
     @RequestMapping(value = "getUser", method = RequestMethod.POST)
     public Result<PageList<?>> getUser(@RequestBody PageQueryDTO queryDTO) {
-        Set<Object> user = redisUtil.range(RedisKeys.KEY_SET_USER, 0, -1);
+        Integer currentPage = queryDTO.getCurrentPage();
+        Integer pageSize = queryDTO.getPageSize();
+        currentPage = (currentPage - 1) * pageSize;
+        pageSize = currentPage == 0 ? pageSize - 1 : currentPage * pageSize - 1;
+        Set<Object> user = redisUtil.range(RedisKeys.KEY_SET_USER, currentPage, pageSize);
         if (user.size() > 0) {
             List<Object> list = new ArrayList<>(user);
             PageList<Object> pageList = new PageList<>(queryDTO.getCurrentPage(), queryDTO.getPageSize(), list.size());

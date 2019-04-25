@@ -4,12 +4,12 @@ import com.rngay.common.vo.Result;
 import com.rngay.feign.platform.UpdateRoleMenuDTO;
 import com.rngay.service_authority.service.UARoleMenuService;
 import com.rngay.service_authority.service.UASystemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -17,9 +17,9 @@ import javax.validation.Valid;
 @RequestMapping(value = "authorityRoleMenu", name = "角色菜单")
 public class UARoleMenuController {
 
-    @Resource
+    @Autowired
     private UASystemService systemService;
-    @Resource
+    @Autowired
     private UARoleMenuService roleMenuService;
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "根据orgId加载关联的菜单")

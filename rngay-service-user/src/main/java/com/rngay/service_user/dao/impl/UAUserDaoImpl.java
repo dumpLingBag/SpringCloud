@@ -8,16 +8,16 @@ import com.rngay.common.vo.PageList;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.dao.UAUserDao;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Repository
 public class UAUserDaoImpl implements UAUserDao {
 
-    @Resource
+    @Autowired
     private Dao dao;
 
     @Override
@@ -98,7 +98,7 @@ public class UAUserDaoImpl implements UAUserDao {
     }
 
     @Override
-    public List<UAUserDTO> noticeUserList(List<String> userList) {
+    public List<UAUserDTO> userIdForList(List<String> userList) {
         return dao.query(UAUserDTO.class, Cnd.where("id","in", userList));
     }
 }

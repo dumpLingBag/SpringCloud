@@ -5,16 +5,16 @@ import com.rngay.common.jpa.dao.Dao;
 import com.rngay.feign.platform.CommonUrlDTO;
 import com.rngay.service_authority.model.UAUrl;
 import com.rngay.service_authority.service.UACommonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class UACommonServiceImpl implements UACommonService {
 
-    @Resource
+    @Autowired
     private Dao dao;
 
     @Transactional

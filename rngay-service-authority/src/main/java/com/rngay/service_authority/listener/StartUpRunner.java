@@ -7,6 +7,7 @@ import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.model.UAUrl;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.ContextAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class StartUpRunner implements CommandLineRunner {
     @Value(value = "${platform.clearUrlOnRestart}")
     private Boolean clearUrlOnRestart;
 
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
 
     @Override

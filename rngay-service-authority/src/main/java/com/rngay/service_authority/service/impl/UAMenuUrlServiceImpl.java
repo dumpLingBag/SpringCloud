@@ -6,10 +6,10 @@ import com.rngay.feign.platform.MenuUrlDTO;
 import com.rngay.feign.platform.UpdateUrlDTO;
 import com.rngay.service_authority.model.UAMenuUrl;
 import com.rngay.service_authority.service.UAMenuUrlService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 public class UAMenuUrlServiceImpl implements UAMenuUrlService {
 
-    @Resource
+    @Autowired
     private Dao dao;
 
     @Override

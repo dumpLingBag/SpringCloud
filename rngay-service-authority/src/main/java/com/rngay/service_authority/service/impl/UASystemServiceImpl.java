@@ -12,24 +12,24 @@ import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
 import com.rngay.service_authority.util.SortUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Service
 public class UASystemServiceImpl implements UASystemService {
 
-    @Resource
+    @Autowired
     private Dao dao;
-    @Resource
+    @Autowired
     private UARoleMenuDao roleMenuDao;
-    @Resource
+    @Autowired
     private UAUserRoleDao userRoleDao;
-    @Resource
+    @Autowired
     private JwtUtil jwtUtil;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
 
     @Override

@@ -5,23 +5,23 @@ import com.rngay.feign.platform.CommonUrlDTO;
 import com.rngay.service_authority.service.UACommonService;
 import com.rngay.service_authority.service.UAMenuUrlService;
 import com.rngay.service_authority.service.UASystemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "authorityCommonUrl", name = "公共权限")
 public class UACommonController {
 
-    @Resource
+    @Autowired
     private UASystemService systemService;
-    @Resource
+    @Autowired
     private UACommonService commonService;
-    @Resource
+    @Autowired
     private UAMenuUrlService menuUrlService;
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载权限")

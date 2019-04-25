@@ -89,6 +89,6 @@ public interface UAUserService {
     * @Author pengcheng
     * @Date 2019/4/19
     **/
-    List<UAUserDTO> noticeUserList(List<String> userList);
+    List<UAUserDTO> userIdForList(List<String> userList);
 
 }

@@ -4,12 +4,12 @@ import com.rngay.common.vo.Result;
 import com.rngay.feign.platform.UpdateUrlDTO;
 import com.rngay.service_authority.service.UAMenuUrlService;
 import com.rngay.service_authority.service.UASystemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -17,9 +17,9 @@ import javax.validation.Valid;
 @RequestMapping(value = "authorityMenuUrl", name = "菜单权限")
 public class UAMenuUrlController {
 
-    @Resource
+    @Autowired
     private UAMenuUrlService urlService;
-    @Resource
+    @Autowired
     private UASystemService systemService;
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载所有url")

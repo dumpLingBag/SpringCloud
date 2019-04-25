@@ -3,15 +3,16 @@ package com.rngay.service_authority.controller;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.socket.service.SocketService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "socket", name = "消息通知")
 public class WebSocketController {
 
-    @Resource
+    @Autowired
     private SocketService socketService;
 
     @RequestMapping(value = "sendUser", method = RequestMethod.POST, name = "给指定用户发消息")
@@ -25,7 +26,7 @@ public class WebSocketController {
     }
 
     @RequestMapping(value = "getUser", method = RequestMethod.POST, name = "获取在线用户")
-    public Result<?> getUser(@RequestBody PageQueryDTO queryDTO) {
+    public Result<?> getUser(@Valid @RequestBody PageQueryDTO queryDTO) {
         return socketService.getUser(queryDTO);
     }
 

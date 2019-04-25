@@ -1,39 +1,38 @@
 package com.rngay.service_socket;
 
 import com.rngay.common.cache.RedisUtil;
-import com.rngay.common.util.SerializeUtil;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
+import com.rngay.service_socket.contants.Contants;
 import com.rngay.service_socket.contants.RedisKeys;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yeauty.annotation.*;
 import org.yeauty.pojo.ParameterMap;
 import org.yeauty.pojo.Session;
 
-import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint(prefix = "netty-web-socket")
 @Component
 public class NettyWebSocket {
 
-    private Logger log = LoggerFactory.getLogger(NettyWebSocket.class);
+    private Logger logger = LoggerFactory.getLogger(NettyWebSocket.class);
 
     public NettyWebSocket() {}
 
-    @Resource
+    @Autowired
     public void setUserService(PFUserService userService) {
         NettyWebSocket.userService = userService;
     }
 
-    @Resource
+    @Autowired
     public void setRedisUtil(RedisUtil redisUtil) {
         NettyWebSocket.redisUtil = redisUtil;
     }
@@ -65,7 +64,7 @@ public class NettyWebSocket {
                 redisUtil.set(RedisKeys.getUserKey(userId), user);
             }
             addOnlineCount();
-            log.info("用户ID为 -> "+ this.userId +" 的用户加入了，当前在线人数为 -> " + onlineCount);
+            logger.info("用户ID为 -> "+ userId +" 的用户加入了，当前在线人数为 -> " + getOnlineCount());
         }
     }
 
@@ -82,7 +81,7 @@ public class NettyWebSocket {
             redisUtil.del(RedisKeys.getUserKey(this.userId));
             webSocketSet.remove(this.userId);
             subOnlineCount();
-            log.info("有一连接关闭！当前在线人数为 -> " + getOnlineCount());
+            logger.info("有一连接关闭！当前在线人数为 -> " + getOnlineCount());
         }
     }
 
@@ -104,7 +103,7 @@ public class NettyWebSocket {
      **/
     @OnMessage
     public void OnMessage(Session session, String message) {
-        log.info("收到新的消息 -> " + message);
+        logger.info("收到新的消息 -> " + message);
         session.sendText("Hello Netty!");
     }
 
@@ -117,25 +116,12 @@ public class NettyWebSocket {
         try {
             NettyWebSocket nettyWebSocket = webSocketSet.get(sendUserId);
             nettyWebSocket.session.sendText(message);
-            redisUtil.zadd(RedisKeys.getMessage(sendUserId), new Date().getTime(), message);
-            redisUtil.expire(RedisKeys.getMessage(sendUserId), 60 * 30);
+            redisUtil.zadd(RedisKeys.getMessage(sendUserId), Double.valueOf(sendUserId), message(message, sendUserId));
+            redisUtil.expire(RedisKeys.getMessage(sendUserId), Contants.EXPiRE_MESSAGE);
         } catch (Exception e) {
             return false;
         }
         return true;
-    }
-
-    /**
-    * 获取所有在线用户 Id
-    * @Author pengcheng
-    * @Date 2019/4/19
-    **/
-    public List<String> getUser() {
-        List<String> list = new ArrayList<>();
-        for (NettyWebSocket item : webSocketSet.values()) {
-            list.add(item.userId);
-        }
-        return list;
     }
 
     /**
@@ -149,7 +135,7 @@ public class NettyWebSocket {
                 try {
                     item.session.sendText(message);
                 } catch (Exception e) {
-                    log.warn("ID为" + item.userId + "的用户消息发送失败");
+                    logger.warn("ID为" + item.userId + "的用户消息发送失败");
                 }
             }
             return true;
@@ -158,8 +144,26 @@ public class NettyWebSocket {
     }
 
     public boolean kickOut(String userId) {
-        NettyWebSocket remove = webSocketSet.remove(userId);
-        return remove == null;
+        try {
+            Object user = redisUtil.get(RedisKeys.getUserKey(userId));
+            if (user != null) {
+                redisUtil.del(RedisKeys.getUserKey(userId));
+                redisUtil.zrem(RedisKeys.KEY_SET_USER, user);
+                webSocketSet.remove(userId);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    private Map<String, Object> message(String message, String sendUserId) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", sendUserId);
+        map.put("message", message);
+        map.put("sendTime", format.format(new Date()));
+        return map;
     }
 
     private static synchronized int getOnlineCount() {

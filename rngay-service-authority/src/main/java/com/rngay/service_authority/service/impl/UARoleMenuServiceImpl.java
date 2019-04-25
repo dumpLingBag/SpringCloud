@@ -8,10 +8,10 @@ import com.rngay.service_authority.dao.UARoleMenuDao;
 import com.rngay.service_authority.model.UARoleMenu;
 import com.rngay.service_authority.service.UARoleMenuService;
 import com.rngay.service_authority.util.SortUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +20,9 @@ import java.util.Map;
 @Service
 public class UARoleMenuServiceImpl implements UARoleMenuService {
 
-    @Resource
+    @Autowired
     private Dao dao;
-    @Resource
+    @Autowired
     private UARoleMenuDao roleMenuDao;
 
     @Override

@@ -9,12 +9,12 @@ import com.rngay.service_authority.contants.RedisKeys;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,13 +23,13 @@ import java.util.Map;
 @RequestMapping(value = "authorityLogin", name = "登录")
 public class UALoginController {
 
-    @Resource
+    @Autowired
     private UASystemService systemService;
-    @Resource
+    @Autowired
     private PFUserService userService;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
-    @Resource
+    @Autowired
     private JwtUtil jwtUtil;
 
     @RequestMapping(value = "login", method = RequestMethod.POST, name = "用户登录")

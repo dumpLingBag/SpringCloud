@@ -4,12 +4,10 @@ import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.service.UAUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.persistence.Id;
-import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +15,7 @@ import java.util.List;
 @RequestMapping(value = "user")
 public class PlatformUserController {
 
-    @Resource
+    @Autowired
     private UAUserService uaUserService;
 
     @RequestMapping(value = "find", method = RequestMethod.POST)
@@ -79,9 +77,9 @@ public class PlatformUserController {
         return Result.success(uaUserService.delete(id));
     }
 
-    @RequestMapping(value = "noticeUserList", method = RequestMethod.POST)
-    public Result<List<UAUserDTO>> noticeUserList(@RequestParam("userList") List<String> userList) {
-        return Result.success(uaUserService.noticeUserList(userList));
+    @RequestMapping(value = "userIdForList", method = RequestMethod.POST)
+    public Result<List<UAUserDTO>> userIdForList(@RequestParam("userList") List<String> userList) {
+        return Result.success(uaUserService.userIdForList(userList));
     }
 
 }

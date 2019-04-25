@@ -6,17 +6,17 @@ import com.rngay.feign.platform.UserRoleDTO;
 import com.rngay.feign.platform.UserRoleUpdateDTO;
 import com.rngay.service_authority.model.UAUserRole;
 import com.rngay.service_authority.service.UAUserRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UAUserRoleServiceImpl implements UAUserRoleService {
 
-    @Resource
+    @Autowired
     private Dao dao;
 
     @Override

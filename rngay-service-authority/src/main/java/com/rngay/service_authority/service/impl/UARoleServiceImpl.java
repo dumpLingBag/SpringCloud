@@ -6,10 +6,10 @@ import com.rngay.feign.platform.RoleIdListDTO;
 import com.rngay.service_authority.model.*;
 import com.rngay.service_authority.service.UARoleService;
 import com.rngay.service_authority.util.SortUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 public class UARoleServiceImpl implements UARoleService {
 
-    @Resource
+    @Autowired
     private Dao dao;
 
     @Override
