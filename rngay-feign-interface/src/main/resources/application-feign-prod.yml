@@ -1,21 +1,23 @@
 feign:
   httpclient:
     enabled: true # 服务熔断配置
-  client:
-    config:
-      default: #服务名，填写default为所有服务
-        connect-timeout: 1000
-        read-timeout: 5000
+#  client:
+#    config:
+#      default: #服务名，填写default为所有服务
+#        connect-timeout: 1000
+#        read-timeout: 5000
   hystrix:
     enabled: true
 hystrix:
   command:
     default:
       execution:
+        timeout:
+          enabled: false #如果enabled设置为 false，则请求超时交给ribbon控制,为 true,则超时作为熔断根据
         isolation:
           strategy: THREAD
           thread:
-            timeoutInMilliseconds: 3000 # 设置调用者等待命令执行的超时限制，超过此时间，HystrixCommand被标记为TIMEOUT，并执行回退逻辑
+            timeoutInMilliseconds: 2000 # 设置调用者等待命令执行的超时限制，超过此时间，HystrixCommand被标记为TIMEOUT，并执行回退逻辑
       fallback:
         isolation:
           semaphore:
@@ -36,8 +38,8 @@ spring:
       retry:
         enabled: true # 开启重试机制，它默认是关闭
 ribbon:
-  ConnectTimeout: 1000 # 请求连接的超时时间
-  ReadTimeout: 3000 # 请求处理的超时时间
-  OkToRetryOnAllOperations: true # 对所有操作请求都进行重试
-  MaxAutoRetriesNextServer: 3 # 切换实例的重试次数
-  MaxAutoRetries: 3 # 对当前实例的重试次数
+  ConnectTimeout: 2000 # 请求连接的超时时间，默认值 2000
+  ReadTimeout: 5000 # 请求处理的超时时间，默认值 5000
+  OkToRetryOnAllOperations: true # 对所有操作请求都进行重试，默认为 false
+  MaxAutoRetriesNextServer: 3 # 切换实例的重试次数，默认 1
+  MaxAutoRetries: 3 # 对当前实例的重试次数，默认 0

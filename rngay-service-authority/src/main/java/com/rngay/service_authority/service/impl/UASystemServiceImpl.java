@@ -12,24 +12,24 @@ import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
 import com.rngay.service_authority.util.SortUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Service
 public class UASystemServiceImpl implements UASystemService {
 
-    @Resource
+    @Autowired
     private Dao dao;
-    @Resource
+    @Autowired
     private UARoleMenuDao roleMenuDao;
-    @Resource
+    @Autowired
     private UAUserRoleDao userRoleDao;
-    @Resource
+    @Autowired
     private JwtUtil jwtUtil;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
 
     @Override
@@ -158,7 +158,11 @@ public class UASystemServiceImpl implements UASystemService {
         if (token != null) {
             int userId = Integer.parseInt(jwtUtil.getSubject(token));
             String key = request.getServerName() + "_" + userId;
-            return (UAUserDTO) redisUtil.get(RedisKeys.getUserKey(key));
+            Object user = redisUtil.get(RedisKeys.getUserKey(key));
+            if (user == null) {
+                return null;
+            }
+            return (UAUserDTO) user;
         }
         return null;
     }

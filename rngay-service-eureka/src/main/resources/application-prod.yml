@@ -16,4 +16,4 @@ spring:
   security:
     user:
       name: admin
-      password: 123456
+      password: 123456 # 不加密在服务器限制ip访问

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="ua_department", indexes={@Index(name="orgid_index", columnList="orgid")})
+@Table(name="ua_department", indexes={@Index(name="orgId_index", columnList="orgId")})
 public class UADepartment implements Serializable {
 
 	@Id

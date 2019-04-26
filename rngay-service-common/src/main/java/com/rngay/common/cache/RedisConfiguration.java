@@ -71,6 +71,8 @@ public class RedisConfiguration extends CachingConfigurerSupport {
         redisTemplate.setValueSerializer(valueSerializer());
         redisTemplate.setHashValueSerializer(valueSerializer());
 
+        redisTemplate.setEnableTransactionSupport(true);
+
         return redisTemplate;
     }
 

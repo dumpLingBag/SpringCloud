@@ -7,6 +7,7 @@ import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.model.UAUrl;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.ContextAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class StartUpRunner implements CommandLineRunner {
     @Value(value = "${platform.clearUrlOnRestart}")
     private Boolean clearUrlOnRestart;
 
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
 
     @Override
@@ -52,6 +52,7 @@ public class StartUpRunner implements CommandLineRunner {
                                         for (String methodMapping : methodMappings) {
                                             Map<String, String> methodMappingMap = new HashMap<>();
                                             methodMappingMap.put("url", methodMapping);
+                                            methodMappingMap.put("name", methodAnnotation.name());
                                             methodMappingList.add(methodMappingMap);
                                         }
                                     }
@@ -65,6 +66,7 @@ public class StartUpRunner implements CommandLineRunner {
                                 Map<String, Object> classUrl = new HashMap<>();
                                 classUrl.put("id", classMapping);
                                 classUrl.put("url", classMapping);
+                                classUrl.put("name", classAnnotation.name());
                                 urlList.add(classUrl);
                                 Set<String> mappingUrlSet = new HashSet<>();
                                 for (Map<String, String> methodMappingMap : methodMappingList) {
@@ -78,6 +80,7 @@ public class StartUpRunner implements CommandLineRunner {
                                         methodUrl.put("id", classMapping+"_"+url);
                                         methodUrl.put("url", classMapping+"/"+url);
                                         methodUrl.put("pid", classMapping);
+                                        methodUrl.put("name", methodMappingMap.get("name"));
                                         urlList.add(methodUrl);
                                     }
                                 }
@@ -111,7 +114,7 @@ public class StartUpRunner implements CommandLineRunner {
             long url = sqlDao.count(UAMenu.class, Cnd.where("component", "=", "AuthorityMenu"));
             if (url <= 0) {
                 UAMenu systemManage = new UAMenu();
-                systemManage.setName("开发者");
+                systemManage.setName("系统管理");
                 systemManage.setIcon("iconfont icon-bug");
                 systemManage.setSort(0);
                 systemManage.setPid(0);

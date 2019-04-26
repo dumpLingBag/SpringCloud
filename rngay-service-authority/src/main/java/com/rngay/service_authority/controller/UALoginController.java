@@ -9,30 +9,30 @@ import com.rngay.service_authority.contants.RedisKeys;
 import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "authorityLogin")
+@RequestMapping(value = "authorityLogin", name = "登录")
 public class UALoginController {
 
-    @Resource
+    @Autowired
     private UASystemService systemService;
-    @Resource
+    @Autowired
     private PFUserService userService;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
-    @Resource
+    @Autowired
     private JwtUtil jwtUtil;
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST, name = "用户登录")
     public Result<Map<String, Object>> login(HttpServletRequest request, String account, String password){
         if (account == null || "".equals(account) || password == null || "".equals(password)) {
             return Result.failMsg("账号或密码不能为空");

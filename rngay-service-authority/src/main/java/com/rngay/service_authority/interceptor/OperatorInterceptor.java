@@ -7,11 +7,10 @@ import com.rngay.service_authority.service.UASystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
 import com.rngay.common.exception.BaseException;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -22,11 +21,11 @@ import java.util.Set;
 @Component
 public class OperatorInterceptor extends HandlerInterceptorAdapter {
 
-    @Resource
+    @Autowired
     private JwtUtil jwtUtil;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
-    @Resource
+    @Autowired
     private UASystemService systemService;
 
 

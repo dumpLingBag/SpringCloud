@@ -1,11 +1,11 @@
 feign:
   httpclient:
     enabled: true
-  client:
-    config:
-      default:
-        connect-timeout: 1000
-        read-timeout: 5000
+#  client:
+#    config:
+#      default:
+#        connect-timeout: 1000
+#        read-timeout: 5000
   hystrix:
     enabled: true
 hystrix:
@@ -38,6 +38,6 @@ spring:
 ribbon:
   ConnectTimeout: 2000
   ReadTimeout: 3000
-  OkToRetryOnAllOperations: true
+  OkToRetryOnAllOperations: true  #对所有操作请求都进行重试,默认false
   MaxAutoRetriesNextServer: 3
   MaxAutoRetries: 3

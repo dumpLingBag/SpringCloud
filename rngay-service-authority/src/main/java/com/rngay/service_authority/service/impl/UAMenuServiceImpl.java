@@ -8,10 +8,10 @@ import com.rngay.service_authority.model.UAMenu;
 import com.rngay.service_authority.model.UAMenuUrl;
 import com.rngay.service_authority.model.UARoleMenu;
 import com.rngay.service_authority.service.UAMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 public class UAMenuServiceImpl implements UAMenuService {
 
-    @Resource
+    @Autowired
     private Dao dao;
 
     @Transactional

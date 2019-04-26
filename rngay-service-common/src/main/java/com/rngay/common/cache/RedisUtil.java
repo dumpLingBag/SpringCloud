@@ -1,9 +1,9 @@
 package com.rngay.common.cache;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -13,8 +13,16 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
 
-    @Resource
+    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    public Long delKeys(String key) {
+        Set<String> keys = redisTemplate.keys(key);
+        if (keys != null && keys.size() > 0) {
+            return redisTemplate.delete(keys);
+        }
+        return null;
+    }
 
     public Boolean del(String key) {
         return redisTemplate.delete(key);
@@ -85,6 +93,14 @@ public class RedisUtil {
         return redisTemplate.opsForZSet().add(key, value, score);
     }
 
+    public Boolean zadd(String key, double score, Object value, int expireSeconds) {
+        Boolean add = redisTemplate.opsForZSet().add(key, value, score);
+        if (add != null && add) {
+            redisTemplate.expire(key, expireSeconds, TimeUnit.SECONDS);
+        }
+        return add;
+    }
+
     public Long zcard(String key) {
         return redisTemplate.opsForZSet().zCard(key);
     }
@@ -150,4 +166,9 @@ public class RedisUtil {
     public Object leftPop(String key) {
         return redisTemplate.opsForList().leftPop(key);
     }
+
+    public Long getExpire(String key) {
+        return redisTemplate.getExpire(key);
+    }
+
 }

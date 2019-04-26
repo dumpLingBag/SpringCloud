@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="ua_role", indexes={@Index(name="orgid_index", columnList="orgid")})
+@Table(name="ua_role", indexes={@Index(name="orgId_index", columnList="orgId")})
 public class UARole implements Serializable {
 
 	@Id

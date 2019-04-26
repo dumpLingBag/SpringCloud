@@ -6,18 +6,18 @@ import com.rngay.service_authority.dao.UARoleMenuDao;
 import com.rngay.service_authority.dao.sql.RoleMenuSql;
 import com.rngay.service_authority.model.UAOrgRole;
 import com.rngay.service_authority.model.UARole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class RoleMenuDaoImpl implements UARoleMenuDao {
 
-    @Resource
+    @Autowired
     private Dao dao;
-    @Resource
+    @Autowired
     private RoleMenuSql roleMenuSql;
 
     @Override

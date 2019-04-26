@@ -4,15 +4,15 @@ import com.rngay.common.vo.PageList;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.dao.UAUserDao;
 import com.rngay.service_user.service.UAUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class UAUserServiceImpl implements UAUserService {
  
-    @Resource
+    @Autowired
     private UAUserDao uaUserDao;
 
     @Override
@@ -71,7 +71,8 @@ public class UAUserServiceImpl implements UAUserService {
     }
 
     @Override
-    public List<UAUserDTO> noticeUserList(List<String> userList) {
-        return uaUserDao.noticeUserList(userList);
+    public List<UAUserDTO> userIdForList(List<String> userList) {
+        return uaUserDao.userIdForList(userList);
     }
+
 }
