@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 @RequestMapping(value = "socket")
 public class WebSocketController {
 
+
     @Resource
     private SocketService socketService;
 
