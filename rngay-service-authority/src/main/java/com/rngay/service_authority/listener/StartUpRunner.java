@@ -114,7 +114,7 @@ public class StartUpRunner implements CommandLineRunner {
             long url = sqlDao.count(UAMenu.class, Cnd.where("component", "=", "AuthorityMenu"));
             if (url <= 0) {
                 UAMenu systemManage = new UAMenu();
-                systemManage.setName("开发者");
+                systemManage.setName("系统管理");
                 systemManage.setIcon("iconfont icon-bug");
                 systemManage.setSort(0);
                 systemManage.setPid(0);

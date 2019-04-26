@@ -32,6 +32,6 @@ spring:
         max-wait: 1ms
 
 netty-web-socket:
-  host: 47.98.180.119
+  host: cloud.rngay.cn
   path: /notice/socket
   port: 9099
