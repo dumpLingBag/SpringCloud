@@ -1,4 +1,4 @@
-package com.rngay.service_authority.controller;
+package com.rngay.controller;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;

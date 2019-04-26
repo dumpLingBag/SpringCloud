@@ -19,7 +19,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/rngay_platform?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
     username: root
-    password: /*-dong_135820__
+    password: ENC(wYs42725uxJOUlaoRudB0TQ9KeKNW5bTbmeXKKfYqlE=) # 启动服务时手动加盐，防止被解密
   redis:
     database: 3
     host: localhost
@@ -30,8 +30,3 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: 1ms
-
-netty-web-socket:
-  host: 127.0.0.1
-  path: /notice/socket
-  port: 9099

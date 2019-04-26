@@ -86,7 +86,7 @@ public class WebSocketController {
     @RequestMapping(value = "banned", method = RequestMethod.POST)
     public Result<?> banned(@RequestParam("userId") String userId, @RequestParam("expire") Integer expire) {
         if (userId != null) {
-            redisUtil.set(RedisKeys.getBanned(userId), userId, expire == null ? 1000 * 60 * 30 : expire);
+            redisUtil.set(RedisKeys.getBanned(userId), userId, expire == null ? 60 * 30 : expire);
             return Result.success();
         }
         return Result.failMsg("禁言用户失败");

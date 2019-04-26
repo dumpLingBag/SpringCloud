@@ -25,3 +25,8 @@ server:
 
 exception:
   msg: true
+
+netty-web-socket:
+  host: 127.0.0.1
+  path: /notice/socket
+  port: 9099
