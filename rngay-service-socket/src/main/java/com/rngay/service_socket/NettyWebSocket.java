@@ -1,10 +1,14 @@
 package com.rngay.service_socket;
 
+import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.vo.Result;
+import com.rngay.feign.socket.dto.ContentDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_socket.contants.Contants;
 import com.rngay.service_socket.contants.RedisKeys;
+import com.rngay.service_socket.util.MessageSortUtil;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,16 +116,21 @@ public class NettyWebSocket {
      * @Author pengcheng
      * @Date 2019/4/10
      **/
-    public boolean sendUser(String message, String sendUserId) {
+    public Result<?> sendUser(ContentDTO contentDTO, String sendUserId, String receiveUserId) {
         try {
-            NettyWebSocket nettyWebSocket = webSocketSet.get(sendUserId);
-            nettyWebSocket.session.sendText(message);
-            redisUtil.zadd(RedisKeys.getMessage(sendUserId), Double.valueOf(sendUserId), message(message, sendUserId));
-            redisUtil.expire(RedisKeys.getMessage(sendUserId), Contants.EXPiRE_MESSAGE);
+            List<Integer> sort = MessageSortUtil.sort(sendUserId, receiveUserId);
+            NettyWebSocket nettyWebSocket = webSocketSet.get(receiveUserId);
+            if (nettyWebSocket == null) {
+                redisUtil.zadd(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
+                return Result.success("用户不在线，将在上线后收到消息");
+            }
+            nettyWebSocket.session.sendText(contentDTO.getText());
+            redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
+            redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), Contants.EXPiRE_MESSAGE);
         } catch (Exception e) {
-            return false;
+            return Result.fail("消息发送失败");
         }
-        return true;
+        return Result.success("消息发送成功");
     }
 
     /**
@@ -157,7 +166,7 @@ public class NettyWebSocket {
         return true;
     }
 
-    private Map<String, Object> message(String message, String sendUserId) {
+    private Map<String, Object> message(ContentDTO contentDTO, String message, String sendUserId) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> map = new HashMap<>();
         map.put("userId", sendUserId);

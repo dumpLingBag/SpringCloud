@@ -1,17 +1,22 @@
 package com.rngay.service_socket.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
+import com.rngay.feign.socket.dto.MessageDTO;
+import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.service_socket.NettyWebSocket;
+import com.rngay.service_socket.contants.Contants;
 import com.rngay.service_socket.contants.RedisKeys;
+import com.rngay.service_socket.util.MessageSortUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import javax.validation.Valid;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "socket")
@@ -23,13 +28,12 @@ public class WebSocketController {
     private RedisUtil redisUtil;
 
     @RequestMapping(value = "sendUser", method = RequestMethod.POST)
-    public Result<String> sendUser(@RequestParam("content") String content, @RequestParam("userId") String userId) {
-        Object o = redisUtil.get(RedisKeys.getBanned(userId));
+    public Result<?> sendUser(@Valid @RequestBody MessageDTO messageDTO) {
+        Object o = redisUtil.get(RedisKeys.getBanned(messageDTO.getSendUserId()));
         if (o != null) {
             return Result.failMsg("该用户已被禁言");
         }
-        boolean b = nettyWebSocket.sendUser(content, userId);
-        return Result.success(b ? "发送成功" : "该账号已下线");
+        return nettyWebSocket.sendUser(messageDTO.getContent(), messageDTO.getSendUserId(), messageDTO.getReceiveUserId());
     }
 
     /*
@@ -60,16 +64,28 @@ public class WebSocketController {
     @RequestMapping(value = "getExpire", method = RequestMethod.GET)
     public Result<Long> getExpire(@RequestParam("userId") String userId) {
         if (userId != null && !"".equals(userId)) {
-            return Result.success(redisUtil.getExpire(RedisKeys.getMessage(userId)));
+            return Result.success(redisUtil.getExpire(RedisKeys.getMessage(userId,"")));
         }
         return Result.failMsg("用户ID为空");
     }
 
     @RequestMapping(value = "getMessage", method = RequestMethod.GET)
-    public Result<Set> getMessage(@RequestParam("userId") String userId) {
-        if (userId != null && !"".equals(userId)) {
-            Set<Object> range = redisUtil.range(RedisKeys.getMessage(userId), 0, -1);
-            return Result.success(range);
+    public Result<PageList<?>> getMessage(@RequestBody PageMessageDTO messageDTO) {
+        if (!StringUtils.isEmpty(messageDTO.getSupplierId()) && !StringUtils.isEmpty(messageDTO.getMemberId())) {
+            List<Integer> sort = MessageSortUtil.sort(messageDTO.getSupplierId(), messageDTO.getMemberId());
+            Long zCard = redisUtil.zCard(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))));
+            if (zCard > 0) {
+                Integer currentPage = messageDTO.getCurrentPage();
+                Integer pageSize = messageDTO.getPageSize();
+                currentPage = (currentPage - 1) * pageSize;
+                pageSize = currentPage == 0 ? pageSize - 1 : currentPage * pageSize - 1;
+                Set<Object> range = redisUtil.reverseRange(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), currentPage, pageSize);
+                List<Object> list = new ArrayList<>(range);
+                PageList<Object> tPageList = new PageList<>(messageDTO.getCurrentPage(), messageDTO.getPageSize(), zCard.intValue());
+                tPageList.setList(list);
+                return Result.success(tPageList);
+            }
+            return Result.success(new PageList<>());
         }
         return Result.failMsg("用户ID为空");
     }
@@ -90,6 +106,19 @@ public class WebSocketController {
             return Result.success();
         }
         return Result.failMsg("禁言用户失败");
+    }
+
+    @RequestMapping(value = "getCacheMessage", method = RequestMethod.GET)
+    public Result<?> getCacheMessage(String sendUserId, String receiveUserId) {
+        List<Integer> sort = MessageSortUtil.sort(sendUserId, receiveUserId);
+        Set<Object> range = redisUtil.range(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), 0, -1);
+        if (range != null && range.size() > 0) {
+            for (Object ob : range) {
+                redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), new Date().getTime(), ob);
+            }
+            redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), Contants.EXPiRE_MESSAGE);
+        }
+        return Result.success(range);
     }
 
 }

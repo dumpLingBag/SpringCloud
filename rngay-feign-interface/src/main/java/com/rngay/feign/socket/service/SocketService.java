@@ -2,6 +2,7 @@ package com.rngay.feign.socket.service;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
+import com.rngay.feign.socket.dto.MessageDTO;
 import com.rngay.feign.socket.fallback.SocketServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public interface SocketService {
     * @Date 2019/4/25
     **/
     @RequestMapping(value = "/socket/sendUser", method = RequestMethod.POST)
-    Result<?> sendUser(@RequestParam("content") String content, @RequestParam("userId") String userId);
+    Result<?> sendUser(@RequestBody MessageDTO messageDTO);
 
     /**
     * 给所有用户发送消息
@@ -55,6 +56,6 @@ public interface SocketService {
     * @Date 2019/4/25
     **/
     @RequestMapping(value = "/socket/getMessage", method = RequestMethod.GET)
-    Result<?> getMessage(@RequestParam("userId") String userId);
+    Result<?> getMessage(@RequestParam("supplierId") String supplierId, @RequestParam("memberId") String memberId);
 
 }

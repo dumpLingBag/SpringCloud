@@ -28,6 +28,10 @@ public class RedisUtil {
         return redisTemplate.delete(key);
     }
 
+    public Set<String> keys(String key) {
+        return redisTemplate.keys(key);
+    }
+
     public Boolean exists(String key) {
         return redisTemplate.hasKey(key);
     }
@@ -101,7 +105,7 @@ public class RedisUtil {
         return add;
     }
 
-    public Long zcard(String key) {
+    public Long zCard(String key) {
         return redisTemplate.opsForZSet().zCard(key);
     }
 
