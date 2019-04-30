@@ -2,7 +2,8 @@ package com.rngay.feign.socket.service;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
-import com.rngay.feign.socket.dto.MessageDTO;
+import com.rngay.feign.socket.dto.ContentDTO;
+import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.feign.socket.fallback.SocketServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public interface SocketService {
     * @Date 2019/4/25
     **/
     @RequestMapping(value = "/socket/sendUser", method = RequestMethod.POST)
-    Result<?> sendUser(@RequestBody MessageDTO messageDTO);
+    Result<?> sendUser(@RequestBody ContentDTO contentDTO);
 
     /**
     * 给所有用户发送消息
@@ -56,6 +57,14 @@ public interface SocketService {
     * @Date 2019/4/25
     **/
     @RequestMapping(value = "/socket/getMessage", method = RequestMethod.GET)
-    Result<?> getMessage(@RequestParam("supplierId") String supplierId, @RequestParam("memberId") String memberId);
+    Result<?> getMessage(@RequestBody PageMessageDTO messageDTO);
+
+    /**
+    * 获取指定用户的未读消息
+    * @Author pengcheng
+    * @Date 2019/4/30
+    **/
+    @RequestMapping(value = "getCacheMessage", method = RequestMethod.GET)
+    Result<?> getCacheMessage(String sendUserId, String receiveUserId);
 
 }

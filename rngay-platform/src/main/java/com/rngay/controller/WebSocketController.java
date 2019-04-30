@@ -2,6 +2,7 @@ package com.rngay.controller;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
+import com.rngay.feign.socket.dto.ContentDTO;
 import com.rngay.feign.socket.dto.MessageDTO;
 import com.rngay.feign.socket.service.SocketService;
 import com.rngay.feign.user.dto.UAUserDTO;
@@ -23,10 +24,10 @@ public class WebSocketController {
     private UASystemService systemService;
 
     @RequestMapping(value = "sendUser", method = RequestMethod.POST, name = "给指定用户发消息")
-    public Result<?> sendUser(HttpServletRequest request, @RequestBody MessageDTO messageDTO) {
+    public Result<?> sendUser(HttpServletRequest request,@Valid @RequestBody ContentDTO contentDTO) {
         UAUserDTO currentUser = systemService.getCurrentUser(request);
-        messageDTO.setSendUserId(String.valueOf(currentUser.getId()));
-        return socketService.sendUser(messageDTO);
+        contentDTO.setFm(String.valueOf(currentUser.getId()));
+        return socketService.sendUser(contentDTO);
     }
 
     @RequestMapping(value = "sendAll", method = RequestMethod.POST, name = "给所有用户发消息")

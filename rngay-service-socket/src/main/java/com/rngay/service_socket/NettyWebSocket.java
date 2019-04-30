@@ -1,6 +1,5 @@
 package com.rngay.service_socket;
 
-import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.socket.dto.ContentDTO;
@@ -116,10 +115,10 @@ public class NettyWebSocket {
      * @Author pengcheng
      * @Date 2019/4/10
      **/
-    public Result<?> sendUser(ContentDTO contentDTO, String sendUserId, String receiveUserId) {
+    public Result<?> sendUser(ContentDTO contentDTO) {
         try {
-            List<Integer> sort = MessageSortUtil.sort(sendUserId, receiveUserId);
-            NettyWebSocket nettyWebSocket = webSocketSet.get(receiveUserId);
+            List<Integer> sort = MessageSortUtil.sort(contentDTO.getFm(), contentDTO.getTo());
+            NettyWebSocket nettyWebSocket = webSocketSet.get(contentDTO.getTo());
             if (nettyWebSocket == null) {
                 redisUtil.zadd(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
                 return Result.success("用户不在线，将在上线后收到消息");

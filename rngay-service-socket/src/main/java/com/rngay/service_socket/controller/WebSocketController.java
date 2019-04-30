@@ -1,11 +1,10 @@
 package com.rngay.service_socket.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
-import com.rngay.feign.socket.dto.MessageDTO;
+import com.rngay.feign.socket.dto.ContentDTO;
 import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.service_socket.NettyWebSocket;
 import com.rngay.service_socket.contants.Contants;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -28,12 +26,12 @@ public class WebSocketController {
     private RedisUtil redisUtil;
 
     @RequestMapping(value = "sendUser", method = RequestMethod.POST)
-    public Result<?> sendUser(@Valid @RequestBody MessageDTO messageDTO) {
-        Object o = redisUtil.get(RedisKeys.getBanned(messageDTO.getSendUserId()));
+    public Result<?> sendUser(@RequestBody ContentDTO contentDTO) {
+        Object o = redisUtil.get(RedisKeys.getBanned(contentDTO.getFm()));
         if (o != null) {
             return Result.failMsg("该用户已被禁言");
         }
-        return nettyWebSocket.sendUser(messageDTO.getContent(), messageDTO.getSendUserId(), messageDTO.getReceiveUserId());
+        return nettyWebSocket.sendUser(contentDTO);
     }
 
     /*
@@ -59,14 +57,6 @@ public class WebSocketController {
             return Result.success(pageList);
         }
         return Result.success(new PageList<>());
-    }
-
-    @RequestMapping(value = "getExpire", method = RequestMethod.GET)
-    public Result<Long> getExpire(@RequestParam("userId") String userId) {
-        if (userId != null && !"".equals(userId)) {
-            return Result.success(redisUtil.getExpire(RedisKeys.getMessage(userId,"")));
-        }
-        return Result.failMsg("用户ID为空");
     }
 
     @RequestMapping(value = "getMessage", method = RequestMethod.GET)

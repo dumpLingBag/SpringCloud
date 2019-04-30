@@ -2,7 +2,8 @@ package com.rngay.feign.socket.fallback;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
-import com.rngay.feign.socket.dto.MessageDTO;
+import com.rngay.feign.socket.dto.ContentDTO;
+import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.feign.socket.service.SocketService;
 import feign.hystrix.FallbackFactory;
 
@@ -12,7 +13,7 @@ public class SocketServiceFallback implements FallbackFactory<SocketService> {
         String result = "消息服务异常，请稍后再试";
         return new SocketService() {
             @Override
-            public Result<?> sendUser(MessageDTO messageDTO) {
+            public Result<?> sendUser(ContentDTO contentDTO) {
                 return Result.failMsg(result);
             }
 
@@ -37,7 +38,12 @@ public class SocketServiceFallback implements FallbackFactory<SocketService> {
             }
 
             @Override
-            public Result<?> getMessage(String supplierId, String memberId) {
+            public Result<?> getMessage(PageMessageDTO messageDTO) {
+                return Result.failMsg(result);
+            }
+
+            @Override
+            public Result<?> getCacheMessage(String sendUserId, String receiveUserId) {
                 return Result.failMsg(result);
             }
         };
