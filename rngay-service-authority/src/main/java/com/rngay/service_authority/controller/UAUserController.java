@@ -24,14 +24,14 @@ public class UAUserController {
     private UASystemService systemService;
 
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
-    public Result<?> save(@Valid @RequestBody UASaveUserDTO saveUserDTO){
+    public Result<?> save(@Valid @RequestBody UASaveUserDTO saveUserDTO) {
         Map<String, String> msg = new HashMap<>();
         Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getAccount());
-        if (byAccount.getData() != null){
+        if (byAccount.getData() != null) {
             msg.put("account", "此账号名称已经存在");
         }
         Result<UAUserDTO> byMobile = pfUserService.findByMobile(saveUserDTO.getMobile());
-        if (byMobile.getData() != null){
+        if (byMobile.getData() != null) {
             msg.put("mobile", "此手机号码已经存在");
         }
         if (!msg.isEmpty()) {
@@ -41,31 +41,31 @@ public class UAUserController {
     }
 
     @RequestMapping(value = "pageList", method = RequestMethod.POST, name = "分页展示用户")
-    public Result<PageList<UAUserDTO>> pageList(@RequestBody UAUserPageListDTO pageListDTO){
+    public Result<PageList<UAUserDTO>> pageList(@RequestBody UAUserPageListDTO pageListDTO) {
         return pfUserService.pageList(pageListDTO);
     }
 
     @RequestMapping(value = "update", method = RequestMethod.POST, name = "更新用户")
-    public Result<?> update(@Valid @RequestBody UAUpdateUserDTO updateUserDTO){
+    public Result<?> update(@Valid @RequestBody UAUpdateUserDTO updateUserDTO) {
         UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
-        if (user != null){
-            if (user.getAccount().equals("admin") && !updateUserDTO.getAccount().equals("admin")){
+        if (user != null) {
+            if (user.getAccount().equals("admin") && !updateUserDTO.getAccount().equals("admin")) {
                 return Result.failMsg("禁止修改管理员账户名称");
             }
             StringBuilder builder = new StringBuilder();
-            if (!user.getAccount().equals(updateUserDTO.getAccount())){
+            if (!user.getAccount().equals(updateUserDTO.getAccount())) {
                 Result<UAUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getAccount());
-                if (byAccount.getData() != null){
+                if (byAccount.getData() != null) {
                     builder.append("account").append(":").append("此账号名称已经存在").append("_");
                 }
             }
-            if (!user.getMobile().equals(updateUserDTO.getMobile())){
+            if (!user.getMobile().equals(updateUserDTO.getMobile())) {
                 Result<UAUserDTO> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
-                if (byMobile.getData() != null){
+                if (byMobile.getData() != null) {
                     builder.append("mobile").append(":").append("此手机号码已经存在").append("_");
                 }
             }
-            if (builder.length() > 0){
+            if (builder.length() > 0) {
                 builder.setCharAt(builder.length() - 1, ' ');
                 return Result.fail(builder.toString());
             }
@@ -76,7 +76,7 @@ public class UAUserController {
     }
 
     @RequestMapping(value = "reset/{id}", method = RequestMethod.GET, name = "重置密码")
-    public Result<Integer> reset(@PathVariable Integer id){
+    public Result<Integer> reset(@PathVariable Integer id) {
         if (id == null) {
             return Result.failMsg("重置失败");
         }
@@ -84,8 +84,8 @@ public class UAUserController {
     }
 
     @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.GET, name = "启用禁用")
-    public Result<Integer> enable(@PathVariable Integer id, @PathVariable Integer enable){
-        if (id != null && enable != null){
+    public Result<Integer> enable(@PathVariable Integer id, @PathVariable Integer enable) {
+        if (id != null && enable != null) {
             return pfUserService.enable(id, enable);
         } else {
             return Result.failMsg("缺少参数 { id , enable }");
@@ -93,10 +93,10 @@ public class UAUserController {
     }
 
     @RequestMapping(value = "updatePassword", method = RequestMethod.POST, name = "修改密码")
-    public Result<Integer> updatePassword(HttpServletRequest request, @RequestBody UpdatePassword password){
+    public Result<Integer> updatePassword(HttpServletRequest request, @RequestBody UpdatePassword password) {
         Integer userId = systemService.getCurrentUserId(request);
         UAUserDTO user = pfUserService.findById(userId).getData();
-        if (user == null){
+        if (user == null) {
             return Result.failMsg("不存在该用户，修改失败");
         }
         if (!BCrypt.checkpw(password.getOldPassword(), user.getPassword())) {
@@ -118,9 +118,9 @@ public class UAUserController {
         }
         return Result.failMsg("请输入旧密码");
     }
-    
+
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET, name = "删除用户")
-    public Result<Integer> delete(@PathVariable Integer id){
+    public Result<Integer> delete(@PathVariable Integer id) {
         return pfUserService.delete(id);
     }
 

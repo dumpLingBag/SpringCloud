@@ -77,8 +77,8 @@ public class StartUpRunner implements CommandLineRunner {
                                         url = url.replaceAll("^\\+", "");
                                         url = url.replaceAll("\\+$", "");
                                         Map<String, Object> methodUrl = new HashMap<>();
-                                        methodUrl.put("id", classMapping+"_"+url);
-                                        methodUrl.put("url", classMapping+"/"+url);
+                                        methodUrl.put("id", classMapping + "_" + url);
+                                        methodUrl.put("url", classMapping + "/" + url);
                                         methodUrl.put("pid", classMapping);
                                         methodUrl.put("name", methodMappingMap.get("name"));
                                         urlList.add(methodUrl);

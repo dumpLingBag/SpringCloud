@@ -21,7 +21,7 @@ public class UAUserRoleServiceImpl implements UAUserRoleService {
 
     @Override
     public List<UAUserRole> load(Integer userId) {
-        return dao.query(UAUserRole.class, Cnd.where("checked","=",1).and("user_id","=", userId));
+        return dao.query(UAUserRole.class, Cnd.where("checked", "=", 1).and("user_id", "=", userId));
     }
 
     @Transactional

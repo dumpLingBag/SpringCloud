@@ -34,23 +34,23 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
         response.setContentType("text/html;charset=UTF-8");
 
         String actionName = request.getRequestURI().replace(request.getContextPath(), "");
-        if (isExcludeUrl(actionName)){
+        if (isExcludeUrl(actionName)) {
             return true;
         } else {
             //获取用户凭证
             String token = AuthorityUtil.getRequestToken(request);
-            if (token == null || "".equals(token)){
+            if (token == null || "".equals(token)) {
                 throw new BaseException(401, "请先登录");
             }
 
-            if (jwtUtil.isExpired(token)){
+            if (jwtUtil.isExpired(token)) {
                 throw new BaseException(401, "登录失效");
             }
 
             int userId;
             try {
                 userId = Integer.parseInt(jwtUtil.getSubject(token));
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 throw new BaseException(500, e.getLocalizedMessage());
             }
@@ -64,7 +64,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
                 throw new BaseException(401, "请重新登录");
             }
 
-            if (!token.equals(userToken)){
+            if (!token.equals(userToken)) {
                 throw new BaseException(401, "账号在其他设备上登录");
             }
 
@@ -72,7 +72,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
             if (currentUser == null) {
                 throw new BaseException(401, "请重新登录");
             }
-            if (currentUser.getEnable().equals(1)){
+            if (currentUser.getEnable().equals(1)) {
                 if (!isAuthorized(request)) {
                     throw new BaseException(403, "访问受限");
                 }
@@ -85,8 +85,8 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
 
     /**
      * 判断是否有访问权限
-     * */
-    private boolean isAuthorized(HttpServletRequest request){
+     */
+    private boolean isAuthorized(HttpServletRequest request) {
         UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser != null) {
             if (currentUser.getAccount().equals("admin")) {
@@ -118,8 +118,8 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
 
     /**
      * 判断是否是开放的访问地址
-     * */
-    private boolean isExcludeUrl(String actionName){
+     */
+    private boolean isExcludeUrl(String actionName) {
         if (actionName.equals("/favicon.ico"))
             return true;
         if (actionName.contains("/authorityLogin/"))

@@ -24,9 +24,9 @@ public class UASystemController {
     private PFUserService userService;
 
     @RequestMapping(value = "loadForMenu", method = RequestMethod.GET, name = "加载指定用户的菜单数据")
-    public Result<?> loadForMenu(HttpServletRequest request){
+    public Result<?> loadForMenu(HttpServletRequest request) {
         UAUserDTO currentUser = systemService.getCurrentUser(request);
-        if (currentUser == null){
+        if (currentUser == null) {
             return Result.success(null);
         }
 
@@ -42,7 +42,7 @@ public class UASystemController {
     }
 
     @RequestMapping(value = "loadIcon", method = RequestMethod.GET, name = "加载图标")
-    public Result<?> loadIcon(){
+    public Result<?> loadIcon() {
         return userService.loadIcon();
     }
 

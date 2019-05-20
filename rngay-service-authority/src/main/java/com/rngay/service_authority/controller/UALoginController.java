@@ -33,7 +33,7 @@ public class UALoginController {
     private JwtUtil jwtUtil;
 
     @RequestMapping(value = "login", method = RequestMethod.POST, name = "用户登录")
-    public Result<Map<String, Object>> login(HttpServletRequest request, String account, String password){
+    public Result<Map<String, Object>> login(HttpServletRequest request, String account, String password) {
         if (account == null || "".equals(account) || password == null || "".equals(password)) {
             return Result.failMsg("账号或密码不能为空");
         }
@@ -52,7 +52,7 @@ public class UALoginController {
 
         UAUserDTO userResult = userService.findByAccount(account).getData();
         if (userResult == null) {
-            value ++;
+            value++;
             if (value >= 5) {
                 redisUtil.set(RedisKeys.getFailCount(key), value, 7200);
             }
@@ -61,7 +61,7 @@ public class UALoginController {
             try {
                 if (BCrypt.checkpw(password, userResult.getPassword())) {
                     redisUtil.del(RedisKeys.getFailCount(key));
-                    if (!account.equals("admin") && userResult.getEnable().equals(0)){
+                    if (!account.equals("admin") && userResult.getEnable().equals(0)) {
                         return Result.failMsg("账号被禁用！");
                     }
                     String token = jwtUtil.generateToken(userResult.getId());

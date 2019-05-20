@@ -2,17 +2,12 @@ package com.rngay.controller;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
-import com.rngay.feign.socket.dto.ContentDTO;
-import com.rngay.feign.socket.dto.MessageDTO;
+import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.feign.socket.service.SocketService;
-import com.rngay.feign.user.dto.UAUserDTO;
-import com.rngay.service_authority.service.UASystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Date;
 
 @RestController
 @RequestMapping(value = "socket", name = "消息通知")
@@ -20,15 +15,6 @@ public class WebSocketController {
 
     @Autowired
     private SocketService socketService;
-    @Autowired
-    private UASystemService systemService;
-
-    @RequestMapping(value = "sendUser", method = RequestMethod.POST, name = "给指定用户发消息")
-    public Result<?> sendUser(HttpServletRequest request,@Valid @RequestBody ContentDTO contentDTO) {
-        UAUserDTO currentUser = systemService.getCurrentUser(request);
-        contentDTO.setFm(String.valueOf(currentUser.getId()));
-        return socketService.sendUser(contentDTO);
-    }
 
     @RequestMapping(value = "sendAll", method = RequestMethod.POST, name = "给所有用户发消息")
     public Result<?> sendAll(@RequestParam("content") String content) {
@@ -48,6 +34,17 @@ public class WebSocketController {
     @RequestMapping(value = "banned", method = RequestMethod.POST, name = "禁言")
     public Result<?> banned(@RequestParam("userId") String userId, @RequestParam("expire") Integer expire) {
         return socketService.banned(userId, expire);
+    }
+
+    @RequestMapping(value = "getMessage", method = RequestMethod.GET, name = "获取聊天记录")
+    public Result<?> getMessage(@RequestBody PageMessageDTO messageDTO) {
+        return socketService.getMessage(messageDTO);
+    }
+
+    @RequestMapping(value = "getCacheMessage", method = RequestMethod.GET, name = "获取未读消息")
+    public Result<?> getCacheMessage(@RequestParam("sendUserId") String sendUserId,
+                                     @RequestParam("receiveUserId") String receiveUserId) {
+        return socketService.getCacheMessage(sendUserId, receiveUserId);
     }
 
 }

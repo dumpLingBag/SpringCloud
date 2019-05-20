@@ -1,8 +1,11 @@
 package com.rngay.service_socket;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.socket.dto.ContentDTO;
+import com.rngay.feign.socket.dto.SmsTypeEnum;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_socket.contants.Contants;
@@ -28,7 +31,8 @@ public class NettyWebSocket {
 
     private Logger logger = LoggerFactory.getLogger(NettyWebSocket.class);
 
-    public NettyWebSocket() {}
+    public NettyWebSocket() {
+    }
 
     @Autowired
     public void setUserService(PFUserService userService) {
@@ -50,6 +54,7 @@ public class NettyWebSocket {
 
     /**
      * 当有新的WebSocket连接进入时，对该方法进行回调 注入参数的类型:Session、HttpHeaders、ParameterMap
+     *
      * @Author pengcheng
      * @Date 2019/4/10
      **/
@@ -67,12 +72,13 @@ public class NettyWebSocket {
                 redisUtil.set(RedisKeys.getUserKey(userId), user);
             }
             addOnlineCount();
-            logger.info("用户ID为 -> "+ userId +" 的用户加入了，当前在线人数为 -> " + getOnlineCount());
+            logger.info("用户ID为 -> " + userId + " 的用户加入了，当前在线人数为 -> " + getOnlineCount());
         }
     }
 
     /**
      * 当有WebSocket连接关闭时，对该方法进行回调 注入参数的类型:Session
+     *
      * @Author pengcheng
      * @Date 2019/4/10
      **/
@@ -90,6 +96,7 @@ public class NettyWebSocket {
 
     /**
      * 当有WebSocket抛出异常时，对该方法进行回调 注入参数的类型:Session、Throwable
+     *
      * @Author pengcheng
      * @Date 2019/4/10
      **/
@@ -101,39 +108,37 @@ public class NettyWebSocket {
 
     /**
      * 当接收到字符串消息时，对该方法进行回调 注入参数的类型:Session、String
+     *
      * @Author pengcheng
      * @Date 2019/4/10
      **/
     @OnMessage
-    public void OnMessage(Session session, String message) {
+    public void OnMessage(String message) {
         logger.info("收到新的消息 -> " + message);
-        session.sendText("Hello Netty!");
-    }
-
-    /**
-     * 指定用户发送消息, 每次发送消息更新过期时间，30分钟没新消息则删除聊天纪录
-     * @Author pengcheng
-     * @Date 2019/4/10
-     **/
-    public Result<?> sendUser(ContentDTO contentDTO) {
-        try {
-            List<Integer> sort = MessageSortUtil.sort(contentDTO.getFm(), contentDTO.getTo());
-            NettyWebSocket nettyWebSocket = webSocketSet.get(contentDTO.getTo());
-            if (nettyWebSocket == null) {
-                redisUtil.zadd(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
-                return Result.success("用户不在线，将在上线后收到消息");
+        if (message != null && !"".equals(message)) {
+            JSONObject object = JSONObject.parseObject(message);
+            ContentDTO contentDTO = JSON.toJavaObject(object, ContentDTO.class);
+            if (contentDTO != null) {
+                Object o = redisUtil.get(RedisKeys.getBanned(contentDTO.getFm()));
+                if (o == null) {
+                    List<Integer> sort = MessageSortUtil.sort(contentDTO.getTo(), contentDTO.getFm());
+                    NettyWebSocket nettyWebSocket = webSocketSet.get(contentDTO.getTo());
+                    if (nettyWebSocket == null) {
+                        redisUtil.zadd(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
+                    } else {
+                        redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
+                        redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))),60 * 60 * 24 * 30);
+                        nettyWebSocket.session.sendText(contentDTO.getText());
+                    }
+                }
+                // 用户已被禁言
             }
-            nettyWebSocket.session.sendText(contentDTO.getText());
-            redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
-            redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), Contants.EXPiRE_MESSAGE);
-        } catch (Exception e) {
-            return Result.fail("消息发送失败");
         }
-        return Result.success("消息发送成功");
     }
 
     /**
      * 群发消息
+     *
      * @Author pengcheng
      * @Date 2019/4/10
      **/

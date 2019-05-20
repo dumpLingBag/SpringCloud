@@ -33,7 +33,7 @@ public class UARoleServiceImpl implements UARoleService {
         List<UARole> rolePid = dao.query(UARole.class, Cnd.where("org_id", "=", orgId).and("pid", "=", 0));
         if (rolePid != null && !rolePid.isEmpty()) {
             rolePid.forEach(k -> {
-                List<UARole> role = dao.query(UARole.class, Cnd.where("org_id", "=", orgId).and("pid","=", k.getId()));
+                List<UARole> role = dao.query(UARole.class, Cnd.where("org_id", "=", orgId).and("pid", "=", k.getId()));
                 Map<String, Object> map = new HashMap<>();
                 map.put("id", k.getId());
                 map.put("name", k.getName());
@@ -89,26 +89,26 @@ public class UARoleServiceImpl implements UARoleService {
     @Override
     public Integer delete(RoleIdListDTO listDTO) {
         if (listDTO.getRoleIdList().size() > 1) {
-            dao.delete(UARole.class, Cnd.where("id","in", listDTO.getRoleIdList()));
-            dao.delete(UAOrgRole.class, Cnd.where("role_id","in", listDTO.getRoleIdList()));
-            dao.delete(UARoleMenu.class, Cnd.where("role_id","in", listDTO.getRoleIdList()));
-            dao.delete(UAUserRole.class, Cnd.where("role_id","in", listDTO.getRoleIdList()));
-            dao.delete(UADepartmentRole.class, Cnd.where("role_id","in", listDTO.getRoleIdList()));
+            dao.delete(UARole.class, Cnd.where("id", "in", listDTO.getRoleIdList()));
+            dao.delete(UAOrgRole.class, Cnd.where("role_id", "in", listDTO.getRoleIdList()));
+            dao.delete(UARoleMenu.class, Cnd.where("role_id", "in", listDTO.getRoleIdList()));
+            dao.delete(UAUserRole.class, Cnd.where("role_id", "in", listDTO.getRoleIdList()));
+            dao.delete(UADepartmentRole.class, Cnd.where("role_id", "in", listDTO.getRoleIdList()));
         }
         UARole role = dao.findById(UARole.class, listDTO.getRoleIdList().get(0));
         if (role != null) {
-            dao.delete(UARole.class, Cnd.where("id","=", role.getId()));
-            dao.delete(UAOrgRole.class, Cnd.where("role_id","=", role.getId()));
-            dao.delete(UARoleMenu.class, Cnd.where("role_id","=", role.getId()));
-            dao.delete(UAUserRole.class, Cnd.where("role_id","=", role.getId()));
-            dao.delete(UADepartmentRole.class, Cnd.where("role_id","=", role.getId()));
+            dao.delete(UARole.class, Cnd.where("id", "=", role.getId()));
+            dao.delete(UAOrgRole.class, Cnd.where("role_id", "=", role.getId()));
+            dao.delete(UARoleMenu.class, Cnd.where("role_id", "=", role.getId()));
+            dao.delete(UAUserRole.class, Cnd.where("role_id", "=", role.getId()));
+            dao.delete(UADepartmentRole.class, Cnd.where("role_id", "=", role.getId()));
             if (!role.getPid().equals(0)) {
                 List<UARole> roles = dao.query(UARole.class, Cnd.where("pid", "=", role.getPid()).and("sort", ">", role.getSort()));
                 if (roles != null && !roles.isEmpty()) {
                     StringBuilder sort = new StringBuilder();
                     roles.forEach(key -> sort.append(key.getId()).append(","));
                     sort.deleteCharAt(sort.length() - 1);
-                    dao.update("UPDATE ua_role SET sort = sort - 1 WHERE id IN ("+ sort.toString() +")");
+                    dao.update("UPDATE ua_role SET sort = sort - 1 WHERE id IN (" + sort.toString() + ")");
                 }
                 return 0;
             }

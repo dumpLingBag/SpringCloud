@@ -23,6 +23,7 @@ public class UASaveUserDTO extends CommonDTO {
     private String mobile;
 
     @NotEmpty(message = "密码不能为空")
+    @Pattern(regexp = "(?![0-9A-Z]+$)(?![0-9a-z]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$", message = "密码必须包含大小写字母数字，长度为6~16位")
     private String password;
 
     @NotEmpty(message = "账户名称不能为空")

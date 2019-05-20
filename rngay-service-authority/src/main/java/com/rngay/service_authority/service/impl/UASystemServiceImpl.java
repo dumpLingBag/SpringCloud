@@ -148,7 +148,7 @@ public class UASystemServiceImpl implements UASystemService {
 
     @Override
     public String findToken(Integer userId, Date date) {
-        return dao.queryForString(UAUserToken.class, Cnd.where("user_id","=", userId).and("expire_time",">", date), "token");
+        return dao.queryForString(UAUserToken.class, Cnd.where("user_id", "=", userId).and("expire_time", ">", date), "token");
     }
 
     @SuppressWarnings("unchecked")

@@ -18,7 +18,7 @@ public class PlatformIconController {
     private UAIconService uaIconService;
 
     @RequestMapping(value = "icon", method = RequestMethod.GET)
-    public Result<List<UAIconDTO>> loadIcon(){
+    public Result<List<UAIconDTO>> loadIcon() {
         return Result.success(uaIconService.loadIcon());
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class UAUserServiceImpl implements UAUserService {
- 
+
     @Autowired
     private UAUserDao uaUserDao;
 

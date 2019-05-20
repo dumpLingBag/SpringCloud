@@ -27,17 +27,17 @@ public class UAUserDaoImpl implements UAUserDao {
 
     @Override
     public UAUserDTO findUser(String account, String password) {
-        return dao.find(UAUserDTO.class, Cnd.where("account","=", account).and("password","=", password).and("is_delete","=", 1));
+        return dao.find(UAUserDTO.class, Cnd.where("account", "=", account).and("password", "=", password).and("is_delete", "=", 1));
     }
 
     @Override
     public UAUserDTO findByAccount(String account) {
-        return dao.find(UAUserDTO.class, Cnd.where("account","=", account).and("is_delete","=",1));
+        return dao.find(UAUserDTO.class, Cnd.where("account", "=", account).and("is_delete", "=", 1));
     }
 
     @Override
     public UAUserDTO findByMobile(String mobile) {
-        return dao.find(UAUserDTO.class, Cnd.where("mobile","=", mobile).and("is_delete","=",1));
+        return dao.find(UAUserDTO.class, Cnd.where("mobile", "=", mobile).and("is_delete", "=", 1));
     }
 
     @Override
@@ -53,16 +53,16 @@ public class UAUserDaoImpl implements UAUserDao {
     @Override
     public PageList<UAUserDTO> pageList(UAUserPageListDTO pageListDTO) {
         SimpleCriteria cri = new SimpleCriteria();
-        if (StringUtils.isNotEmpty(pageListDTO.getAccount())){
-            cri.where().and("account","like","%"+pageListDTO.getAccount()+"%");
+        if (StringUtils.isNotEmpty(pageListDTO.getAccount())) {
+            cri.where().and("account", "like", "%" + pageListDTO.getAccount() + "%");
         }
-        if (StringUtils.isNotEmpty(pageListDTO.getName())){
-            cri.where().and("name","like","%"+pageListDTO.getName()+"%");
+        if (StringUtils.isNotEmpty(pageListDTO.getName())) {
+            cri.where().and("name", "like", "%" + pageListDTO.getName() + "%");
         }
-        if (pageListDTO.getEnable() != null){
-            cri.where().and("enable","=", pageListDTO.getEnable());
+        if (pageListDTO.getEnable() != null) {
+            cri.where().and("enable", "=", pageListDTO.getEnable());
         }
-        cri.where().and("is_delete","=",1);
+        cri.where().and("is_delete", "=", 1);
         return dao.paginate(UAUserDTO.class, pageListDTO.getCurrentPage(), pageListDTO.getPageSize(), cri);
     }
 
@@ -94,11 +94,11 @@ public class UAUserDaoImpl implements UAUserDao {
     public int delete(Integer id) {
         UAUserDTO userDTO = new UAUserDTO();
         userDTO.setIsDelete(0);
-        return dao.update(userDTO, Cnd.where("id","=", id));
+        return dao.update(userDTO, Cnd.where("id", "=", id));
     }
 
     @Override
     public List<UAUserDTO> userIdForList(List<String> userList) {
-        return dao.query(UAUserDTO.class, Cnd.where("id","in", userList));
+        return dao.query(UAUserDTO.class, Cnd.where("id", "in", userList));
     }
 }

@@ -15,8 +15,12 @@ public class UserMessage {
 
     private Integer receiveUserId;
 
+    private String smsType;
+
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    private Integer sendReceiveUserId;
 
     private Date createTime;
 
@@ -44,12 +48,28 @@ public class UserMessage {
         this.receiveUserId = receiveUserId;
     }
 
+    public String getSmsType() {
+        return smsType;
+    }
+
+    public void setSmsType(String smsType) {
+        this.smsType = smsType;
+    }
+
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getSendReceiveUserId() {
+        return sendReceiveUserId;
+    }
+
+    public void setSendReceiveUserId(Integer sendReceiveUserId) {
+        this.sendReceiveUserId = sendReceiveUserId;
     }
 
     public Date getCreateTime() {

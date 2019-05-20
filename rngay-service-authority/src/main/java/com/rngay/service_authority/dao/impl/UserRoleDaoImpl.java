@@ -51,7 +51,7 @@ public class UserRoleDaoImpl implements UAUserRoleDao {
                 }
                 sql.append(roleMenuSql.roleMenu(orgRole.getRoleId()));
             }
-            String finalSql = "SELECT sm.* FROM ("+ sql.toString() + " AS pm JOIN ("+ roleMenuSql.result(userId) + " AS sm ON sm.id = pm.id";
+            String finalSql = "SELECT sm.* FROM (" + sql.toString() + " AS pm JOIN (" + roleMenuSql.result(userId) + " AS sm ON sm.id = pm.id";
             return dao.queryForList(roleMenuSql.sqlUrl(finalSql), String.class);
         }
         return dao.queryForList(roleMenuSql.sqlUrl(roleMenuSql.result(userId)), String.class);

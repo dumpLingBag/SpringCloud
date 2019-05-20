@@ -23,21 +23,25 @@ public class SocketScheduled {
     private Dao dao;
 
     /**
-    * 每天凌晨 5 点将 redis 里的聊天记录保存到数据库
-    * @Author pengcheng
-    * @Date 2019/4/30
-    **/
+     * 每天凌晨 5 点将 redis 里的聊天记录保存到数据库
+     *
+     * @Author pengcheng
+     * @Date 2019/4/30
+     **/
     @Scheduled(cron = "0 0 5 * * ?")
-    public void save() {
+    private void save() {
         Set<String> keys = redisUtil.keys(RedisKeys.getMessage("*", "*"));
         if (keys != null && keys.size() > 0) {
             logger.info("查询到" + keys.size() + "组聊天记录");
+            String sql = "INSERT INTO user_message(send_user_id,receive_user_id,content,send_receive_user_id,create_time) VALUES(?,?,?,?,?)";
             for (String key : keys) {
                 Set<Object> range = redisUtil.range(key, 0, -1);
-                int[][] ints = dao.batchUpdate("", range, 10000, new ObjectParameterizedPreparedStatementSetter<>());
-                logger.info("成功插入"+ ints.length +"条聊天记录");
-                redisUtil.del(key);
-                logger.info("成功删除 key 为" + key + "的聊天记录");
+                if (range.size() > 0) {
+                    int[][] ints = dao.batchUpdate(sql, range, 500, new ObjectParameterizedPreparedStatementSetter<>());
+                    logger.info("成功插入" + ints.length + "条聊天记录");
+                    redisUtil.del(key);
+                    logger.info("成功删除 key 为" + key + "的聊天记录");
+                }
             }
         }
     }

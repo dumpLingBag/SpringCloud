@@ -25,18 +25,9 @@ public class WebSocketController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @RequestMapping(value = "sendUser", method = RequestMethod.POST)
-    public Result<?> sendUser(@RequestBody ContentDTO contentDTO) {
-        Object o = redisUtil.get(RedisKeys.getBanned(contentDTO.getFm()));
-        if (o != null) {
-            return Result.failMsg("该用户已被禁言");
-        }
-        return nettyWebSocket.sendUser(contentDTO);
-    }
-
     /*
-    * 禁言用户没下线也能接收到群发消息
-    * */
+     * 禁言用户没下线也能接收到群发消息
+     * */
     @RequestMapping(value = "sendAll", method = RequestMethod.POST)
     public Result<String> sendAll(@RequestParam("content") String content) {
         boolean b = nettyWebSocket.sendAll(content);
@@ -101,12 +92,12 @@ public class WebSocketController {
     @RequestMapping(value = "getCacheMessage", method = RequestMethod.GET)
     public Result<?> getCacheMessage(String sendUserId, String receiveUserId) {
         List<Integer> sort = MessageSortUtil.sort(sendUserId, receiveUserId);
-        Set<Object> range = redisUtil.range(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), 0, -1);
+        Set<Object> range = redisUtil.range(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), 0, -1);
         if (range != null && range.size() > 0) {
             for (Object ob : range) {
-                redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), new Date().getTime(), ob);
+                redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), ob);
             }
-            redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)),String.valueOf(sort.get(1))), Contants.EXPiRE_MESSAGE);
+            redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), Contants.EXPiRE_MESSAGE);
         }
         return Result.success(range);
     }

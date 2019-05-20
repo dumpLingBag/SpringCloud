@@ -32,7 +32,7 @@ public class UARoleMenuServiceImpl implements UARoleMenuService {
 
     @Override
     public List<UARoleMenu> loadMenu(Integer roleId) {
-        return dao.query(UARoleMenu.class, Cnd.where("checked","=",1).and("role_id","=", roleId));
+        return dao.query(UARoleMenu.class, Cnd.where("checked", "=", 1).and("role_id", "=", roleId));
     }
 
     @Transactional

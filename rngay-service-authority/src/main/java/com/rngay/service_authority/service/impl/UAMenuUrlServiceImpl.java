@@ -40,7 +40,7 @@ public class UAMenuUrlServiceImpl implements UAMenuUrlService {
 
     @Override
     public List<UAMenuUrl> loadUrl(Integer id) {
-        return dao.query(UAMenuUrl.class, Cnd.where("menu_id","=",id).and("checked","=",1));
+        return dao.query(UAMenuUrl.class, Cnd.where("menu_id", "=", id).and("checked", "=", 1));
     }
 
     @Transactional
@@ -55,7 +55,7 @@ public class UAMenuUrlServiceImpl implements UAMenuUrlService {
                     url.setMenuId(updateUrlDTO.getMenuId());
                     list.add(url);
                 } else {
-                    i+= update;
+                    i += update;
                 }
             }
             if (!list.isEmpty()) {

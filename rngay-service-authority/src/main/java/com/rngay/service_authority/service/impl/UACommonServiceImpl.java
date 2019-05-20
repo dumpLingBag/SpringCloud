@@ -29,7 +29,7 @@ public class UACommonServiceImpl implements UACommonService {
 
     @Override
     public List<UAUrl> loadOpen() {
-        return dao.query(UAUrl.class, Cnd.where("common","=",1).and("pid","<>","null"));
+        return dao.query(UAUrl.class, Cnd.where("common", "=", 1).and("pid", "<>", "null"));
     }
 
 }

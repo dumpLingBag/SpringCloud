@@ -2,9 +2,7 @@ package com.rngay;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
-import zipkin2.server.internal.EnableZipkinServer;
 
-@EnableZipkinServer
 @SpringCloudApplication
 public class SleuthApplication {
 
