@@ -128,7 +128,7 @@ public class NettyWebSocket {
                     } else {
                         redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
                         redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))),60 * 60 * 24 * 30);
-                        nettyWebSocket.session.sendText(contentDTO.getText());
+                        nettyWebSocket.session.sendText(message);
                     }
                 }
                 // 用户已被禁言
