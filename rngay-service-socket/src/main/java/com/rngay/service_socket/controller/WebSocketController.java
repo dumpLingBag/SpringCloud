@@ -4,7 +4,6 @@ import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.vo.PageList;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
-import com.rngay.feign.socket.dto.ContentDTO;
 import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.service_socket.NettyWebSocket;
 import com.rngay.service_socket.contants.Contants;
