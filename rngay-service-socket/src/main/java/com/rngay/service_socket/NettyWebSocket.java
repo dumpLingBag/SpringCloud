@@ -60,17 +60,17 @@ public class NettyWebSocket {
         if (userId != null && !"".equals(userId)) {
             this.userId = userId;
             this.session = session;
-            boolean b = webSocket.containsKey(userId);
-            if (!b) {
+            boolean socket = webSocket.containsKey(userId);
+            if (!socket) {
                 webSocket.put(userId, this);
+                UAUserDTO user = userService.findById(Integer.parseInt(userId)).getData();
+                if (user != null) {
+                    user.setExpireTime(new Date());
+                    redisUtil.zadd(RedisKeys.KEY_SET_USER, user.getId(), user);
+                    redisUtil.set(RedisKeys.getUserKey(userId), user);
+                }
+                logger.info("用户ID为 -> " + userId + " 的用户加入了，当前在线人数为 -> " + getOnlineCount());
             }
-            UAUserDTO user = userService.findById(Integer.parseInt(userId)).getData();
-            if (user != null) {
-                user.setExpireTime(new Date());
-                redisUtil.zadd(RedisKeys.KEY_SET_USER, user.getId(), user);
-                redisUtil.set(RedisKeys.getUserKey(userId), user);
-            }
-            logger.info("用户ID为 -> " + userId + " 的用户加入了，当前在线人数为 -> " + getOnlineCount());
         }
     }
 
