@@ -11,16 +11,16 @@ public class UserMessage {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer sendUserId;
+    private String fm;
 
-    private Integer receiveUserId;
-
-    private String smsType;
+    private String to;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private Integer sendReceiveUserId;
+    private String fmTo;
+
+    private String smsType;
 
     private Date createTime;
 
@@ -32,28 +32,20 @@ public class UserMessage {
         this.id = id;
     }
 
-    public Integer getSendUserId() {
-        return sendUserId;
+    public String getFm() {
+        return fm;
     }
 
-    public void setSendUserId(Integer sendUserId) {
-        this.sendUserId = sendUserId;
+    public void setFm(String fm) {
+        this.fm = fm;
     }
 
-    public Integer getReceiveUserId() {
-        return receiveUserId;
+    public String getTo() {
+        return to;
     }
 
-    public void setReceiveUserId(Integer receiveUserId) {
-        this.receiveUserId = receiveUserId;
-    }
-
-    public String getSmsType() {
-        return smsType;
-    }
-
-    public void setSmsType(String smsType) {
-        this.smsType = smsType;
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public String getContent() {
@@ -64,12 +56,20 @@ public class UserMessage {
         this.content = content;
     }
 
-    public Integer getSendReceiveUserId() {
-        return sendReceiveUserId;
+    public String getFmTo() {
+        return fmTo;
     }
 
-    public void setSendReceiveUserId(Integer sendReceiveUserId) {
-        this.sendReceiveUserId = sendReceiveUserId;
+    public void setFmTo(String fmTo) {
+        this.fmTo = fmTo;
+    }
+
+    public String getSmsType() {
+        return smsType;
+    }
+
+    public void setSmsType(String smsType) {
+        this.smsType = smsType;
     }
 
     public Date getCreateTime() {

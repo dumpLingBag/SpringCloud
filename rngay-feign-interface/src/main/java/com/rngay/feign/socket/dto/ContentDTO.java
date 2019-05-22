@@ -15,16 +15,16 @@ public class ContentDTO {
     private String to;
 
     @NotBlank(message = "内容为空")
-    private String text;
+    private String content;
 
     private String fmTo;
-
-    @NotNull(message = "时间为空")
-    private Date time;
 
     @NotNull(message = "消息类型为空")
     @Enumerated(value = EnumType.STRING)
     private SmsTypeEnum smsType;
+
+    @NotNull(message = "时间为空")
+    private Date createTime;
 
     public String getFm() {
         return fm;
@@ -42,12 +42,12 @@ public class ContentDTO {
         this.to = to;
     }
 
-    public String getText() {
-        return text;
+    public String getContent() {
+        return content;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getFmTo() {
@@ -58,19 +58,19 @@ public class ContentDTO {
         this.fmTo = fmTo;
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
     public SmsTypeEnum getSmsType() {
         return smsType;
     }
 
     public void setSmsType(SmsTypeEnum smsType) {
         this.smsType = smsType;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

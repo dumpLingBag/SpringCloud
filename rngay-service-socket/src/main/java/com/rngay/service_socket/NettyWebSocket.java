@@ -3,12 +3,9 @@ package com.rngay.service_socket;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
-import com.rngay.common.vo.Result;
 import com.rngay.feign.socket.dto.ContentDTO;
-import com.rngay.feign.socket.dto.SmsTypeEnum;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
-import com.rngay.service_socket.contants.Contants;
 import com.rngay.service_socket.contants.RedisKeys;
 import com.rngay.service_socket.util.MessageSortUtil;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -46,8 +43,7 @@ public class NettyWebSocket {
 
     private static RedisUtil redisUtil;
     private static PFUserService userService;
-    private static ConcurrentHashMap<String, NettyWebSocket> webSocketSet = new ConcurrentHashMap<>();
-    private static int onlineCount = 0;
+    private static ConcurrentHashMap<String, NettyWebSocket> webSocket = new ConcurrentHashMap<>();
 
     private String userId = "";
     private Session session;
@@ -64,14 +60,16 @@ public class NettyWebSocket {
         if (userId != null && !"".equals(userId)) {
             this.userId = userId;
             this.session = session;
-            webSocketSet.put(userId, this);
+            boolean b = webSocket.containsKey(userId);
+            if (!b) {
+                webSocket.put(userId, this);
+            }
             UAUserDTO user = userService.findById(Integer.parseInt(userId)).getData();
             if (user != null) {
                 user.setExpireTime(new Date());
                 redisUtil.zadd(RedisKeys.KEY_SET_USER, user.getId(), user);
                 redisUtil.set(RedisKeys.getUserKey(userId), user);
             }
-            addOnlineCount();
             logger.info("用户ID为 -> " + userId + " 的用户加入了，当前在线人数为 -> " + getOnlineCount());
         }
     }
@@ -88,10 +86,9 @@ public class NettyWebSocket {
         if (user != null) {
             redisUtil.zrem(RedisKeys.KEY_SET_USER, user);
             redisUtil.del(RedisKeys.getUserKey(this.userId));
-            webSocketSet.remove(this.userId);
-            subOnlineCount();
-            logger.info("有一连接关闭！当前在线人数为 -> " + getOnlineCount());
         }
+        webSocket.remove(this.userId);
+        logger.info("有一连接关闭！当前在线人数为 -> " + getOnlineCount());
     }
 
     /**
@@ -102,7 +99,11 @@ public class NettyWebSocket {
      **/
     @OnError
     public void onError(Session session, Throwable throwable) {
-        session.sendText("消息出现异常");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format = dateFormat.format(new Date());
+        String message = "{\"to\":\"0\",\"fm\":\"0\",\"fmTo\":\"0\",\"content\":\"消息发送异常\"," +
+                "\"createTime\":\""+format+"\",\"smsType\":\"0\"}";
+        session.sendText(message);
         throwable.printStackTrace();
     }
 
@@ -119,19 +120,15 @@ public class NettyWebSocket {
             JSONObject object = JSONObject.parseObject(message);
             ContentDTO contentDTO = JSON.toJavaObject(object, ContentDTO.class);
             if (contentDTO != null) {
-                Object o = redisUtil.get(RedisKeys.getBanned(contentDTO.getFm()));
-                if (o == null) {
-                    List<Integer> sort = MessageSortUtil.sort(contentDTO.getTo(), contentDTO.getFm());
-                    NettyWebSocket nettyWebSocket = webSocketSet.get(contentDTO.getTo());
-                    if (nettyWebSocket == null) {
-                        redisUtil.zadd(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
-                    } else {
-                        redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
-                        redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))),60 * 60 * 24 * 30);
-                        nettyWebSocket.session.sendText(message);
-                    }
+                List<Integer> sort = MessageSortUtil.sort(contentDTO.getTo(), contentDTO.getFm());
+                NettyWebSocket nettyWebSocket = webSocket.get(contentDTO.getTo());
+                if (nettyWebSocket == null) {
+                    redisUtil.zadd(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
+                } else {
+                    redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
+                    redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))),60 * 60 * 24 * 30);
+                    nettyWebSocket.session.sendText(message);
                 }
-                // 用户已被禁言
             }
         }
     }
@@ -143,8 +140,8 @@ public class NettyWebSocket {
      * @Date 2019/4/10
      **/
     public boolean sendAll(String message) {
-        if (webSocketSet.size() > 0) {
-            for (NettyWebSocket item : webSocketSet.values()) {
+        if (webSocket.size() > 0) {
+            for (NettyWebSocket item : webSocket.values()) {
                 try {
                     item.session.sendText(message);
                 } catch (Exception e) {
@@ -162,7 +159,7 @@ public class NettyWebSocket {
             if (user != null) {
                 redisUtil.del(RedisKeys.getUserKey(userId));
                 redisUtil.zrem(RedisKeys.KEY_SET_USER, user);
-                webSocketSet.remove(userId);
+                webSocket.remove(userId);
             }
         } catch (Exception e) {
             return false;
@@ -170,25 +167,8 @@ public class NettyWebSocket {
         return true;
     }
 
-    private Map<String, Object> message(ContentDTO contentDTO, String message, String sendUserId) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Map<String, Object> map = new HashMap<>();
-        map.put("userId", sendUserId);
-        map.put("message", message);
-        map.put("sendTime", format.format(new Date()));
-        return map;
-    }
-
-    private static synchronized int getOnlineCount() {
-        return onlineCount;
-    }
-
-    private static synchronized void addOnlineCount() {
-        NettyWebSocket.onlineCount++;
-    }
-
-    private static synchronized void subOnlineCount() {
-        NettyWebSocket.onlineCount--;
+    private static int getOnlineCount() {
+        return webSocket.size();
     }
 
 }
