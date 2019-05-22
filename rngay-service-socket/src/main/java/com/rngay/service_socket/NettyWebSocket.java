@@ -114,12 +114,12 @@ public class NettyWebSocket {
      * @Date 2019/4/10
      **/
     @OnMessage
-    public void OnMessage(String message) {
+    public void OnMessage(Session session, String message) {
         logger.info("收到新的消息 -> " + message);
         if (message != null && !"".equals(message)) {
             JSONObject object = JSONObject.parseObject(message);
             ContentDTO contentDTO = JSON.toJavaObject(object, ContentDTO.class);
-            if (contentDTO != null) {
+            if (contentDTO != null && !"".equals(contentDTO.getContent())) {
                 List<Integer> sort = MessageSortUtil.sort(contentDTO.getTo(), contentDTO.getFm());
                 NettyWebSocket nettyWebSocket = webSocket.get(contentDTO.getTo());
                 if (nettyWebSocket == null) {
@@ -129,6 +129,12 @@ public class NettyWebSocket {
                     redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))),60 * 60 * 24 * 30);
                     nettyWebSocket.session.sendText(message);
                 }
+            } else {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String format = dateFormat.format(new Date());
+                String failMessage = "{\"to\":\"0\",\"fm\":\"0\",\"fmTo\":\"0\",\"content\":\"消息发送异常\"," +
+                        "\"createTime\":\""+format+"\",\"smsType\":\"0\"}";
+                session.sendText(failMessage);
             }
         }
     }
@@ -160,6 +166,7 @@ public class NettyWebSocket {
                 redisUtil.del(RedisKeys.getUserKey(userId));
                 redisUtil.zrem(RedisKeys.KEY_SET_USER, user);
                 webSocket.remove(userId);
+                logger.warn("ID为" + userId + "的用户退出了连接，当前在线人数为 -> " + getOnlineCount());
             }
         } catch (Exception e) {
             return false;
