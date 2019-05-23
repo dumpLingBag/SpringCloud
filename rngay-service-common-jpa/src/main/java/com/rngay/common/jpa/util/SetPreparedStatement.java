@@ -34,7 +34,8 @@ public class SetPreparedStatement<T> {
                     Object o = field.get(t);
                     if (!b) {
                         if (o != null && !"".equals(o)) {
-                            ps.setObject(it = it + 1, o);
+                            boolean anEnum = field.getType().isEnum();
+                            ps.setObject(it = it + 1, anEnum ? ((Enum) o).name() : o);
                         }
                     } else {
                         id = o;

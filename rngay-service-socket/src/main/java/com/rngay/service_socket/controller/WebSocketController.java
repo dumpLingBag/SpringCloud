@@ -8,7 +8,7 @@ import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.service_socket.NettyWebSocket;
 import com.rngay.service_socket.contants.Contants;
 import com.rngay.service_socket.contants.RedisKeys;
-import com.rngay.service_socket.util.MessageSortUtil;
+import com.rngay.service_socket.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -52,16 +52,16 @@ public class WebSocketController {
     @RequestMapping(value = "getMessage", method = RequestMethod.GET)
     public Result<PageList<?>> getMessage(@RequestBody PageMessageDTO messageDTO) {
         if (!StringUtils.isEmpty(messageDTO.getSupplierId()) && !StringUtils.isEmpty(messageDTO.getMemberId())) {
-            List<Integer> sort = MessageSortUtil.sort(messageDTO.getSupplierId(), messageDTO.getMemberId());
-            Long zCard = redisUtil.zCard(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))));
+            List<Integer> sort = MessageUtil.sort(messageDTO.getSupplierId(), messageDTO.getMemberId());
+            Long zCard = redisUtil.zCard(RedisKeys.getMessage(sort));
             if (zCard > 0) {
                 Integer currentPage = messageDTO.getCurrentPage();
                 Integer pageSize = messageDTO.getPageSize();
                 currentPage = (currentPage - 1) * pageSize;
                 pageSize = currentPage == 0 ? pageSize - 1 : currentPage * pageSize - 1;
-                Set<Object> range = redisUtil.reverseRange(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), currentPage, pageSize);
+                Set<Object> range = redisUtil.reverseRange(RedisKeys.getMessage(sort), currentPage, pageSize);
                 List<Object> list = new ArrayList<>(range);
-                PageList<Object> tPageList = new PageList<>(messageDTO.getCurrentPage(), messageDTO.getPageSize(), zCard.intValue());
+                PageList<Object> tPageList = new PageList<>(messageDTO.getCurrentPage(), zCard.intValue(), messageDTO.getPageSize());
                 tPageList.setList(list);
                 return Result.success(tPageList);
             }
@@ -89,14 +89,15 @@ public class WebSocketController {
     }
 
     @RequestMapping(value = "getCacheMessage", method = RequestMethod.GET)
-    public Result<?> getCacheMessage(String sendUserId, String receiveUserId) {
-        List<Integer> sort = MessageSortUtil.sort(sendUserId, receiveUserId);
-        Set<Object> range = redisUtil.range(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), 0, -1);
+    public Result<?> getCacheMessage(@RequestParam("sendUserId") String sendUserId, @RequestParam("receiveUserId") String receiveUserId) {
+        List<Integer> sort = MessageUtil.sort(sendUserId, receiveUserId);
+        Set<Object> range = redisUtil.range(RedisKeys.getCacheMessage(sort), 0, -1);
         if (range != null && range.size() > 0) {
             for (Object ob : range) {
-                redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), ob);
+                redisUtil.zadd(RedisKeys.getMessage(sort), new Date().getTime(), ob);
             }
-            redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), Contants.EXPiRE_MESSAGE);
+            redisUtil.expire(RedisKeys.getMessage(sort), Contants.EXPiRE_MESSAGE);
+            redisUtil.del(RedisKeys.getCacheMessage(sort));
         }
         return Result.success(range);
     }

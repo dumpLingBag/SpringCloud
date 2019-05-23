@@ -9,15 +9,15 @@ import java.util.Date;
 public class ContentDTO {
 
     @NotBlank(message = "发送人为空")
-    private String fm;
+    private String send;
 
     @NotBlank(message = "接收人为空")
-    private String to;
+    private String receive;
 
     @NotBlank(message = "内容为空")
     private String content;
 
-    private String fmTo;
+    private String sendReceive;
 
     @NotNull(message = "消息类型为空")
     @Enumerated(value = EnumType.STRING)
@@ -26,20 +26,20 @@ public class ContentDTO {
     @NotNull(message = "时间为空")
     private Date createTime;
 
-    public String getFm() {
-        return fm;
+    public String getSend() {
+        return send;
     }
 
-    public void setFm(String fm) {
-        this.fm = fm;
+    public void setSend(String send) {
+        this.send = send;
     }
 
-    public String getTo() {
-        return to;
+    public String getReceive() {
+        return receive;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setReceive(String receive) {
+        this.receive = receive;
     }
 
     public String getContent() {
@@ -50,12 +50,12 @@ public class ContentDTO {
         this.content = content;
     }
 
-    public String getFmTo() {
-        return fmTo;
+    public String getSendReceive() {
+        return sendReceive;
     }
 
-    public void setFmTo(String fmTo) {
-        this.fmTo = fmTo;
+    public void setSendReceive(String sendReceive) {
+        this.sendReceive = sendReceive;
     }
 
     public SmsTypeEnum getSmsType() {

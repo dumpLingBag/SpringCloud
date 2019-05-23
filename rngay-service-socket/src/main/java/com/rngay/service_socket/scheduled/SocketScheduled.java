@@ -48,10 +48,10 @@ public class SocketScheduled {
      * */
     @Scheduled(cron = "0 0 5 * * ?")
     private void save() {
-        Set<String> keys = redisUtil.keys(RedisKeys.getMessage("*", "*"));
+        Set<String> keys = redisUtil.keys(RedisKeys.getScheduledMessage("*", "*"));
         if (keys != null && keys.size() > 0) {
             logger.info("查询到" + keys.size() + "组聊天记录");
-            String sql = "INSERT INTO user_message(`to`, `fm`, `content`, `fm_To`, `sms_type`, `create_time`) VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO user_message(`send`, `receive`, `content`, `send_receive`, `sms_type`, `create_time`) VALUES(?,?,?,?,?,?)";
             for (String key : keys) {
                 Set<Object> range = redisUtil.range(key, 0, -1);
                 if (range.size() > 0) {

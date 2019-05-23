@@ -7,7 +7,7 @@ import com.rngay.feign.socket.dto.ContentDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_socket.contants.RedisKeys;
-import com.rngay.service_socket.util.MessageSortUtil;
+import com.rngay.service_socket.util.MessageUtil;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,6 @@ import org.yeauty.pojo.ParameterMap;
 import org.yeauty.pojo.Session;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -69,7 +68,7 @@ public class NettyWebSocket {
                     redisUtil.zadd(RedisKeys.KEY_SET_USER, user.getId(), user);
                     redisUtil.set(RedisKeys.getUserKey(userId), user);
                 }
-                logger.info("用户ID为 -> " + userId + " 的用户加入了，当前在线人数为 -> " + getOnlineCount());
+                logger.info("用户ID为 -> " + userId + " 的用户加入了连接，当前在线人数为 -> " + getOnlineCount());
             }
         }
     }
@@ -88,7 +87,7 @@ public class NettyWebSocket {
             redisUtil.del(RedisKeys.getUserKey(this.userId));
         }
         webSocket.remove(this.userId);
-        logger.info("有一连接关闭！当前在线人数为 -> " + getOnlineCount());
+        logger.info("用户ID为 -> "+ this.userId +"的用户断开了连接！当前在线人数为 -> " + getOnlineCount());
     }
 
     /**
@@ -99,11 +98,8 @@ public class NettyWebSocket {
      **/
     @OnError
     public void onError(Session session, Throwable throwable) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String format = dateFormat.format(new Date());
-        String message = "{\"to\":\"0\",\"fm\":\"0\",\"fmTo\":\"0\",\"content\":\"消息发送异常\"," +
-                "\"createTime\":\""+format+"\",\"smsType\":\"0\"}";
-        session.sendText(message);
+        String receive = MessageUtil.receive("消息发送异常");
+        session.sendText(receive);
         throwable.printStackTrace();
     }
 
@@ -120,21 +116,23 @@ public class NettyWebSocket {
             JSONObject object = JSONObject.parseObject(message);
             ContentDTO contentDTO = JSON.toJavaObject(object, ContentDTO.class);
             if (contentDTO != null && !"".equals(contentDTO.getContent())) {
-                List<Integer> sort = MessageSortUtil.sort(contentDTO.getTo(), contentDTO.getFm());
-                NettyWebSocket nettyWebSocket = webSocket.get(contentDTO.getTo());
-                if (nettyWebSocket == null) {
-                    redisUtil.zadd(RedisKeys.getCacheMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
+                if (!"0".equals(contentDTO.getSendReceive())) {
+                    List<Integer> sort = MessageUtil.sort(contentDTO.getReceive(), contentDTO.getSend());
+                    NettyWebSocket nettyWebSocket = webSocket.get(contentDTO.getReceive());
+                    if (nettyWebSocket == null) {
+                        redisUtil.zadd(RedisKeys.getCacheMessage(sort), new Date().getTime(), contentDTO);
+                    } else {
+                        redisUtil.zadd(RedisKeys.getMessage(sort), new Date().getTime(), contentDTO);
+                        redisUtil.expire(RedisKeys.getMessage(sort),60 * 60 * 24 * 30);
+                        nettyWebSocket.session.sendText(message);
+                    }
                 } else {
-                    redisUtil.zadd(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))), new Date().getTime(), contentDTO);
-                    redisUtil.expire(RedisKeys.getMessage(String.valueOf(sort.get(0)), String.valueOf(sort.get(1))),60 * 60 * 24 * 30);
-                    nettyWebSocket.session.sendText(message);
+                    String receive = MessageUtil.receive("pong");
+                    session.sendText(receive);
                 }
             } else {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String format = dateFormat.format(new Date());
-                String failMessage = "{\"to\":\"0\",\"fm\":\"0\",\"fmTo\":\"0\",\"content\":\"消息发送异常\"," +
-                        "\"createTime\":\""+format+"\",\"smsType\":\"0\"}";
-                session.sendText(failMessage);
+                String receive = MessageUtil.receive("消息发送异常");
+                session.sendText(receive);
             }
         }
     }

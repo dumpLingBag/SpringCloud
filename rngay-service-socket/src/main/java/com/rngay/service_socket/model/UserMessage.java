@@ -1,5 +1,7 @@
 package com.rngay.service_socket.model;
 
+import com.rngay.feign.socket.dto.SmsTypeEnum;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,16 +13,18 @@ public class UserMessage {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    private String fm;
+    private String send;
 
-    private String to;
+    private String receive;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String fmTo;
+    private String sendReceive;
 
-    private String smsType;
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 128)
+    private SmsTypeEnum smsType;
 
     private Date createTime;
 
@@ -32,20 +36,20 @@ public class UserMessage {
         this.id = id;
     }
 
-    public String getFm() {
-        return fm;
+    public String getSend() {
+        return send;
     }
 
-    public void setFm(String fm) {
-        this.fm = fm;
+    public void setSend(String send) {
+        this.send = send;
     }
 
-    public String getTo() {
-        return to;
+    public String getReceive() {
+        return receive;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setReceive(String receive) {
+        this.receive = receive;
     }
 
     public String getContent() {
@@ -56,19 +60,19 @@ public class UserMessage {
         this.content = content;
     }
 
-    public String getFmTo() {
-        return fmTo;
+    public String getSendReceive() {
+        return sendReceive;
     }
 
-    public void setFmTo(String fmTo) {
-        this.fmTo = fmTo;
+    public void setSendReceive(String sendReceive) {
+        this.sendReceive = sendReceive;
     }
 
-    public String getSmsType() {
+    public SmsTypeEnum getSmsType() {
         return smsType;
     }
 
-    public void setSmsType(String smsType) {
+    public void setSmsType(SmsTypeEnum smsType) {
         this.smsType = smsType;
     }
 
