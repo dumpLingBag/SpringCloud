@@ -61,7 +61,7 @@ public class WebSocketController {
                 pageSize = currentPage == 0 ? pageSize - 1 : currentPage * pageSize - 1;
                 Set<Object> range = redisUtil.reverseRange(RedisKeys.getMessage(sort), currentPage, pageSize);
                 List<Object> list = new ArrayList<>(range);
-                PageList<Object> tPageList = new PageList<>(messageDTO.getCurrentPage(), zCard.intValue(), messageDTO.getPageSize());
+                PageList<Object> tPageList = new PageList<>(messageDTO.getCurrentPage(), zCard, messageDTO.getPageSize());
                 tPageList.setList(list);
                 return Result.success(tPageList);
             }

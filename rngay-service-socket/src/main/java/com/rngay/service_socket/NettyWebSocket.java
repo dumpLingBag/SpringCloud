@@ -68,7 +68,7 @@ public class NettyWebSocket {
                     redisUtil.zadd(RedisKeys.KEY_SET_USER, user.getId(), user);
                     redisUtil.set(RedisKeys.getUserKey(userId), user);
                 }
-                logger.info("用户ID为 -> " + userId + " 的用户加入了连接，当前在线人数为 -> " + getOnlineCount());
+                logger.info("ID为 -> " + userId + " 的用户加入了连接，当前在线人数为 -> " + getOnlineCount());
             }
         }
     }
@@ -87,7 +87,7 @@ public class NettyWebSocket {
             redisUtil.del(RedisKeys.getUserKey(this.userId));
         }
         webSocket.remove(this.userId);
-        logger.info("用户ID为 -> "+ this.userId +"的用户断开了连接！当前在线人数为 -> " + getOnlineCount());
+        logger.info("ID为 -> "+ this.userId +"的用户断开了连接！当前在线人数为 -> " + getOnlineCount());
     }
 
     /**
@@ -159,17 +159,21 @@ public class NettyWebSocket {
 
     public boolean kickOut(String userId) {
         try {
-            Object user = redisUtil.get(RedisKeys.getUserKey(userId));
-            if (user != null) {
-                redisUtil.del(RedisKeys.getUserKey(userId));
-                redisUtil.zrem(RedisKeys.KEY_SET_USER, user);
-                webSocket.remove(userId);
-                logger.warn("ID为" + userId + "的用户退出了连接，当前在线人数为 -> " + getOnlineCount());
+            boolean key = webSocket.containsKey(userId);
+            if (key) {
+                Object user = redisUtil.get(RedisKeys.getUserKey(userId));
+                if (user != null) {
+                    redisUtil.del(RedisKeys.getUserKey(userId));
+                    redisUtil.zrem(RedisKeys.KEY_SET_USER, user);
+                    webSocket.remove(userId);
+                    logger.warn("ID为" + userId + "的用户退出了连接，当前在线人数为 -> " + getOnlineCount());
+                }
+                return true;
             }
+            return false;
         } catch (Exception e) {
             return false;
         }
-        return true;
     }
 
     private static int getOnlineCount() {
