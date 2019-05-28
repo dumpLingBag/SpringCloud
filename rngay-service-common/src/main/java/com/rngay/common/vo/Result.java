@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class Result<T> implements Serializable {
 
-    private static final int CODE_NOT_LOGIN = -1;
-    private static final int CODE_SUCCESS = 0;
-    private static final int CODE_FAIL = 1;
-    private static final int CODE_FAIL_MSG = 2;
+    public static final int CODE_NOT_LOGIN = -1;
+    public static final int CODE_SUCCESS = 0;
+    public static final int CODE_FAIL = 1;
+    public static final int CODE_FAIL_MSG = 2;
 
     private int code;
     private T data;

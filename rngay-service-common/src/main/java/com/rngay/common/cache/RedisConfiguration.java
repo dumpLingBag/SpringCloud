@@ -34,11 +34,11 @@ import java.util.Iterator;
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(RedisProperties.class)
 @EnableCaching
-@PropertySource(
-        value = {"classpath:redis-${spring.profiles.active}.properties",
-                "file:redis-${spring.profiles.active}.properties",
-                "file:config/redis-${spring.profiles.active}.properties"},
-        ignoreResourceNotFound = true)
+@PropertySource(value = {
+        "classpath:redis-${spring.profiles.active}.properties",
+        "file:redis-${spring.profiles.active}.properties",
+        "file:config/redis-${spring.profiles.active}.properties"
+}, ignoreResourceNotFound = true)
 public class RedisConfiguration extends CachingConfigurerSupport {
     private Duration timeToLive = Duration.ZERO;
 
