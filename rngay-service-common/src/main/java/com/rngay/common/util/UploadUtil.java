@@ -9,6 +9,7 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import sun.net.ftp.FtpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class UploadUtil {
             // 切换到上传目录
             if (!ftpClient.changeWorkingDirectory(ossConfig.getBasePath())) {
                 // 如果目录不存在创建目录
-                if (!ftpClient.changeWorkingDirectory(ossConfig.getBasePath())) {
+                if (!ftpClient.makeDirectory(ossConfig.getBasePath())) {
                     throw new BaseException(Result.CODE_FAIL, "图片服务器连接发生异常");
                 } else {
                     ftpClient.changeWorkingDirectory(ossConfig.getBasePath());
