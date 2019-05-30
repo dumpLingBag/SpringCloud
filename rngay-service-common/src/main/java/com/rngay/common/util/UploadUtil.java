@@ -21,6 +21,11 @@ public class UploadUtil {
     @Autowired
     private RnGayOSSConfig ossConfig;
 
+    /**
+    * ftp 文件上传
+    * @Author pengcheng
+    * @Date 2019/5/30
+    **/
     public String ftpUpload(MultipartFile uploadFile) {
         if (uploadFile.getSize() > 10 * 1024 * 1024) {
             throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
@@ -87,6 +92,11 @@ public class UploadUtil {
         return null;
     }
 
+    /**
+    * springboot 文件上传
+    * @Author pengcheng
+    * @Date 2019/5/30
+    **/
     public String upload(MultipartFile uploadFile) {
         if (uploadFile.getSize() > 10 * 1024 * 1024) {
             throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
@@ -102,9 +112,9 @@ public class UploadUtil {
         }
 
         try {
-            String md5 = ossConfig.getBasePath() + BinaryUtil.encodeMD5(input2byte(uploadFile.getInputStream()));
+            String md5 = BinaryUtil.encodeMD5(input2byte(uploadFile.getInputStream()));
             String imgType = filename.substring(filename.lastIndexOf("."));
-            File file = new File(md5 + imgType);
+            File file = new File(ossConfig.getBasePath() + md5 + imgType);
             if (!file.getParentFile().exists()) {
                 boolean mkdir = file.getParentFile().mkdir();
                 if (!mkdir) {
