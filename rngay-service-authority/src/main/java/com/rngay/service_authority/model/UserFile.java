@@ -8,7 +8,6 @@ import java.util.Date;
 public class UserFile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private Integer userId;
     private String originalFilename;
