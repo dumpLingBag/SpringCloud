@@ -9,9 +9,9 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import sun.net.ftp.FtpClient;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -21,7 +21,7 @@ public class UploadUtil {
     @Autowired
     private RnGayOSSConfig ossConfig;
 
-    public String upload(MultipartFile uploadFile) {
+    public String ftpUpload(MultipartFile uploadFile) {
         if (uploadFile.getSize() > 10 * 1024 * 1024) {
             throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
         }
@@ -83,6 +83,38 @@ public class UploadUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        return null;
+    }
+
+    public String upload(MultipartFile uploadFile) {
+        if (uploadFile.getSize() > 10 * 1024 * 1024) {
+            throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
+        }
+        String type = uploadFile.getContentType();
+        String filename = uploadFile.getOriginalFilename();
+        if (type == null || filename == null || filename.lastIndexOf(".") == -1) {
+            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
+        }
+
+        if (!"image/jpeg".equals(type) && !"image/png".equals(type)) {
+            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
+        }
+
+        try {
+            String md5 = ossConfig.getBasePath() + BinaryUtil.encodeMD5(input2byte(uploadFile.getInputStream()));
+            String imgType = filename.substring(filename.lastIndexOf("."));
+            File file = new File(md5 + imgType);
+            if (!file.getParentFile().exists()) {
+                boolean mkdir = file.getParentFile().mkdir();
+                if (!mkdir) {
+                    throw new BaseException(1, "图片上传失败");
+                }
+            }
+            uploadFile.transferTo(file);
+            return ossConfig.getBaseUrl() + md5 + imgType;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
