@@ -8,19 +8,29 @@ import java.util.Date;
 public class UserFile {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String fileId;
     private Integer userId;
     private String originalFilename;
     private String contentType;
     private String url;
     private Date createTime;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
     }
 
     public Integer getUserId() {

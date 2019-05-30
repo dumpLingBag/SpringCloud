@@ -32,7 +32,7 @@ public class FileController {
             subStr = subStr.substring(0, subStr.lastIndexOf("."));
 
             UserFile userFile = new UserFile();
-            userFile.setId(subStr);
+            userFile.setFileId(subStr);
             userFile.setContentType(file.getContentType());
             userFile.setOriginalFilename(file.getOriginalFilename());
             userFile.setUrl(path);
