@@ -3,10 +3,13 @@ package com.rngay.service_socket;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.util.CryptUtil;
+import com.rngay.common.vo.PageList;
 import com.rngay.feign.socket.dto.ContentDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_socket.contants.RedisKeys;
+import com.rngay.service_socket.service.MessageService;
 import com.rngay.service_socket.util.MessageUtil;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.slf4j.Logger;
@@ -38,6 +41,12 @@ public class NettyWebSocket {
     @Autowired
     public void setRedisUtil(RedisUtil redisUtil) {
         NettyWebSocket.redisUtil = redisUtil;
+    }
+
+    private static MessageService messageService;
+    @Autowired
+    public void setMessageService(MessageService messageService) {
+        NettyWebSocket.messageService = messageService;
     }
 
     private static RedisUtil redisUtil;
@@ -109,22 +118,73 @@ public class NettyWebSocket {
      * @Author pengcheng
      * @Date 2019/4/10
      **/
+    //@OnMessage
+//    public void OnMessage(Session session, String message) {
+//        logger.info("收到新的消息 -> " + message);
+//        if (message != null && !"".equals(message)) {
+//            JSONObject object = JSONObject.parseObject(message);
+//            ContentDTO contentDTO = JSON.toJavaObject(object, ContentDTO.class);
+//            if (contentDTO != null && !"".equals(contentDTO.getContent())) {
+//                if (!"0".equals(contentDTO.getSendReceive())) {
+//                    List<Integer> sort = MessageUtil.sort(contentDTO.getReceive(), contentDTO.getSend());
+//                    NettyWebSocket nettyWebSocket = webSocket.get(contentDTO.getReceive());
+//                    if (nettyWebSocket == null) {
+//                        redisUtil.zadd(RedisKeys.getCacheMessage(sort), new Date().getTime(), contentDTO);
+//                    } else {
+//                        redisUtil.zadd(RedisKeys.getMessage(sort), new Date().getTime(), contentDTO);
+//                        redisUtil.expire(RedisKeys.getMessage(sort),60 * 60 * 24 * 30);
+//                        nettyWebSocket.session.sendText(message);
+//                    }
+//                } else {
+//                    String receive = MessageUtil.receive("pong");
+//                    session.sendText(receive);
+//                }
+//            } else {
+//                String receive = MessageUtil.receive("消息发送异常");
+//                session.sendText(receive);
+//            }
+//        }
+//    }
+
     @OnMessage
-    public void OnMessage(Session session, String message) {
-        logger.info("收到新的消息 -> " + message);
+    public void onMessage(Session session, String message) {
+        logger.info("收到一条新消息 -> " + message);
         if (message != null && !"".equals(message)) {
             JSONObject object = JSONObject.parseObject(message);
-            ContentDTO contentDTO = JSON.toJavaObject(object, ContentDTO.class);
-            if (contentDTO != null && !"".equals(contentDTO.getContent())) {
-                if (!"0".equals(contentDTO.getSendReceive())) {
-                    List<Integer> sort = MessageUtil.sort(contentDTO.getReceive(), contentDTO.getSend());
-                    NettyWebSocket nettyWebSocket = webSocket.get(contentDTO.getReceive());
-                    if (nettyWebSocket == null) {
-                        redisUtil.zadd(RedisKeys.getCacheMessage(sort), new Date().getTime(), contentDTO);
-                    } else {
-                        redisUtil.zadd(RedisKeys.getMessage(sort), new Date().getTime(), contentDTO);
-                        redisUtil.expire(RedisKeys.getMessage(sort),60 * 60 * 24 * 30);
-                        nettyWebSocket.session.sendText(message);
+            ContentDTO messageInfo = JSON.toJavaObject(object, ContentDTO.class);
+            if (messageInfo != null && !"".equals(messageInfo.getContent())) {
+                if (messageInfo.getFromUserId() != 0) {
+                    Object token = redisUtil.get("baidu:token");
+                    if (token != null && !"".equals(token)) {
+                        boolean spam = MessageUtil.antiSpam(String.valueOf(token), messageInfo.getContent());
+                        if (!spam) {
+                            String receive = MessageUtil.receive("消息含有敏感内容");
+                            session.sendText(receive);
+                        } else {
+                            if (messageInfo.getSmsList()) {
+                                List<Map<String, Object>> mapList = messageService.openMessage(String.valueOf(messageInfo.getFromUserId()));
+                                if (mapList != null && !mapList.isEmpty()) {
+                                    session.sendText(JSON.toJSONString(mapList));
+                                }
+                            } else {
+                                String userInfoId = CryptUtil.MD5encrypt(messageInfo.getUserInfoId());
+                                messageInfo.setUserInfoId(userInfoId);
+                                if (messageInfo.getCurrentPage() != null) {
+                                    PageList<Map<String, Object>> userContent = messageService.getUserContent(messageInfo);
+                                    String jsonString = JSON.toJSONString(userContent);
+                                    session.sendText(jsonString);
+                                } else {
+                                    NettyWebSocket socket = webSocket.get(String.valueOf(messageInfo.getToUserId()));
+                                    if (socket == null) {
+                                        messageInfo.setSmsStatus(1);
+                                    }
+                                    Integer integer = messageService.saveMessage(messageInfo);
+                                    if (socket != null && integer > 0) {
+                                        socket.session.sendText(message);
+                                    }
+                                }
+                            }
+                        }
                     }
                 } else {
                     String receive = MessageUtil.receive("pong");

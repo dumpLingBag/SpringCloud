@@ -1,45 +1,73 @@
 package com.rngay.feign.socket.dto;
 
+import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class ContentDTO {
 
-    @NotBlank(message = "发送人为空")
-    private String send;
+    private Integer id;
 
-    @NotBlank(message = "接收人为空")
-    private String receive;
+    private String userInfoId;
 
-    @NotBlank(message = "内容为空")
+    private Integer fromUserId;
+
+    private Integer toUserId;
+
     private String content;
 
-    private String sendReceive;
+    private Integer smsStatus;
 
-    @NotNull(message = "消息类型为空")
     @Enumerated(value = EnumType.STRING)
+    @Column(length = 128)
     private SmsTypeEnum smsType;
+    /*
+    * 0 系统消息 1 普通消息
+    * */
+    private Integer sysType;
 
-    @NotNull(message = "时间为空")
+    /*
+    * true 获取消息列表 默认为 false 不获取列表
+    * */
+    private Boolean smsList;
+
     private Date createTime;
 
-    public String getSend() {
-        return send;
+    private Integer currentPage;
+
+    private Integer pageSize;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setSend(String send) {
-        this.send = send;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getReceive() {
-        return receive;
+    public String getUserInfoId() {
+        return userInfoId;
     }
 
-    public void setReceive(String receive) {
-        this.receive = receive;
+    public void setUserInfoId(String userInfoId) {
+        this.userInfoId = userInfoId;
+    }
+
+    public Integer getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(Integer fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public Integer getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(Integer toUserId) {
+        this.toUserId = toUserId;
     }
 
     public String getContent() {
@@ -50,12 +78,12 @@ public class ContentDTO {
         this.content = content;
     }
 
-    public String getSendReceive() {
-        return sendReceive;
+    public Integer getSmsStatus() {
+        return smsStatus;
     }
 
-    public void setSendReceive(String sendReceive) {
-        this.sendReceive = sendReceive;
+    public void setSmsStatus(Integer smsStatus) {
+        this.smsStatus = smsStatus;
     }
 
     public SmsTypeEnum getSmsType() {
@@ -66,11 +94,43 @@ public class ContentDTO {
         this.smsType = smsType;
     }
 
+    public Integer getSysType() {
+        return sysType;
+    }
+
+    public void setSysType(Integer sysType) {
+        this.sysType = sysType;
+    }
+
+    public Boolean getSmsList() {
+        return smsList;
+    }
+
+    public void setSmsList(Boolean smsList) {
+        this.smsList = smsList;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }
