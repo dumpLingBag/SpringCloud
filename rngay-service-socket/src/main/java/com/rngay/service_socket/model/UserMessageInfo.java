@@ -13,6 +13,8 @@ public class UserMessageInfo {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
+    private String messageId;
+
     @Column(length = 32)
     private String userInfoId;
 
@@ -32,12 +34,33 @@ public class UserMessageInfo {
 
     private Date createTime;
 
+    @Column(length = 20)
+    private String timeInterval;
+
+    private Float width;
+
+    private Float height;
+
+    @Column(columnDefinition = "tinyint default 0")
+    private Integer fromIsDelete;
+
+    @Column(columnDefinition = "tinyint default 0")
+    private Integer toIsDelete;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
     public String getUserInfoId() {
@@ -94,5 +117,45 @@ public class UserMessageInfo {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getTimeInterval() {
+        return timeInterval;
+    }
+
+    public void setTimeInterval(String timeInterval) {
+        this.timeInterval = timeInterval;
+    }
+
+    public Float getWidth() {
+        return width;
+    }
+
+    public void setWidth(Float width) {
+        this.width = width;
+    }
+
+    public Float getHeight() {
+        return height;
+    }
+
+    public void setHeight(Float height) {
+        this.height = height;
+    }
+
+    public Integer getFromIsDelete() {
+        return fromIsDelete;
+    }
+
+    public void setFromIsDelete(Integer fromIsDelete) {
+        this.fromIsDelete = fromIsDelete;
+    }
+
+    public Integer getToIsDelete() {
+        return toIsDelete;
+    }
+
+    public void setToIsDelete(Integer toIsDelete) {
+        this.toIsDelete = toIsDelete;
     }
 }

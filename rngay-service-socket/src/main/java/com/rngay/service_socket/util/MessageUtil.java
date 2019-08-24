@@ -1,8 +1,8 @@
 package com.rngay.service_socket.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.rngay.common.cache.RedisUtil;
-import com.rngay.common.controller.HttpClient;
+import com.riicy.common.cache.RedisUtil;
+import com.riicy.common.controller.HttpClient;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -29,11 +29,12 @@ public class MessageUtil {
         return list;
     }
 
-    public static String receive(String content) {
+    public static String receive(String content, Integer userId) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String format = dateFormat.format(new Date());
-        return "{\"fromUserId\":\"0\",\"toUserId\":\"0\",\"userInfoId\":\"0\",\"content\":\""+ content +"\"," +
-                "\"createTime\":\""+format+"\",\"smsType\":\"0\",\"smsStatus\":\"0\"}";
+        return "{\"fromUserId\":\"0\",\"toUserId\":\""+ (userId == null ? 0 : userId) +"\",\"userInfoId\":\"0\",\"content\":\""+ content +"\"," +
+                "\"createTime\":\""+format+"\",\"smsType\":\"TEXT\",\"smsStatus\":\"0\",\"smsList\":\"false\"," +
+                "\"smsStatus\":\"0:\",\"currentPage\":\"''\",\"pageSize\":\"''\"}";
     }
 
     public static void accessToken(RedisUtil redisUtil) {
@@ -47,6 +48,14 @@ public class MessageUtil {
                     int expiresIn = object.getIntValue("expires_in");
                     redisUtil.set("baidu:token", object.getString("access_token"), expiresIn);
                 }
+            }
+        } else {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            String url = "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=qvDxjGQSGcEdzjbATtXc6wbf&client_secret=IDFsQGejR9g7opWYQqulG7W9iUGUvmMu";
+            JSONObject object = HttpClient.httpsPost(url, params, JSONObject.class);
+            if (object != null) {
+                int expiresIn = object.getIntValue("expires_in");
+                redisUtil.set("baidu:token", object.getString("access_token"), expiresIn);
             }
         }
     }

@@ -5,13 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.util.CryptUtil;
 import com.rngay.common.vo.PageList;
-import com.rngay.feign.socket.dto.ContentDTO;
-import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_socket.contants.RedisKeys;
 import com.rngay.service_socket.service.MessageService;
 import com.rngay.service_socket.util.MessageUtil;
 import io.netty.handler.codec.http.HttpHeaders;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,20 +64,23 @@ public class NettyWebSocket {
     @OnOpen
     public void onOpen(Session session, HttpHeaders headers, ParameterMap parameterMap) throws IOException {
         String userId = parameterMap.getParameter("userId");
-        if (userId != null && !"".equals(userId)) {
-            this.userId = userId;
+        String openType = parameterMap.getParameter("openType");
+        if (StringUtils.isNotEmpty(userId) && StringUtils.isNotEmpty(openType)) {
             this.session = session;
-            boolean socket = webSocket.containsKey(userId);
-            if (!socket) {
-                webSocket.put(userId, this);
-                UAUserDTO user = userService.findById(Integer.parseInt(userId)).getData();
-                if (user != null) {
-                    user.setExpireTime(new Date());
-                    redisUtil.zadd(RedisKeys.KEY_SET_USER, user.getId(), user);
-                    redisUtil.set(RedisKeys.getUserKey(userId), user);
+            if ("0".equals(openType)) {
+                this.userId = "sys:" + userId;
+                boolean key = webSocket.containsKey("sys:" + userId);
+                if (!key) {
+                    webSocket.put("sys:" + userId, this);
                 }
-                logger.info("ID为 -> " + userId + " 的用户加入了连接，当前在线人数为 -> " + getOnlineCount());
+            } else {
+                this.userId = userId;
+                boolean key = webSocket.containsKey(userId);
+                if (!key) {
+                    webSocket.put(userId, this);
+                }
             }
+            logger.info("ID为 -> " + userId + " 的用户加入了连接，当前在线人数为 -> " + getOnlineCount());
         }
     }
 
@@ -90,11 +92,6 @@ public class NettyWebSocket {
      **/
     @OnClose
     public void onClose(Session session) throws IOException {
-        Object user = redisUtil.get(RedisKeys.getUserKey(this.userId));
-        if (user != null) {
-            redisUtil.zrem(RedisKeys.KEY_SET_USER, user);
-            redisUtil.del(RedisKeys.getUserKey(this.userId));
-        }
         webSocket.remove(this.userId);
         logger.info("ID为 -> "+ this.userId +"的用户断开了连接！当前在线人数为 -> " + getOnlineCount());
     }
@@ -118,34 +115,6 @@ public class NettyWebSocket {
      * @Author pengcheng
      * @Date 2019/4/10
      **/
-    //@OnMessage
-//    public void OnMessage(Session session, String message) {
-//        logger.info("收到新的消息 -> " + message);
-//        if (message != null && !"".equals(message)) {
-//            JSONObject object = JSONObject.parseObject(message);
-//            ContentDTO contentDTO = JSON.toJavaObject(object, ContentDTO.class);
-//            if (contentDTO != null && !"".equals(contentDTO.getContent())) {
-//                if (!"0".equals(contentDTO.getSendReceive())) {
-//                    List<Integer> sort = MessageUtil.sort(contentDTO.getReceive(), contentDTO.getSend());
-//                    NettyWebSocket nettyWebSocket = webSocket.get(contentDTO.getReceive());
-//                    if (nettyWebSocket == null) {
-//                        redisUtil.zadd(RedisKeys.getCacheMessage(sort), new Date().getTime(), contentDTO);
-//                    } else {
-//                        redisUtil.zadd(RedisKeys.getMessage(sort), new Date().getTime(), contentDTO);
-//                        redisUtil.expire(RedisKeys.getMessage(sort),60 * 60 * 24 * 30);
-//                        nettyWebSocket.session.sendText(message);
-//                    }
-//                } else {
-//                    String receive = MessageUtil.receive("pong");
-//                    session.sendText(receive);
-//                }
-//            } else {
-//                String receive = MessageUtil.receive("消息发送异常");
-//                session.sendText(receive);
-//            }
-//        }
-//    }
-
     @OnMessage
     public void onMessage(Session session, String message) {
         logger.info("收到一条新消息 -> " + message);

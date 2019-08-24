@@ -1,6 +1,6 @@
 package com.rngay.common.controller;
 
-import com.riicy.common.util.HttpsClientRequestFactory;
+import com.rngay.common.util.HttpsClientRequestFactory;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 

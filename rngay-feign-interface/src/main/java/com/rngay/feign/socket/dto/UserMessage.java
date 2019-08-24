@@ -5,7 +5,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.util.Date;
 
-public class ContentDTO {
+public class UserMessage {
 
     private Integer id;
 
@@ -24,32 +24,10 @@ public class ContentDTO {
     @Enumerated(value = EnumType.STRING)
     @Column(length = 128)
     private SmsTypeEnum smsType;
-    /*
-    * 0 系统消息 1 普通消息
-    * */
-    private Integer sysType;
-
-    /*
-    * true 获取消息列表 默认为 false 不获取列表
-    * */
-    private Boolean smsList;
-
-    private Date createTime;
 
     private String dateTime;
 
-    /*
-    * 消息间隔
-    * */
-    private String timeInterval;
-
-    private Integer currentPage;
-
-    private Integer pageSize;
-
-    private Float width;
-
-    private Float height;
+    private Date createTime;
 
     public Integer getId() {
         return id;
@@ -115,30 +93,6 @@ public class ContentDTO {
         this.smsType = smsType;
     }
 
-    public Integer getSysType() {
-        return sysType;
-    }
-
-    public void setSysType(Integer sysType) {
-        this.sysType = sysType;
-    }
-
-    public Boolean getSmsList() {
-        return smsList;
-    }
-
-    public void setSmsList(Boolean smsList) {
-        this.smsList = smsList;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
     public String getDateTime() {
         return dateTime;
     }
@@ -147,43 +101,11 @@ public class ContentDTO {
         this.dateTime = dateTime;
     }
 
-    public String getTimeInterval() {
-        return timeInterval;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setTimeInterval(String timeInterval) {
-        this.timeInterval = timeInterval;
-    }
-
-    public Integer getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(Integer currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public Float getWidth() {
-        return width;
-    }
-
-    public void setWidth(Float width) {
-        this.width = width;
-    }
-
-    public Float getHeight() {
-        return height;
-    }
-
-    public void setHeight(Float height) {
-        this.height = height;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

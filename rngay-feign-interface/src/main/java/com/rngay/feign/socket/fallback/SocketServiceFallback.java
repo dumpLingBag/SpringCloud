@@ -2,7 +2,6 @@ package com.rngay.feign.socket.fallback;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
-import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.feign.socket.service.SocketService;
 import feign.hystrix.FallbackFactory;
 

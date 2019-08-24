@@ -2,8 +2,6 @@ package com.rngay.feign.socket.service;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.dto.PageQueryDTO;
-import com.rngay.feign.socket.dto.ContentDTO;
-import com.rngay.feign.socket.dto.PageMessageDTO;
 import com.rngay.feign.socket.fallback.SocketServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;

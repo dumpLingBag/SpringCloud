@@ -28,6 +28,9 @@ public class UserMessageList {
 
     private Date updateTime;
 
+    @Column(columnDefinition = "tinyint default 0")
+    private Integer isDelete;
+
     public Integer getId() {
         return id;
     }
@@ -74,5 +77,13 @@ public class UserMessageList {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 }
