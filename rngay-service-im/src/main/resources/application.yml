@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: service-im
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    generate-ddl: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
+  resources:
+    static-locations: classpath:/static/, classpath:/views/
+  mvc:
+    dispatch-options-request: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+server:
+  port: 6069
+
+exception:
+  msg: true
