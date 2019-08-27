@@ -1,9 +1,10 @@
 package com.rngay.service_socket;
 
 import io.netty.handler.codec.http.HttpHeaders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.yeauty.annotation.OnOpen;
-import org.yeauty.annotation.ServerEndpoint;
+import org.yeauty.annotation.*;
 import org.yeauty.pojo.ParameterMap;
 import org.yeauty.pojo.Session;
 
@@ -13,11 +14,28 @@ import java.io.IOException;
 @Component
 public class NettyWebSocket {
 
+    private Logger logger = LoggerFactory.getLogger(NettyWebSocket.class);
+
     private String userId;
     private Session session;
 
     @OnOpen
     public void onOpen(Session session, HttpHeaders headers, ParameterMap parameterMap) throws IOException {
+
+    }
+
+    @OnClose
+    public void onClose() throws IOException {
+
+    }
+
+    @OnError
+    public void onError(Session session, Throwable throwable) throws IOException {
+
+    }
+
+    @OnMessage
+    public void onMessage() throws IOException {
 
     }
 

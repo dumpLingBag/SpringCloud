@@ -57,9 +57,10 @@ public class RabbitConfig {
     * 声明一个队列 Queue 可以有四个参数 支持持久化.
     *
     * 1.队列名
-    * 2.durable       持久化消息队列 ,rabbitmq重启的时候不需要创建新的队列 默认true
-    * 3.auto-delete   表示消息队列没有在使用时将被自动删除 默认是false
-    * 4.exclusive     表示该消息队列是否只在当前connection生效,默认是false
+    * 2.durable       持久化消息队列，rabbitmq重启的时候不需要创建新的队列 默认true
+    * 3.auto-delete   若没有消费者订阅该队列，队列将被删除 默认是false
+    * 4.exclusive     是否声明该队列是否为连接独占，若为独占，连接关闭后队列即被删除 默认是false
+    * 5.arguments     可选map类型参数，可以指定队列长度，消息生存时间，镜相设置等
     *
     * @Author pengcheng
     * @Date 2019/8/23
@@ -109,6 +110,63 @@ public class RabbitConfig {
     @Bean
     public Binding bindingB(@Qualifier("fanoutQueueB") Queue queue,
                             @Qualifier("fanoutExchange") FanoutExchange fanoutExchange) {
+        return BindingBuilder.bind(queue).to(fanoutExchange);
+    }
+
+    @Bean("topicExchange")
+    public TopicExchange topicExchange() {
+        return (TopicExchange) ExchangeBuilder.topicExchange("TOPIC_EXCHANGE").durable(true).build();
+    }
+
+    @Bean("topicQueueNews")
+    public Queue topicQueueNews() {
+            return QueueBuilder.durable("TOPIC_QUEUE_NEWS").build();
+    }
+
+    @Bean("topicQueueWeather")
+    public Queue topicQueueWeather() {
+        return QueueBuilder.durable("TOPIC_QUEUE_WEATHER").build();
+    }
+
+    @Bean("topicQueueNewsWeather")
+    public Queue topicQueueAB() {
+        return QueueBuilder.durable("TOPIC_QUEUE_NEWS_WEATHER").build();
+    }
+
+    @Bean
+    public Binding bindingTopicA(@Qualifier("topicQueueNews") Queue queue,
+                                 @Qualifier("topicExchange") Exchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("*.NEWS").noargs();
+    }
+
+    @Bean
+    public Binding bindingTopicB(@Qualifier("topicQueueWeather") Queue queue,
+                                 @Qualifier("topicExchange") Exchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("*.WEATHER").noargs();
+    }
+
+    @Bean
+    public Binding bindingTopicC(@Qualifier("topicQueueNewsWeather") Queue queue,
+                                 @Qualifier("topicExchange") Exchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("KAIFENG.*").noargs();
+    }
+
+    //---------------定义延时队列---------------------
+
+    @Bean("delayQueue")
+    public Queue delayQueue() {
+        return QueueBuilder.durable("DELAY_QUEUE").build();
+    }
+
+    @Bean("delayExchange")
+    public FanoutExchange delayExchange() {
+        return (FanoutExchange) ExchangeBuilder.fanoutExchange("DELAY_EXCHANGE").durable(true)
+                .delayed().withArgument("x-delayed-type", "direct").build();
+    }
+
+    @Bean
+    public Binding bindingDelay(@Qualifier("delayQueue") Queue queue,
+                                @Qualifier("delayExchange") FanoutExchange fanoutExchange) {
         return BindingBuilder.bind(queue).to(fanoutExchange);
     }
 
