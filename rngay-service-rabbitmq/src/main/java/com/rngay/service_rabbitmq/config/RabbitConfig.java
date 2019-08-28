@@ -151,8 +151,20 @@ public class RabbitConfig {
         return BindingBuilder.bind(queue).to(exchange).with("KAIFENG.*").noargs();
     }
 
-    //---------------定义延时队列---------------------
-
+    /**
+     * 定义延时队列
+     *
+     * Argument ：
+     *      1.x-message-ttl 发送到队列的消息在丢弃之前可以存活多长时间（毫秒）。
+     *      2.x-expires 队列在被自动删除（毫秒）之前可以使用多长时间。
+     *      3.x-max-length 队列在开始从头部删除之前可以包含多少就绪消息。
+     *      4.x-max-length-bytes 队列在开始从头部删除之前可以包含的就绪消息的总体大小。
+     *      5.x-dead-letter-exchange 设置队列溢出行为。这决定了在达到队列的最大长度时消息会发生什么。有效值为drop-head或reject-publish。交换的可选名称，如果消息被拒绝或过期，将重新发布这些名称。
+     *      6.x-dead-letter-routing-key 可选的替换路由密钥，用于在消息以字母为单位时使用。如果未设置，将使用消息的原始路由密钥。
+     *      7.x-max-priority 队列支持的最大优先级数;如果未设置，队列将不支持消息优先级。
+     *      8.x-queue-mode 将队列设置为延迟模式，在磁盘上保留尽可能多的消息以减少内存使用;如果未设置，队列将保留内存缓存以尽快传递消息。
+     *      9.x-queue-master-locator 将队列设置为主位置模式，确定在节点集群上声明时队列主机所在的规则。
+     * */
     @Bean("delayQueue")
     public Queue delayQueue() {
         return QueueBuilder.durable("DELAY_QUEUE").build();
@@ -168,6 +180,27 @@ public class RabbitConfig {
     public Binding bindingDelay(@Qualifier("delayQueue") Queue queue,
                                 @Qualifier("delayExchange") FanoutExchange fanoutExchange) {
         return BindingBuilder.bind(queue).to(fanoutExchange);
+    }
+
+    /**
+     *
+     * 定义指定长度队列
+     *
+     * */
+    @Bean("maxQueue")
+    public Queue maxQueue() {
+        return QueueBuilder.durable("MAX_QUEUE").build();
+    }
+
+    @Bean("maxExchange")
+    public Exchange maxExchange() {
+        return ExchangeBuilder.directExchange("MAX_EXCHANGE").durable(true).withArgument("x-max-length", 5).build();
+    }
+
+    @Bean
+    public Binding bindingMaxQueue(@Qualifier("maxQueue") Queue queue,
+                                   @Qualifier("maxExchange") Exchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("MAX_ROUTING").noargs();
     }
 
 }

@@ -24,10 +24,13 @@ public class SenderProducerTest {
         // 测试Direct模式
         //senderProducer.direct("定点消息");
 
-        //senderProducer.news("开封今年粮食产量提升10%");
+        //senderProducer.news("开封今年粮食产量提升10%");i
         //senderProducer.weather("开封明天白天多云15℃");
-        String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        senderProducer.delay("现在是北京时间：" + format);
+        //String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        //senderProducer.delay("现在是北京时间：" + format);
+        for (int i = 0; i < 20; i++) {
+            senderProducer.max("我是消息：" + String.valueOf(i));
+        }
     }
 
 }

@@ -47,4 +47,9 @@ public class SenderProducer {
         }, correlationData);
     }
 
+    public void max(String p) {
+        CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
+        rabbitTemplate.convertAndSend("MAX_EXCHANGE", "MAX_ROUTING", p, correlationData);
+    }
+
 }

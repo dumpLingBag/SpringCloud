@@ -15,7 +15,7 @@ public class ReceiverConsumer {
      * basicAck接收两个参数
      *
      * deliveryTag（唯一标识ID）它代表了 RabbitMQ 向该 Channel 投递的这条消息的唯一标识 ID，是一个单调递增的正整数，delivery tag 的范围仅限于 Channel
-     * multiple 为了减少网络流量，手动确认可以被批处理，当该参数为 true 时，则可以一次性确认 delivery_tag 小于等于传入值的所有消息
+     * multiple 为了减少网络流量，手动确认可以被批处理，当该参数为 true 时，则可以一次性确认 delivery_tag 小于等于传入值的所有消息，为 false 则只确认当前消息
      * */
 
     private static Logger logger = LoggerFactory.getLogger(ReceiverConsumer.class);
@@ -60,6 +60,17 @@ public class ReceiverConsumer {
     public void delay(Message message, Channel channel) throws IOException {
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
         logger.info("DELAY_QUEUE" + new String(message.getBody()));
+    }
+
+    @RabbitListener(queues = {"MAX_QUEUE"})
+    public void max(Message message, Channel channel) throws IOException {
+        try { // 消息确认
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
+            logger.info("MAX_QUEUE" + new String(message.getBody()));
+        } catch (IOException e) { // 处理消息失败，将消息重新放回队列
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            e.printStackTrace();
+        }
     }
 
 }
