@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: service-rabbitmq
-  profiles:
-    active: dev
-server:
-  port: 5060

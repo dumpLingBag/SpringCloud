@@ -1,9 +1,11 @@
 package com.rngay;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication
+@EnableFeignClients
+@SpringCloudApplication
 public class ImApplication {
 
     public static void main(String[] args) {

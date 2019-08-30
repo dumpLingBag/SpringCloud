@@ -2,6 +2,7 @@ package com.rngay.service_authority.controller;
 
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.exception.BaseException;
+import com.rngay.common.util.IPUtil;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.common.vo.Result;
@@ -38,7 +39,7 @@ public class UALoginController {
             return Result.failMsg("账号或密码不能为空");
         }
 
-        String key = request.getServerName() + "_" + AuthorityUtil.getIPAddress(request) + "_" + account;
+        String key = request.getServerName() + "_" + IPUtil.getIPAddress(request) + "_" + account;
         Object o = redisUtil.get(RedisKeys.getFailCount(key));
         int value = 0;
         if (o instanceof Integer) {
@@ -73,11 +74,14 @@ public class UALoginController {
                     map.put("userResult", userResult);
                     return Result.success(map);
                 } else {
-                    redisUtil.set(RedisKeys.getFailCount(key), value);
+                    value++;
+                    if (value >= 5) {
+                        redisUtil.set(RedisKeys.getFailCount(key), value, 7200);
+                    }
                     return Result.failMsg("账号或密码错误");
                 }
             } catch (IllegalArgumentException e) {
-                throw new BaseException(401, "账号或密码错误");
+                return Result.failMsg("账号或密码错误");
             }
         }
     }

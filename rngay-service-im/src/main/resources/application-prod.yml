@@ -14,6 +14,8 @@ spring:
     user:
       name: admin
       password: ENC(0+DVIbbR5ZgdwQCSaJS9MA==) # 不加密在服务器限制ip访问
+  profiles:
+    include: im-prod,feign-prod
   datasource:
     url: jdbc:mysql://localhost:3306/rngay_user?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false&autoReconnect=true&rewriteBatchedStatements=true
     username: root

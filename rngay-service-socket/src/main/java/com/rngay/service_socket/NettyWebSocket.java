@@ -1,6 +1,8 @@
 package com.rngay.service_socket;
 
+import com.rngay.service_socket.util.SocketSmsMapUtil;
 import io.netty.handler.codec.http.HttpHeaders;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,22 +23,34 @@ public class NettyWebSocket {
 
     @OnOpen
     public void onOpen(Session session, HttpHeaders headers, ParameterMap parameterMap) throws IOException {
-
+        String userId = parameterMap.getParameter("userId");
+        if (StringUtils.isNotEmpty(userId)) {
+            this.userId = userId;
+            this.session = session;
+            SocketSmsMapUtil.put(userId, this);
+            this.session.sendText("{\"readyState\":\"1\"}");
+        } else {
+            this.session.sendText("{\"readyState\":\"3\"}");
+        }
     }
 
     @OnClose
     public void onClose() throws IOException {
-
+        SocketSmsMapUtil.remove(this.userId);
     }
 
     @OnError
     public void onError(Session session, Throwable throwable) throws IOException {
-
+        session.sendText("{\"readyState\":\"4\"}");
+        throwable.printStackTrace();
     }
 
     @OnMessage
-    public void onMessage() throws IOException {
-
+    public void onMessage(Session session, String message) throws IOException {
+        logger.info("收到消息：" + message);
+        if (message != null && message.equals("socket:rngay:ping")) {
+            session.sendText("socket:rngay:pong");
+        }
     }
 
     private String dataInterval() {

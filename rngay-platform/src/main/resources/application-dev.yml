@@ -12,6 +12,8 @@ eureka:
 spring:
   jpa:
     show-sql: true
+  profiles:
+    include: feign-dev
   security:
     user:
       name: admin

@@ -1,12 +1,12 @@
-package com.rngay.service_authority.model;
+package com.rngay.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "ua_user_token")
-public class UAUserToken implements Serializable {
+@Table(name = "ua_member_token")
+public class UAMemberToken implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class UAUserToken implements Serializable {
 
     private Date updateTime;
 
-    private Integer userId;
+    private Integer memberId;
 
     public Integer getId() {
         return id;
@@ -62,12 +62,12 @@ public class UAUserToken implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getMemberId() {
+        return memberId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
     }
 
 }
