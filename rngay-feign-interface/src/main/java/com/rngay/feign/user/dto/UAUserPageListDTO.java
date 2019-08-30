@@ -4,18 +4,18 @@ import com.rngay.feign.dto.PageQueryDTO;
 
 public class UAUserPageListDTO extends PageQueryDTO {
 
-    private String account;
+    private String username;
 
     private Integer enable;
 
-    private String name;
+    private String nickname;
 
-    public String getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getEnable() {
@@ -26,11 +26,12 @@ public class UAUserPageListDTO extends PageQueryDTO {
         this.enable = enable;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
+
 }

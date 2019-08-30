@@ -15,15 +15,15 @@ public class UAUserDTO extends CommonDTO {
     @Id
     private Integer id;
 
-    private String account;
+    private String username;
 
     private String password;
 
-    private String name;
+    private String nickname;
 
     private Integer orgId;
 
-    private String photo;
+    private String avatar;
 
     private String email;
 
@@ -51,12 +51,12 @@ public class UAUserDTO extends CommonDTO {
         this.id = id;
     }
 
-    public String getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -67,12 +67,12 @@ public class UAUserDTO extends CommonDTO {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public Integer getOrgId() {
@@ -83,12 +83,12 @@ public class UAUserDTO extends CommonDTO {
         this.orgId = orgId;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getEmail() {
