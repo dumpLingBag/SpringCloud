@@ -26,13 +26,13 @@ public class UAUserDaoImpl implements UAUserDao {
     }
 
     @Override
-    public UAUserDTO findUser(String account, String password) {
-        return dao.find(UAUserDTO.class, Cnd.where("account", "=", account).and("password", "=", password).and("is_delete", "=", 1));
+    public UAUserDTO findUser(String username, String password) {
+        return dao.find(UAUserDTO.class, Cnd.where("username", "=", username).and("password", "=", password).and("is_delete", "=", 1));
     }
 
     @Override
-    public UAUserDTO findByAccount(String account) {
-        return dao.find(UAUserDTO.class, Cnd.where("account", "=", account).and("is_delete", "=", 1));
+    public UAUserDTO findByAccount(String username) {
+        return dao.find(UAUserDTO.class, Cnd.where("username", "=", username).and("is_delete", "=", 1));
     }
 
     @Override
@@ -53,11 +53,11 @@ public class UAUserDaoImpl implements UAUserDao {
     @Override
     public PageList<UAUserDTO> pageList(UAUserPageListDTO pageListDTO) {
         SimpleCriteria cri = new SimpleCriteria();
-        if (StringUtils.isNotEmpty(pageListDTO.getAccount())) {
-            cri.where().and("account", "like", "%" + pageListDTO.getAccount() + "%");
+        if (StringUtils.isNotEmpty(pageListDTO.getUsername())) {
+            cri.where().and("username", "like", "%" + pageListDTO.getUsername() + "%");
         }
-        if (StringUtils.isNotEmpty(pageListDTO.getName())) {
-            cri.where().and("name", "like", "%" + pageListDTO.getName() + "%");
+        if (StringUtils.isNotEmpty(pageListDTO.getNickname())) {
+            cri.where().and("nickname", "like", "%" + pageListDTO.getNickname() + "%");
         }
         if (pageListDTO.getEnable() != null) {
             cri.where().and("enable", "=", pageListDTO.getEnable());

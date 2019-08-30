@@ -11,13 +11,13 @@ public class UAMember {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    private String account;
+    private String username;
 
-    private String name;
+    private String nickname;
 
     private String password;
 
-    private String photo;
+    private String avatar;
 
     @Column(length = 11)
     private String mobile;
@@ -38,20 +38,20 @@ public class UAMember {
         this.id = id;
     }
 
-    public String getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getPassword() {
@@ -62,12 +62,12 @@ public class UAMember {
         this.password = password;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getMobile() {

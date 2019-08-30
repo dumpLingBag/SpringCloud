@@ -28,7 +28,7 @@ public class UAUserController {
         Map<String, String> msg = new HashMap<>();
         Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getAccount());
         if (byAccount.getData() != null) {
-            msg.put("account", "此账号名称已经存在");
+            msg.put("username", "此账号名称已经存在");
         }
         Result<UAUserDTO> byMobile = pfUserService.findByMobile(saveUserDTO.getMobile());
         if (byMobile.getData() != null) {
@@ -49,14 +49,14 @@ public class UAUserController {
     public Result<?> update(@Valid @RequestBody UAUpdateUserDTO updateUserDTO) {
         UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null) {
-            if (user.getAccount().equals("admin") && !updateUserDTO.getAccount().equals("admin")) {
+            if (user.getUsername().equals("admin") && !updateUserDTO.getAccount().equals("admin")) {
                 return Result.failMsg("禁止修改管理员账户名称");
             }
             StringBuilder builder = new StringBuilder();
-            if (!user.getAccount().equals(updateUserDTO.getAccount())) {
+            if (!user.getUsername().equals(updateUserDTO.getAccount())) {
                 Result<UAUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getAccount());
                 if (byAccount.getData() != null) {
-                    builder.append("account").append(":").append("此账号名称已经存在").append("_");
+                    builder.append("username").append(":").append("此账号名称已经存在").append("_");
                 }
             }
             if (!user.getMobile().equals(updateUserDTO.getMobile())) {

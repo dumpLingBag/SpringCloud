@@ -37,7 +37,7 @@ public class UASystemServiceImpl implements UASystemService {
         if (userDTO == null) return null;
 
         List<Map<String, Object>> allMenus = new ArrayList<>();
-        if ("admin".equals(userDTO.getAccount())) {
+        if ("admin".equals(userDTO.getUsername())) {
             List<Map<String, Object>> menuList = roleMenuDao.loadMenuByOrgId(userDTO.getOrgId());
             if (menuList != null && !menuList.isEmpty()) {
                 allMenus.addAll(menuList);
@@ -96,7 +96,7 @@ public class UASystemServiceImpl implements UASystemService {
         if (userDTO == null) return null;
         Set<String> urlSet = new HashSet<>();
 
-        if (userDTO.getAccount() != null && "admin".equals(userDTO.getAccount())) {
+        if (userDTO.getUsername() != null && "admin".equals(userDTO.getUsername())) {
             List<String> urlList = userRoleDao.loadUrlByOrgId(userDTO.getOrgId());
             if (urlList != null && !urlList.isEmpty()) {
                 urlSet.addAll(urlList);
