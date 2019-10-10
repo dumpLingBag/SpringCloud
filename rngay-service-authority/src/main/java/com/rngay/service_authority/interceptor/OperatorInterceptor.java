@@ -13,10 +13,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class OperatorInterceptor extends HandlerInterceptorAdapter {
@@ -89,7 +86,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
     private boolean isAuthorized(HttpServletRequest request) {
         UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser != null) {
-            if (currentUser.getAccount().equals("admin")) {
+            if (currentUser.getUsername().equals("admin")) {
                 return true;
             }
 
