@@ -17,7 +17,7 @@ spring:
   security:
     user:
       name: admin
-      password: ENC(0+DVIbbR5ZgdwQCSaJS9MA==) # 不加密在服务器限制ip访问
+      password: 123456 # 不加密在服务器限制ip访问
   datasource:
     url: jdbc:mysql://localhost:3306/rngay_platform?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false&autoReconnect=true&rewriteBatchedStatements=true
     username: root
