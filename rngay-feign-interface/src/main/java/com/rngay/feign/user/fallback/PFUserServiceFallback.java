@@ -1,6 +1,7 @@
 package com.rngay.feign.user.fallback;
 
-import com.rngay.common.vo.PageList;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
@@ -36,12 +37,12 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<Integer> save(UASaveUserDTO saveUserDTO) {
+            public Result<Integer> save(UAUserDTO saveUserDTO) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<Integer> update(UAUpdateUserDTO updateUserDTO) {
+            public Result<Integer> update(UAUserDTO updateUserDTO) {
                 return Result.failMsg(result);
             }
 
@@ -51,7 +52,7 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<PageList<UAUserDTO>> pageList(UAUserPageListDTO pageListDTO) {
+            public Result<Page<UAUserDTO>> pageList(UAUserPageListDTO pageListDTO) {
                 return Result.failMsg(result);
             }
 

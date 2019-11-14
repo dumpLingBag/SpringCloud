@@ -4,7 +4,7 @@ import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.util.UploadUtil;
 import com.rngay.common.vo.Result;
 import com.rngay.service_authority.model.UserFile;
-import com.rngay.service_authority.service.UASystemService;
+import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +20,7 @@ public class FileController {
     @Autowired
     private UploadUtil uploadUtil;
     @Autowired
-    private UASystemService systemService;
+    private SystemService systemService;
     @Autowired
     private Dao dao;
 

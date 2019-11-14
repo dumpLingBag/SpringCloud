@@ -1,10 +1,12 @@
 package com.rngay.service_user.listener;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rngay.common.jpa.dao.Cnd;
 import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.util.CryptUtil;
 import com.rngay.feign.user.dto.UASaveUserDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.service_user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -17,18 +19,20 @@ public class StartUpRunner implements CommandLineRunner {
 
     @Autowired
     private Dao dao;
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public void run(String... args) throws Exception {
-        long orgId = dao.count(UAUserDTO.class, Cnd.where("org_id", "=", 0));
+        Integer orgId = userDao.selectCount(new QueryWrapper<UAUserDTO>().eq("org_id", 0));
         if (orgId <= 0) {
-            UASaveUserDTO userDTO = new UASaveUserDTO();
-            userDTO.setAccount("admin");
+            UAUserDTO userDTO = new UAUserDTO();
+            userDTO.setUsername("admin");
             userDTO.setEnable(1);
-            userDTO.setName("超级管理员");
+            userDTO.setNickname("超级管理员");
             userDTO.setPassword(BCrypt.hashpw(CryptUtil.MD5encrypt("123456"), BCrypt.gensalt(12)));
-            userDTO.setCreate_time(new Date());
-            userDTO.setUpdate_time(new Date());
+            userDTO.setCreateTime(new Date());
+            userDTO.setUpdateTime(new Date());
             userDTO.setOrgId(0);
             dao.insert(userDTO);
         }

@@ -12,8 +12,8 @@ eureka:
 spring:
   jpa:
     show-sql: true
-  profiles:
-    include: feign-dev
+#  profiles:
+#    include: feign-dev
   security:
     user:
       name: admin
@@ -35,3 +35,7 @@ spring:
 
 platform:
   clearUrlOnRestart: false
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

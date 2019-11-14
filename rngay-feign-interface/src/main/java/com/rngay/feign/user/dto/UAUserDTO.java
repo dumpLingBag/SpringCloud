@@ -1,15 +1,16 @@
 package com.rngay.feign.user.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Table(name = "ua_user")
+@TableName(value = "ua_user")
 public class UAUserDTO extends CommonDTO {
 
     @Id
@@ -33,14 +34,17 @@ public class UAUserDTO extends CommonDTO {
 
     private Integer isDelete;
 
+    @TableField(exist = false)
     private List<Map<String, Object>> menuList;
 
+    @TableField(exist = false)
     private Set<String> urlSet;
 
     private Date updateTime;
 
     private Date createTime;
 
+    @TableField(exist = false)
     private Date expireTime;
 
     public Integer getId() {

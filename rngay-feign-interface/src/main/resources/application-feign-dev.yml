@@ -1,11 +1,11 @@
 feign:
   httpclient:
     enabled: true
-#  client:
-#    config:
-#      default:
-#        connect-timeout: 1000
-#        read-timeout: 5000
+  client:
+    config:
+      default:
+        connect-timeout: 10000
+        read-timeout: 10000
   hystrix:
     enabled: true
 hystrix:
@@ -35,6 +35,7 @@ spring:
     loadbalancer:
       retry:
         enabled: true
+# 配置全局超时时间
 ribbon:
   ConnectTimeout: 2000
   ReadTimeout: 3000

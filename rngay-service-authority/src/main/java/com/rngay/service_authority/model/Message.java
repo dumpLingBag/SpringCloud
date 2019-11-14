@@ -1,11 +1,13 @@
 package com.rngay.service_authority.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "message")
+@TableName(value = "message")
 public class Message implements Serializable {
 
     @Id

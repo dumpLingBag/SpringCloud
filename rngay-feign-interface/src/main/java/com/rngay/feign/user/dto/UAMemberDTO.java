@@ -1,9 +1,10 @@
 package com.rngay.feign.user.dto;
 
-import javax.persistence.Table;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
 
-@Table(name = "ua_member")
+@TableName(value = "ua_member")
 public class UAMemberDTO {
 
     private Integer id;

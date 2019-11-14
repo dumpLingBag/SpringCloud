@@ -1,9 +1,10 @@
 package com.rngay.feign.user.dto;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.baomidou.mybatisplus.annotation.TableName;
 
-@Table(name = "ua_icon")
+import javax.persistence.Id;
+
+@TableName(value = "ua_icon")
 public class UAIconDTO {
 
     @Id

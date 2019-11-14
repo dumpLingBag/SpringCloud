@@ -1,12 +1,12 @@
 package com.rngay.feign.user.dto;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
-import javax.persistence.Table;
 import javax.validation.constraints.*;
 import java.util.Date;
 
-@Table(name = "ua_user")
+@TableName(value = "ua_user")
 public class UASaveUserDTO extends CommonDTO {
 
     private Integer id;

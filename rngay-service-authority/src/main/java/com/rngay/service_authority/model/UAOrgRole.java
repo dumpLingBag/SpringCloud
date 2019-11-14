@@ -1,10 +1,12 @@
 package com.rngay.service_authority.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="ua_org_role", indexes={@Index(name="roleId_index", columnList="roleId"), @Index(name="orgid_index", columnList="orgid")})
+@TableName(value = "ua_org_role")
 public class UAOrgRole implements Serializable {
 
 	@Id

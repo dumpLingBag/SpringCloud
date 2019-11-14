@@ -1,12 +1,16 @@
 package com.rngay.service_authority.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name = "ua_url")
+@TableName(value = "ua_url")
 public class UAUrl implements Serializable {
 
     @Id
@@ -15,6 +19,8 @@ public class UAUrl implements Serializable {
     private String pid;
     private Integer common;
     private String name;
+    @TableField(exist = false)
+    private List<UAUrl> children;
 
     public String getId() {
         return id;
@@ -54,5 +60,13 @@ public class UAUrl implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<UAUrl> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<UAUrl> children) {
+        this.children = children;
     }
 }

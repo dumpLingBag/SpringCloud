@@ -1,10 +1,15 @@
 package com.rngay.service_authority.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.rngay.service_authority.vo.MetaVo;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name = "ua_menu")
+@TableName(value = "ua_menu")
 public class UAMenu implements Serializable {
 
     @Id
@@ -26,6 +31,12 @@ public class UAMenu implements Serializable {
     private Integer sort = 0;
 
     private Integer pid = 0;
+
+    @TableField(exist = false)
+    private MetaVo meta;
+
+    @TableField(exist = false)
+    private List<UAMenu> children;
 
     public Integer getId() {
         return id;
@@ -97,5 +108,21 @@ public class UAMenu implements Serializable {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public MetaVo getMeta() {
+        return meta;
+    }
+
+    public void setMeta(MetaVo meta) {
+        this.meta = meta;
+    }
+
+    public List<UAMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<UAMenu> children) {
+        this.children = children;
     }
 }

@@ -1,15 +1,23 @@
 package com.rngay.feign.platform;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
-import javax.persistence.Table;
-
-@Table(name = "ua_user_role")
+@TableName(value = "ua_user_role")
 public class UserRoleDTO extends CommonDTO {
 
+    private Integer id;
     private Integer checked;
     private Integer userId;
     private Integer roleId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getChecked() {
         return checked;

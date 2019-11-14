@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MemberService {
 
     @PostMapping(value = "/member/findUser")
-    Result<UAMemberDTO> findUser(@RequestParam("account") String account);
+    Result<UAMemberDTO> findUser(@RequestParam("username") String username);
 
 }

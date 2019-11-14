@@ -3,7 +3,7 @@ package com.rngay.service_authority.interceptor;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.service_authority.contants.RedisKeys;
-import com.rngay.service_authority.service.UASystemService;
+import com.rngay.service_authority.service.SystemService;
 import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.JwtUtil;
 import com.rngay.common.exception.BaseException;
@@ -23,7 +23,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private RedisUtil redisUtil;
     @Autowired
-    private UASystemService systemService;
+    private SystemService SystemService;
 
 
     @Override
@@ -54,7 +54,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
 
             Object userToken = redisUtil.get(RedisKeys.getTokenKey(userId));
             if (userToken == null || "".equals(userToken)) {
-                userToken = systemService.findToken(userId, new Date());
+                userToken = SystemService.findToken(userId, new Date());
             }
 
             if (userToken == null || "".equals(userToken)) {
@@ -65,7 +65,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
                 throw new BaseException(401, "账号在其他设备上登录");
             }
 
-            UAUserDTO currentUser = systemService.getCurrentUser(request);
+            UAUserDTO currentUser = SystemService.getCurrentUser(request);
             if (currentUser == null) {
                 throw new BaseException(401, "请重新登录");
             }
@@ -84,7 +84,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
      * 判断是否有访问权限
      */
     private boolean isAuthorized(HttpServletRequest request) {
-        UAUserDTO currentUser = systemService.getCurrentUser(request);
+        UAUserDTO currentUser = SystemService.getCurrentUser(request);
         if (currentUser != null) {
             if (currentUser.getUsername().equals("admin")) {
                 return true;

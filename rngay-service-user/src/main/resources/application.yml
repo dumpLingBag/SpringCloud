@@ -25,3 +25,6 @@ server:
 
 exception:
   msg: true
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml

@@ -1,13 +1,13 @@
 package com.rngay.feign.platform;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@Table(name = "menu_url")
+@TableName(value = "menu_url")
 public class UpdateUrlDTO extends CommonDTO {
 
     @Size(min = 1, message = "至少选择一个URL")
