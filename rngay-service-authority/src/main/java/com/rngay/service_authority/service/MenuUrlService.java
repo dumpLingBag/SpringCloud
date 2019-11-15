@@ -1,12 +1,13 @@
 package com.rngay.service_authority.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.rngay.feign.platform.MenuUrlDTO;
 import com.rngay.feign.platform.UpdateUrlDTO;
 import com.rngay.feign.platform.UrlDTO;
 
 import java.util.List;
 
-public interface MenuUrlService {
+public interface MenuUrlService extends IService<MenuUrlDTO> {
 
     /**
      * 加载所有 url 地址
