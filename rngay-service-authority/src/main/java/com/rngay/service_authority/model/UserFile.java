@@ -1,12 +1,10 @@
 package com.rngay.service_authority.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@TableName(value = "user_file")
+@Table(name = "user_file")
 public class UserFile {
 
     @Id

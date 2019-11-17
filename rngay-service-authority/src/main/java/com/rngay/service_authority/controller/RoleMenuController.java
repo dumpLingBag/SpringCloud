@@ -1,6 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
+import com.rngay.feign.platform.MenuDTO;
 import com.rngay.feign.platform.UpdateRoleMenuDTO;
 import com.rngay.service_authority.service.RoleMenuService;
 import com.rngay.service_authority.service.SystemService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "authorityRoleMenu", name = "角色菜单")

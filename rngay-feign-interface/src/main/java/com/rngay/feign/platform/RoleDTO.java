@@ -1,15 +1,22 @@
 package com.rngay.feign.platform;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import javax.persistence.Id;
+import java.util.List;
 
 @TableName(value = "ua_role")
 public class RoleDTO {
 
+    @Id
     private Integer id;
     private Integer orgId;
     private String name;
     private Integer sort;
     private Integer pid;
+    @TableField(exist = false)
+    private List<RoleDTO> children;
 
     public Integer getId() {
         return id;
@@ -49,5 +56,13 @@ public class RoleDTO {
 
     public void setPid(Integer pid) {
         this.pid = pid;
+    }
+
+    public List<RoleDTO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<RoleDTO> children) {
+        this.children = children;
     }
 }

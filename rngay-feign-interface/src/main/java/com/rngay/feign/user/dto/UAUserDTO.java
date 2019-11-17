@@ -3,6 +3,8 @@ package com.rngay.feign.user.dto;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
+import com.rngay.feign.platform.MenuDTO;
+import com.rngay.feign.platform.UrlDTO;
 
 import javax.persistence.Id;
 import java.util.Date;
@@ -35,7 +37,7 @@ public class UAUserDTO extends CommonDTO {
     private Integer isDelete;
 
     @TableField(exist = false)
-    private List<Map<String, Object>> menuList;
+    private List<MenuDTO> menuList;
 
     @TableField(exist = false)
     private Set<String> urlSet;
@@ -151,11 +153,11 @@ public class UAUserDTO extends CommonDTO {
         this.expireTime = expireTime;
     }
 
-    public List<Map<String, Object>> getMenuList() {
+    public List<MenuDTO> getMenuList() {
         return menuList;
     }
 
-    public void setMenuList(List<Map<String, Object>> menuList) {
+    public void setMenuList(List<MenuDTO> menuList) {
         this.menuList = menuList;
     }
 

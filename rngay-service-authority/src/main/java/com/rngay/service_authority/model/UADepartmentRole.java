@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@TableName(value="ua_department_role")
+@Table(name = "ua_department_role")
 public class UADepartmentRole implements Serializable {
 
 	@Id

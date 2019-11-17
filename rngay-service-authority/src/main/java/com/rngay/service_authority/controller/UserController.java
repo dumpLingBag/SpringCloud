@@ -23,6 +23,8 @@ public class UserController {
     private PFUserService pfUserService;
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private HttpServletRequest request;
 
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
     public Result<?> save(@Valid @RequestBody UAUserDTO saveUserDTO) {
@@ -84,10 +86,14 @@ public class UserController {
 
     @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.GET, name = "启用禁用")
     public Result<Integer> enable(@PathVariable Integer id, @PathVariable Integer enable) {
+        UAUserDTO currentUser = systemService.getCurrentUser(request);
+        if (currentUser.getUsername().equals("admin") && currentUser.getId().equals(id)) {
+            return Result.failMsg("禁止禁用管理员");
+        }
         if (id != null && enable != null) {
             return pfUserService.enable(id, enable);
         } else {
-            return Result.failMsg("缺少参数 { id , enable }");
+            return Result.failMsg("操作失败，请联系管理员");
         }
     }
 

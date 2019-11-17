@@ -3,9 +3,12 @@ package com.rngay.feign.platform;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
+import javax.persistence.Id;
+
 @TableName(value = "ua_org_role")
 public class OrgRoleDTO extends CommonDTO {
 
+    @Id
     private Integer id;
     private Integer orgId;
     private Integer roleId;

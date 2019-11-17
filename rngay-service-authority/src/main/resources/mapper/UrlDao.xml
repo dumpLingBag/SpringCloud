@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rngay.service_authority.dao.UrlDao">
+    <select id="loadUrlByOrgId" resultType="java.lang.String">
+        select url.url from (
+        <foreach collection="roleIds" item="role" separator="union">
+            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid FROM (
+            select  m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+        </foreach>
+        ) as m, ua_menu_url as menuUrl, ua_url as url where m.id = menuUrl.menu_id
+        and menuUrl.checked = 1 and url.id = menuUrl.url_id
+    </select>
+
+    <select id="loadUrlByOrgUserId" resultType="java.lang.String">
+        select url.url from (select sm.* from (
+        <foreach collection="orgRoles" item="orgRole" separator="union">
+            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid FROM (
+            select  m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{orgRole.roleId}
+            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t)
+        </foreach>
+        ) as pm join (
+        <foreach collection="userRoleIds" item="userRole" separator="union">
+            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid FROM (
+            select  m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId}
+            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+        </foreach>
+        ) as sm on sm.id = pm.id
+    </select>
+
+    <select id="loadUrlByUserId" resultType="java.lang.String">
+        select url.url from (
+        <foreach collection="roleIds" item="role" separator="union">
+            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid FROM (
+            select  m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+        </foreach>
+        ) as m,ua_menu_url as menuUrl,ua_url as url where m.id = menuUrl.menu_id and menuUrl.checked = 1
+        and url.id = menuUrl.url_id
+    </select>
+
+    <update id="updateSql">
+        TRUNCATE TABLE ua_url
+    </update>
+
+    <select id="loadUrlByList" resultType="java.lang.String">
+        select url from ua_url
+    </select>
+</mapper>

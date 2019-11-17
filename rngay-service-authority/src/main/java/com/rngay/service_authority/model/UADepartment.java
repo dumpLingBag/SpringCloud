@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@TableName(value="ua_department")
+@Table(name="ua_department")
 public class UADepartment implements Serializable {
 
 	@Id

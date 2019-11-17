@@ -1,19 +1,14 @@
 package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.MenuIdListDTO;
-import com.rngay.feign.platform.MenuUrlDTO;
-import com.rngay.feign.platform.RoleMenuDTO;
+import com.rngay.feign.platform.*;
 import com.rngay.feign.platform.vo.MetaVo;
-import com.rngay.service_authority.dao.MenuDao;
-import com.rngay.service_authority.dao.MenuUrlDao;
-import com.rngay.service_authority.dao.RoleMenuDao;
+import com.rngay.service_authority.dao.*;
 import com.rngay.service_authority.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +22,10 @@ public class MenuServiceImpl implements MenuService {
     private MenuUrlDao menuUrlDao;
     @Autowired
     private RoleMenuDao roleMenuDao;
+    @Autowired
+    private OrgRoleDao orgRoleDao;
+    @Autowired
+    private UserRoleDao userRoleDao;
 
     @Override
     public Integer save(MenuDTO uaMenu) {
@@ -72,16 +71,40 @@ public class MenuServiceImpl implements MenuService {
             roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().eq("menu_id", menu.getId()));
             menuDao.deleteById(menu.getId());
             if (!menu.getPid().equals(0)) {
-                List<MenuDTO> pid = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", menu.getPid()).ge("sort", menu.getSort()));
+                List<MenuDTO> pid = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", menu.getPid()).gt("sort", menu.getSort()));
                 if (pid != null && !pid.isEmpty()) {
-                    List<Integer> list = new ArrayList<>();
-                    pid.forEach(kev -> list.add(kev.getId()));
-                    return menuDao.updateSort(list);
+                    return menuDao.updateSort(pid);
                 }
                 return 0;
             }
         }
         return 0;
+    }
+
+    @Override
+    public List<MenuDTO> loadMenuByOrgId(Integer orgId) {
+        if (orgId != null && orgId > 0) {
+            List<OrgRoleDTO> roles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
+                    .eq("checked", 1).eq("org_id", orgId));
+            if (roles == null || roles.isEmpty()) {
+                return new ArrayList<>();
+            }
+            return menuDao.loadMenuByOrgId(roles);
+        }
+        return menuDao.selectList(new QueryWrapper<MenuDTO>().orderByAsc("pid").orderByAsc("sort"));
+    }
+
+    @Override
+    public List<MenuDTO> loadMenuByUserId(Integer orgId, Integer userId) {
+        List<UserRoleDTO> roleIds = userRoleDao.getRoleId(userId);
+        if (roleIds.isEmpty()) return new ArrayList<>();
+        if (orgId != null && orgId > 0) {
+            List<OrgRoleDTO> orgRoles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
+            .eq("checked", 1).eq("org_id", orgId));
+            if (orgRoles == null || orgRoles.isEmpty()) return new ArrayList<>();
+            return menuDao.loadMenuByOrgUserId(orgRoles, roleIds);
+        }
+        return menuDao.loadMenuByUserId(roleIds);
     }
 
     private List<MenuDTO> getChildren(Integer parentId) {

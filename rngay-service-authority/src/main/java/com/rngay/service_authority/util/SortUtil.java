@@ -1,5 +1,8 @@
 package com.rngay.service_authority.util;
 
+import com.rngay.feign.platform.MenuDTO;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +20,11 @@ public class SortUtil {
             return column1.compareTo(column2);
         });
         return mapList;
+    }
+
+    public static List<MenuDTO> arrSort(List<MenuDTO> arrList) {
+        arrList.sort(Comparator.comparing(MenuDTO::getSort));
+        return arrList;
     }
 
 }

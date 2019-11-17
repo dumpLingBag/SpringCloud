@@ -1,7 +1,7 @@
 package com.rngay.service_authority.service;
 
 import com.rngay.feign.platform.CommonUrlDTO;
-import com.rngay.service_authority.model.UAUrl;
+import com.rngay.feign.platform.UrlDTO;
 
 import java.util.List;
 
@@ -19,6 +19,6 @@ public interface CommonService {
      * @Author pengcheng
      * @Date 2019/4/2
      **/
-    List<UAUrl> loadOpen();
+    List<UrlDTO> loadOpen();
 
 }

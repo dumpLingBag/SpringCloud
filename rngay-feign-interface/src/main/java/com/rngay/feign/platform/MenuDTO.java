@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 import com.rngay.feign.platform.vo.MetaVo;
 
+import javax.persistence.Id;
 import java.util.List;
 
 @TableName(value = "ua_menu")
 public class MenuDTO extends CommonDTO {
 
+    @Id
     private Integer id;
 
     private String name;

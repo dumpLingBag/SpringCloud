@@ -1,11 +1,12 @@
 package com.rngay.service_authority.service;
 
+import com.rngay.feign.platform.MenuDTO;
+import com.rngay.feign.platform.UrlDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface SystemService {
@@ -15,7 +16,7 @@ public interface SystemService {
      * @Author pengcheng
      * @Date 2019/3/27
      **/
-    List<Map<String, Object>> loadForMenu(UAUserDTO userDTO);
+    List<MenuDTO> loadForMenu(UAUserDTO userDTO);
 
     /**
      * 查询指定用户允许访问的 url地址

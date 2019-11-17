@@ -2,13 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.rngay.service_authority.dao.MenuDao">
     <update id="updateSort" parameterType="java.util.List">
-        update ua_menu set sort = sort - 1
-        <where>
-        id in (
-            <foreach collection="list" item="sort" index="index" separator=",">
-                #{sort}
-            </foreach>
-        )
-        </where>
+        update ua_menu set sort = sort - 1 where id in
+        <foreach collection="sorts" item="sort" index="index" open="(" close=")" separator=",">
+            #{sort.id}
+        </foreach>
     </update>
+
+    <select id="loadMenuByOrgId" resultType="com.rngay.feign.platform.MenuDTO">
+        <foreach collection="roles" item="role" index="index" separator="union">
+            select t.id,t.name,t.icon,t.path,t.componet,t.keep_alive,t.auth,t.sort,t.pid
+            from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+        </foreach>
+    </select>
+
+    <select id="loadMenuByOrgUserId" resultType="com.rngay.feign.platform.MenuDTO">
+        select sm.* from (
+        <foreach collection="roles" item="role" separator="union">
+            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid from (
+            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+        </foreach>
+        ) as pm join (
+        <foreach collection="userRoles" item="userRole" index="index" separator="union">
+            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid from (
+            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId}
+            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+        </foreach>
+        ) as sm on sm.id = pm.id
+    </select>
+
+    <select id="loadMenuByUserId" resultType="com.rngay.feign.platform.MenuDTO">
+        <foreach collection="roleIds" item="role" separator="union">
+            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid from (
+            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+        </foreach>
+    </select>
 </mapper>

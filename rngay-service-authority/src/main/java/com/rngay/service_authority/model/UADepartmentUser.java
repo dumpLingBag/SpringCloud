@@ -1,12 +1,10 @@
 package com.rngay.service_authority.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@TableName(value = "ua_department_user")
+@Table(name = "ua_department_user")
 public class UADepartmentUser implements Serializable {
 
     @Id

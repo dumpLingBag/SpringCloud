@@ -23,7 +23,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private RedisUtil redisUtil;
     @Autowired
-    private SystemService SystemService;
+    private SystemService systemService;
 
 
     @Override
@@ -54,7 +54,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
 
             Object userToken = redisUtil.get(RedisKeys.getTokenKey(userId));
             if (userToken == null || "".equals(userToken)) {
-                userToken = SystemService.findToken(userId, new Date());
+                userToken = systemService.findToken(userId, new Date());
             }
 
             if (userToken == null || "".equals(userToken)) {
@@ -65,7 +65,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
                 throw new BaseException(401, "账号在其他设备上登录");
             }
 
-            UAUserDTO currentUser = SystemService.getCurrentUser(request);
+            UAUserDTO currentUser = systemService.getCurrentUser(request);
             if (currentUser == null) {
                 throw new BaseException(401, "请重新登录");
             }
@@ -84,7 +84,7 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
      * 判断是否有访问权限
      */
     private boolean isAuthorized(HttpServletRequest request) {
-        UAUserDTO currentUser = SystemService.getCurrentUser(request);
+        UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser != null) {
             if (currentUser.getUsername().equals("admin")) {
                 return true;

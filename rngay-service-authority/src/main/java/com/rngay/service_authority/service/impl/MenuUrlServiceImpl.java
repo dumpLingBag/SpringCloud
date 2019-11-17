@@ -10,8 +10,8 @@ import com.rngay.service_authority.dao.UrlDao;
 import com.rngay.service_authority.service.MenuUrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class MenuUrlServiceImpl extends ServiceImpl<MenuUrlDao, MenuUrlDTO> impl
     @Override
     public List<UrlDTO> load() {
         List<UrlDTO> list = new ArrayList<>();
-        List<UrlDTO> urls = urlDao.selectList(new QueryWrapper<UrlDTO>().isNull("pid"));
+        List<UrlDTO> urls = urlDao.selectList(new QueryWrapper<UrlDTO>().eq("pid", "null"));
         for (UrlDTO url : urls) {
             UrlDTO uaUrl = new UrlDTO();
             children(uaUrl, url);

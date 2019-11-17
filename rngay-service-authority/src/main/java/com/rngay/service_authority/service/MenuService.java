@@ -43,4 +43,8 @@ public interface MenuService {
      **/
     Integer delete(MenuIdListDTO menuIdListDTO);
 
+    List<MenuDTO> loadMenuByOrgId(Integer orgId);
+
+    List<MenuDTO> loadMenuByUserId(Integer orgId, Integer userId);
+
 }
