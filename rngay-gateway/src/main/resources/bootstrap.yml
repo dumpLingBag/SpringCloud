@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: authority
+          uri: http:127.0.0.1:9090

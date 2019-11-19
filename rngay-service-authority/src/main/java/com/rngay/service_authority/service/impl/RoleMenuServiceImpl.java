@@ -8,7 +8,6 @@ import com.rngay.feign.platform.UpdateRoleMenuDTO;
 import com.rngay.service_authority.dao.RoleMenuDao;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.RoleMenuService;
-import com.rngay.service_authority.util.SortUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
