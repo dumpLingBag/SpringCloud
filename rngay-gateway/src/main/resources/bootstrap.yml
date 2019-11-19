@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: authority
+          uri: http://localhost:9090
+          predicates:
+            - Path=/authority/**
+        - id: user
+          ri: http://localhost:8090
+          predicates:
+            - Path=/user/**

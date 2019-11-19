@@ -1,9 +1,9 @@
 package com.rngay.service_authority.controller;
 
-import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.util.UploadUtil;
 import com.rngay.common.vo.Result;
-import com.rngay.service_authority.model.UserFile;
+import com.rngay.feign.platform.UserFileDTO;
+import com.rngay.service_authority.dao.UserFileDao;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ public class FileController {
     @Autowired
     private SystemService systemService;
     @Autowired
-    private Dao dao;
+    private UserFileDao userFileDao;
 
     @RequestMapping(value = "upload")
     public Result<String> upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
@@ -31,13 +31,13 @@ public class FileController {
             String subStr = path.substring(path.lastIndexOf("/") + 1);
             subStr = subStr.substring(0, subStr.lastIndexOf("."));
 
-            UserFile userFile = new UserFile();
+            UserFileDTO userFile = new UserFileDTO();
             userFile.setFileId(subStr);
             userFile.setContentType(file.getContentType());
             userFile.setOriginalFilename(file.getOriginalFilename());
             userFile.setUrl(path);
             userFile.setUserId(systemService.getCurrentUserId(request));
-            dao.insert(userFile);
+            userFileDao.insert(userFile);
             return Result.success(path);
         }
         return Result.failMsg("文件上传失败");
