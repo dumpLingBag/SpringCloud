@@ -27,18 +27,7 @@ public class UploadUtil {
     * @Date 2019/5/30
     **/
     public String ftpUpload(MultipartFile uploadFile) {
-        if (uploadFile.getSize() > 10 * 1024 * 1024) {
-            throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
-        }
-        String type = uploadFile.getContentType();
-        String filename = uploadFile.getOriginalFilename();
-        if (type == null || filename == null || filename.lastIndexOf(".") == -1) {
-            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
-        }
-
-        if (!"image/jpeg".equals(type) && !"image/png".equals(type)) {
-            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
-        }
+        String filename = byteLength(uploadFile);
 
         FTPClient ftpClient = new FTPClient();
         InputStream inputStream = null;
@@ -98,18 +87,7 @@ public class UploadUtil {
     * @Date 2019/5/30
     **/
     public String upload(MultipartFile uploadFile) {
-        if (uploadFile.getSize() > 10 * 1024 * 1024) {
-            throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
-        }
-        String type = uploadFile.getContentType();
-        String filename = uploadFile.getOriginalFilename();
-        if (type == null || filename == null || filename.lastIndexOf(".") == -1) {
-            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
-        }
-
-        if (!"image/jpeg".equals(type) && !"image/png".equals(type)) {
-            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
-        }
+        String filename = byteLength(uploadFile);
 
         try {
             String md5 = BinaryUtil.encodeMD5(input2byte(uploadFile.getInputStream()));
@@ -137,6 +115,22 @@ public class UploadUtil {
             swapStream.write(buff, 0, rc);
         }
         return swapStream.toByteArray();
+    }
+
+    private String byteLength(MultipartFile uploadFile) {
+        if (uploadFile.getSize() > 10 * 1024 * 1024) {
+            throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
+        }
+        String type = uploadFile.getContentType();
+        String filename = uploadFile.getOriginalFilename();
+        if (type == null || filename == null || filename.lastIndexOf(".") == -1) {
+            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
+        }
+
+        if (!"image/jpeg".equals(type) && !"image/png".equals(type)) {
+            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
+        }
+        return filename;
     }
 
 }
