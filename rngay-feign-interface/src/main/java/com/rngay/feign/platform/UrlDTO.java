@@ -1,16 +1,16 @@
 package com.rngay.feign.platform;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
-import javax.persistence.Id;
 import java.util.List;
 
 @TableName(value = "ua_url")
 public class UrlDTO extends CommonDTO {
 
-    @Id
+    @TableId
     private String id;
     private String url;
     private String pid;

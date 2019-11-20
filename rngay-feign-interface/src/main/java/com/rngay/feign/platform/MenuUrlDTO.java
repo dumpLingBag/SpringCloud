@@ -1,14 +1,13 @@
 package com.rngay.feign.platform;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
-
-import javax.persistence.Id;
 
 @TableName(value = "ua_menu_url")
 public class MenuUrlDTO extends CommonDTO {
 
-    @Id
+    @TableId
     private Integer id;
     private Integer checked;
     private String urlId;

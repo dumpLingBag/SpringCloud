@@ -37,12 +37,8 @@ public class MenuUrlController {
 
     @RequestMapping(value = "loadUrl", method = RequestMethod.POST, name = "加载选中的url")
     public Result<?> loadUrl(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
-        Integer update = urlService.update(updateUrlDTO);
         List<MenuUrlDTO> menuUrls = urlService.loadUrl(updateUrlDTO.getMenuId());
-        Map<String, Object> map = new HashMap<>();
-        map.put("update", update);
-        map.put("menuUrls", menuUrls);
-        return Result.success(map);
+        return Result.success(menuUrls);
     }
 
     @RequestMapping(value = "update", method = RequestMethod.POST, name = "修改选中url")

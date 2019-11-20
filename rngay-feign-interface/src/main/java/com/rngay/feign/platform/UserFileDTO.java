@@ -1,5 +1,6 @@
 package com.rngay.feign.platform;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
@@ -8,6 +9,7 @@ import java.util.Date;
 @TableName(value = "user_file")
 public class UserFileDTO extends CommonDTO {
 
+    @TableId
     private Integer id;
     private String fileId;
     private Integer userId;

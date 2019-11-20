@@ -1,6 +1,5 @@
 package com.rngay.service_user.util;
 
-import com.rngay.common.jpa.dao.Dao;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -54,10 +53,6 @@ public class ContextAware implements ApplicationContextAware, ServletContextAwar
 
     public static Object getBean(String name) {
         return applicationContext.getBean(name);
-    }
-
-    public static Dao getSQLDao() {
-        return applicationContext.getBean(Dao.class);
     }
 
     public static String firstCharToLowerCase(String string) {

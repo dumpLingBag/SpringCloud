@@ -1,17 +1,17 @@
 package com.rngay.feign.platform;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 import com.rngay.feign.platform.vo.MetaVo;
 
-import javax.persistence.Id;
 import java.util.List;
 
 @TableName(value = "ua_menu")
 public class MenuDTO extends CommonDTO {
 
-    @Id
+    @TableId
     private Integer id;
 
     private String name;

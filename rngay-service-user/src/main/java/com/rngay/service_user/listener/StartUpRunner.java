@@ -1,10 +1,7 @@
 package com.rngay.service_user.listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rngay.common.jpa.dao.Cnd;
-import com.rngay.common.jpa.dao.Dao;
 import com.rngay.common.util.CryptUtil;
-import com.rngay.feign.user.dto.UASaveUserDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.service_user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +14,6 @@ import java.util.Date;
 @Component
 public class StartUpRunner implements CommandLineRunner {
 
-    @Autowired
-    private Dao dao;
     @Autowired
     private UserDao userDao;
 
@@ -34,7 +29,7 @@ public class StartUpRunner implements CommandLineRunner {
             userDTO.setCreateTime(new Date());
             userDTO.setUpdateTime(new Date());
             userDTO.setOrgId(0);
-            dao.insert(userDTO);
+            userDao.insert(userDTO);
         }
     }
 

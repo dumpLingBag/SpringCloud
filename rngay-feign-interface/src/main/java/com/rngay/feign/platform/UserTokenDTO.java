@@ -1,15 +1,15 @@
 package com.rngay.feign.platform;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
-import javax.persistence.Id;
 import java.util.Date;
 
 @TableName(value = "ua_user_token")
 public class UserTokenDTO extends CommonDTO {
 
-    @Id
+    @TableId
     private Integer id;
 
     private Date createTime;

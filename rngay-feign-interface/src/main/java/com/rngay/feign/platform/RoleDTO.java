@@ -1,15 +1,15 @@
 package com.rngay.feign.platform;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import javax.persistence.Id;
 import java.util.List;
 
 @TableName(value = "ua_role")
 public class RoleDTO {
 
-    @Id
+    @TableId
     private Integer id;
     private Integer orgId;
     private String name;
