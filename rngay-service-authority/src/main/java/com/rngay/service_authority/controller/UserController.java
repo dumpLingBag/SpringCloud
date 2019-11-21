@@ -125,7 +125,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET, name = "删除用户")
-    public Result<Integer> delete(@PathVariable Integer id) {
+    public Result<Integer> delete(@PathVariable Long id) {
         return pfUserService.delete(id);
     }
 

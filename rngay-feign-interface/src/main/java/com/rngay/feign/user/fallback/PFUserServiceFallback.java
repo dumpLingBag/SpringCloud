@@ -1,6 +1,5 @@
 package com.rngay.feign.user.fallback;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
@@ -72,7 +71,7 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<Integer> delete(Integer id) {
+            public Result<Integer> delete(Long id) {
                 return Result.failMsg(result);
             }
         };
