@@ -1,22 +1,21 @@
 package com.rngay.feign.user.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.UrlDTO;
+import com.rngay.feign.authority.MenuDTO;
 
-import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @TableName(value = "ua_user")
 public class UAUserDTO extends CommonDTO {
 
-    @Id
-    private Integer id;
+    @TableId(type = IdType.ID_WORKER)
+    private Long id;
 
     private String username;
 
@@ -49,11 +48,11 @@ public class UAUserDTO extends CommonDTO {
     @TableField(exist = false)
     private Date expireTime;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

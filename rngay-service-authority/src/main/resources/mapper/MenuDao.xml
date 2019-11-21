@@ -8,7 +8,7 @@
         </foreach>
     </update>
 
-    <select id="loadMenuByOrgId" resultType="com.rngay.feign.platform.MenuDTO">
+    <select id="loadMenuByOrgId" resultType="MenuDTO">
         <foreach collection="roles" item="role" index="index" separator="union">
             select t.id,t.name,t.icon,t.path,t.componet,t.keep_alive,t.auth,t.sort,t.pid
             from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
@@ -16,7 +16,7 @@
         </foreach>
     </select>
 
-    <select id="loadMenuByOrgUserId" resultType="com.rngay.feign.platform.MenuDTO">
+    <select id="loadMenuByOrgUserId" resultType="MenuDTO">
         select sm.* from (
         <foreach collection="roles" item="role" separator="union">
             select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid from (
@@ -32,7 +32,7 @@
         ) as sm on sm.id = pm.id
     </select>
 
-    <select id="loadMenuByUserId" resultType="com.rngay.feign.platform.MenuDTO">
+    <select id="loadMenuByUserId" resultType="MenuDTO">
         <foreach collection="roleIds" item="role" separator="union">
             select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}

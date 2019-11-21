@@ -1,4 +1,4 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
 import com.rngay.feign.dto.CommonDTO;
 
@@ -9,15 +9,15 @@ import java.util.List;
 public class UserRoleUpdateDTO extends CommonDTO {
 
     @NotNull(message = "用户ID为空")
-    private Integer userId;
+    private Long userId;
     @Size(min = 1, message = "最少选择一个角色")
     private List<UserRoleDTO> roleId;
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

@@ -1,5 +1,6 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
@@ -7,33 +8,33 @@ import com.rngay.feign.dto.CommonDTO;
 @TableName(value = "ua_department_role")
 public class DepartmentRoleDTO extends CommonDTO {
 
-    @TableId
-    private Integer id;
-    private Integer departmentId;
-    private Integer roleId;
+    @TableId(type = IdType.ID_WORKER)
+    private Long id;
+    private Long departmentId;
+    private Long roleId;
     private Integer checked;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
 
-    public Integer getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 

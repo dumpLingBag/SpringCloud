@@ -1,7 +1,7 @@
 package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rngay.feign.platform.*;
+import com.rngay.feign.authority.*;
 import com.rngay.service_authority.dao.*;
 import com.rngay.service_authority.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;

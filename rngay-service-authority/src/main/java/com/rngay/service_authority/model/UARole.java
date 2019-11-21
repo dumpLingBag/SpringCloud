@@ -9,43 +9,51 @@ public class UARole implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(columnDefinition="int default 0")
-    private Integer orgId;
+    private Long orgId;
 	private String name;
 	private Integer sort;
 	@Column(columnDefinition="int default 0")
-	private Integer pid;
+	private Long pid;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getOrgId() {
+
+	public Long getOrgId() {
 		return orgId;
 	}
-	public void setOrgId(Integer orgId) {
+
+	public void setOrgId(Long orgId) {
 		this.orgId = orgId;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Integer getSort() {
 		return sort;
 	}
+
 	public void setSort(Integer sort) {
 		this.sort = sort;
 	}
-	public Integer getPid() {
+
+	public Long getPid() {
 		return pid;
 	}
-	public void setPid(Integer pid) {
+
+	public void setPid(Long pid) {
 		this.pid = pid;
 	}
-
 }

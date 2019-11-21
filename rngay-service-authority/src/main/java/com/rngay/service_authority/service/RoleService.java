@@ -1,7 +1,7 @@
 package com.rngay.service_authority.service;
 
-import com.rngay.feign.platform.RoleDTO;
-import com.rngay.feign.platform.RoleIdListDTO;
+import com.rngay.feign.authority.RoleDTO;
+import com.rngay.feign.authority.RoleIdListDTO;
 
 import java.util.List;
 

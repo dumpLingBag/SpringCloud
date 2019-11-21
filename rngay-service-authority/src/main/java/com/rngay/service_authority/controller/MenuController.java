@@ -1,8 +1,8 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.MenuIdListDTO;
+import com.rngay.feign.authority.MenuDTO;
+import com.rngay.feign.authority.MenuIdListDTO;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;

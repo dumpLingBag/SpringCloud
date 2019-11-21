@@ -1,7 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.platform.CommonUrlDTO;
+import com.rngay.feign.authority.CommonUrlDTO;
 import com.rngay.service_authority.service.CommonService;
 import com.rngay.service_authority.service.MenuUrlService;
 import com.rngay.service_authority.service.SystemService;

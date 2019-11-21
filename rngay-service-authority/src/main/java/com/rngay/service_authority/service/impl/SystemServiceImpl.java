@@ -2,9 +2,9 @@ package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rngay.common.cache.RedisUtil;
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.UserTokenDTO;
-import com.rngay.feign.platform.vo.MetaVo;
+import com.rngay.feign.authority.MenuDTO;
+import com.rngay.feign.authority.UserTokenDTO;
+import com.rngay.feign.authority.vo.MetaVo;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.service_authority.contants.RedisKeys;
 import com.rngay.service_authority.dao.UserTokenDao;
@@ -74,7 +74,7 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public int insertToken(HttpServletRequest request, UAUserDTO userDTO, String token) {
-        Integer userId = userDTO.getId();
+        Long userId = userDTO.getId();
 
         UserTokenDTO userToken = new UserTokenDTO();
         userToken.setUserId(userId);
@@ -139,7 +139,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public Integer getCurrentUserId(HttpServletRequest request) {
+    public Long getCurrentUserId(HttpServletRequest request) {
         UAUserDTO currentUser = getCurrentUser(request);
         if (currentUser != null) {
             return currentUser.getId();
@@ -159,7 +159,7 @@ public class SystemServiceImpl implements SystemService {
     private List<MenuDTO> menuList(List<MenuDTO> menuList) {
         List<MenuDTO> arrList = new ArrayList<>();
         for (MenuDTO menu : menuList) {
-            if (menu.getPid() == null || menu.getPid().equals(0)) {
+            if (menu.getPid() == null || menu.getPid() == 0) {
                 arrList.add(arrToMenu(menuList, menu));
             }
         }

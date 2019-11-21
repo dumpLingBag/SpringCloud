@@ -1,9 +1,9 @@
 package com.rngay.service_authority.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.rngay.feign.platform.OrgRoleDTO;
-import com.rngay.feign.platform.UrlDTO;
-import com.rngay.feign.platform.UserRoleDTO;
+import com.rngay.feign.authority.OrgRoleDTO;
+import com.rngay.feign.authority.UrlDTO;
+import com.rngay.feign.authority.UserRoleDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

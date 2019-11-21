@@ -1,7 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.platform.UserRoleUpdateDTO;
+import com.rngay.feign.authority.UserRoleUpdateDTO;
 import com.rngay.service_authority.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ public class UserRoleController {
     private UserRoleService userRoleService;
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载用户的权限")
-    public Result<?> load(Integer userId) {
+    public Result<?> load(Long userId) {
         if (userId != null) {
             return Result.success(userRoleService.load(userId));
         }

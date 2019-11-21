@@ -22,7 +22,7 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<UAUserDTO> findById(Integer id) {
+            public Result<UAUserDTO> findById(Long id) {
                 return Result.failMsg(result);
             }
 
@@ -57,12 +57,12 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<Integer> reset(Integer id) {
+            public Result<Integer> reset(Long id) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<Integer> enable(Integer id, Integer enable) {
+            public Result<Integer> enable(Long id, Integer enable) {
                 return Result.failMsg(result);
             }
 

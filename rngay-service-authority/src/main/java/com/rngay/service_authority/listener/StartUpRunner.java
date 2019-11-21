@@ -2,8 +2,8 @@ package com.rngay.service_authority.listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rngay.common.cache.RedisUtil;
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.UrlDTO;
+import com.rngay.feign.authority.MenuDTO;
+import com.rngay.feign.authority.UrlDTO;
 import com.rngay.service_authority.dao.MenuDao;
 import com.rngay.service_authority.dao.UrlDao;
 import com.rngay.service_authority.service.UrlService;

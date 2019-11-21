@@ -1,4 +1,4 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
 import com.rngay.feign.dto.CommonDTO;
 

@@ -1,7 +1,7 @@
 package com.rngay.service_authority.service;
 
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.MenuIdListDTO;
+import com.rngay.feign.authority.MenuDTO;
+import com.rngay.feign.authority.MenuIdListDTO;
 
 import java.util.List;
 
@@ -45,6 +45,6 @@ public interface MenuService {
 
     List<MenuDTO> loadMenuByOrgId(Integer orgId);
 
-    List<MenuDTO> loadMenuByUserId(Integer orgId, Integer userId);
+    List<MenuDTO> loadMenuByUserId(Integer orgId, Long userId);
 
 }

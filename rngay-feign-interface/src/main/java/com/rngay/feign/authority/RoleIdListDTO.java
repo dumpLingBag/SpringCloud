@@ -1,4 +1,4 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
 import com.rngay.feign.dto.CommonDTO;
 
@@ -6,13 +6,13 @@ import java.util.List;
 
 public class RoleIdListDTO extends CommonDTO {
 
-    private List<Integer> roleIdList;
+    private List<Long> roleIdList;
 
-    public List<Integer> getRoleIdList() {
+    public List<Long> getRoleIdList() {
         return roleIdList;
     }
 
-    public void setRoleIdList(List<Integer> roleIdList) {
+    public void setRoleIdList(List<Long> roleIdList) {
         this.roleIdList = roleIdList;
     }
 }

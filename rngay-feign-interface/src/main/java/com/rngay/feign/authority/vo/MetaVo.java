@@ -1,4 +1,4 @@
-package com.rngay.feign.platform.vo;
+package com.rngay.feign.authority.vo;
 
 public class MetaVo {
 

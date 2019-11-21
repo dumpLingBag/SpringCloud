@@ -28,3 +28,9 @@ exception:
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.rngay.feign.user.dto
+  global-config:
+    db-config:
+      id-type: id_worker
+    worker-id: 1
+    datacenter-id: 18

@@ -1,4 +1,4 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
 import com.rngay.feign.dto.CommonDTO;
 
@@ -6,13 +6,13 @@ import java.util.List;
 
 public class MenuIdListDTO extends CommonDTO {
 
-    private List<Integer> menuIdList;
+    private List<Long> menuIdList;
 
-    public List<Integer> getMenuIdList() {
+    public List<Long> getMenuIdList() {
         return menuIdList;
     }
 
-    public void setMenuIdList(List<Integer> menuIdList) {
+    public void setMenuIdList(List<Long> menuIdList) {
         this.menuIdList = menuIdList;
     }
 }

@@ -1,7 +1,5 @@
 package com.rngay.service_authority.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,34 +9,40 @@ public class UADepartmentRole implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Integer id;
-	private Integer departmentId;
-	private Integer roleId;
+	private Long id;
+	private Long departmentId;
+	private Long roleId;
 	private Integer checked;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getDepartmentId() {
+
+	public Long getDepartmentId() {
 		return departmentId;
 	}
-	public void setDepartmentId(Integer departmentId) {
+
+	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
 	}
-	public Integer getRoleId() {
+
+	public Long getRoleId() {
 		return roleId;
 	}
-	public void setRoleId(Integer roleId) {
+
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
+
 	public Integer getChecked() {
 		return checked;
 	}
+
 	public void setChecked(Integer checked) {
 		this.checked = checked;
 	}
-
 }

@@ -2,7 +2,7 @@ package com.rngay.service_authority.controller;
 
 import com.rngay.common.util.UploadUtil;
 import com.rngay.common.vo.Result;
-import com.rngay.feign.platform.UserFileDTO;
+import com.rngay.feign.authority.UserFileDTO;
 import com.rngay.service_authority.dao.UserFileDao;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;

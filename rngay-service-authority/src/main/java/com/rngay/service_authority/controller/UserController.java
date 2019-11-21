@@ -77,7 +77,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "reset/{id}", method = RequestMethod.GET, name = "重置密码")
-    public Result<Integer> reset(@PathVariable Integer id) {
+    public Result<Integer> reset(@PathVariable Long id) {
         if (id == null) {
             return Result.failMsg("重置失败");
         }
@@ -85,7 +85,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.GET, name = "启用禁用")
-    public Result<Integer> enable(@PathVariable Integer id, @PathVariable Integer enable) {
+    public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
         UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser.getUsername().equals("admin") && currentUser.getId().equals(id)) {
             return Result.failMsg("禁止禁用管理员");
@@ -99,7 +99,7 @@ public class UserController {
 
     @RequestMapping(value = "updatePassword", method = RequestMethod.POST, name = "修改密码")
     public Result<Integer> updatePassword(HttpServletRequest request, @RequestBody UpdatePassword password) {
-        Integer userId = systemService.getCurrentUserId(request);
+        Long userId = systemService.getCurrentUserId(request);
         UAUserDTO user = pfUserService.findById(userId).getData();
         if (user == null) {
             return Result.failMsg("不存在该用户，修改失败");

@@ -1,8 +1,8 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.platform.MenuUrlDTO;
-import com.rngay.feign.platform.UpdateUrlDTO;
+import com.rngay.feign.authority.MenuUrlDTO;
+import com.rngay.feign.authority.UpdateUrlDTO;
 import com.rngay.service_authority.service.MenuUrlService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "authorityMenuUrl", name = "菜单权限")
