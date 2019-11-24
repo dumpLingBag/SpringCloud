@@ -100,7 +100,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public int deleteToken(HttpServletRequest request, Integer userId) {
+    public int deleteToken(HttpServletRequest request, Long userId) {
         String key = request.getServerName() + "_" + userId;
         redisUtil.del(RedisKeys.getUserKey(key));
         UserTokenDTO user = userTokenDao.selectOne(new QueryWrapper<UserTokenDTO>().eq("user_id", userId));
@@ -109,7 +109,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public String findToken(Integer userId, Date date) {
+    public String findToken(Long userId, Date date) {
         UserTokenDTO userTokenDTO = userTokenDao.selectOne(new QueryWrapper<UserTokenDTO>()
                 .eq("user_id", userId).gt("expire_time", date));
         return userTokenDTO.getToken();
@@ -119,7 +119,7 @@ public class SystemServiceImpl implements SystemService {
     public UAUserDTO getCurrentUser(HttpServletRequest request) {
         String token = AuthorityUtil.getRequestToken(request);
         if (token != null) {
-            int userId = Integer.parseInt(jwtUtil.getSubject(token));
+            long userId = Long.parseLong(jwtUtil.getSubject(token));
             String key = request.getServerName() + "_" + userId;
             Object user = redisUtil.get(RedisKeys.getUserKey(key));
             if (user == null) return null;

@@ -25,7 +25,7 @@ public class MenuController {
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存菜单")
     public Result<?> save(@RequestBody MenuDTO uaMenu) {
         Integer menu = menuService.save(uaMenu);
-        if (menu == null) {
+        if (menu == null || menu == 0) {
             return Result.failMsg("保存失败");
         }
         return Result.success(menu);

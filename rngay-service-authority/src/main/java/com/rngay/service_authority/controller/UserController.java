@@ -40,6 +40,7 @@ public class UserController {
         if (!msg.isEmpty()) {
             return Result.fail(msg);
         }
+        saveUserDTO.setParentId(systemService.getCurrentUserId(request));
         return pfUserService.save(saveUserDTO);
     }
 
@@ -126,7 +127,14 @@ public class UserController {
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET, name = "删除用户")
     public Result<Integer> delete(@PathVariable Long id) {
-        return pfUserService.delete(id);
+        UAUserDTO user = pfUserService.findById(id).getData();
+        if (user != null) {
+            if (user.getParentId() == 0) {
+                return Result.failMsg("不能删除超级用户");
+            }
+            user.setIsDelete(1);
+        }
+        return pfUserService.update(user);
     }
 
 }

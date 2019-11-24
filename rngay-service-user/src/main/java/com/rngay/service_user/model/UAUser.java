@@ -32,6 +32,8 @@ public class UAUser {
     @Column(columnDefinition = "int default 1")
     private Integer isDelete;
 
+    private Long parentId;
+
     private Date updateTime;
 
     private Date createTime;
@@ -114,6 +116,14 @@ public class UAUser {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public Date getUpdateTime() {

@@ -36,14 +36,14 @@ public interface SystemService {
      * @Author: pengcheng
      * @Date: 2018/12/15
      */
-    int deleteToken(HttpServletRequest request, Integer userId);
+    int deleteToken(HttpServletRequest request, Long userId);
 
     /**
      * 从数据库查询指定用户的有效 token
      * @Author: pengcheng
      * @Date: 2018/12/15
      */
-    String findToken(Integer userId, Date date);
+    String findToken(Long userId, Date date);
 
     /**
      * 获取当前登录用户

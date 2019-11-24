@@ -35,6 +35,8 @@ public class UAUserDTO extends CommonDTO {
 
     private Integer isDelete;
 
+    private Long parentId;
+
     @TableField(exist = false)
     private List<MenuDTO> menuList;
 
@@ -126,6 +128,14 @@ public class UAUserDTO extends CommonDTO {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public Date getUpdateTime() {

@@ -29,9 +29,20 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Integer save(MenuDTO uaMenu) {
-        MenuDTO byId = menuDao.selectById(uaMenu.getPid());
-        byId.setComponent(null);
-        menuDao.updateById(byId);
+        // 如果添加的菜单是跳转菜单，则判断上级菜单是不是一级菜单
+        if (uaMenu.getComponent() != null && !uaMenu.getComponent().equals("")) {
+            MenuDTO menu = menuDao.selectById(uaMenu.getPid());
+            if (menu != null) {
+                if (menu.getPid() == 0) {
+                    if (menu.getComponent() != null) {
+                        menu.setComponent(null);
+                        menuDao.updateById(menu);
+                    }
+                } else {
+                    return null;
+                }
+            }
+        }
         return menuDao.insert(uaMenu);
     }
 

@@ -122,15 +122,15 @@ public class StartUpRunner implements CommandLineRunner {
                 systemManage.setIcon("iconfont icon-bug");
                 systemManage.setSort(0);
                 systemManage.setPid(0L);
-                menuDao.insert(systemManage);
                 int id = menuDao.insert(systemManage);
                 if (id > 0) {
                     MenuDTO menuManage = new MenuDTO();
                     menuManage.setName("菜单管理");
                     menuManage.setSort(0);
-                    menuManage.setPid((long) id);
+                    menuManage.setPid(systemManage.getId());
                     menuManage.setPath("/authority");
                     menuManage.setComponent("AuthorityMenu");
+                    menuManage.setIcon("iconfont icon-xingzhuang-tuoyuanxing");
                     menuDao.insert(menuManage);
                 }
             }
