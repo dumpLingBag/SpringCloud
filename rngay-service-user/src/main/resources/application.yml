@@ -16,9 +16,6 @@ spring:
     static-locations: classpath:/static/, classpath:/views/
   mvc:
     dispatch-options-request: true
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
 
 server:
   port: 8090
