@@ -9,34 +9,40 @@ public class UARoleMenu implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Integer id;
-	private Integer roleId;
-	private Integer menuId;
+	private Long id;
+	private Long roleId;
+	private Long menuId;
 	private Integer checked;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getRoleId() {
+
+	public Long getRoleId() {
 		return roleId;
 	}
-	public void setRoleId(Integer roleId) {
+
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
-	public Integer getMenuId() {
+
+	public Long getMenuId() {
 		return menuId;
 	}
-	public void setMenuId(Integer menuId) {
+
+	public void setMenuId(Long menuId) {
 		this.menuId = menuId;
 	}
+
 	public Integer getChecked() {
 		return checked;
 	}
+
 	public void setChecked(Integer checked) {
 		this.checked = checked;
 	}
-
 }

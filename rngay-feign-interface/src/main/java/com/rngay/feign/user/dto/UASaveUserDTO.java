@@ -1,5 +1,7 @@
 package com.rngay.feign.user.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 
@@ -9,7 +11,8 @@ import java.util.Date;
 @TableName(value = "ua_user")
 public class UASaveUserDTO extends CommonDTO {
 
-    private Integer id;
+    @TableId(type = IdType.ID_WORKER)
+    private Long id;
 
     @NotEmpty(message = "账户信息不能为空")
     private String account;
@@ -38,11 +41,11 @@ public class UASaveUserDTO extends CommonDTO {
 
     private Date create_time;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

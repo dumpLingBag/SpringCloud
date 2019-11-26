@@ -1,8 +1,8 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.MenuIdListDTO;
+import com.rngay.feign.authority.MenuDTO;
+import com.rngay.feign.authority.MenuIdListDTO;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class MenuController {
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存菜单")
     public Result<?> save(@RequestBody MenuDTO uaMenu) {
         Integer menu = menuService.save(uaMenu);
-        if (menu == null) {
+        if (menu == null || menu == 0) {
             return Result.failMsg("保存失败");
         }
         return Result.success(menu);

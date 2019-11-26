@@ -2,9 +2,9 @@ package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.RoleMenuDTO;
-import com.rngay.feign.platform.UpdateRoleMenuDTO;
+import com.rngay.feign.authority.MenuDTO;
+import com.rngay.feign.authority.RoleMenuDTO;
+import com.rngay.feign.authority.UpdateRoleMenuDTO;
 import com.rngay.service_authority.dao.RoleMenuDao;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.RoleMenuService;

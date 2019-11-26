@@ -1,8 +1,8 @@
 package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rngay.feign.platform.*;
-import com.rngay.feign.platform.vo.MetaVo;
+import com.rngay.feign.authority.*;
+import com.rngay.feign.authority.vo.MetaVo;
 import com.rngay.service_authority.dao.*;
 import com.rngay.service_authority.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +29,20 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Integer save(MenuDTO uaMenu) {
-        MenuDTO byId = menuDao.selectById(uaMenu.getPid());
-        byId.setComponent(null);
-        menuDao.updateById(byId);
+        // 如果添加的菜单是跳转菜单，则判断上级菜单是不是一级菜单
+        if (uaMenu.getComponent() != null && !uaMenu.getComponent().equals("")) {
+            MenuDTO menu = menuDao.selectById(uaMenu.getPid());
+            if (menu != null) {
+                if (menu.getPid() == 0) {
+                    if (menu.getComponent() != null) {
+                        menu.setComponent(null);
+                        menuDao.updateById(menu);
+                    }
+                } else {
+                    return null;
+                }
+            }
+        }
         return menuDao.insert(uaMenu);
     }
 
@@ -70,7 +81,7 @@ public class MenuServiceImpl implements MenuService {
             menuUrlDao.delete(new QueryWrapper<MenuUrlDTO>().eq("menu_id", menu.getId()));
             roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().eq("menu_id", menu.getId()));
             menuDao.deleteById(menu.getId());
-            if (!menu.getPid().equals(0)) {
+            if (menu.getPid() != 0) {
                 List<MenuDTO> pid = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", menu.getPid()).gt("sort", menu.getSort()));
                 if (pid != null && !pid.isEmpty()) {
                     return menuDao.updateSort(pid);
@@ -95,7 +106,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<MenuDTO> loadMenuByUserId(Integer orgId, Integer userId) {
+    public List<MenuDTO> loadMenuByUserId(Integer orgId, Long userId) {
         List<UserRoleDTO> roleIds = userRoleDao.getRoleId(userId);
         if (roleIds.isEmpty()) return new ArrayList<>();
         if (orgId != null && orgId > 0) {
@@ -107,7 +118,7 @@ public class MenuServiceImpl implements MenuService {
         return menuDao.loadMenuByUserId(roleIds);
     }
 
-    private List<MenuDTO> getChildren(Integer parentId) {
+    private List<MenuDTO> getChildren(Long parentId) {
         List<MenuDTO> list = new ArrayList<>();
         List<MenuDTO> children = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", parentId));
         for (MenuDTO menu : children) {

@@ -9,7 +9,7 @@ public class UAUser {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String username;
 
@@ -32,15 +32,17 @@ public class UAUser {
     @Column(columnDefinition = "int default 1")
     private Integer isDelete;
 
+    private Long parentId;
+
     private Date updateTime;
 
     private Date createTime;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -114,6 +116,14 @@ public class UAUser {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public Date getUpdateTime() {

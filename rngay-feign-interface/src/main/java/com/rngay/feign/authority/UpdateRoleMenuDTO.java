@@ -1,4 +1,4 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
 import com.rngay.feign.dto.CommonDTO;
 
@@ -9,15 +9,15 @@ import java.util.List;
 public class UpdateRoleMenuDTO extends CommonDTO {
 
     @NotNull(message = "角色ID为空")
-    private Integer roleId;
+    private Long roleId;
     @Size(min = 1, message = "至少选择一个菜单")
     private List<RoleMenuDTO> roleMenu;
 
-    public Integer getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 

@@ -14,9 +14,6 @@ spring:
     static-locations: classpath:/static/, classpath:/views/
   mvc:
     dispatch-options-request: true
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
   main:
     allow-bean-definition-overriding: true
 server:
@@ -32,3 +29,9 @@ exception:
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.rngay.feign.authority
+  global-config:
+    db-config:
+      id-type: id_worker
+    worker-id: 1
+    datacenter-id: 18

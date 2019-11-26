@@ -1,18 +1,23 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
-import com.rngay.feign.platform.vo.MetaVo;
+import com.rngay.feign.authority.vo.MetaVo;
 
 import java.util.List;
 
 @TableName(value = "ua_menu")
 public class MenuDTO extends CommonDTO {
 
-    @TableId
-    private Integer id;
+    @TableId(type = IdType.ID_WORKER)
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long id;
 
     private String name;
 
@@ -28,7 +33,8 @@ public class MenuDTO extends CommonDTO {
 
     private Integer sort = 0;
 
-    private Integer pid = 0;
+    @JSONField(serializeUsing = ToStringSerializer.class)
+    private Long pid = 0L;
 
     @TableField(exist = false)
     private MetaVo meta;
@@ -36,11 +42,11 @@ public class MenuDTO extends CommonDTO {
     @TableField(exist = false)
     private List<MenuDTO> children;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -100,11 +106,11 @@ public class MenuDTO extends CommonDTO {
         this.sort = sort;
     }
 
-    public Integer getPid() {
+    public Long getPid() {
         return pid;
     }
 
-    public void setPid(Integer pid) {
+    public void setPid(Long pid) {
         this.pid = pid;
     }
 

@@ -1,5 +1,6 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,7 +11,7 @@ import java.util.List;
 @TableName(value = "ua_url")
 public class UrlDTO extends CommonDTO {
 
-    @TableId
+    @TableId(type = IdType.ID_WORKER)
     private String id;
     private String url;
     private String pid;

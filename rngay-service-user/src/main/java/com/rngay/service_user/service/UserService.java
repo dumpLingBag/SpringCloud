@@ -12,7 +12,7 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2018/12/13
      */
-    UAUserDTO findUserById(Integer id);
+    UAUserDTO findUserById(Long id);
 
     /**
      * 根据用户名或手机号查询用户数据
@@ -61,14 +61,14 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2018/12/29
      */
-    int reset(Integer id);
+    int reset(Long id);
 
     /**
      * 启禁用账号
      * @Author: pengcheng
      * @Date: 2019/1/7
      */
-    int enable(Integer id, Integer enable);
+    int enable(Long id, Integer enable);
 
     /**
      * 修改用户密码
@@ -82,6 +82,6 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2019/2/3
      */
-    int delete(Integer id);
+    int delete(Long id);
 
 }

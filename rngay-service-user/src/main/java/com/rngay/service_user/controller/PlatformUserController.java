@@ -23,7 +23,7 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "findById/{id}", method = RequestMethod.GET)
-    public Result<UAUserDTO> findById(@PathVariable Integer id) {
+    public Result<UAUserDTO> findById(@PathVariable Long id) {
         return Result.success(userService.findUserById(id));
     }
 
@@ -56,12 +56,12 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "reset/{id}", method = RequestMethod.GET)
-    public Result<Integer> reset(@PathVariable Integer id) {
+    public Result<Integer> reset(@PathVariable Long id) {
         return Result.success(userService.reset(id));
     }
 
     @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.GET)
-    public Result<Integer> enable(@PathVariable Integer id, @PathVariable Integer enable) {
+    public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
         return Result.success(userService.enable(id, enable));
     }
 
@@ -72,7 +72,7 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-    public Result<Integer> delete(@PathVariable Integer id) {
+    public Result<Integer> delete(@PathVariable Long id) {
         return Result.success(userService.delete(id));
     }
 

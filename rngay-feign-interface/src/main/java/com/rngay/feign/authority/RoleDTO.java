@@ -1,5 +1,6 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -9,20 +10,20 @@ import java.util.List;
 @TableName(value = "ua_role")
 public class RoleDTO {
 
-    @TableId
-    private Integer id;
+    @TableId(type = IdType.ID_WORKER)
+    private Long id;
     private Integer orgId;
     private String name;
     private Integer sort;
-    private Integer pid;
+    private Long pid;
     @TableField(exist = false)
     private List<RoleDTO> children;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -50,11 +51,11 @@ public class RoleDTO {
         this.sort = sort;
     }
 
-    public Integer getPid() {
+    public Long getPid() {
         return pid;
     }
 
-    public void setPid(Integer pid) {
+    public void setPid(Long pid) {
         this.pid = pid;
     }
 

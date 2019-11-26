@@ -28,7 +28,7 @@ public interface PFUserService {
      * @Date: 2019/1/9
      */
     @RequestMapping(value = "/user/findById/{id}", method = RequestMethod.GET)
-    Result<UAUserDTO> findById(@PathVariable Integer id);
+    Result<UAUserDTO> findById(@PathVariable Long id);
 
     /**
      * 通过账号查询信息
@@ -91,7 +91,7 @@ public interface PFUserService {
      * @Date: 2018/12/29
      */
     @RequestMapping(value = "/user/reset/{id}", method = RequestMethod.GET)
-    Result<Integer> reset(@PathVariable Integer id);
+    Result<Integer> reset(@PathVariable Long id);
 
     /**
      * 启禁用账号
@@ -100,7 +100,7 @@ public interface PFUserService {
      * @Date: 2019/1/7
      */
     @RequestMapping(value = "/user/enable/{id}/{enable}", method = RequestMethod.GET)
-    Result<Integer> enable(@PathVariable Integer id, @PathVariable Integer enable);
+    Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable);
 
     /**
      * 修改用户密码
@@ -118,6 +118,6 @@ public interface PFUserService {
      * @Date: 2019/2/3
      */
     @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.GET)
-    Result<Integer> delete(@PathVariable Integer id);
+    Result<Integer> delete(@PathVariable Long id);
 
 }

@@ -1,7 +1,7 @@
 package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rngay.feign.platform.*;
+import com.rngay.feign.authority.*;
 import com.rngay.service_authority.dao.*;
 import com.rngay.service_authority.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +79,7 @@ public class RoleServiceImpl implements RoleService {
             roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().eq("role_id", role.getId()));
             userRoleDao.delete(new QueryWrapper<UserRoleDTO>().eq("role_id", role.getId()));
             departmentRoleDao.delete(new QueryWrapper<DepartmentRoleDTO>().eq("role_id", role.getId()));
-            if (!role.getPid().equals(0)) {
+            if (role.getPid() != 0) {
                 List<RoleDTO> roles = roleDao.selectList(new QueryWrapper<RoleDTO>()
                 .eq("pid", role.getPid()).gt("sort", role.getSort()));
                 if (roles != null && !roles.isEmpty()) {
@@ -93,7 +93,7 @@ public class RoleServiceImpl implements RoleService {
     private List<RoleDTO> roleList(List<RoleDTO> roles) {
         List<RoleDTO> arrList = new ArrayList<>();
         for (RoleDTO role : roles) {
-            if (role.getPid() == null || role.getPid().equals(0)) {
+            if (role.getPid() == null || role.getPid() == 0) {
                 arrList.add(arrToRole(roles, role));
             }
         }

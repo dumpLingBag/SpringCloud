@@ -1,5 +1,6 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
@@ -7,17 +8,17 @@ import com.rngay.feign.dto.CommonDTO;
 @TableName(value = "ua_menu_url")
 public class MenuUrlDTO extends CommonDTO {
 
-    @TableId
-    private Integer id;
+    @TableId(type = IdType.ID_WORKER)
+    private Long id;
     private Integer checked;
     private String urlId;
-    private Integer menuId;
+    private Long menuId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,11 +38,11 @@ public class MenuUrlDTO extends CommonDTO {
         this.urlId = urlId;
     }
 
-    public Integer getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Integer menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 }

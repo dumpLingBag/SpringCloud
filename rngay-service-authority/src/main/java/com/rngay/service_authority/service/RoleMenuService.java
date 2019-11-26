@@ -1,9 +1,9 @@
 package com.rngay.service_authority.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.RoleMenuDTO;
-import com.rngay.feign.platform.UpdateRoleMenuDTO;
+import com.rngay.feign.authority.MenuDTO;
+import com.rngay.feign.authority.RoleMenuDTO;
+import com.rngay.feign.authority.UpdateRoleMenuDTO;
 
 import java.util.List;
 

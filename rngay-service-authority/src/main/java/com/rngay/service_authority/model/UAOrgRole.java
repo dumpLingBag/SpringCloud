@@ -9,29 +9,35 @@ public class UAOrgRole implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Integer id;
-	private Integer orgId;
-	private Integer roleId;
+	private Long id;
+	private Long orgId;
+	private Long roleId;
 	private Integer checked;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getOrgId() {
+
+	public Long getOrgId() {
 		return orgId;
 	}
-	public void setOrgId(Integer orgId) {
+
+	public void setOrgId(Long orgId) {
 		this.orgId = orgId;
 	}
-	public Integer getRoleId() {
+
+	public Long getRoleId() {
 		return roleId;
 	}
-	public void setRoleId(Integer roleId) {
+
+	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
 	}
+
 	public Integer getChecked() {
 		return checked;
 	}

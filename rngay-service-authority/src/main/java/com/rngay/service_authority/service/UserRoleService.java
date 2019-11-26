@@ -1,9 +1,8 @@
 package com.rngay.service_authority.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.rngay.feign.platform.UrlDTO;
-import com.rngay.feign.platform.UserRoleDTO;
-import com.rngay.feign.platform.UserRoleUpdateDTO;
+import com.rngay.feign.authority.UserRoleDTO;
+import com.rngay.feign.authority.UserRoleUpdateDTO;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface UserRoleService extends IService<UserRoleDTO> {
      * @Author pengcheng
      * @Date 2019/4/1
      **/
-    List<UserRoleDTO> load(Integer userId);
+    List<UserRoleDTO> load(Long userId);
 
     /**
      * 插入或更新用户角色，支持更新多个角色
@@ -25,6 +24,6 @@ public interface UserRoleService extends IService<UserRoleDTO> {
 
     List<String> loadUrlByOrgId(Integer orgId);
 
-    List<String> loadUrlByUserId(Integer orgId, Integer userId);
+    List<String> loadUrlByUserId(Integer orgId, Long userId);
 
 }

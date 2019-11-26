@@ -1,24 +1,24 @@
 package com.rngay.feign.user.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import javax.persistence.Id;
 
 @TableName(value = "ua_icon")
 public class UAIconDTO {
 
-    @Id
-    private Integer id;
+    @TableId(type = IdType.ID_WORKER)
+    private Long id;
 
     private String icon;
 
     private String text;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

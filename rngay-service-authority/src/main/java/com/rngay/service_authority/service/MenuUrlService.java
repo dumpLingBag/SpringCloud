@@ -1,9 +1,9 @@
 package com.rngay.service_authority.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.rngay.feign.platform.MenuUrlDTO;
-import com.rngay.feign.platform.UpdateUrlDTO;
-import com.rngay.feign.platform.UrlDTO;
+import com.rngay.feign.authority.MenuUrlDTO;
+import com.rngay.feign.authority.UpdateUrlDTO;
+import com.rngay.feign.authority.UrlDTO;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public interface MenuUrlService extends IService<MenuUrlDTO> {
      * @Author pengcheng
      * @Date 2019/3/30
      **/
-    List<MenuUrlDTO> loadUrl(Integer id);
+    List<MenuUrlDTO> loadUrl(Long id);
 
     /**
      * 根据 menuId 插入或更新所选菜单的 url 地址

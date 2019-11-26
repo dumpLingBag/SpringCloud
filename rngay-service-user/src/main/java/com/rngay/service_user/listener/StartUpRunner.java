@@ -25,6 +25,7 @@ public class StartUpRunner implements CommandLineRunner {
             userDTO.setUsername("admin");
             userDTO.setEnable(1);
             userDTO.setNickname("超级管理员");
+            userDTO.setParentId(0L);
             userDTO.setPassword(BCrypt.hashpw(CryptUtil.MD5encrypt("123456"), BCrypt.gensalt(12)));
             userDTO.setCreateTime(new Date());
             userDTO.setUpdateTime(new Date());

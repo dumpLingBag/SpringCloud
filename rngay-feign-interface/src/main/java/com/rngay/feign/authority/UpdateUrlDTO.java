@@ -1,4 +1,4 @@
-package com.rngay.feign.platform;
+package com.rngay.feign.authority;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
@@ -13,7 +13,7 @@ public class UpdateUrlDTO extends CommonDTO {
     @Size(min = 1, message = "至少选择一个URL")
     private List<MenuUrlDTO> menuUrl;
     @NotNull(message = "菜单ID为空")
-    private Integer menuId;
+    private Long menuId;
 
     public List<MenuUrlDTO> getMenuUrl() {
         return menuUrl;
@@ -23,11 +23,11 @@ public class UpdateUrlDTO extends CommonDTO {
         this.menuUrl = menuUrl;
     }
 
-    public Integer getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Integer menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 }

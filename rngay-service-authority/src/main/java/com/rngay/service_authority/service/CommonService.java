@@ -1,7 +1,7 @@
 package com.rngay.service_authority.service;
 
-import com.rngay.feign.platform.CommonUrlDTO;
-import com.rngay.feign.platform.UrlDTO;
+import com.rngay.feign.authority.CommonUrlDTO;
+import com.rngay.feign.authority.UrlDTO;
 
 import java.util.List;
 

@@ -9,9 +9,9 @@ public class UADepartmentUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
-    private Integer departmentId;
-    private Integer userId;
+    private Long id;
+    private Long departmentId;
+    private Long userId;
     @Column(columnDefinition = "int default 1")
     private Integer checked;
     /**
@@ -20,35 +20,43 @@ public class UADepartmentUser implements Serializable {
     @Column(columnDefinition = "int default 0")
     private Integer isManager = 0;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+
+    public void setId(Long id) {
         this.id = id;
     }
-    public Integer getDepartmentId() {
+
+    public Long getDepartmentId() {
         return departmentId;
     }
-    public void setDepartmentId(Integer departmentId) {
+
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
-    public Integer getUserId() {
+
+    public Long getUserId() {
         return userId;
     }
-    public void setUserId(Integer userId) {
+
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
-	public Integer getChecked() {
+
+    public Integer getChecked() {
         return checked;
     }
+
     public void setChecked(Integer checked) {
         this.checked = checked;
     }
+
     public Integer getIsManager() {
         return isManager;
     }
+
     public void setIsManager(Integer isManager) {
         this.isManager = isManager;
     }
-
 }

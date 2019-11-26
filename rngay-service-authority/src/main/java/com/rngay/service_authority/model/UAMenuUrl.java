@@ -9,23 +9,27 @@ public class UAMenuUrl implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Integer id;
-	private Integer menuId;
+	private Long id;
+	private Long menuId;
 	private String urlId;
 	private Integer checked;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public Integer getMenuId() {
+
+	public Long getMenuId() {
 		return menuId;
 	}
-	public void setMenuId(Integer menuId) {
+
+	public void setMenuId(Long menuId) {
 		this.menuId = menuId;
 	}
+
 	public String getUrlId() {
 		return urlId;
 	}

@@ -44,9 +44,9 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
                 throw new BaseException(401, "登录失效");
             }
 
-            int userId;
+            long userId;
             try {
-                userId = Integer.parseInt(jwtUtil.getSubject(token));
+                userId = Long.parseLong(jwtUtil.getSubject(token));
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new BaseException(500, e.getLocalizedMessage());

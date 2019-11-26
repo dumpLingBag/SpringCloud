@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public UAUserDTO findUserById(Integer id) {
+    public UAUserDTO findUserById(Long id) {
         return userDao.selectById(id);
     }
 
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int reset(Integer id) {
+    public int reset(Long id) {
         UAUserDTO userDTO = new UAUserDTO();
         userDTO.setId(id);
         userDTO.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt(12)));
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int enable(Integer id, Integer enable) {
+    public int enable(Long id, Integer enable) {
         UAUserDTO userDTO = new UAUserDTO();
         userDTO.setId(id);
         userDTO.setEnable(enable);
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int delete(Integer id) {
+    public int delete(Long id) {
         return userDao.deleteById(id);
     }
 

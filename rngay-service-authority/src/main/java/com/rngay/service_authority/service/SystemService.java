@@ -1,7 +1,6 @@
 package com.rngay.service_authority.service;
 
-import com.rngay.feign.platform.MenuDTO;
-import com.rngay.feign.platform.UrlDTO;
+import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,14 +36,14 @@ public interface SystemService {
      * @Author: pengcheng
      * @Date: 2018/12/15
      */
-    int deleteToken(HttpServletRequest request, Integer userId);
+    int deleteToken(HttpServletRequest request, Long userId);
 
     /**
      * 从数据库查询指定用户的有效 token
      * @Author: pengcheng
      * @Date: 2018/12/15
      */
-    String findToken(Integer userId, Date date);
+    String findToken(Long userId, Date date);
 
     /**
      * 获取当前登录用户
@@ -65,7 +64,7 @@ public interface SystemService {
      * @Author: pengcheng
      * @Date: 2018/12/19
      */
-    Integer getCurrentUserId(HttpServletRequest request);
+    Long getCurrentUserId(HttpServletRequest request);
 
     /**
      * 获取当前登录用户的 orgId
