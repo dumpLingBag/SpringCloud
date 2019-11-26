@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -34,7 +34,7 @@ public class StartUpRunner implements CommandLineRunner {
         UrlDao urlDao = ContextAware.getService(UrlDao.class);
         UrlService urlService = ContextAware.getService(UrlService.class);
         ApplicationContext context = ContextAware.getContext();
-        Map<String, Object> controllers = context.getBeansWithAnnotation(Controller.class);
+        Map<String, Object> controllers = context.getBeansWithAnnotation(RestController.class);
         if (!controllers.isEmpty()) {
             List<UrlDTO> urlList = new ArrayList<>();
             for (Map.Entry<String, Object> key : controllers.entrySet()) {
