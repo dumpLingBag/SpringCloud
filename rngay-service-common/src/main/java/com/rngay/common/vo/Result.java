@@ -57,24 +57,8 @@ public class Result<T> implements Serializable {
         return new Result<>(code, msg);
     }
 
-    public static <T> Result<T> fail(T data, String msg) {
-        return new Result<>(CODE_FAIL, data, msg);
-    }
-
-    public static <T> Result<T> fail(T data) {
-        return new Result<>(CODE_FAIL, data, null);
-    }
-
     public static <T> Result<T> failMsg(String msg) {
         return new Result<>(CODE_FAIL_MSG, msg);
-    }
-
-    public static <T> Result<T> failMsg(T data) {
-        return new Result<>(CODE_FAIL_MSG, data, null);
-    }
-
-    public static <T> Result<T> failMsg(T data, String msg) {
-        return new Result<>(CODE_FAIL_MSG, data, msg);
     }
 
     public static <T> Result<T> success(int code, String msg) {

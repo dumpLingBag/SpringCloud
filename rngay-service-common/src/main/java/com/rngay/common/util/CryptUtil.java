@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class CryptUtil {
 
-    public static String SPKEY = "jiaozibao";
+    public static String SP_KEY = "jiaozibao";
 
     private byte[] md5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
