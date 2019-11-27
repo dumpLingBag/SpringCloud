@@ -1,5 +1,6 @@
 package com.rngay.common.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.netflix.client.ClientException;
 import com.rngay.common.exception.BaseException;
 import com.rngay.common.vo.Result;
@@ -48,7 +49,7 @@ public class RestExceptionHandler implements ErrorController {
             MethodArgumentNotValidException ex = (MethodArgumentNotValidException) e;
             List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
             fieldErrors.forEach(error -> errMsg.put(error.getField(), error.getDefaultMessage()));
-            return Result.fail(errMsg);
+            return Result.fail(JSONObject.toJSONString(errMsg));
         }
         if (exceptionMsg) e.printStackTrace();
 

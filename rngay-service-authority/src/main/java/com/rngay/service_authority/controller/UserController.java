@@ -1,7 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.rngay.common.util.BuilderUtil;
+import com.rngay.common.util.ResMsg;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "user", name = "用户管理")
@@ -28,17 +26,16 @@ public class UserController {
 
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
     public Result<?> save(@Valid @RequestBody UAUserDTO saveUserDTO) {
-        Map<String, String> msg = new HashMap<>();
         Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getUsername());
         if (byAccount.getData() != null) {
-            msg.put("username", "此账号名称已经存在");
+            ResMsg.builder("username", "此账号名称已经存在");
         }
         Result<UAUserDTO> byMobile = pfUserService.findByMobile(saveUserDTO.getMobile());
         if (byMobile.getData() != null) {
-            msg.put("mobile", "此手机号码已经存在");
+            ResMsg.builder("mobile", "此手机号码已经存在");
         }
-        if (!msg.isEmpty()) {
-            return Result.fail(msg);
+        if (!ResMsg.getLength()) {
+            return Result.fail(ResMsg.getBuilder());
         }
         saveUserDTO.setParentId(systemService.getCurrentUserId(request));
         return pfUserService.save(saveUserDTO);
@@ -59,17 +56,17 @@ public class UserController {
             if (!user.getUsername().equals(updateUserDTO.getUsername())) {
                 Result<UAUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getUsername());
                 if (byAccount.getData() != null) {
-                    BuilderUtil.builder("username", "此账号名称已经存在");
+                    ResMsg.builder("username", "此账号名称已经存在");
                 }
             }
             if (!user.getMobile().equals(updateUserDTO.getMobile())) {
                 Result<UAUserDTO> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
                 if (byMobile.getData() != null) {
-                    BuilderUtil.builder("mobile", "此手机号码已经存在");
+                    ResMsg.builder("mobile", "此手机号码已经存在");
                 }
             }
-            if (BuilderUtil.getLength()) {
-                return Result.fail(BuilderUtil.getBuilder());
+            if (ResMsg.getLength()) {
+                return Result.fail(ResMsg.getBuilder());
             }
         } else {
             return Result.failMsg("不存在该用户");
@@ -80,7 +77,7 @@ public class UserController {
     @RequestMapping(value = "reset/{id}", method = RequestMethod.GET, name = "重置密码")
     public Result<Integer> reset(@PathVariable Long id) {
         if (id == null) {
-            return Result.failMsg("重置失败");
+            return Result.failMsg("密码重置失败");
         }
         return pfUserService.reset(id);
     }
@@ -88,8 +85,8 @@ public class UserController {
     @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.GET, name = "启用禁用")
     public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
         UAUserDTO currentUser = systemService.getCurrentUser(request);
-        if (currentUser.getUsername().equals("admin") && currentUser.getId().equals(id)) {
-            return Result.failMsg("禁止禁用管理员");
+        if (currentUser.getParentId() == 0 && currentUser.getId().equals(id)) {
+            return Result.failMsg("禁止修改超级用户状态");
         }
         if (id != null && enable != null) {
             return pfUserService.enable(id, enable);

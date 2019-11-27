@@ -69,12 +69,14 @@ public class OperatorInterceptor extends HandlerInterceptorAdapter {
             if (currentUser == null) {
                 throw new BaseException(401, "请重新登录");
             }
-            if (currentUser.getEnable().equals(1)) {
-                if (!isAuthorized(request)) {
-                    throw new BaseException(403, "访问受限");
+            if (currentUser.getParentId() != 0) {
+                if (currentUser.getEnable().equals(1)) {
+                    if (!isAuthorized(request)) {
+                        throw new BaseException(403, "访问受限");
+                    }
+                } else {
+                    throw new BaseException(401, "账号被禁用");
                 }
-            } else {
-                throw new BaseException(401, "账号被禁用");
             }
         }
         return true;
