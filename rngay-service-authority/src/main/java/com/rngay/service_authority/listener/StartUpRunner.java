@@ -120,6 +120,7 @@ public class StartUpRunner implements CommandLineRunner {
                 MenuDTO systemManage = new MenuDTO();
                 systemManage.setName("系统管理");
                 systemManage.setIcon("iconfont icon-bug");
+                systemManage.setPath("0");
                 systemManage.setSort(0);
                 systemManage.setPid(0L);
                 int id = menuDao.insert(systemManage);
