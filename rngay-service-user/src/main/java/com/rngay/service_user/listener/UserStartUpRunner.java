@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class StartUpRunner implements CommandLineRunner {
+public class UserStartUpRunner implements CommandLineRunner {
 
     @Autowired
     private UserDao userDao;

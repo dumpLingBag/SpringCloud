@@ -1,8 +1,5 @@
 package com.rngay.feign.authority;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
-import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -16,7 +13,6 @@ import java.util.List;
 public class MenuDTO extends CommonDTO {
 
     @TableId(type = IdType.ID_WORKER)
-    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long id;
 
     private String name;
@@ -33,7 +29,6 @@ public class MenuDTO extends CommonDTO {
 
     private Integer sort = 0;
 
-    @JSONField(serializeUsing = ToStringSerializer.class)
     private Long pid = 0L;
 
     @TableField(exist = false)

@@ -10,8 +10,6 @@ eureka:
       defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9009/eureka/
 
 spring:
-  profiles:
-    include: feign-prod
   security:
     user:
       name: admin

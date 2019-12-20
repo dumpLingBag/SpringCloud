@@ -12,8 +12,6 @@ eureka:
 spring:
   jpa:
     show-sql: true
-#  profiles:
-#    include: feign-dev
   security:
     user:
       name: admin
@@ -32,9 +30,38 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: 1ms
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: authority
+          uri: lb://service-authority
+          predicates:
+            - Path=/authority/**
+          filters:
+            - StripPrefix=1
+            - name: Hystrix
+              args:
+                name: authorityHystrix
+                fallbackUri: 'forward:/defaultFallback'
+        - id: user
+          uri: lb://service-user
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+            - name: Hystrix
+              args:
+                name: userHystrix
+                fallbackUri: 'forward:/defaultFallback'
 
-platform:
-  clearUrlOnRestart: false
+hystrix:
+  shareSecurityContext: true
+  metrics:
+    enabled: true
+    polling-interval-ms: 3000 # 设置默认超时时间为3s
 
 mybatis-plus:
   configuration:

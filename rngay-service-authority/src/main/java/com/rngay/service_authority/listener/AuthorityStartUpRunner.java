@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 @Component
-public class StartUpRunner implements CommandLineRunner {
+public class AuthorityStartUpRunner implements CommandLineRunner {
 
     @Value(value = "${platform.clearUrlOnRestart}")
     private Boolean clearUrlOnRestart;

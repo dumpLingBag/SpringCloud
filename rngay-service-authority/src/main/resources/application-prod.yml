@@ -12,8 +12,6 @@ eureka:
 spring:
   jpa:
     show-sql: true
-  profiles:
-    include: feign-prod
   security:
     user:
       name: admin
@@ -32,6 +30,3 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: 1ms
-
-platform:
-  clearUrlOnRestart: false
