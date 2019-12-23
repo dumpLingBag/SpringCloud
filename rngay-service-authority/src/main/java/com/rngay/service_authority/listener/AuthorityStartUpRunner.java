@@ -2,12 +2,12 @@ package com.rngay.service_authority.listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.util.AuthorityUtil;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.UrlDTO;
 import com.rngay.service_authority.dao.MenuDao;
 import com.rngay.service_authority.dao.UrlDao;
 import com.rngay.service_authority.service.UrlService;
-import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.ContextAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

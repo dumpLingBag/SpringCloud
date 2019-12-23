@@ -1,13 +1,13 @@
 package com.rngay.service_authority.controller;
 
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.util.IPUtil;
+import com.rngay.common.util.JwtUtil;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.common.vo.Result;
-import com.rngay.service_authority.contants.RedisKeys;
 import com.rngay.service_authority.service.SystemService;
-import com.rngay.service_authority.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.rngay.config;
+package com.rngay.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

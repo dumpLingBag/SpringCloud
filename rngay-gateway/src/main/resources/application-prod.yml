@@ -42,11 +42,21 @@ spring:
           uri: lb://service-authority
           predicates:
             - Path=/authority/**
+            - Authorize=true
           filters:
             - StripPrefix=1
+            - name: Hystrix
+                args:
+                  name: authorityHystrix
+                  fallbackUri: 'forward:/defaultFallback'
         - id: user
           uri: lb://service-user
           predicates:
             - Path=/user/**
+            - Authorize=true
           filters:
             - StripPrefix=1
+            - name: Hystrix
+                args:
+                  name: authorityHystrix
+                  fallbackUri: 'forward:/defaultFallback'

@@ -12,7 +12,7 @@
 
     <parent>
         <groupId>com.rngay</groupId>
-        <artifactId>parent-service</artifactId>
+        <artifactId>parent-common</artifactId>
         <version>1.0.0</version>
     </parent>
 
@@ -21,6 +21,21 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.rngay</groupId>
+            <artifactId>service-common</artifactId>
+            <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-redis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
@@ -40,13 +55,15 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.rngay</groupId>
+            <artifactId>service-common-jpa</artifactId>
+            <version>1.0.0</version>
         </dependency>
+
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.1.0</version>
+            <groupId>com.rngay</groupId>
+            <artifactId>feign-interface</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

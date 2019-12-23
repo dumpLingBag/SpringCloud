@@ -42,6 +42,7 @@ spring:
             - Path=/authority/**
           filters:
             - StripPrefix=1
+            - Authorize=true
             - name: Hystrix
               args:
                 name: authorityHystrix
@@ -52,6 +53,7 @@ spring:
             - Path=/user/**
           filters:
             - StripPrefix=1
+            - Authorize=true
             - name: Hystrix
               args:
                 name: userHystrix
@@ -61,7 +63,7 @@ hystrix:
   shareSecurityContext: true
   metrics:
     enabled: true
-    polling-interval-ms: 3000 # 设置默认超时时间为3s
+    polling-interval-ms: 5000 # 设置默认超时时间为5s
 
 mybatis-plus:
   configuration:

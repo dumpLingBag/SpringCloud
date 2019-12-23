@@ -1,4 +1,4 @@
-package com.rngay.contants;
+package com.rngay.common.contants;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,9 +12,11 @@ public class RedisKeys {
     public static String getTokenKey(Object key) {
         return String.format(active + ":token:%s", key);
     }
+
     public static String getFailCount(Object key) {
         return String.format(active + ":failCount:%s", key);
     }
+
     public static String getUserKey(Object key) {
         return String.format(active + ":user:%s", key);
     }
