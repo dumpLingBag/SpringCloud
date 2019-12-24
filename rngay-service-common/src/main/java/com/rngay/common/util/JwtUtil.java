@@ -1,17 +1,22 @@
-package com.rngay.service_authority.util;
+package com.rngay.common.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@ConfigurationProperties(prefix = "jwt")
 @Component
+@ConfigurationProperties(prefix = "jwt-config")
+@PropertySource(value = {
+        "classpath:jwt-${spring.profiles.active}.properties"
+}, ignoreResourceNotFound = true)
 public class JwtUtil {
 
     private Logger logger = LoggerFactory.getLogger(JwtUtil.class);

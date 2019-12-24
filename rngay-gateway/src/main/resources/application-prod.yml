@@ -7,7 +7,7 @@ eureka:
     lease-expiration-duration-in-seconds: 2
   client:
     serviceUrl:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9009/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@47.98.232.27:9009/eureka/
 
 spring:
   jpa:
@@ -32,6 +32,31 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: 1ms
-
-platform:
-  clearUrlOnRestart: false
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: authority
+          uri: lb://service-authority
+          predicates:
+            - Path=/authority/**
+            - Authorize=true
+          filters:
+            - StripPrefix=1
+            - name: Hystrix
+                args:
+                  name: authorityHystrix
+                  fallbackUri: 'forward:/defaultFallback'
+        - id: user
+          uri: lb://service-user
+          predicates:
+            - Path=/user/**
+            - Authorize=true
+          filters:
+            - StripPrefix=1
+            - name: Hystrix
+                args:
+                  name: authorityHystrix
+                  fallbackUri: 'forward:/defaultFallback'

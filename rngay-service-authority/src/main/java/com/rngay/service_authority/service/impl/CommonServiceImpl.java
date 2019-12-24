@@ -3,11 +3,11 @@ package com.rngay.service_authority.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.util.AuthorityUtil;
 import com.rngay.feign.authority.CommonUrlDTO;
 import com.rngay.feign.authority.UrlDTO;
 import com.rngay.service_authority.dao.UrlDao;
 import com.rngay.service_authority.service.CommonService;
-import com.rngay.service_authority.util.AuthorityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

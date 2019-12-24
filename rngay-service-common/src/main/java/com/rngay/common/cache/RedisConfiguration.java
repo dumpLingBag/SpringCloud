@@ -35,9 +35,7 @@ import java.util.Iterator;
 @EnableConfigurationProperties(RedisProperties.class)
 @EnableCaching
 @PropertySource(value = {
-        "classpath:redis-${spring.profiles.active}.properties",
-        "file:redis-${spring.profiles.active}.properties",
-        "file:config/redis-${spring.profiles.active}.properties"
+        "classpath:redis-${spring.profiles.active}.properties"
 }, ignoreResourceNotFound = true)
 public class RedisConfiguration extends CachingConfigurerSupport {
     private Duration timeToLive = Duration.ZERO;

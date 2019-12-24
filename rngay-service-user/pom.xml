@@ -40,11 +40,6 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.rngay</groupId>
             <artifactId>service-common-jpa</artifactId>
             <version>1.0.0</version>

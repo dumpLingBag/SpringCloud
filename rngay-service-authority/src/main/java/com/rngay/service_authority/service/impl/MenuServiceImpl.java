@@ -33,13 +33,13 @@ public class MenuServiceImpl implements MenuService {
         if (uaMenu.getComponent() != null && !uaMenu.getComponent().equals("")) {
             MenuDTO menu = menuDao.selectById(uaMenu.getPid());
             if (menu != null) {
-                if (menu.getPid() == 0) {
+                if (menu.getComponent() != null) {
                     if (menu.getComponent() != null) {
-                        menu.setComponent(null);
+                        menu.setPath("0");
+                        menu.setComponent("");
+                        menu.setIcon("iconfont icon-xingzhuang-tuoyuanxing");
                         menuDao.updateById(menu);
                     }
-                } else {
-                    return null;
                 }
             }
         }
@@ -76,7 +76,7 @@ public class MenuServiceImpl implements MenuService {
             menuDao.deleteBatchIds(menuIdList.getMenuIdList());
             return menuIdList.getMenuIdList().size();
         }
-        MenuDTO menu = menuDao.selectById(new QueryWrapper<MenuDTO>().eq("menu_id", menuIdList.getMenuIdList().get(0)));
+        MenuDTO menu = menuDao.selectById(menuIdList.getMenuIdList().get(0));
         if (menu != null) {
             menuUrlDao.delete(new QueryWrapper<MenuUrlDTO>().eq("menu_id", menu.getId()));
             roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().eq("menu_id", menu.getId()));

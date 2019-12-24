@@ -1,17 +1,10 @@
-package com.rngay.service_authority.util;
+package com.rngay.common.util;
 
-import com.rngay.common.cache.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Component
 public class AuthorityUtil {
-
-    @Autowired
-    private RedisUtil redisUtil;
 
     public static final String AUTHORITY_USER_ID = "authority_user_id";
     public static final String AUTHORITY_USER = "authority_user";

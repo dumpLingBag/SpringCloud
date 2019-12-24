@@ -1,7 +1,5 @@
 package com.rngay.common.util;
 
-import com.alibaba.fastjson.JSONObject;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ public class ResMsg {
     }
 
     public static String getBuilder() {
-        return JSONObject.toJSONString(map);
+        return GsonUtil.GsonString(map);
     }
 
     public static boolean getLength() {

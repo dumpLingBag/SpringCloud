@@ -2,17 +2,17 @@ package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.contants.RedisKeys;
+import com.rngay.common.util.AuthorityUtil;
+import com.rngay.common.util.JwtUtil;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.UserTokenDTO;
 import com.rngay.feign.authority.vo.MetaVo;
 import com.rngay.feign.user.dto.UAUserDTO;
-import com.rngay.service_authority.contants.RedisKeys;
 import com.rngay.service_authority.dao.UserTokenDao;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.SystemService;
 import com.rngay.service_authority.service.UserRoleService;
-import com.rngay.service_authority.util.AuthorityUtil;
-import com.rngay.service_authority.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,10 +85,7 @@ public class SystemServiceImpl implements SystemService {
         Date expireTime = jwtUtil.getExpiration(token);
         userToken.setExpireTime(expireTime);
 
-        String key = request.getServerName() + "_" + userId;
-        System.out.println("--->tokenKey:" + key);
-
-        redisUtil.set(RedisKeys.getUserKey(key), userDTO);
+        redisUtil.set(RedisKeys.getUserKey(userId), userDTO);
 
         int user_id = userTokenDao.update(userToken, new QueryWrapper<UserTokenDTO>().eq("user_id", userId));
         if (user_id > 0) {

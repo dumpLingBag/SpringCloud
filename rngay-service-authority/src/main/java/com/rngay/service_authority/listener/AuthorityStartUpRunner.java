@@ -2,12 +2,12 @@ package com.rngay.service_authority.listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.util.AuthorityUtil;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.UrlDTO;
 import com.rngay.service_authority.dao.MenuDao;
 import com.rngay.service_authority.dao.UrlDao;
 import com.rngay.service_authority.service.UrlService;
-import com.rngay.service_authority.util.AuthorityUtil;
 import com.rngay.service_authority.util.ContextAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 @Component
-public class StartUpRunner implements CommandLineRunner {
+public class AuthorityStartUpRunner implements CommandLineRunner {
 
     @Value(value = "${platform.clearUrlOnRestart}")
     private Boolean clearUrlOnRestart;
@@ -120,6 +120,7 @@ public class StartUpRunner implements CommandLineRunner {
                 MenuDTO systemManage = new MenuDTO();
                 systemManage.setName("系统管理");
                 systemManage.setIcon("iconfont icon-bug");
+                systemManage.setPath("0");
                 systemManage.setSort(0);
                 systemManage.setPid(0L);
                 int id = menuDao.insert(systemManage);

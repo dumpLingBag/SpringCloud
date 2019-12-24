@@ -1,8 +1,8 @@
 package com.rngay.common.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.netflix.client.ClientException;
 import com.rngay.common.exception.BaseException;
+import com.rngay.common.util.GsonUtil;
 import com.rngay.common.vo.Result;
 import feign.RetryableException;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +27,6 @@ public class RestExceptionHandler implements ErrorController {
 
     @Value(value = "${spring.profiles.active}")
     public String profilesActive;
-    @Value(value = "${exception.msg}")
-    public Boolean exceptionMsg;
 
     //运行时异常
     @ExceptionHandler(Exception.class)
@@ -49,9 +47,8 @@ public class RestExceptionHandler implements ErrorController {
             MethodArgumentNotValidException ex = (MethodArgumentNotValidException) e;
             List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
             fieldErrors.forEach(error -> errMsg.put(error.getField(), error.getDefaultMessage()));
-            return Result.fail(JSONObject.toJSONString(errMsg));
+            return Result.fail(GsonUtil.GsonString(errMsg));
         }
-        if (exceptionMsg) e.printStackTrace();
 
         return Result.fail(profilesActive.equals("prod") ? "服务器出小差了" : e.toString());
     }
