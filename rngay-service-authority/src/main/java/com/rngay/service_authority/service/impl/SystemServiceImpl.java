@@ -177,17 +177,24 @@ public class SystemServiceImpl implements SystemService {
         MenuDTO menuArr = new MenuDTO();
         menuArr.setId(menu.getId());
         menuArr.setName(menu.getName());
+        menuArr.setLabel(menu.getName());
         menuArr.setPid(menu.getPid());
         menuArr.setSort(menu.getSort());
         menuArr.setIcon(menu.getIcon());
         menuArr.setPath(menu.getPath());
         menuArr.setComponent(menu.getComponent());
+        menuArr.setEnabled(menu.getEnabled());
+        menuArr.setAuthority(menu.getAuthority());
+        menuArr.setMenuType(menu.getMenuType());
         MetaVo metaVo = new MetaVo();
         metaVo.setKeepAlive(menu.getKeepAlive());
         metaVo.setAuth(menu.getAuth());
         metaVo.setTitle(menu.getName());
         menuArr.setMeta(metaVo);
-        menuArr.setChildren(menuListChildren(menuList, menu));
+        List<MenuDTO> menuDTOS = menuListChildren(menuList, menu);
+        if (!menuDTOS.isEmpty()) {
+            menuArr.setChildren(menuDTOS);
+        }
         return menuArr;
     }
 }

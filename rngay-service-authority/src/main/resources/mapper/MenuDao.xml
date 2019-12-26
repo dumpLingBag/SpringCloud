@@ -10,7 +10,7 @@
 
     <select id="loadMenuByOrgId" resultType="MenuDTO">
         <foreach collection="roles" item="role" index="index" separator="union">
-            select t.id,t.name,t.icon,t.path,t.componet,t.keep_alive,t.auth,t.sort,t.pid
+            select t.*
             from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
             and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
         </foreach>
@@ -19,13 +19,13 @@
     <select id="loadMenuByOrgUserId" resultType="MenuDTO">
         select sm.* from (
         <foreach collection="roles" item="role" separator="union">
-            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid from (
+            select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
             and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
         </foreach>
         ) as pm join (
         <foreach collection="userRoles" item="userRole" index="index" separator="union">
-            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid from (
+            select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId}
             and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
         </foreach>
@@ -34,7 +34,7 @@
 
     <select id="loadMenuByUserId" resultType="MenuDTO">
         <foreach collection="roleIds" item="role" separator="union">
-            select t.id,t.name,t.icon,t.path,t.component,t.keep_alive,t.auth,t.sort,t.pid from (
+            select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
             and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
         </foreach>

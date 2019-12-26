@@ -59,11 +59,20 @@ spring:
                 name: userHystrix
                 fallbackUri: 'forward:/defaultFallback'
 
+#hystrix:
+#  shareSecurityContext: true
+#  metrics:
+#    enabled: true
+#    polling-interval-ms: 5000 # 设置默认超时时间为5s
+
 hystrix:
-  shareSecurityContext: true
-  metrics:
-    enabled: true
-    polling-interval-ms: 5000 # 设置默认超时时间为5s
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 3000
 
 mybatis-plus:
   configuration:

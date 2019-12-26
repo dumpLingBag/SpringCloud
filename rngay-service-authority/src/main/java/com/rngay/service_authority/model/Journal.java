@@ -1,13 +1,11 @@
 package com.rngay.service_authority.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@TableName(value = "journal")
+@Table(name = "journal")
 public class Journal implements Serializable {
 
     @Id

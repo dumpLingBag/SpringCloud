@@ -17,6 +17,9 @@ public class MenuDTO extends CommonDTO {
 
     private String name;
 
+    @TableField(exist = false)
+    private String label;
+
     private String icon;
 
     private String path;
@@ -30,6 +33,12 @@ public class MenuDTO extends CommonDTO {
     private Integer sort = 0;
 
     private Long pid = 0L;
+
+    private Integer enabled;
+
+    private Integer menuType;
+
+    private String authority;
 
     @TableField(exist = false)
     private MetaVo meta;
@@ -51,6 +60,14 @@ public class MenuDTO extends CommonDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getIcon() {
@@ -107,6 +124,30 @@ public class MenuDTO extends CommonDTO {
 
     public void setPid(Long pid) {
         this.pid = pid;
+    }
+
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
+
+    public Integer getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(Integer menuType) {
+        this.menuType = menuType;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 
     public MetaVo getMeta() {

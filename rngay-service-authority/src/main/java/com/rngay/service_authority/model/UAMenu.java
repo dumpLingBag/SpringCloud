@@ -27,6 +27,12 @@ public class UAMenu implements Serializable {
 
     private Long pid = 0L;
 
+    private Integer enabled;
+
+    private Integer menuType;
+
+    private String authority;
+
     public Long getId() {
         return id;
     }
@@ -98,4 +104,29 @@ public class UAMenu implements Serializable {
     public void setPid(Long pid) {
         this.pid = pid;
     }
+
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
+
+    public Integer getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(Integer menuType) {
+        this.menuType = menuType;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
 }

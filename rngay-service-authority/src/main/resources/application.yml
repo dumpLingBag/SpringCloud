@@ -19,11 +19,6 @@ spring:
 server:
   port: 9090
 
-jwt:
-  secret: f4e2e52034348f86b67cde581c0f9eb5
-  expire: 604800
-  header: token
-
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: com.rngay.feign.authority

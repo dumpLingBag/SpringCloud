@@ -55,10 +55,12 @@ public class MenuServiceImpl implements MenuService {
     public List<MenuDTO> load() {
         List<MenuDTO> list = new ArrayList<>();
         List<MenuDTO> menus = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", 0));
-        for (MenuDTO menu : menus) {
-            MenuDTO mu = new MenuDTO();
-            children(mu, menu);
-            list.add(mu);
+        if (!menus.isEmpty()) {
+            for (MenuDTO menu : menus) {
+                MenuDTO mu = new MenuDTO();
+                children(mu, menu);
+                list.add(mu);
+            }
         }
         return list;
     }
@@ -121,11 +123,13 @@ public class MenuServiceImpl implements MenuService {
     private List<MenuDTO> getChildren(Long parentId) {
         List<MenuDTO> list = new ArrayList<>();
         List<MenuDTO> children = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", parentId));
-        for (MenuDTO menu : children) {
-            if (parentId.equals(menu.getPid())) {
-                MenuDTO mu = new MenuDTO();
-                children(mu, menu);
-                list.add(mu);
+        if (!children.isEmpty()) {
+            for (MenuDTO menu : children) {
+                if (parentId.equals(menu.getPid())) {
+                    MenuDTO mu = new MenuDTO();
+                    children(mu, menu);
+                    list.add(mu);
+                }
             }
         }
         return list;
@@ -134,16 +138,23 @@ public class MenuServiceImpl implements MenuService {
     private void children(MenuDTO mu,MenuDTO menu) {
         mu.setId(menu.getId());
         mu.setName(menu.getName());
+        mu.setLabel(menu.getName());
         mu.setPid(menu.getPid());
         mu.setSort(menu.getSort());
         mu.setIcon(menu.getIcon());
         mu.setPath(menu.getPath());
         mu.setComponent(menu.getComponent());
+        mu.setEnabled(menu.getEnabled());
+        mu.setAuthority(menu.getAuthority());
+        mu.setMenuType(menu.getMenuType());
         MetaVo vo = new MetaVo();
         vo.setKeepAlive(menu.getKeepAlive());
         vo.setAuth(menu.getAuth());
         vo.setTitle(menu.getName());
         mu.setMeta(vo);
-        mu.setChildren(getChildren(menu.getId()));
+        List<MenuDTO> children = getChildren(menu.getId());
+        if (!children.isEmpty()) {
+            mu.setChildren(children);
+        }
     }
 }

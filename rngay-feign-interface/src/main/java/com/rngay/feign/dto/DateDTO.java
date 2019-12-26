@@ -1,12 +1,27 @@
-package com.rngay.common.model;
+package com.rngay.feign.dto;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
-public class DateUtil {
+public class DateDTO {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
 
     private Date createTime;
 
     private Date updateTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Date getCreateTime() {
         return createTime;

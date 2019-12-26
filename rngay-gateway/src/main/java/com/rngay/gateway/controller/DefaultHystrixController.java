@@ -9,7 +9,7 @@ public class DefaultHystrixController {
 
     @RequestMapping("/defaultFallback")
     public Result<String> defaultFallback(){
-        return Result.fail(-1, "服务异常，请稍后再试");
+        return Result.fail(-1, "服务请求超时请重试");
     }
 
 }
