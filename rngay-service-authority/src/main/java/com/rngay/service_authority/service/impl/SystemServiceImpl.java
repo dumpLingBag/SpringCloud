@@ -117,8 +117,7 @@ public class SystemServiceImpl implements SystemService {
         String token = AuthorityUtil.getRequestToken(request);
         if (token != null) {
             long userId = Long.parseLong(jwtUtil.getSubject(token));
-            String key = request.getServerName() + "_" + userId;
-            Object user = redisUtil.get(RedisKeys.getUserKey(key));
+            Object user = redisUtil.get(RedisKeys.getUserKey(userId));
             if (user == null) return null;
             return (UAUserDTO) user;
         }
@@ -128,8 +127,7 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public int updateCurrentUser(HttpServletRequest request, UAUserDTO userDTO) {
         if (userDTO != null) {
-            String key = request.getServerName() + "_" + userDTO.getId();
-            redisUtil.set(RedisKeys.getUserKey(key), userDTO);
+            redisUtil.set(RedisKeys.getUserKey(userDTO.getId()), userDTO);
             return 1;
         }
         return 0;

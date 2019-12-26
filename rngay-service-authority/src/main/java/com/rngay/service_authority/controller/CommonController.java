@@ -1,5 +1,6 @@
 package com.rngay.service_authority.controller;
 
+import com.rngay.common.annotation.PreAuthorize;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.CommonUrlDTO;
 import com.rngay.service_authority.service.CommonService;
@@ -24,6 +25,7 @@ public class CommonController {
     @Autowired
     private MenuUrlService menuUrlService;
 
+    @PreAuthorize("@ss.hasPermi('authority:common:load')")
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载权限")
     public Result<?> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
