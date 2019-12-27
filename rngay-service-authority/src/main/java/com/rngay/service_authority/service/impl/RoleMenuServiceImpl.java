@@ -8,6 +8,7 @@ import com.rngay.feign.authority.UpdateRoleMenuDTO;
 import com.rngay.service_authority.dao.RoleMenuDao;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.RoleMenuService;
+import com.rngay.service_authority.util.MenuUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,34 +61,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
     }
 
     private List<MenuDTO> menuList(List<MenuDTO> menus) {
-        List<MenuDTO> menuList = new ArrayList<>();
-        for (MenuDTO menu : menus) {
-            if (menu.getPid() == null || menu.getPid() == 0) {
-                menuList.add(arrToMenu(menus, menu));
-            }
-        }
-        menuList.sort(Comparator.comparing(MenuDTO::getPid));
-        return menuList;
+        return MenuUtil.menuList(menus, 2);
     }
 
-    private List<MenuDTO> menuListChildren(List<MenuDTO> menus, MenuDTO menu) {
-        List<MenuDTO> children = new ArrayList<>();
-        for (MenuDTO pid : menus) {
-            if (pid.getPid().equals(menu.getId())) {
-                children.add(arrToMenu(menus, pid));
-            }
-        }
-        children.sort(Comparator.comparing(MenuDTO::getPid));
-        return children;
-    }
-
-    private MenuDTO arrToMenu(List<MenuDTO> menus, MenuDTO menu) {
-        MenuDTO menuArr = new MenuDTO();
-        menuArr.setId(menu.getId());
-        menuArr.setName(menu.getName());
-        menuArr.setSort(menu.getSort());
-        menuArr.setPid(menu.getPid());
-        menuArr.setChildren(menuListChildren(menus, menu));
-        return menuArr;
-    }
 }

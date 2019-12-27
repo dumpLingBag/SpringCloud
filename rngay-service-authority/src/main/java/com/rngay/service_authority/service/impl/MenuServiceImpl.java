@@ -5,6 +5,7 @@ import com.rngay.feign.authority.*;
 import com.rngay.feign.authority.vo.MetaVo;
 import com.rngay.service_authority.dao.*;
 import com.rngay.service_authority.service.MenuService;
+import com.rngay.service_authority.util.MenuUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -136,22 +137,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private void children(MenuDTO mu,MenuDTO menu) {
-        mu.setId(menu.getId());
-        mu.setName(menu.getName());
-        mu.setLabel(menu.getName());
-        mu.setPid(menu.getPid());
-        mu.setSort(menu.getSort());
-        mu.setIcon(menu.getIcon());
-        mu.setPath(menu.getPath());
-        mu.setComponent(menu.getComponent());
-        mu.setEnabled(menu.getEnabled());
-        mu.setAuthority(menu.getAuthority());
-        mu.setMenuType(menu.getMenuType());
-        MetaVo vo = new MetaVo();
-        vo.setKeepAlive(menu.getKeepAlive());
-        vo.setAuth(menu.getAuth());
-        vo.setTitle(menu.getName());
-        mu.setMeta(vo);
+        MenuUtil.menuDto(mu, menu);
         List<MenuDTO> children = getChildren(menu.getId());
         if (!children.isEmpty()) {
             mu.setChildren(children);

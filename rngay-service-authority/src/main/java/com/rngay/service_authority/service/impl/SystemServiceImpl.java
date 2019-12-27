@@ -7,12 +7,12 @@ import com.rngay.common.util.AuthorityUtil;
 import com.rngay.common.util.JwtUtil;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.UserTokenDTO;
-import com.rngay.feign.authority.vo.MetaVo;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.service_authority.dao.UserTokenDao;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.SystemService;
 import com.rngay.service_authority.service.UserRoleService;
+import com.rngay.service_authority.util.MenuUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +50,7 @@ public class SystemServiceImpl implements SystemService {
             }
         }
         if (allMenus.isEmpty()) return null;
-        return menuList(allMenus);
+        return MenuUtil.menuList(allMenus, 1);
     }
 
     @Override
@@ -151,50 +151,4 @@ public class SystemServiceImpl implements SystemService {
         return 0;
     }
 
-    private List<MenuDTO> menuList(List<MenuDTO> menuList) {
-        List<MenuDTO> arrList = new ArrayList<>();
-        for (MenuDTO menu : menuList) {
-            if (menu.getPid() == null || menu.getPid() == 0) {
-                arrList.add(arrToMenu(menuList, menu));
-            }
-        }
-        arrList.sort(Comparator.comparing(MenuDTO::getSort));
-        return arrList;
-    }
-
-    private List<MenuDTO> menuListChildren(List<MenuDTO> menuList, MenuDTO menu) {
-        List<MenuDTO> children = new ArrayList<>();
-        for (MenuDTO pid : menuList) {
-            if (pid.getPid().equals(menu.getId())) {
-                children.add(arrToMenu(menuList, pid));
-            }
-        }
-        children.sort(Comparator.comparing(MenuDTO::getSort));
-        return children;
-    }
-
-    private MenuDTO arrToMenu(List<MenuDTO> menuList, MenuDTO menu) {
-        MenuDTO menuArr = new MenuDTO();
-        menuArr.setId(menu.getId());
-        menuArr.setName(menu.getName());
-        menuArr.setLabel(menu.getName());
-        menuArr.setPid(menu.getPid());
-        menuArr.setSort(menu.getSort());
-        menuArr.setIcon(menu.getIcon());
-        menuArr.setPath(menu.getPath());
-        menuArr.setComponent(menu.getComponent());
-        menuArr.setEnabled(menu.getEnabled());
-        menuArr.setAuthority(menu.getAuthority());
-        menuArr.setMenuType(menu.getMenuType());
-        MetaVo metaVo = new MetaVo();
-        metaVo.setKeepAlive(menu.getKeepAlive());
-        metaVo.setAuth(menu.getAuth());
-        metaVo.setTitle(menu.getName());
-        menuArr.setMeta(metaVo);
-        List<MenuDTO> menuDTOS = menuListChildren(menuList, menu);
-        if (!menuDTOS.isEmpty()) {
-            menuArr.setChildren(menuDTOS);
-        }
-        return menuArr;
-    }
 }
