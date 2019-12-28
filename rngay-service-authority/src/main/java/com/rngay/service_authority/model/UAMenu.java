@@ -2,6 +2,7 @@ package com.rngay.service_authority.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "ua_menu")
@@ -32,6 +33,10 @@ public class UAMenu implements Serializable {
     private Integer menuType;
 
     private String authority;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -129,4 +134,19 @@ public class UAMenu implements Serializable {
         this.authority = authority;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 }

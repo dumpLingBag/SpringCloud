@@ -31,16 +31,14 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Integer save(MenuDTO uaMenu) {
         // 如果添加的菜单是跳转菜单，则判断上级菜单是不是一级菜单
-        if (uaMenu.getComponent() != null && !uaMenu.getComponent().equals("")) {
-            MenuDTO menu = menuDao.selectById(uaMenu.getPid());
-            if (menu != null) {
-                if (menu.getComponent() != null) {
-                    if (menu.getComponent() != null) {
-                        menu.setPath("0");
-                        menu.setComponent("");
-                        menu.setIcon("iconfont icon-xingzhuang-tuoyuanxing");
-                        menuDao.updateById(menu);
-                    }
+        if (uaMenu.getMenuType() != null && uaMenu.getMenuType() == 1) {
+            MenuDTO menuDTO = menuDao.selectById(uaMenu.getPid());
+            if (menuDTO != null) {
+                if (menuDTO.getMenuType() == 1 && uaMenu.getMenuType() == 1) {
+                    menuDTO.setMenuType(0);
+                    menuDTO.setComponent("");
+                    menuDTO.setPath("");
+                    menuDao.updateById(menuDTO);
                 }
             }
         }
