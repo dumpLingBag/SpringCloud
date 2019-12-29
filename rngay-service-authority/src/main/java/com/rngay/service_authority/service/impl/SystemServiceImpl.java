@@ -38,7 +38,7 @@ public class SystemServiceImpl implements SystemService {
         if (userDTO == null) return null;
 
         List<MenuDTO> allMenus = new ArrayList<>();
-        if ("admin".equals(userDTO.getUsername())) {
+        if (userDTO.getParentId() != null && userDTO.getParentId() == 0) {
             List<MenuDTO> menuList = menuService.loadMenuByOrgId(userDTO.getOrgId());
             if (menuList != null && !menuList.isEmpty()) {
                 allMenus.addAll(menuList);
@@ -58,7 +58,7 @@ public class SystemServiceImpl implements SystemService {
         if (userDTO == null) return new HashSet<>();
         Set<String> urlSet = new HashSet<>();
 
-        if (userDTO.getUsername() != null && "admin".equals(userDTO.getUsername())) {
+        if (userDTO.getParentId() != null && userDTO.getParentId() == 0) {
             List<String> urlList = userRoleService.loadUrlByOrgId(userDTO.getOrgId());
             if (urlList != null && !urlList.isEmpty()) {
                 urlSet.addAll(urlList);

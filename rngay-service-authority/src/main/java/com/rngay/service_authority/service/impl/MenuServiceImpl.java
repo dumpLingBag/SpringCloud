@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -131,6 +132,7 @@ public class MenuServiceImpl implements MenuService {
                 }
             }
         }
+        list.sort(Comparator.comparing(MenuDTO::getSort));
         return list;
     }
 

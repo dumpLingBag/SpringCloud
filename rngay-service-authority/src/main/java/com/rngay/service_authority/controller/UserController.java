@@ -25,7 +25,7 @@ public class UserController {
     private HttpServletRequest request;
 
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
-    public Result<?> save(@Valid @RequestBody UAUserDTO saveUserDTO) {
+    public Result<Integer> save(@Valid @RequestBody UAUserDTO saveUserDTO) {
         Result<UAUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getUsername());
         if (byAccount.getData() != null) {
             ResMsg.builder("username", "此账号名称已经存在");
@@ -46,8 +46,8 @@ public class UserController {
         return pfUserService.pageList(pageListDTO);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST, name = "更新用户")
-    public Result<?> update(@Valid @RequestBody UAUserDTO updateUserDTO) {
+    @RequestMapping(value = "update", method = RequestMethod.PUT, name = "更新用户")
+    public Result<Integer> update(@Valid @RequestBody UAUserDTO updateUserDTO) {
         UAUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null) {
             if (user.getUsername().equals("admin") && !updateUserDTO.getUsername().equals("admin")) {
@@ -95,7 +95,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "updatePassword", method = RequestMethod.POST, name = "修改密码")
+    @RequestMapping(value = "updatePassword", method = RequestMethod.PUT, name = "修改密码")
     public Result<Integer> updatePassword(HttpServletRequest request, @RequestBody UpdatePassword password) {
         Long userId = systemService.getCurrentUserId(request);
         UAUserDTO user = pfUserService.findById(userId).getData();
@@ -122,7 +122,7 @@ public class UserController {
         return Result.failMsg("请输入旧密码");
     }
 
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET, name = "删除用户")
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE, name = "删除用户")
     public Result<Integer> delete(@PathVariable Long id) {
         UAUserDTO user = pfUserService.findById(id).getData();
         if (user != null) {

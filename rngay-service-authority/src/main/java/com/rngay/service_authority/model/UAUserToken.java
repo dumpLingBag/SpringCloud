@@ -12,15 +12,16 @@ public class UAUserToken implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    private Date createTime;
-
     private Date expireTime;
 
     private String token;
 
-    private Date updateTime;
-
     private Long userId;
+
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
+    private Date createTime;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updateTime;
 
     public Long getId() {
         return id;

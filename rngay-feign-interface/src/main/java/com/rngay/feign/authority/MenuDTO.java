@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
 import com.rngay.feign.authority.vo.MetaVo;
 
+import java.util.Date;
 import java.util.List;
 
 @TableName(value = "ua_menu")
@@ -26,11 +27,11 @@ public class MenuDTO extends CommonDTO {
 
     private String component;
 
-    private Integer keepAlive = 0;
+    private Integer keepAlive;
 
-    private Integer auth = 1;
+    private Integer auth;
 
-    private Integer sort = 0;
+    private Integer sort;
 
     private Long pid = 0L;
 
@@ -45,6 +46,10 @@ public class MenuDTO extends CommonDTO {
 
     @TableField(exist = false)
     private List<MenuDTO> children;
+
+    private Date updateTime;
+
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -164,5 +169,21 @@ public class MenuDTO extends CommonDTO {
 
     public void setChildren(List<MenuDTO> children) {
         this.children = children;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

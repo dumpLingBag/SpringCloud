@@ -2,6 +2,7 @@ package com.rngay.service_authority.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "ua_department_user")
@@ -19,6 +20,10 @@ public class UADepartmentUser implements Serializable {
      */
     @Column(columnDefinition = "int default 0")
     private Integer isManager = 0;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
+    private Date createTime;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -58,5 +63,21 @@ public class UADepartmentUser implements Serializable {
 
     public void setIsManager(Integer isManager) {
         this.isManager = isManager;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

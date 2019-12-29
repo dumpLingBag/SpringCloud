@@ -15,7 +15,10 @@ public class UserFile {
     private String originalFilename;
     private String contentType;
     private String url;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
     private Date createTime;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -71,5 +74,13 @@ public class UserFile {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

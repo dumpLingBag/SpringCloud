@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "authorityRole", name = "角色管理")
@@ -23,7 +24,7 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载角色")
-    public Result<?> load(HttpServletRequest request) {
+    public Result<List<RoleDTO>> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
             return Result.failMsg("角色查询失败");
@@ -32,7 +33,7 @@ public class RoleController {
     }
 
     @RequestMapping(value = "loadByPid", method = RequestMethod.GET, name = "获取pid为0的角色")
-    public Result<?> loadByPid(HttpServletRequest request) {
+    public Result<List<RoleDTO>> loadByPid(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null) {
             return Result.success(roleService.loadByPid(orgId));
@@ -41,7 +42,7 @@ public class RoleController {
     }
 
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "添加角色")
-    public Result<?> save(HttpServletRequest request, @RequestBody RoleDTO uaRole) {
+    public Result<Integer> save(HttpServletRequest request, @RequestBody RoleDTO uaRole) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
             return Result.failMsg("角色添加失败");
@@ -54,8 +55,8 @@ public class RoleController {
         return Result.success(role);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST, name = "修改角色")
-    public Result<?> update(@RequestBody RoleDTO uaRole) {
+    @RequestMapping(value = "update", method = RequestMethod.PUT, name = "修改角色")
+    public Result<Integer> update(@RequestBody RoleDTO uaRole) {
         Integer role = roleService.update(uaRole);
         if (role == null) {
             return Result.failMsg("角色修改失败");
@@ -63,8 +64,8 @@ public class RoleController {
         return Result.success(role);
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.POST, name = "删除角色")
-    public Result<?> delete(@RequestBody RoleIdListDTO listDTO) {
+    @RequestMapping(value = "delete", method = RequestMethod.DELETE, name = "删除角色")
+    public Result<Integer> delete(@RequestBody RoleIdListDTO listDTO) {
         if (listDTO.getRoleIdList() == null || listDTO.getRoleIdList().isEmpty()) {
             return Result.failMsg("删除角色失败");
         }

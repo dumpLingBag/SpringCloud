@@ -34,9 +34,10 @@ public class UAUser {
 
     private Long parentId;
 
-    private Date updateTime;
-
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
     private Date createTime;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updateTime;
 
     public Long getId() {
         return id;

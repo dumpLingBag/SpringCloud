@@ -2,6 +2,7 @@ package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.MenuDTO;
+import com.rngay.feign.user.dto.UAIconDTO;
 import com.rngay.feign.user.dto.UAUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.service.SystemService;
@@ -24,7 +25,7 @@ public class SystemController {
     private PFUserService userService;
 
     @RequestMapping(value = "loadForMenu", method = RequestMethod.GET, name = "加载指定用户的菜单数据")
-    public Result<?> loadForMenu(HttpServletRequest request) {
+    public Result<List<MenuDTO>> loadForMenu(HttpServletRequest request) {
         UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser == null) {
             return Result.success(null);
@@ -42,7 +43,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "loadIcon", method = RequestMethod.GET, name = "加载图标")
-    public Result<?> loadIcon() {
+    public Result<List<UAIconDTO>> loadIcon() {
         return userService.loadIcon();
     }
 

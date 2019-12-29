@@ -20,14 +20,14 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
-        PreAuthorize annotation = method.getAnnotation(PreAuthorize.class);
-        if (annotation != null) {
-            return false;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        HandlerMethod handlerMethod = (HandlerMethod) handler;
+//        Method method = handlerMethod.getMethod();
+//        PreAuthorize annotation = method.getAnnotation(PreAuthorize.class);
+//        if (annotation != null) {
+//            return false;
+//        }
+//        return true;
+//    }
 }

@@ -1,9 +1,11 @@
 package com.rngay.service_authority.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "ua_url")
@@ -15,6 +17,10 @@ public class UAUrl implements Serializable {
     private String pid;
     private Integer common;
     private String name;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
+    private Date createTime;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updateTime;
 
     public String getId() {
         return id;
@@ -56,4 +62,19 @@ public class UAUrl implements Serializable {
         this.name = name;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 }

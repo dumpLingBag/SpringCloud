@@ -50,13 +50,13 @@ public class MenuUtil {
         menuDto.setLabel(menu.getName());
         menuDto.setPid(menu.getPid());
         menuDto.setSort(menu.getSort());
+        menuDto.setIcon(menu.getIcon());
+        menuDto.setPath(menu.getPath());
+        menuDto.setComponent(menu.getComponent());
+        menuDto.setEnabled(menu.getEnabled());
+        menuDto.setAuthority(menu.getAuthority());
+        menuDto.setMenuType(menu.getMenuType());
         if (menuType == 1) {
-            menuDto.setIcon(menu.getIcon());
-            menuDto.setPath(menu.getPath());
-            menuDto.setComponent(menu.getComponent());
-            menuDto.setEnabled(menu.getEnabled());
-            menuDto.setAuthority(menu.getAuthority());
-            menuDto.setMenuType(menu.getMenuType());
             MetaVo metaVo = new MetaVo();
             metaVo.setKeepAlive(menu.getKeepAlive());
             metaVo.setAuth(menu.getAuth());

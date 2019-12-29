@@ -28,7 +28,10 @@ public class UAMember {
     @Column(columnDefinition= "int default 1")
     private Integer isDelete;
 
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
     private Date createTime;
+    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -100,5 +103,13 @@ public class UAMember {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

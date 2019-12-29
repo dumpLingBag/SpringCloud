@@ -3,6 +3,7 @@ package com.rngay.service_authority.controller;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.MenuUrlDTO;
 import com.rngay.feign.authority.UpdateUrlDTO;
+import com.rngay.feign.authority.UrlDTO;
 import com.rngay.service_authority.service.MenuUrlService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class MenuUrlController {
     private SystemService systemService;
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载所有url")
-    public Result<?> load(HttpServletRequest request) {
+    public Result<List<UrlDTO>> load(HttpServletRequest request) {
         Integer orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId.equals(0)) {
             return Result.success(urlService.load());
@@ -34,13 +35,13 @@ public class MenuUrlController {
     }
 
     @RequestMapping(value = "loadUrl", method = RequestMethod.POST, name = "加载选中的url")
-    public Result<?> loadUrl(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
+    public Result<List<MenuUrlDTO>> loadUrl(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
         List<MenuUrlDTO> menuUrls = urlService.loadUrl(updateUrlDTO.getMenuId());
         return Result.success(menuUrls);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST, name = "修改选中url")
-    public Result<?> update(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
+    @RequestMapping(value = "update", method = RequestMethod.PUT, name = "修改选中url")
+    public Result<Integer> update(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
         return Result.success(urlService.update(updateUrlDTO));
     }
 

@@ -1,14 +1,15 @@
 package com.rngay.feign.dto;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
+@JsonIgnoreProperties({ "createTime", "updateTime" })
 public class DateDTO {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @TableId(type = IdType.ID_WORKER)
     private Long id;
 
     private Date createTime;
@@ -28,7 +29,11 @@ public class DateDTO {
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        if (this.id != null) {
+            this.createTime = createTime;
+        } else {
+            this.createTime = new Date();
+        }
     }
 
     public Date getUpdateTime() {
@@ -36,6 +41,10 @@ public class DateDTO {
     }
 
     public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+        if (updateTime == null) {
+            this.updateTime = new Date();
+        } else {
+            this.updateTime = updateTime;
+        }
     }
 }

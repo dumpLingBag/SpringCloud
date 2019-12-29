@@ -17,9 +17,10 @@ public class UADepartment implements Serializable {
 	@Column(columnDefinition="int default 0")
 	private Long pid;
 	private Long sort;
-	
-	private Date createTime = new Date();
-	private Date updateTime = new Date();
+	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
+	private Date createTime;
+	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private Date updateTime;
 
 	public Long getId() {
 		return id;
