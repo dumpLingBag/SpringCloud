@@ -17,7 +17,7 @@ public class PlatformUserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "find", method = RequestMethod.POST)
+    @RequestMapping(value = "find", method = RequestMethod.GET)
     public Result<UAUserDTO> find(@RequestParam("username") String account, @RequestParam("password") String password) {
         return Result.success(userService.findUser(account, password));
     }
@@ -45,7 +45,7 @@ public class PlatformUserController {
         return Result.success(userService.insertUser(saveUserDTO));
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.PUT)
     public Result<Integer> update(@RequestBody UAUserDTO updateUserDTO) {
         return Result.success(userService.updateUser(updateUserDTO));
     }
@@ -55,23 +55,23 @@ public class PlatformUserController {
         return Result.success(userService.pageList(pageListDTO));
     }
 
-    @RequestMapping(value = "reset/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "reset/{id}", method = RequestMethod.PUT)
     public Result<Integer> reset(@PathVariable Long id) {
         return Result.success(userService.reset(id));
     }
 
-    @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.GET)
+    @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.PUT)
     public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
         return Result.success(userService.enable(id, enable));
     }
 
-    @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "updatePassword", method = RequestMethod.PUT)
     public Result<Integer> updatePassword(@RequestBody UpdatePassword password) {
         password.setPassword(BCrypt.hashpw(password.getPassword(), BCrypt.gensalt(12)));
         return Result.success(userService.updatePassword(password));
     }
 
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     public Result<Integer> delete(@PathVariable Long id) {
         return Result.success(userService.delete(id));
     }

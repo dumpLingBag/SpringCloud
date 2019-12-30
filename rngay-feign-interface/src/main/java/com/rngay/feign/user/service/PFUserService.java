@@ -18,7 +18,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/13
      */
-    @RequestMapping(value = "/user/find", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/find", method = RequestMethod.GET)
     Result<UAUserDTO> find(@RequestParam("username") String username, @RequestParam("password") String password);
 
     /**
@@ -63,7 +63,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/28
      */
-    @RequestMapping(value = "/user/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
     Result<Integer> update(@RequestBody UAUserDTO updateUserDTO);
 
     /**
@@ -90,7 +90,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/29
      */
-    @RequestMapping(value = "/user/reset/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/reset/{id}", method = RequestMethod.PUT)
     Result<Integer> reset(@PathVariable Long id);
 
     /**
@@ -99,7 +99,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/1/7
      */
-    @RequestMapping(value = "/user/enable/{id}/{enable}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/enable/{id}/{enable}", method = RequestMethod.PUT)
     Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable);
 
     /**
@@ -108,7 +108,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/1/14
      */
-    @RequestMapping(value = "/user/updatePassword", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/updatePassword", method = RequestMethod.PUT)
     Result<Integer> updatePassword(@RequestBody UpdatePassword password);
 
     /**
@@ -117,7 +117,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/2/3
      */
-    @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.DELETE)
     Result<Integer> delete(@PathVariable Long id);
 
 }

@@ -2,6 +2,7 @@ package com.rngay.service_authority.service;
 
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.MenuIdListDTO;
+import com.rngay.feign.authority.MenuInListDTO;
 
 import java.util.List;
 
@@ -43,8 +44,25 @@ public interface MenuService {
      **/
     Integer delete(MenuIdListDTO menuIdListDTO);
 
+    /**
+     * 根据 orgId 查询菜单列表
+     * @Author: pengcheng
+     * @Date: 2019/12/30
+     */
     List<MenuDTO> loadMenuByOrgId(Integer orgId);
 
+    /**
+     * 根据 orgId 和 userId 查询菜单列表
+     * @Author: pengcheng
+     * @Date: 2019/12/30
+     */
     List<MenuDTO> loadMenuByUserId(Integer orgId, Long userId);
+
+    /**
+     * 根据菜单 id 批量或单个隐藏显示菜单
+     * @Author: pengcheng
+     * @Date: 2019/12/30
+     */
+    Integer updateInList(MenuInListDTO menuIdListDTO);
 
 }

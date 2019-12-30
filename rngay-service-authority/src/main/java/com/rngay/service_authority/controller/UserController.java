@@ -74,7 +74,7 @@ public class UserController {
         return pfUserService.update(updateUserDTO);
     }
 
-    @RequestMapping(value = "reset/{id}", method = RequestMethod.GET, name = "重置密码")
+    @RequestMapping(value = "reset/{id}", method = RequestMethod.PUT, name = "重置密码")
     public Result<Integer> reset(@PathVariable Long id) {
         if (id == null) {
             return Result.failMsg("密码重置失败");
@@ -82,7 +82,7 @@ public class UserController {
         return pfUserService.reset(id);
     }
 
-    @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.GET, name = "启用禁用")
+    @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.PUT, name = "启用禁用")
     public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
         UAUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser.getParentId() == 0 && currentUser.getId().equals(id)) {

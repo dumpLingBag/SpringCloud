@@ -12,7 +12,7 @@
         <foreach collection="roles" item="role" index="index" separator="union">
             select t.*
             from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
-            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+            and rm.menu_id = m.id and rm.checked = 1 and m.enabled = 1 group by m.id) as t
         </foreach>
     </select>
 
@@ -21,13 +21,13 @@
         <foreach collection="roles" item="role" separator="union">
             select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
-            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+            and rm.menu_id = m.id and rm.checked = 1 and m.enabled = 1 group by m.id) as t
         </foreach>
         ) as pm join (
         <foreach collection="userRoles" item="userRole" index="index" separator="union">
             select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId}
-            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+            and rm.menu_id = m.id and rm.checked = 1 and m.enabled = 1 group by m.id) as t
         </foreach>
         ) as sm on sm.id = pm.id
     </select>
@@ -36,7 +36,14 @@
         <foreach collection="roleIds" item="role" separator="union">
             select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
-            and rm.menu_id = m.id and rm.checked = 1 group by m.id) as t
+            and rm.menu_id = m.id and rm.checked = 1 and m.enabled = 1 group by m.id) as t
         </foreach>
     </select>
+
+    <update id="updateInList" parameterType="MenuInListDTO">
+        update ua_menu set enabled = #{menuList.enabled} where id in
+        <foreach collection="menuList.menuIdList" item="menuId" open="(" close=")" separator=",">
+            #{menuId}
+        </foreach>
+    </update>
 </mapper>

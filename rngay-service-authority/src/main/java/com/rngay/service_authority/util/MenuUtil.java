@@ -56,6 +56,8 @@ public class MenuUtil {
         menuDto.setEnabled(menu.getEnabled());
         menuDto.setAuthority(menu.getAuthority());
         menuDto.setMenuType(menu.getMenuType());
+        menuDto.setCreateTime(menu.getCreateTime());
+        menuDto.setUpdateTime(menu.getUpdateTime());
         if (menuType == 1) {
             MetaVo metaVo = new MetaVo();
             metaVo.setKeepAlive(menu.getKeepAlive());

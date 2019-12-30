@@ -3,13 +3,11 @@ package com.rngay.service_authority.controller;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.MenuIdListDTO;
+import com.rngay.feign.authority.MenuInListDTO;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -65,6 +63,14 @@ public class MenuController {
             return Result.failMsg("删除菜单失败");
         }
         return Result.success(menuService.delete(menuIdList));
+    }
+
+    @RequestMapping(value = "updateInList", method = RequestMethod.PUT, name = "显示隐藏")
+    public Result<Integer> update(@RequestBody MenuInListDTO menuIdList) {
+        if (menuIdList == null || menuIdList.getMenuIdList().isEmpty()) {
+            return Result.failMsg("更改状态失败");
+        }
+        return Result.success(menuService.updateInList(menuIdList));
     }
 
 }

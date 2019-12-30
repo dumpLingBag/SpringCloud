@@ -104,7 +104,7 @@ public class MenuServiceImpl implements MenuService {
             }
             return menuDao.loadMenuByOrgId(roles);
         }
-        return menuDao.selectList(new QueryWrapper<MenuDTO>().orderByAsc("pid").orderByAsc("sort"));
+        return menuDao.selectList(new QueryWrapper<MenuDTO>().eq("enabled", 1).orderByAsc("pid").orderByAsc("sort"));
     }
 
     @Override
@@ -118,6 +118,11 @@ public class MenuServiceImpl implements MenuService {
             return menuDao.loadMenuByOrgUserId(orgRoles, roleIds);
         }
         return menuDao.loadMenuByUserId(roleIds);
+    }
+
+    @Override
+    public Integer updateInList(MenuInListDTO menuIdListDTO) {
+        return menuDao.updateInList(menuIdListDTO);
     }
 
     private List<MenuDTO> getChildren(Long parentId) {
