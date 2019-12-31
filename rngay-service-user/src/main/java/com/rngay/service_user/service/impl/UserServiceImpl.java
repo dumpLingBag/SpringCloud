@@ -2,8 +2,8 @@ package com.rngay.service_user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.rngay.feign.user.dto.UAUserDTO;
-import com.rngay.feign.user.dto.UAUserPageListDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
+import com.rngay.feign.user.dto.UaUserPageListDTO;
 import com.rngay.feign.user.dto.UpdatePassword;
 import com.rngay.service_user.dao.UserDao;
 import com.rngay.service_user.service.UserService;
@@ -18,46 +18,46 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public UAUserDTO findUserById(Long id) {
-        return userDao.selectById(id);
+    public UaUserDTO findUserById(Long id) {
+        return userDao.selectOne(new QueryWrapper<UaUserDTO>().eq("id", id).eq("del_flag", 1));
     }
 
     @Override
-    public UAUserDTO findUser(String username, String password) {
-        QueryWrapper<UAUserDTO> wrapper = new QueryWrapper<>();
-        wrapper.eq("username", username).eq("password", password);
+    public UaUserDTO findUser(String username, String password) {
+        QueryWrapper<UaUserDTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", username).eq("password", password).eq("del_flag", 1);
         return userDao.selectOne(wrapper);
     }
 
     @Override
-    public UAUserDTO findByAccount(String username) {
-        return userDao.selectOne(new QueryWrapper<UAUserDTO>().eq("username", username));
+    public UaUserDTO findByAccount(String username) {
+        return userDao.selectOne(new QueryWrapper<UaUserDTO>().eq("username", username).eq("del_flag", 1));
     }
 
     @Override
-    public UAUserDTO findByMobile(String mobile) {
-        return userDao.selectOne(new QueryWrapper<UAUserDTO>().eq("mobile", mobile));
+    public UaUserDTO findByMobile(String mobile) {
+        return userDao.selectOne(new QueryWrapper<UaUserDTO>().eq("mobile", mobile).eq("del_flag", 1));
     }
 
     @Override
-    public int insertUser(UAUserDTO userDTO) {
+    public int insertUser(UaUserDTO userDTO) {
         return userDao.insert(userDTO);
     }
 
     @Override
-    public int updateUser(UAUserDTO userDTO) {
+    public int updateUser(UaUserDTO userDTO) {
         return userDao.updateById(userDTO);
     }
 
     @Override
-    public Page<UAUserDTO> pageList(UAUserPageListDTO pageListDTO) {
-        Page<UAUserDTO> page = new Page<>(pageListDTO.getCurrentPage(), pageListDTO.getPageSize());
+    public Page<UaUserDTO> pageList(UaUserPageListDTO pageListDTO) {
+        Page<UaUserDTO> page = new Page<>(pageListDTO.getCurrentPage(), pageListDTO.getPageSize());
         return userDao.pageList(page, pageListDTO);
     }
 
     @Override
     public int reset(Long id) {
-        UAUserDTO userDTO = new UAUserDTO();
+        UaUserDTO userDTO = new UaUserDTO();
         userDTO.setId(id);
         userDTO.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt(12)));
         return userDao.updateById(userDTO);
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int enable(Long id, Integer enable) {
-        UAUserDTO userDTO = new UAUserDTO();
+        UaUserDTO userDTO = new UaUserDTO();
         userDTO.setId(id);
         userDTO.setEnable(enable);
         return userDao.updateById(userDTO);
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updatePassword(UpdatePassword password) {
-        UAUserDTO userDTO = new UAUserDTO();
+        UaUserDTO userDTO = new UaUserDTO();
         userDTO.setId(password.getUserId());
         userDTO.setPassword(password.getPassword());
         return userDao.updateById(userDTO);

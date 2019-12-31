@@ -16,42 +16,42 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
         String result = "用户服务异常，请稍后再试";
         return new PFUserService() {
             @Override
-            public Result<UAUserDTO> find(String account, String password) {
+            public Result<UaUserDTO> find(String account, String password) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<UAUserDTO> findById(Long id) {
+            public Result<UaUserDTO> findById(Long id) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<UAUserDTO> findByAccount(String account) {
+            public Result<UaUserDTO> findByAccount(String account) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<UAUserDTO> findByMobile(String mobile) {
+            public Result<UaUserDTO> findByMobile(String mobile) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<Integer> save(UAUserDTO saveUserDTO) {
+            public Result<Integer> save(UaUserDTO saveUserDTO) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<Integer> update(UAUserDTO updateUserDTO) {
+            public Result<Integer> update(UaUserDTO updateUserDTO) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<List<UAIconDTO>> loadIcon() {
+            public Result<List<UaIconDTO>> loadIcon() {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<Page<UAUserDTO>> pageList(UAUserPageListDTO pageListDTO) {
+            public Result<Page<UaUserDTO>> pageList(UaUserPageListDTO pageListDTO) {
                 return Result.failMsg(result);
             }
 

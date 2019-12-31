@@ -2,7 +2,7 @@ package com.rngay.feign.user.dto;
 
 import com.rngay.feign.dto.PageQueryDTO;
 
-public class UAUserPageListDTO extends PageQueryDTO {
+public class UaUserPageListDTO extends PageQueryDTO {
 
     private String username;
 

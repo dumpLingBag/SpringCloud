@@ -3,8 +3,8 @@
 <mapper namespace="com.rngay.service_authority.dao.UserRoleDao">
     <select id="getRoleId" resultType="UserRoleDTO">
         select role_id from ua_user_role where checked = 1 and user_id = #{userId}
-        union select dr.role_id from ua_department_user as du, ua_department_role as dr
-        where du.checked = 1 and dr.checked = 1 and dr.department_id = du.department_id
+        union select dr.role_id from ua_dept_user as du, ua_dept_role as dr
+        where du.checked = 1 and dr.checked = 1 and dr.dept_id = du.dept_id
         and du.user_id = #{userId}
     </select>
 </mapper>

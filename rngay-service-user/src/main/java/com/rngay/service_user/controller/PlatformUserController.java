@@ -18,27 +18,27 @@ public class PlatformUserController {
     private UserService userService;
 
     @RequestMapping(value = "find", method = RequestMethod.GET)
-    public Result<UAUserDTO> find(@RequestParam("username") String account, @RequestParam("password") String password) {
+    public Result<UaUserDTO> find(@RequestParam("username") String account, @RequestParam("password") String password) {
         return Result.success(userService.findUser(account, password));
     }
 
     @RequestMapping(value = "findById/{id}", method = RequestMethod.GET)
-    public Result<UAUserDTO> findById(@PathVariable Long id) {
+    public Result<UaUserDTO> findById(@PathVariable Long id) {
         return Result.success(userService.findUserById(id));
     }
 
     @RequestMapping(value = "findByAccount", method = RequestMethod.GET)
-    public Result<UAUserDTO> findByAccount(@RequestParam("username") String account) {
+    public Result<UaUserDTO> findByAccount(@RequestParam("username") String account) {
         return Result.success(userService.findByAccount(account));
     }
 
     @RequestMapping(value = "findByMobile", method = RequestMethod.GET)
-    public Result<UAUserDTO> findByMobile(@RequestParam("mobile") String mobile) {
+    public Result<UaUserDTO> findByMobile(@RequestParam("mobile") String mobile) {
         return Result.success(userService.findByMobile(mobile));
     }
 
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    public Result<Integer> save(@RequestBody UAUserDTO saveUserDTO) {
+    public Result<Integer> save(@RequestBody UaUserDTO saveUserDTO) {
         saveUserDTO.setPassword(BCrypt.hashpw(saveUserDTO.getPassword(), BCrypt.gensalt(12)));
         saveUserDTO.setCreateTime(new Date());
         saveUserDTO.setUpdateTime(new Date());
@@ -46,12 +46,12 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT)
-    public Result<Integer> update(@RequestBody UAUserDTO updateUserDTO) {
+    public Result<Integer> update(@RequestBody UaUserDTO updateUserDTO) {
         return Result.success(userService.updateUser(updateUserDTO));
     }
 
     @RequestMapping(value = "pageList", method = RequestMethod.POST)
-    public Result<Page<UAUserDTO>> pageList(@RequestBody UAUserPageListDTO pageListDTO) {
+    public Result<Page<UaUserDTO>> pageList(@RequestBody UaUserPageListDTO pageListDTO) {
         return Result.success(userService.pageList(pageListDTO));
     }
 

@@ -7,7 +7,7 @@ import com.rngay.common.util.AuthorityUtil;
 import com.rngay.common.util.JwtUtil;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.UserTokenDTO;
-import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.dao.UserTokenDao;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.SystemService;
@@ -34,7 +34,7 @@ public class SystemServiceImpl implements SystemService {
     private UserTokenDao userTokenDao;
 
     @Override
-    public List<MenuDTO> loadForMenu(UAUserDTO userDTO) {
+    public List<MenuDTO> loadForMenu(UaUserDTO userDTO) {
         if (userDTO == null) return null;
 
         List<MenuDTO> allMenus = new ArrayList<>();
@@ -54,7 +54,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public Set<String> getUrlSet(UAUserDTO userDTO) {
+    public Set<String> getUrlSet(UaUserDTO userDTO) {
         if (userDTO == null) return new HashSet<>();
         Set<String> urlSet = new HashSet<>();
 
@@ -73,7 +73,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public int insertToken(HttpServletRequest request, UAUserDTO userDTO, String token) {
+    public int insertToken(HttpServletRequest request, UaUserDTO userDTO, String token) {
         Long userId = userDTO.getId();
 
         UserTokenDTO userToken = new UserTokenDTO();
@@ -113,19 +113,19 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public UAUserDTO getCurrentUser(HttpServletRequest request) {
+    public UaUserDTO getCurrentUser(HttpServletRequest request) {
         String token = AuthorityUtil.getRequestToken(request);
         if (token != null) {
             long userId = Long.parseLong(jwtUtil.getSubject(token));
             Object user = redisUtil.get(RedisKeys.getUserKey(userId));
             if (user == null) return null;
-            return (UAUserDTO) user;
+            return (UaUserDTO) user;
         }
         return null;
     }
 
     @Override
-    public int updateCurrentUser(HttpServletRequest request, UAUserDTO userDTO) {
+    public int updateCurrentUser(HttpServletRequest request, UaUserDTO userDTO) {
         if (userDTO != null) {
             redisUtil.set(RedisKeys.getUserKey(userDTO.getId()), userDTO);
             return 1;
@@ -135,7 +135,7 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Long getCurrentUserId(HttpServletRequest request) {
-        UAUserDTO currentUser = getCurrentUser(request);
+        UaUserDTO currentUser = getCurrentUser(request);
         if (currentUser != null) {
             return currentUser.getId();
         }
@@ -144,7 +144,7 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Integer getCurrentOrgId(HttpServletRequest request) {
-        UAUserDTO currentUser = getCurrentUser(request);
+        UaUserDTO currentUser = getCurrentUser(request);
         if (currentUser != null && currentUser.getOrgId() != null) {
             return currentUser.getOrgId();
         }

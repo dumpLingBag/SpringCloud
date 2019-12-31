@@ -4,7 +4,7 @@ import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.util.IPUtil;
 import com.rngay.common.util.JwtUtil;
-import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.common.vo.Result;
 import com.rngay.service_authority.service.SystemService;
@@ -49,7 +49,7 @@ public class LoginController {
             return Result.failMsg("出错次数过多，请两小时后再试！");
         }
 
-        UAUserDTO userResult = userService.findByAccount(account).getData();
+        UaUserDTO userResult = userService.findByAccount(account).getData();
         if (userResult == null) {
             value++;
             if (value >= 5) {

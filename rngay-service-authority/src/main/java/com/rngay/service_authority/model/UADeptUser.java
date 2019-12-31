@@ -5,13 +5,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "ua_department_user")
-public class UADepartmentUser implements Serializable {
+@Table(name = "ua_dept_user")
+public class UADeptUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private Long departmentId;
+    private Long deptId;
     private Long userId;
     @Column(columnDefinition = "int default 1")
     private Integer checked;
@@ -33,12 +33,12 @@ public class UADepartmentUser implements Serializable {
         this.id = id;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    public Long getDeptId() {
+        return deptId;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     public Long getUserId() {

@@ -7,7 +7,7 @@ import com.rngay.common.util.JwtUtil;
 import com.rngay.gateway.dao.UserTokenDao;
 import com.rngay.gateway.service.SystemService;
 import com.rngay.feign.authority.UserTokenDTO;
-import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.gateway.util.TokenUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +34,12 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public UAUserDTO getCurrentUser(ServerHttpRequest request) {
+    public UaUserDTO getCurrentUser(ServerHttpRequest request) {
         String token = TokenUtil.getRequestToken(request);
         if (StringUtils.isNotBlank(token)) {
             long userId = Long.parseLong(jwtUtil.getSubject(token));
             Object user = redisUtil.get(RedisKeys.getUserKey(userId));
-            return user == null ? null : (UAUserDTO) user;
+            return user == null ? null : (UaUserDTO) user;
         }
         return null;
     }

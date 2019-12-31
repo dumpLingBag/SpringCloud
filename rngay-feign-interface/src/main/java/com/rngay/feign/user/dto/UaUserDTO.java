@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.rngay.feign.dto.CommonDTO;
+import com.rngay.feign.dto.BaseDTO;
 import com.rngay.feign.authority.MenuDTO;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @TableName(value = "ua_user")
-public class UAUserDTO extends CommonDTO {
+public class UaUserDTO extends BaseDTO {
 
     @TableId(type = IdType.ID_WORKER)
     private Long id;
@@ -33,8 +33,6 @@ public class UAUserDTO extends CommonDTO {
 
     private Integer enable;
 
-    private Integer isDelete;
-
     private Long parentId;
 
     @TableField(exist = false)
@@ -42,10 +40,6 @@ public class UAUserDTO extends CommonDTO {
 
     @TableField(exist = false)
     private Set<String> urlSet;
-
-    private Date updateTime;
-
-    private Date createTime;
 
     @TableField(exist = false)
     private Date expireTime;
@@ -122,36 +116,12 @@ public class UAUserDTO extends CommonDTO {
         this.enable = enable;
     }
 
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
-    }
-
     public Long getParentId() {
         return parentId;
     }
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     public Date getExpireTime() {

@@ -1,6 +1,6 @@
 package com.rngay.service_user.service;
 
-import com.rngay.feign.user.dto.UAIconDTO;
+import com.rngay.feign.user.dto.UaIconDTO;
 
 import java.util.List;
 
@@ -11,6 +11,6 @@ public interface IconService {
      * @Author: pengcheng
      * @Date: 2018/12/22
      */
-    List<UAIconDTO> loadIcon();
+    List<UaIconDTO> loadIcon();
 
 }

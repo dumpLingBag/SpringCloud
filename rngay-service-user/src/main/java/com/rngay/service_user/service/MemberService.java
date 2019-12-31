@@ -1,9 +1,9 @@
 package com.rngay.service_user.service;
 
-import com.rngay.feign.user.dto.UAMemberDTO;
+import com.rngay.feign.user.dto.UaMemberDTO;
 
 public interface MemberService {
 
-    UAMemberDTO findUser(String username);
+    UaMemberDTO findUser(String username);
 
 }

@@ -1,7 +1,7 @@
 package com.rngay.service_user.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.user.dto.UAMemberDTO;
+import com.rngay.feign.user.dto.UaMemberDTO;
 import com.rngay.service_user.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping(value = "findUser")
-    public Result<UAMemberDTO> findUser(@RequestParam("username") String username) {
+    public Result<UaMemberDTO> findUser(@RequestParam("username") String username) {
         return Result.success(memberService.findUser(username));
     }
 

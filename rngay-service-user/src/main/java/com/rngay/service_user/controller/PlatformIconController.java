@@ -1,7 +1,7 @@
 package com.rngay.service_user.controller;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.user.dto.UAIconDTO;
+import com.rngay.feign.user.dto.UaIconDTO;
 import com.rngay.service_user.service.IconService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ public class PlatformIconController {
     private IconService iconService;
 
     @RequestMapping(value = "icon", method = RequestMethod.GET)
-    public Result<List<UAIconDTO>> loadIcon() {
+    public Result<List<UaIconDTO>> loadIcon() {
         return Result.success(iconService.loadIcon());
     }
 

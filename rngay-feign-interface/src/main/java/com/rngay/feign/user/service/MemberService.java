@@ -1,7 +1,7 @@
 package com.rngay.feign.user.service;
 
 import com.rngay.common.vo.Result;
-import com.rngay.feign.user.dto.UAMemberDTO;
+import com.rngay.feign.user.dto.UaMemberDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MemberService {
 
     @PostMapping(value = "/member/findUser")
-    Result<UAMemberDTO> findUser(@RequestParam("username") String username);
+    Result<UaMemberDTO> findUser(@RequestParam("username") String username);
 
 }

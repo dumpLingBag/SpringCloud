@@ -1,8 +1,8 @@
 package com.rngay.service_user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.rngay.feign.user.dto.UAUserDTO;
-import com.rngay.feign.user.dto.UAUserPageListDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
+import com.rngay.feign.user.dto.UaUserPageListDTO;
 import com.rngay.feign.user.dto.UpdatePassword;
 
 public interface UserService {
@@ -12,49 +12,49 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2018/12/13
      */
-    UAUserDTO findUserById(Long id);
+    UaUserDTO findUserById(Long id);
 
     /**
      * 根据用户名或手机号查询用户数据
      * @Author: pengcheng
      * @Date: 2018/12/13
      */
-    UAUserDTO findUser(String account, String password);
+    UaUserDTO findUser(String account, String password);
 
     /**
      * 通过账号查询信息
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    UAUserDTO findByAccount(String account);
+    UaUserDTO findByAccount(String account);
 
     /**
      * 通过手机号查询信息
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    UAUserDTO findByMobile(String mobile);
+    UaUserDTO findByMobile(String mobile);
 
     /**
      * 添加一个用户
      * @Author: pengcheng
      * @Date: 2018/12/16
      */
-    int insertUser(UAUserDTO userDTO);
+    int insertUser(UaUserDTO userDTO);
 
     /**
      * 修改用户信息
      * @Author: pengcheng
      * @Date: 2018/12/28
      */
-    int updateUser(UAUserDTO userDTO);
+    int updateUser(UaUserDTO userDTO);
 
     /**
      * 分页获取用户信息
      * @Author: pengcheng
      * @Date: 2018/12/27
      */
-    Page<UAUserDTO> pageList(UAUserPageListDTO pageListDTO);
+    Page<UaUserDTO> pageList(UaUserPageListDTO pageListDTO);
 
     /**
      * 重置用户密码

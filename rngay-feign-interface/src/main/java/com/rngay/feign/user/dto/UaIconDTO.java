@@ -3,9 +3,10 @@ package com.rngay.feign.user.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rngay.feign.dto.BaseDTO;
 
 @TableName(value = "ua_icon")
-public class UAIconDTO {
+public class UaIconDTO extends BaseDTO {
 
     @TableId(type = IdType.ID_WORKER)
     private Long id;

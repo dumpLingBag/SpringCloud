@@ -49,7 +49,7 @@ public class RestExceptionHandler implements ErrorController {
             fieldErrors.forEach(error -> errMsg.put(error.getField(), error.getDefaultMessage()));
             return Result.fail(GsonUtil.GsonString(errMsg));
         }
-
+        e.printStackTrace();
         return Result.fail(profilesActive.equals("prod") ? "服务器出小差了" : e.toString());
     }
 

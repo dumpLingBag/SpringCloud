@@ -1,6 +1,6 @@
 package com.rngay.feign.dto;
 
-public class PageQueryDTO extends CommonDTO {
+public class PageQueryDTO extends BaseDTO {
 
     private Integer currentPage = 1;
 

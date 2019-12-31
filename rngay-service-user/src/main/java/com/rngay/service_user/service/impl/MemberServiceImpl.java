@@ -1,7 +1,7 @@
 package com.rngay.service_user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rngay.feign.user.dto.UAMemberDTO;
+import com.rngay.feign.user.dto.UaMemberDTO;
 import com.rngay.service_user.dao.MemberDao;
 import com.rngay.service_user.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ public class MemberServiceImpl implements MemberService {
     private MemberDao memberDao;
 
     @Override
-    public UAMemberDTO findUser(String username) {
-        return memberDao.selectOne(new QueryWrapper<UAMemberDTO>().eq("username",username));
+    public UaMemberDTO findUser(String username) {
+        return memberDao.selectOne(new QueryWrapper<UaMemberDTO>().eq("username",username));
     }
 
 }

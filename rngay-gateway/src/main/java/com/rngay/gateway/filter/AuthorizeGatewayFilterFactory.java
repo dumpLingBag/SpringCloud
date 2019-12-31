@@ -4,7 +4,7 @@ import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.util.AuthorityUtil;
 import com.rngay.common.util.JwtUtil;
-import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.gateway.service.SystemService;
 import com.rngay.gateway.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +76,7 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
                 return token(response, HttpStatus.UNAUTHORIZED);
             }
 
-            UAUserDTO currentUser = systemService.getCurrentUser(request);
+            UaUserDTO currentUser = systemService.getCurrentUser(request);
             if (currentUser == null) {
                 return token(response, HttpStatus.UNAUTHORIZED);
             }
@@ -117,7 +117,7 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
     /**
      * 判断是否有访问权限
      */
-    private boolean isAuthorized(ServerHttpRequest request, UAUserDTO currentUser) {
+    private boolean isAuthorized(ServerHttpRequest request, UaUserDTO currentUser) {
         String actionName = request.getURI().getPath().replace(request.getPath().contextPath().value(), "");
         actionName = actionName.replaceAll("\\+", "/");
         actionName = actionName.replaceAll("/+", "/");

@@ -1,6 +1,6 @@
 package com.rngay.service_user.service.impl;
 
-import com.rngay.feign.user.dto.UAIconDTO;
+import com.rngay.feign.user.dto.UaIconDTO;
 import com.rngay.service_user.dao.IconDao;
 import com.rngay.service_user.service.IconService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class IconServiceImpl implements IconService {
     private IconDao iconDao;
 
     @Override
-    public List<UAIconDTO> loadIcon() {
+    public List<UaIconDTO> loadIcon() {
         return iconDao.selectList(null);
     }
 

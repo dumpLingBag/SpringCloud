@@ -3,11 +3,12 @@ package com.rngay.feign.user.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rngay.feign.dto.BaseDTO;
 
 import java.util.Date;
 
 @TableName(value = "ua_member")
-public class UAMemberDTO {
+public class UaMemberDTO extends BaseDTO {
 
     @TableId(type = IdType.ID_WORKER)
     private Long id;
@@ -23,10 +24,6 @@ public class UAMemberDTO {
     private String mobile;
 
     private Integer enable;
-
-    private Integer isDelete;
-
-    private Date createTime;
 
     public Long getId() {
         return id;
@@ -84,19 +81,4 @@ public class UAMemberDTO {
         this.enable = enable;
     }
 
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 }

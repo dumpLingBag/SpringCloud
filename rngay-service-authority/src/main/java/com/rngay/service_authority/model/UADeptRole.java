@@ -5,13 +5,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "ua_department_role")
-public class UADepartmentRole implements Serializable {
+@Table(name = "ua_dept_role")
+public class UADeptRole implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
-	private Long departmentId;
+	private Long deptId;
 	private Long roleId;
 	private Integer checked;
 	private Date createTime;
@@ -25,12 +25,12 @@ public class UADepartmentRole implements Serializable {
 		this.id = id;
 	}
 
-	public Long getDepartmentId() {
-		return departmentId;
+	public Long getDeptId() {
+		return deptId;
 	}
 
-	public void setDepartmentId(Long departmentId) {
-		this.departmentId = departmentId;
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
 	}
 
 	public Long getRoleId() {

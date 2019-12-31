@@ -1,6 +1,6 @@
 package com.rngay.gateway.service;
 
-import com.rngay.feign.user.dto.UAUserDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import java.util.Date;
@@ -19,6 +19,6 @@ public interface SystemService {
      * @Author: pengcheng
      * @Date: 2018/12/16
      */
-    UAUserDTO getCurrentUser(ServerHttpRequest request);
+    UaUserDTO getCurrentUser(ServerHttpRequest request);
 
 }

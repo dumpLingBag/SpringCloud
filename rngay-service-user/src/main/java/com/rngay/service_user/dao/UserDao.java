@@ -2,14 +2,14 @@ package com.rngay.service_user.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.rngay.feign.user.dto.UAUserDTO;
-import com.rngay.feign.user.dto.UAUserPageListDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
+import com.rngay.feign.user.dto.UaUserPageListDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserDao extends BaseMapper<UAUserDTO> {
+public interface UserDao extends BaseMapper<UaUserDTO> {
 
-    Page<UAUserDTO> pageList(Page<UAUserDTO> page, @Param("pageList") UAUserPageListDTO pageListDTO);
+    Page<UaUserDTO> pageList(Page<UaUserDTO> page, @Param("pageList") UaUserPageListDTO pageListDTO);
 
 }

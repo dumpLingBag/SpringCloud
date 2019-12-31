@@ -30,7 +30,7 @@ public class UAUser {
     private Integer enable;
 
     @Column(columnDefinition = "int default 1")
-    private Integer isDelete;
+    private Integer delFlag;
 
     private Long parentId;
 
@@ -111,12 +111,12 @@ public class UAUser {
         this.enable = enable;
     }
 
-    public Integer getIsDelete() {
-        return isDelete;
+    public Integer getDelFlag() {
+        return delFlag;
     }
 
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
     }
 
     public Long getParentId() {

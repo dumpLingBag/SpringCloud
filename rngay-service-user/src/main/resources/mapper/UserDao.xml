@@ -4,7 +4,7 @@
     <select id="pageList" resultType="UAUserDTO">
         select * from ua_user
         <where>
-            is_delete = 0
+            del_flag = ${pageList.delFlag}
             <if test="pageList.enable != null">
                 enable = #{pageList.enable}
             </if>
