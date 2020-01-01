@@ -56,7 +56,7 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "reset/{id}", method = RequestMethod.PUT)
-    public Result<Integer> reset(@PathVariable Long id) {
+    public Result<String> reset(@PathVariable Long id) {
         return Result.success(userService.reset(id));
     }
 

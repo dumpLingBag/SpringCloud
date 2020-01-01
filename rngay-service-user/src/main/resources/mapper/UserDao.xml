@@ -6,13 +6,13 @@
         <where>
             del_flag = ${pageList.delFlag}
             <if test="pageList.enable != null">
-                enable = #{pageList.enable}
+                and enable = #{pageList.enable}
             </if>
             <if test="pageList.nickName != null and pageList.nickName != ''">
-                nick_name = #{pageList.nickName}
+                and nick_name = #{pageList.nickName}
             </if>
             <if test="pageList.username != null and pageList.username != ''">
-                username = #{pageList.username}
+                and username = #{pageList.username}
             </if>
         </where>
     </select>

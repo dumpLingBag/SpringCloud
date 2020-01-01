@@ -61,7 +61,7 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2018/12/29
      */
-    int reset(Long id);
+    String reset(Long id);
 
     /**
      * 启禁用账号

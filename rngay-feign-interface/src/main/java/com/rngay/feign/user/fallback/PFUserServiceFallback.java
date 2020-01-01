@@ -56,7 +56,7 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<Integer> reset(Long id) {
+            public Result<String> reset(Long id) {
                 return Result.failMsg(result);
             }
 

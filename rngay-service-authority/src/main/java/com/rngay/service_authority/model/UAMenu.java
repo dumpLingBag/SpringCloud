@@ -1,12 +1,12 @@
 package com.rngay.service_authority.model;
 
+import com.rngay.jpa.model.BaseEntity;
+
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "ua_menu")
-public class UAMenu implements Serializable {
+public class UAMenu extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -28,16 +28,12 @@ public class UAMenu implements Serializable {
 
     private Long pid = 0L;
 
+    @Column(columnDefinition = "char(1) default 1")
     private Integer enabled;
 
     private Integer menuType;
 
     private String authority;
-
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
-    private Date createTime;
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -135,19 +131,4 @@ public class UAMenu implements Serializable {
         this.authority = authority;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

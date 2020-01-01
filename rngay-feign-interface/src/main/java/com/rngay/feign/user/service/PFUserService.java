@@ -91,7 +91,7 @@ public interface PFUserService {
      * @Date: 2018/12/29
      */
     @RequestMapping(value = "/user/reset/{id}", method = RequestMethod.PUT)
-    Result<Integer> reset(@PathVariable Long id);
+    Result<String> reset(@PathVariable Long id);
 
     /**
      * 启禁用账号

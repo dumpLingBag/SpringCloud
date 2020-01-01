@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "reset/{id}", method = RequestMethod.PUT, name = "重置密码")
-    public Result<Integer> reset(@PathVariable Long id) {
+    public Result<String> reset(@PathVariable Long id) {
         if (id == null) {
             return Result.failMsg("密码重置失败");
         }

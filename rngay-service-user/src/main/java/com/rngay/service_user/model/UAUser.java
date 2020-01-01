@@ -1,11 +1,12 @@
 package com.rngay.service_user.model;
 
+import com.rngay.jpa.model.BaseEntity;
+
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "ua_user")
-public class UAUser {
+public class UAUser extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -26,18 +27,10 @@ public class UAUser {
 
     private String mobile;
 
-    @Column(columnDefinition= "int default 1")
+    @Column(columnDefinition= "char(1) default 1")
     private Integer enable;
 
-    @Column(columnDefinition = "int default 1")
-    private Integer delFlag;
-
     private Long parentId;
-
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
-    private Date createTime;
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -109,38 +102,6 @@ public class UAUser {
 
     public void setEnable(Integer enable) {
         this.enable = enable;
-    }
-
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
 }

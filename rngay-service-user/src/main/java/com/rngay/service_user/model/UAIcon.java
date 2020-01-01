@@ -1,12 +1,13 @@
 package com.rngay.service_user.model;
 
 
+import com.rngay.jpa.model.BaseEntity;
+
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "ua_icon")
-public class UAIcon {
+public class UAIcon extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -15,11 +16,6 @@ public class UAIcon {
     private String icon;
 
     private String text;
-
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
-    private Date createTime;
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -45,19 +41,4 @@ public class UAIcon {
         this.text = text;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }

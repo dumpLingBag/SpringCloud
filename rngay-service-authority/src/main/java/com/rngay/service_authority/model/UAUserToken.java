@@ -1,12 +1,13 @@
 package com.rngay.service_authority.model;
 
+import com.rngay.jpa.model.BaseEntity;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "ua_user_token")
-public class UAUserToken implements Serializable {
+public class UAUserToken extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -18,25 +19,12 @@ public class UAUserToken implements Serializable {
 
     private Long userId;
 
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
-    private Date createTime;
-    @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Date updateTime;
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     public Date getExpireTime() {
@@ -53,14 +41,6 @@ public class UAUserToken implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     public Long getUserId() {

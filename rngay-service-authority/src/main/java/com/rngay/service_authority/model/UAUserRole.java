@@ -1,12 +1,12 @@
 package com.rngay.service_authority.model;
 
+import com.rngay.jpa.model.BaseEntity;
+
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "ua_user_role")
-public class UAUserRole implements Serializable {
+public class UAUserRole extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -14,10 +14,6 @@ public class UAUserRole implements Serializable {
 	private Long userId;
 	private Long roleId;
 	private Integer checked;
-	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP")
-	private Date createTime;
-	@Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-	private Date updateTime;
 
 	public Long getId() {
 		return id;
@@ -51,19 +47,4 @@ public class UAUserRole implements Serializable {
 		this.checked = checked;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
 }

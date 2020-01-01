@@ -2,6 +2,7 @@ package com.rngay.service_user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.rngay.common.util.PassUtil;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.dto.UaUserPageListDTO;
 import com.rngay.feign.user.dto.UpdatePassword;
@@ -56,11 +57,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int reset(Long id) {
+    public String reset(Long id) {
         UaUserDTO userDTO = new UaUserDTO();
         userDTO.setId(id);
-        userDTO.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt(12)));
-        return userDao.updateById(userDTO);
+        String pwd = PassUtil.getRandomPwd(8);
+        userDTO.setPassword(BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
+        int i = userDao.updateById(userDTO);
+        return i > 0 ? pwd : null;
     }
 
     @Override

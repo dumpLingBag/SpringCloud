@@ -1,12 +1,12 @@
 package com.rngay.service_authority.model;
 
+import com.rngay.jpa.model.BaseEntity;
+
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "ua_dept_role")
-public class UADeptRole implements Serializable {
+public class UADeptRole extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -14,8 +14,6 @@ public class UADeptRole implements Serializable {
 	private Long deptId;
 	private Long roleId;
 	private Integer checked;
-	private Date createTime;
-	private Date updateTime;
 
 	public Long getId() {
 		return id;
@@ -49,19 +47,4 @@ public class UADeptRole implements Serializable {
 		this.checked = checked;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
 }
