@@ -62,6 +62,7 @@ public class MenuServiceImpl implements MenuService {
                 list.add(mu);
             }
         }
+        list.sort(Comparator.comparing(MenuDTO::getSort));
         return list;
     }
 

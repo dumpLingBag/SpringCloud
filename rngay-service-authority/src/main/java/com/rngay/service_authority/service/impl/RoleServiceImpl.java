@@ -108,7 +108,10 @@ public class RoleServiceImpl implements RoleService {
         roleArr.setOrgId(role.getOrgId());
         roleArr.setPid(role.getPid());
         roleArr.setSort(role.getSort());
-        roleArr.setChildren(roleListChildren(roles, role));
+        List<RoleDTO> roleDTOS = roleListChildren(roles, role);
+        if (roleDTOS != null && !roleDTOS.isEmpty()) {
+            roleArr.setChildren(roleDTOS);
+        }
         return roleArr;
     }
 
