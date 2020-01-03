@@ -13,6 +13,8 @@ public class UARole extends BaseEntity {
 	private Long id;
     private Long orgId;
 	private String name;
+	@Column(columnDefinition = "char(1) default 1")
+	private Integer enabled;
 	private Integer sort;
 	private Long pid;
 
@@ -38,6 +40,14 @@ public class UARole extends BaseEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
 
 	public Integer getSort() {

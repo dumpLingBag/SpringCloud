@@ -4,18 +4,22 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rngay.feign.dto.BaseDTO;
 
 import java.util.List;
 
 @TableName(value = "ua_role")
-public class RoleDTO {
+public class RoleDTO extends BaseDTO {
 
     @TableId(type = IdType.ID_WORKER)
     private Long id;
     private Integer orgId;
     private String name;
+    private Integer enabled;
     private Integer sort;
     private Long pid;
+    @TableField(exist = false)
+    private String label;
     @TableField(exist = false)
     private List<RoleDTO> children;
 
@@ -43,6 +47,14 @@ public class RoleDTO {
         this.name = name;
     }
 
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
+
     public Integer getSort() {
         return sort;
     }
@@ -57,6 +69,14 @@ public class RoleDTO {
 
     public void setPid(Long pid) {
         this.pid = pid;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public List<RoleDTO> getChildren() {

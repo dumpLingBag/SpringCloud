@@ -102,17 +102,20 @@ public class RoleServiceImpl implements RoleService {
     }
 
     private RoleDTO arrToRole(List<RoleDTO> roles, RoleDTO role) {
-        RoleDTO roleArr = new RoleDTO();
-        roleArr.setId(role.getId());
-        roleArr.setName(role.getName());
-        roleArr.setOrgId(role.getOrgId());
-        roleArr.setPid(role.getPid());
-        roleArr.setSort(role.getSort());
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setId(role.getId());
+        roleDTO.setName(role.getName());
+        roleDTO.setLabel(role.getLabel());
+        roleDTO.setEnabled(role.getEnabled());
+        roleDTO.setCreateTime(role.getCreateTime());
+        roleDTO.setOrgId(role.getOrgId());
+        roleDTO.setPid(role.getPid());
+        roleDTO.setSort(role.getSort());
         List<RoleDTO> roleDTOS = roleListChildren(roles, role);
         if (roleDTOS != null && !roleDTOS.isEmpty()) {
-            roleArr.setChildren(roleDTOS);
+            roleDTO.setChildren(roleDTOS);
         }
-        return roleArr;
+        return roleDTO;
     }
 
     private List<RoleDTO> roleListChildren(List<RoleDTO> roles, RoleDTO role) {
