@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class UAOrgRole extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	private Long orgId;
 	private Long roleId;

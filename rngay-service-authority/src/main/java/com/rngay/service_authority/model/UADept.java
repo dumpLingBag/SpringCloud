@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class UADept extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	@Column(columnDefinition="int default 0")
     private Long orgId;

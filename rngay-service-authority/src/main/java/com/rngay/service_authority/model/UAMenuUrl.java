@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class UAMenuUrl extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	private Long menuId;
 	private String urlId;

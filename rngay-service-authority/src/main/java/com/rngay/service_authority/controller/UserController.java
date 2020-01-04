@@ -27,14 +27,14 @@ public class UserController {
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
     public Result<Integer> save(@Valid @RequestBody UaUserDTO saveUserDTO) {
         Result<UaUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getUsername());
-        if (byAccount.getData() != null) {
+        if (byAccount.getCode() == 0 && byAccount.getData() != null) {
             ResMsg.builder("username", "此账号名称已经存在");
         }
         Result<UaUserDTO> byMobile = pfUserService.findByMobile(saveUserDTO.getMobile());
-        if (byMobile.getData() != null) {
+        if (byMobile.getCode() == 0 && byMobile.getData() != null) {
             ResMsg.builder("mobile", "此手机号码已经存在");
         }
-        if (!ResMsg.getLength()) {
+        if (ResMsg.getLength()) {
             return Result.fail(ResMsg.getBuilder());
         }
         saveUserDTO.setParentId(systemService.getCurrentUserId(request));
@@ -50,18 +50,15 @@ public class UserController {
     public Result<Integer> update(@Valid @RequestBody UaUserDTO updateUserDTO) {
         UaUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null) {
-            if (user.getUsername().equals("admin") && !updateUserDTO.getUsername().equals("admin")) {
-                return Result.failMsg("禁止修改管理员账户名称");
-            }
             if (!user.getUsername().equals(updateUserDTO.getUsername())) {
                 Result<UaUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getUsername());
-                if (byAccount.getData() != null) {
+                if (byAccount.getCode() == 0 && byAccount.getData() != null) {
                     ResMsg.builder("username", "此账号名称已经存在");
                 }
             }
             if (!user.getMobile().equals(updateUserDTO.getMobile())) {
                 Result<UaUserDTO> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
-                if (byMobile.getData() != null) {
+                if (byMobile.getCode() == 0 && byMobile.getData() != null) {
                     ResMsg.builder("mobile", "此手机号码已经存在");
                 }
             }

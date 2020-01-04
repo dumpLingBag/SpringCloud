@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class UserFile extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fileId;
     private Long userId;

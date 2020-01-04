@@ -11,7 +11,6 @@ import java.util.Date;
 public class UADeptUser extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private Long deptId;
     private Long userId;

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.Method;
 import java.util.*;
 
-@Component
+//@Component
 public class AuthorityStartUpRunner implements CommandLineRunner {
 
     @Value(value = "${platform.clearUrlOnRestart}")

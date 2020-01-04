@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.BaseDTO;
 import com.rngay.feign.authority.MenuDTO;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -17,18 +20,23 @@ public class UaUserDTO extends BaseDTO {
     @TableId(type = IdType.ID_WORKER)
     private Long id;
 
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
     private String password;
 
+    @NotBlank(message = "用户昵称不能为空")
     private String nickname;
 
     private Integer orgId;
 
     private String avatar;
 
+    @Email(message = "邮箱格式不对")
+    @NotBlank(message = "邮箱不能为空")
     private String email;
 
+    @NotBlank(message = "手机号码不能为空")
     private String mobile;
 
     private Integer enable;

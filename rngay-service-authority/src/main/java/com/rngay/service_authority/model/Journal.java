@@ -9,7 +9,6 @@ import java.util.Date;
 public class Journal implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;

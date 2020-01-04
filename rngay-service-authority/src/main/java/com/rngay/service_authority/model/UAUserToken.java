@@ -10,7 +10,6 @@ import java.util.Date;
 public class UAUserToken extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     private Date expireTime;

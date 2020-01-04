@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class UARoleMenu extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
 	private Long roleId;
 	private Long menuId;
