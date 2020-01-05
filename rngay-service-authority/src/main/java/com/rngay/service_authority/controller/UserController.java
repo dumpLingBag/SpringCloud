@@ -27,12 +27,20 @@ public class UserController {
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
     public Result<Integer> save(@Valid @RequestBody UaUserDTO saveUserDTO) {
         Result<UaUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getUsername());
-        if (byAccount.getCode() == 0 && byAccount.getData() != null) {
-            ResMsg.builder("username", "此账号名称已经存在");
+        if (byAccount.getCode() == 0) {
+            if (byAccount.getData() != null) {
+                ResMsg.builder("username", "此账号名称已经存在");
+            }
+        } else {
+            return Result.fail(byAccount.getMsg());
         }
         Result<UaUserDTO> byMobile = pfUserService.findByMobile(saveUserDTO.getMobile());
-        if (byMobile.getCode() == 0 && byMobile.getData() != null) {
-            ResMsg.builder("mobile", "此手机号码已经存在");
+        if (byMobile.getCode() == 0) {
+            if (byMobile.getData() != null) {
+                ResMsg.builder("mobile", "此手机号码已经存在");
+            }
+        } else {
+            return Result.fail(byMobile.getMsg());
         }
         if (ResMsg.getLength()) {
             return Result.fail(ResMsg.getBuilder());
@@ -52,13 +60,13 @@ public class UserController {
         if (user != null) {
             if (!user.getUsername().equals(updateUserDTO.getUsername())) {
                 Result<UaUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getUsername());
-                if (byAccount.getCode() == 0 && byAccount.getData() != null) {
+                if (byAccount.getCode() == 0 || byAccount.getData() != null) {
                     ResMsg.builder("username", "此账号名称已经存在");
                 }
             }
-            if (!user.getMobile().equals(updateUserDTO.getMobile())) {
+            if (user.getMobile() != null && !user.getMobile().equals(updateUserDTO.getMobile())) {
                 Result<UaUserDTO> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
-                if (byMobile.getCode() == 0 && byMobile.getData() != null) {
+                if (byMobile.getCode() == 0 || byMobile.getData() != null) {
                     ResMsg.builder("mobile", "此手机号码已经存在");
                 }
             }

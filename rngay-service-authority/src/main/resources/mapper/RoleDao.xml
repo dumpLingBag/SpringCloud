@@ -7,4 +7,11 @@
             #{sort.id}
         </foreach>
     </update>
+
+    <update id="updateInList" parameterType="RoleInListDTO">
+        update ua_role set enabled = #{roleList.enabled} where id in
+        <foreach collection="roleList.roleIdList" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+    </update>
 </mapper>

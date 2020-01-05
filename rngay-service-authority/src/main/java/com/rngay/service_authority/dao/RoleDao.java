@@ -2,6 +2,7 @@ package com.rngay.service_authority.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.rngay.feign.authority.RoleDTO;
+import com.rngay.feign.authority.RoleInListDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +12,7 @@ import java.util.List;
 public interface RoleDao extends BaseMapper<RoleDTO> {
 
     int updateSort(@Param("sort") List<RoleDTO> sort);
+
+    int updateInList(@Param("roleList") RoleInListDTO roleInList);
 
 }

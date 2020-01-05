@@ -3,6 +3,7 @@ package com.rngay.service_authority.controller;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.RoleDTO;
 import com.rngay.feign.authority.RoleIdListDTO;
+import com.rngay.feign.authority.RoleInListDTO;
 import com.rngay.service_authority.service.RoleService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,15 @@ public class RoleController {
             return Result.failMsg("角色查询失败");
         }
         return Result.success(roleService.load(orgId));
+    }
+
+    @RequestMapping(value = "loadRole", method = RequestMethod.GET)
+    public Result<List<RoleDTO>> loadRole(HttpServletRequest request) {
+        Integer orgId = systemService.getCurrentOrgId(request);
+        if (orgId == null) {
+            return Result.failMsg("角色查询失败");
+        }
+        return Result.success(roleService.loadRole(orgId));
     }
 
     @RequestMapping(value = "loadByPid", method = RequestMethod.GET, name = "获取pid为0的角色")
@@ -70,6 +80,14 @@ public class RoleController {
             return Result.failMsg("删除角色失败");
         }
         return Result.success(roleService.delete(listDTO));
+    }
+
+    @RequestMapping(value = "updateInList", method = RequestMethod.PUT)
+    public Result<Integer> updateInList(@RequestBody RoleInListDTO roleInList) {
+        if (roleInList == null || roleInList.getRoleIdList().isEmpty()) {
+            return Result.failMsg("角色更新失败");
+        }
+        return Result.success(roleService.updateInList(roleInList));
     }
 
 }

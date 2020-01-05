@@ -29,9 +29,16 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDTO> load(Integer orgId) {
-        List<RoleDTO> roles = roleDao.selectList(new QueryWrapper<RoleDTO>()
-                .eq("org_id", orgId).orderByAsc("sort"));
-        return roleList(roles);
+        QueryWrapper<RoleDTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("org_id", orgId).orderByAsc("sort");
+        return roleList(roleDao.selectList(wrapper));
+    }
+
+    @Override
+    public List<RoleDTO> loadRole(Integer orgId) {
+        QueryWrapper<RoleDTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("org_id", orgId).eq("enabled", 1).orderByAsc("sort");
+        return roleList(roleDao.selectList(wrapper));
     }
 
     @Override
@@ -90,6 +97,11 @@ public class RoleServiceImpl implements RoleService {
         return null;
     }
 
+    @Override
+    public Integer updateInList(RoleInListDTO roleInList) {
+        return roleDao.updateInList(roleInList);
+    }
+
     private List<RoleDTO> roleList(List<RoleDTO> roles) {
         List<RoleDTO> arrList = new ArrayList<>();
         for (RoleDTO role : roles) {
@@ -105,7 +117,7 @@ public class RoleServiceImpl implements RoleService {
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setId(role.getId());
         roleDTO.setName(role.getName());
-        roleDTO.setLabel(role.getLabel());
+        roleDTO.setLabel(role.getName());
         roleDTO.setEnabled(role.getEnabled());
         roleDTO.setCreateTime(role.getCreateTime());
         roleDTO.setOrgId(role.getOrgId());
