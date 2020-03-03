@@ -29,7 +29,7 @@ public class UserStartUpRunner implements CommandLineRunner {
             userDTO.setPassword(BCrypt.hashpw(CryptUtil.MD5encrypt("123456"), BCrypt.gensalt(12)));
             userDTO.setCreateTime(new Date());
             userDTO.setUpdateTime(new Date());
-            userDTO.setOrgId(0);
+            userDTO.setOrgId(0L);
             userDao.insert(userDTO);
         }
     }

@@ -26,7 +26,7 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    UaUserDTO findByAccount(String account);
+    UaUserDTO findByAccount(String username);
 
     /**
      * 通过手机号查询信息

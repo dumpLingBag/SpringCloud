@@ -1,5 +1,6 @@
 package com.rngay.service_authority.controller;
 
+import com.rngay.common.aspect.annotation.RepeatSubmit;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.RoleDTO;
 import com.rngay.feign.authority.RoleIdListDTO;
@@ -26,7 +27,7 @@ public class RoleController {
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载角色")
     public Result<List<RoleDTO>> load(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
+        Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
             return Result.failMsg("角色查询失败");
         }
@@ -35,7 +36,7 @@ public class RoleController {
 
     @RequestMapping(value = "loadRole", method = RequestMethod.GET)
     public Result<List<RoleDTO>> loadRole(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
+        Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
             return Result.failMsg("角色查询失败");
         }
@@ -44,34 +45,35 @@ public class RoleController {
 
     @RequestMapping(value = "loadByPid", method = RequestMethod.GET, name = "获取pid为0的角色")
     public Result<List<RoleDTO>> loadByPid(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
+        Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null) {
             return Result.success(roleService.loadByPid(orgId));
         }
         return Result.failMsg("角色加载失败");
     }
 
+    @RepeatSubmit
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "添加角色")
     public Result<Integer> save(HttpServletRequest request, @RequestBody RoleDTO uaRole) {
-        Integer orgId = systemService.getCurrentOrgId(request);
+        Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
             return Result.failMsg("角色添加失败");
         }
         uaRole.setOrgId(orgId);
-        Integer role = roleService.save(uaRole);
-        if (role == null) {
+        boolean save = roleService.save(uaRole);
+        if (!save) {
             return Result.failMsg("角色添加失败");
         }
-        return Result.success(role);
+        return Result.success();
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, name = "修改角色")
     public Result<Integer> update(@RequestBody RoleDTO uaRole) {
-        Integer role = roleService.update(uaRole);
-        if (role == null) {
+        boolean role = roleService.updateById(uaRole);
+        if (!role) {
             return Result.failMsg("角色修改失败");
         }
-        return Result.success(role);
+        return Result.success();
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.DELETE, name = "删除角色")

@@ -21,4 +21,12 @@ public class RedisKeys {
         return String.format(active + ":user:%s", key);
     }
 
+    public static String getLoginCodeKey(Object key) {
+        return String.format(active + ":loginCode:%s", key);
+    }
+
+    public static String getFormCommitKey(Object key) {
+        return String.format(active + ":formCommit:%s", key);
+    }
+
 }

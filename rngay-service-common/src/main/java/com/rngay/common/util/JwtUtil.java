@@ -1,50 +1,46 @@
 package com.rngay.common.util;
 
+import com.rngay.common.config.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
-@ConfigurationProperties(prefix = "jwt-config")
-@PropertySource(value = {
-        "classpath:jwt-${spring.profiles.active}.properties"
-}, ignoreResourceNotFound = true)
 public class JwtUtil {
 
     private Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    private String secret;
-    private long expire;
-    private String header;
+    @Autowired
+    private JwtConfig jwtConfig;
 
     /**
      * 生成jwt token
      * */
-    public String generateToken(Object userId){
+    public String generateToken(Claims claims){
         Date nowDate = new Date();
         //过期时间
-        Date expireDate = new Date(nowDate.getTime() + expire * 1000);
+        Date expireDate = new Date(nowDate.getTime() + jwtConfig.getExpire() * 1000);
 
         return Jwts.builder()
                 .setHeaderParam("typ","JWT")
-                .setSubject(String.valueOf(userId))
+                .setClaims(claims)
+                .setSubject(String.valueOf(claims.get("userId")))
                 .setIssuedAt(nowDate)
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS256, jwtConfig.getSecret())
                 .compact();
     }
 
-    private Claims getClaimByToken(String token){
+    public Claims getClaimByToken(String token){
         try {
             return Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(jwtConfig.getSecret())
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e){
@@ -58,7 +54,7 @@ public class JwtUtil {
      * @return true: 过期
      * */
     public boolean isExpired(String token){
-        Claims claimByToken = getClaimByToken(token);
+        Claims claimByToken = getClaimByToken(getToken(token));
         if (claimByToken == null){
             return true;
         }
@@ -67,7 +63,7 @@ public class JwtUtil {
     }
 
     public String getSubject(String token){
-        Claims claimByToken = getClaimByToken(token);
+        Claims claimByToken = getClaimByToken(getToken(token));
         if (claimByToken != null){
             return claimByToken.getSubject();
         }
@@ -75,35 +71,15 @@ public class JwtUtil {
     }
 
     public Date getExpiration(String token){
-        Claims claimByToken = getClaimByToken(token);
+        Claims claimByToken = getClaimByToken(getToken(token));
         if (claimByToken != null){
             return claimByToken.getExpiration();
         }
         return null;
     }
 
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public long getExpire() {
-        return expire;
-    }
-
-    public void setExpire(long expire) {
-        this.expire = expire;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
+    public String getToken(String token) {
+        return token.replace("Bearer", "").trim();
     }
 
 }

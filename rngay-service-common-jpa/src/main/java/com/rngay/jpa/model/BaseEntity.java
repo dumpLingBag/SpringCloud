@@ -14,6 +14,7 @@ public class BaseEntity implements Serializable {
     private Date createTime;
     @Column(columnDefinition = "timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date updateTime;
+    private String remark;
 
     public Integer getDelFlag() {
         return delFlag;
@@ -37,5 +38,13 @@ public class BaseEntity implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rngay.service_authority.dao.OperLogDao">
+    <select id="pageList" resultType="OperLogDTO">
+        select * from oper_log
+        <where>
+            del_flag = ${pageList.delFlag}
+            <if test="pageList.title != null and pageList.title != ''">
+                and title like "%"#{pageList.title}"%"
+            </if>
+            <if test="pageList.status != null">
+                and status = #{pageList.status}
+            </if>
+            <if test="pageList.operName != null and pageList.operName != ''">
+                and oper_name like "%"#{pageList.operName}"%"
+            </if>
+            <if test="pageList.businessType != null">
+                and business_type = #{pageList.businessType}
+            </if>
+            <if test="pageList.startTime != null">
+                <![CDATA[and create_time >= #{pageList.startTime}]]>
+            </if>
+            <if test="pageList.endTime != null">
+                <![CDATA[and create_time <= #{pageList.endTime}]]>
+            </if>
+        </where>
+    </select>
+</mapper>

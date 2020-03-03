@@ -6,9 +6,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 public class TokenUtil {
 
     public static String getRequestToken(ServerHttpRequest request) {
-        String token = request.getHeaders().getFirst("token");
+        String token = request.getHeaders().getFirst("Authorization");
         if (StringUtils.isBlank(token)) {
-            token = request.getQueryParams().getFirst("token");
+            token = request.getQueryParams().getFirst("Authorization");
         }
         return token;
     }

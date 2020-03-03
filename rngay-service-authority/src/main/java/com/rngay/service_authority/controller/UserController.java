@@ -1,6 +1,9 @@
 package com.rngay.service_authority.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.rngay.common.aspect.annotation.Log;
+import com.rngay.common.aspect.annotation.RepeatSubmit;
+import com.rngay.common.aspect.enums.BusinessType;
 import com.rngay.common.util.ResMsg;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
@@ -24,6 +27,7 @@ public class UserController {
     @Autowired
     private HttpServletRequest request;
 
+    @RepeatSubmit
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
     public Result<Integer> save(@Valid @RequestBody UaUserDTO saveUserDTO) {
         Result<UaUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getUsername());
@@ -54,6 +58,8 @@ public class UserController {
         return pfUserService.pageList(pageListDTO);
     }
 
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    @RepeatSubmit
     @RequestMapping(value = "update", method = RequestMethod.PUT, name = "更新用户")
     public Result<Integer> update(@Valid @RequestBody UaUserDTO updateUserDTO) {
         UaUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
@@ -79,6 +85,7 @@ public class UserController {
         return pfUserService.update(updateUserDTO);
     }
 
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @RequestMapping(value = "reset/{id}", method = RequestMethod.PUT, name = "重置密码")
     public Result<String> reset(@PathVariable Long id) {
         if (id == null) {
@@ -87,6 +94,7 @@ public class UserController {
         return pfUserService.reset(id);
     }
 
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.PUT, name = "启用禁用")
     public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
         UaUserDTO currentUser = systemService.getCurrentUser(request);
@@ -100,6 +108,7 @@ public class UserController {
         }
     }
 
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @RequestMapping(value = "updatePassword", method = RequestMethod.PUT, name = "修改密码")
     public Result<Integer> updatePassword(HttpServletRequest request, @RequestBody UpdatePassword password) {
         Long userId = systemService.getCurrentUserId(request);
@@ -127,6 +136,7 @@ public class UserController {
         return Result.failMsg("请输入旧密码");
     }
 
+    @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE, name = "删除用户")
     public Result<Integer> delete(@PathVariable Long id) {
         UaUserDTO user = pfUserService.findById(id).getData();

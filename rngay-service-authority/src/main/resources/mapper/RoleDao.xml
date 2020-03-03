@@ -14,4 +14,16 @@
             #{roleId}
         </foreach>
     </update>
+
+    <select id="loadAllRole" resultType="RoleMenuAllDTO">
+        select ur.name,ur.auth_name,ur.org_id,um.menu_url from ua_role ur
+        left join ua_role_menu urm on ur.id = urm.role_id
+        left join ua_menu um on um.id = urm.menu_id and um.menu_type != '0'
+        where ur.del_flag = '1' and urm.del_flag = '1' and um.del_flag = '1' and um.enabled = '1';
+    </select>
+
+    <select id="loadUserRole" resultType="RoleDTO">
+        select ur.id, ur.name, ur.org_id, ur.auth_name from ua_role ur left join ua_user_role uur on uur.role_id = ur.id
+        where uur.user_id = #{id} and ur.del_flag = '1' and ur.enabled = '1'
+    </select>
 </mapper>

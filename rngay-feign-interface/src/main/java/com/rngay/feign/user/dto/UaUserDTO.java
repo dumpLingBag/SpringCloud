@@ -9,7 +9,6 @@ import com.rngay.feign.authority.MenuDTO;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +27,7 @@ public class UaUserDTO extends BaseDTO {
     @NotBlank(message = "用户昵称不能为空")
     private String nickname;
 
-    private Integer orgId;
+    private Long orgId;
 
     private String avatar;
 
@@ -84,11 +83,11 @@ public class UaUserDTO extends BaseDTO {
         this.nickname = nickname;
     }
 
-    public Integer getOrgId() {
+    public Long getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(Integer orgId) {
+    public void setOrgId(Long orgId) {
         this.orgId = orgId;
     }
 

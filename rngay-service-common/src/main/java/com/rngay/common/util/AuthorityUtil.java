@@ -20,10 +20,10 @@ public class AuthorityUtil {
      */
     public static String getRequestToken(HttpServletRequest request){
         //从header中获取token
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         //如果header中不存在token，则从参数中获取token
         if(StringUtils.isBlank(token)){
-            token = request.getParameter("token");
+            token = request.getParameter("Authorization");
         }
         return token;
     }

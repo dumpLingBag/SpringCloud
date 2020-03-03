@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -32,6 +35,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UaUserDTO findByAccount(String username) {
+        String reg = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        Matcher matcher = Pattern.compile(reg).matcher(username);
+        if (matcher.matches()) {
+            return userDao.selectOne(new QueryWrapper<UaUserDTO>().eq("email", username).eq("del_flag", 1));
+        }
         return userDao.selectOne(new QueryWrapper<UaUserDTO>().eq("username", username).eq("del_flag", 1));
     }
 

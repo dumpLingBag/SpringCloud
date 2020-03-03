@@ -1,6 +1,5 @@
 package com.rngay.service_authority.controller;
 
-import com.rngay.common.annotation.PreAuthorize;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.CommonUrlDTO;
 import com.rngay.feign.authority.UrlDTO;
@@ -27,11 +26,10 @@ public class CommonController {
     @Autowired
     private MenuUrlService menuUrlService;
 
-    @PreAuthorize("@ss.hasPermi('authority:common:load')")
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载权限")
     public Result<List<UrlDTO>> load(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
-        if (orgId != null && orgId.equals(0)) {
+        Long orgId = systemService.getCurrentOrgId(request);
+        if (orgId != null && orgId == 0) {
             return Result.success(menuUrlService.load());
         }
         return Result.success(null);
@@ -39,8 +37,8 @@ public class CommonController {
 
     @RequestMapping(value = "loadOpen", method = RequestMethod.GET, name = "选中的权限")
     public Result<List<UrlDTO>> loadOpen(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
-        if (orgId != null && orgId.equals(0)) {
+        Long orgId = systemService.getCurrentOrgId(request);
+        if (orgId != null && orgId == 0) {
             return Result.success(commonService.loadOpen());
         }
         return Result.success(null);

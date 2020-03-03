@@ -1,13 +1,6 @@
 package com.rngay.gateway.filter;
 
-import com.rngay.common.cache.RedisUtil;
-import com.rngay.common.contants.RedisKeys;
-import com.rngay.common.util.AuthorityUtil;
-import com.rngay.common.util.JwtUtil;
-import com.rngay.feign.user.dto.UaUserDTO;
-import com.rngay.gateway.service.SystemService;
 import com.rngay.gateway.util.TokenUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -20,14 +13,6 @@ import java.util.*;
 
 @Component
 public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<AuthorizeGatewayFilterFactory.Config> {
-
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
-    private SystemService systemService;
-
 
     public AuthorizeGatewayFilterFactory() {
         super(Config.class);
@@ -56,40 +41,6 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
             if (token == null || "".equals(token)) {
                 return token(response, HttpStatus.UNAUTHORIZED);
             }
-            if (jwtUtil.isExpired(token)) {
-                return token(response, HttpStatus.UNAUTHORIZED);
-            }
-            long userId;
-            try {
-                userId = Long.parseLong(jwtUtil.getSubject(token));
-            } catch (Exception e) {
-                return token(response, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            Object userToken = redisUtil.get(RedisKeys.getTokenKey(userId));
-            if (userToken == null || "".equals(userToken)) {
-                userToken = systemService.findToken(userId, new Date());
-            }
-            if (userToken == null || "".equals(userToken)) {
-                return token(response, HttpStatus.UNAUTHORIZED);
-            }
-            if (!token.equals(userToken)) {
-                return token(response, HttpStatus.UNAUTHORIZED);
-            }
-
-            UaUserDTO currentUser = systemService.getCurrentUser(request);
-            if (currentUser == null) {
-                return token(response, HttpStatus.UNAUTHORIZED);
-            }
-            if (currentUser.getParentId() != 0) {
-                if (currentUser.getEnable() == 1) {
-                    // 判断是否有权限访问
-                    if (!isAuthorized(request, currentUser)) {
-                        return token(response, HttpStatus.UNAUTHORIZED);
-                    }
-                } else {
-                    return token(response, HttpStatus.UNAUTHORIZED);
-                }
-            }
             return chain.filter(exchange);
         };
     }
@@ -112,31 +63,6 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
     private Mono<Void> token(ServerHttpResponse response, HttpStatus httpStatus) {
         response.setStatusCode(httpStatus);
         return response.setComplete();
-    }
-
-    /**
-     * 判断是否有访问权限
-     */
-    private boolean isAuthorized(ServerHttpRequest request, UaUserDTO currentUser) {
-        String actionName = request.getURI().getPath().replace(request.getPath().contextPath().value(), "");
-        actionName = actionName.replaceAll("\\+", "/");
-        actionName = actionName.replaceAll("/+", "/");
-        actionName = actionName.substring(1, actionName.lastIndexOf(".") > 0 ? actionName.lastIndexOf(".") : actionName.length());
-
-        Object authUrl = redisUtil.get(AuthorityUtil.APPLICATION_COMMON_URL_KEY);
-        if (authUrl instanceof Map) {
-            @SuppressWarnings("unchecked")
-            Map<Object, Object> commonUrl = (HashMap<Object, Object>) authUrl;
-            if (commonUrl.get(actionName) != null && commonUrl.get(actionName).equals(1)) {
-                return true;
-            }
-            Set<String> urlSet = currentUser.getUrlSet();
-            if (urlSet == null || urlSet.isEmpty()) {
-                return false;
-            }
-            return urlSet.contains(actionName);
-        }
-        return false;
     }
 
     /**

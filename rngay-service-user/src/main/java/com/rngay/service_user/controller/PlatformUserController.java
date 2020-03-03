@@ -28,8 +28,8 @@ public class PlatformUserController {
     }
 
     @RequestMapping(value = "findByAccount", method = RequestMethod.GET)
-    public Result<UaUserDTO> findByAccount(@RequestParam("username") String account) {
-        return Result.success(userService.findByAccount(account));
+    public Result<UaUserDTO> findByAccount(@RequestParam("username") String username) {
+        return Result.success(userService.findByAccount(username));
     }
 
     @RequestMapping(value = "findByMobile", method = RequestMethod.GET)

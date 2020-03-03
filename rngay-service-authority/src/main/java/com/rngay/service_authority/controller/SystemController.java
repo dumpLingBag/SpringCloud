@@ -34,9 +34,6 @@ public class SystemController {
         List<MenuDTO> menuList = systemService.loadForMenu(currentUser);
         currentUser.setMenuList(menuList);
 
-        Set<String> urlSet = systemService.getUrlSet(currentUser);
-        currentUser.setUrlSet(urlSet);
-
         systemService.updateCurrentUser(request, currentUser);
 
         return Result.success(menuList);

@@ -1,26 +1,20 @@
 package com.rngay.service_authority.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.MenuIdListDTO;
 import com.rngay.feign.authority.MenuInListDTO;
 
 import java.util.List;
 
-public interface MenuService {
+public interface MenuService extends IService<MenuDTO> {
 
     /**
      * 保存一个新的菜单
      * @Author: pengcheng
      * @Date: 2018/12/17
      */
-    Integer save(MenuDTO uaMenu);
-
-    /**
-     * 修改菜单
-     * @Author pengcheng
-     * @Date 2019/3/30
-     **/
-    Integer update(MenuDTO uaMenu);
+    Integer saveMenu(MenuDTO uaMenu);
 
     /**
      * 获取全部菜单
@@ -49,14 +43,14 @@ public interface MenuService {
      * @Author: pengcheng
      * @Date: 2019/12/30
      */
-    List<MenuDTO> loadMenuByOrgId(Integer orgId);
+    List<MenuDTO> loadMenuByOrgId(Long orgId);
 
     /**
      * 根据 orgId 和 userId 查询菜单列表
      * @Author: pengcheng
      * @Date: 2019/12/30
      */
-    List<MenuDTO> loadMenuByUserId(Integer orgId, Long userId);
+    List<MenuDTO> loadMenuByUserId(Long orgId, Long userId);
 
     /**
      * 根据菜单 id 批量或单个隐藏显示菜单

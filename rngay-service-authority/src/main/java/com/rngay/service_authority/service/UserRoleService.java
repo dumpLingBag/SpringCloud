@@ -22,8 +22,8 @@ public interface UserRoleService extends IService<UserRoleDTO> {
      **/
     Integer update(UserRoleUpdateDTO updateDTO);
 
-    List<String> loadUrlByOrgId(Integer orgId);
+    List<String> loadUrlByOrgId(Long orgId);
 
-    List<String> loadUrlByUserId(Integer orgId, Long userId);
+    List<String> loadUrlByUserId(Long orgId, Long userId);
 
 }

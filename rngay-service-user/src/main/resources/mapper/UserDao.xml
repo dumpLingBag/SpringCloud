@@ -9,10 +9,10 @@
                 and enable = #{pageList.enable}
             </if>
             <if test="pageList.nickName != null and pageList.nickName != ''">
-                and nick_name = #{pageList.nickName}
+                and nick_name like "%"#{pageList.nickName}"%"
             </if>
             <if test="pageList.username != null and pageList.username != ''">
-                and username = #{pageList.username}
+                and username like "%"#{pageList.username}"%"
             </if>
         </where>
     </select>

@@ -58,7 +58,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     }
 
     @Override
-    public List<String> loadUrlByOrgId(Integer orgId) {
+    public List<String> loadUrlByOrgId(Long orgId) {
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> orgRoles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
                     .eq("checked", 1).eq("org_id", orgId));
@@ -69,7 +69,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     }
 
     @Override
-    public List<String> loadUrlByUserId(Integer orgId, Long userId) {
+    public List<String> loadUrlByUserId(Long orgId, Long userId) {
         List<UserRoleDTO> roleId = userRoleDao.getRoleId(userId);
         if (roleId == null || roleId.isEmpty()) return new ArrayList<>();
         if (orgId != null && orgId > 0) {

@@ -16,6 +16,7 @@ public class UARole extends BaseEntity {
 	private Integer enabled;
 	private Integer sort;
 	private Long pid;
+	private String authName;
 
 	public Long getId() {
 		return id;
@@ -65,4 +66,11 @@ public class UARole extends BaseEntity {
 		this.pid = pid;
 	}
 
+	public String getAuthName() {
+		return authName;
+	}
+
+	public void setAuthName(String authName) {
+		this.authName = authName;
+	}
 }

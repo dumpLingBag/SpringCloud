@@ -73,7 +73,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public int insertToken(HttpServletRequest request, UaUserDTO userDTO, String token) {
+    public int insertToken(UaUserDTO userDTO, String token) {
         Long userId = userDTO.getId();
 
         UserTokenDTO userToken = new UserTokenDTO();
@@ -97,9 +97,8 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public int deleteToken(HttpServletRequest request, Long userId) {
-        String key = request.getServerName() + "_" + userId;
-        redisUtil.del(RedisKeys.getUserKey(key));
+    public int deleteToken(Long userId) {
+        redisUtil.del(RedisKeys.getUserKey(userId));
         UserTokenDTO user = userTokenDao.selectOne(new QueryWrapper<UserTokenDTO>().eq("user_id", userId));
         user.setToken(null);
         return userTokenDao.updateById(user);
@@ -143,12 +142,12 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public Integer getCurrentOrgId(HttpServletRequest request) {
+    public Long getCurrentOrgId(HttpServletRequest request) {
         UaUserDTO currentUser = getCurrentUser(request);
         if (currentUser != null && currentUser.getOrgId() != null) {
             return currentUser.getOrgId();
         }
-        return 0;
+        return 0L;
     }
 
 }

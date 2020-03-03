@@ -29,14 +29,14 @@ public interface SystemService {
      * @Author: pengcheng
      * @Date: 2018/12/14
      */
-    int insertToken(HttpServletRequest request, UaUserDTO userDTO, String token);
+    int insertToken(UaUserDTO userDTO, String token);
 
     /**
      * 从数据库删除 token 并更新 redis 缓存
      * @Author: pengcheng
      * @Date: 2018/12/15
      */
-    int deleteToken(HttpServletRequest request, Long userId);
+    int deleteToken(Long userId);
 
     /**
      * 从数据库查询指定用户的有效 token
@@ -71,6 +71,6 @@ public interface SystemService {
      * @Author pengcheng
      * @Date 2019/3/30
      **/
-    Integer getCurrentOrgId(HttpServletRequest request);
+    Long getCurrentOrgId(HttpServletRequest request);
 
 }

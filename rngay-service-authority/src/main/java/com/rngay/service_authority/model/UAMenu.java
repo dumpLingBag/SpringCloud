@@ -32,6 +32,8 @@ public class UAMenu extends BaseEntity {
 
     private Integer menuType;
 
+    private String menuUrl;
+
     private String authority;
 
     public Long getId() {
@@ -120,6 +122,14 @@ public class UAMenu extends BaseEntity {
 
     public void setMenuType(Integer menuType) {
         this.menuType = menuType;
+    }
+
+    public String getMenuUrl() {
+        return menuUrl;
+    }
+
+    public void setMenuUrl(String menuUrl) {
+        this.menuUrl = menuUrl;
     }
 
     public String getAuthority() {

@@ -17,6 +17,8 @@ spring:
     dispatch-options-request: true
   main:
     allow-bean-definition-overriding: true
+  messages:
+    basename: i18n/messages
 server:
   port: 9090
 

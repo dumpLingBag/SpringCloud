@@ -13,11 +13,12 @@ public class RoleDTO extends BaseDTO {
 
     @TableId(type = IdType.ID_WORKER)
     private Long id;
-    private Integer orgId;
+    private Long orgId;
     private String name;
     private Integer enabled;
     private Integer sort;
     private Long pid;
+    private String authName;
     @TableField(exist = false)
     private String label;
     @TableField(exist = false)
@@ -31,11 +32,11 @@ public class RoleDTO extends BaseDTO {
         this.id = id;
     }
 
-    public Integer getOrgId() {
+    public Long getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(Integer orgId) {
+    public void setOrgId(Long orgId) {
         this.orgId = orgId;
     }
 
@@ -69,6 +70,14 @@ public class RoleDTO extends BaseDTO {
 
     public void setPid(Long pid) {
         this.pid = pid;
+    }
+
+    public String getAuthName() {
+        return authName;
+    }
+
+    public void setAuthName(String authName) {
+        this.authName = authName;
     }
 
     public String getLabel() {

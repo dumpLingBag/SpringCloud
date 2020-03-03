@@ -1,5 +1,6 @@
 package com.rngay.service_authority.controller;
 
+import com.rngay.common.aspect.annotation.RepeatSubmit;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.MenuIdListDTO;
@@ -21,9 +22,10 @@ public class MenuController {
     @Autowired
     private SystemService systemService;
 
+    @RepeatSubmit
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存菜单")
     public Result<Integer> save(@RequestBody MenuDTO uaMenu) {
-        Integer menu = menuService.save(uaMenu);
+        Integer menu = menuService.saveMenu(uaMenu);
         if (menu == null || menu == 0) {
             return Result.failMsg("保存失败");
         }
@@ -32,17 +34,17 @@ public class MenuController {
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, name = "修改菜单")
     public Result<Integer> update(@RequestBody MenuDTO uaMenu) {
-        Integer menu = menuService.update(uaMenu);
-        if (menu == null) {
+        boolean menu = menuService.updateById(uaMenu);
+        if (!menu) {
             return Result.failMsg("修改失败");
         }
-        return Result.success(menu);
+        return Result.success();
     }
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载菜单")
     public Result<List<MenuDTO>> load(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
-        if (orgId != null && orgId.equals(0)) {
+        Long orgId = systemService.getCurrentOrgId(request);
+        if (orgId != null && orgId == 0) {
             return Result.success(menuService.load());
         }
         return Result.failMsg("菜单加载失败");
@@ -50,8 +52,8 @@ public class MenuController {
 
     @RequestMapping(value = "loadByPid", method = RequestMethod.GET, name = "获取父级菜单")
     public Result<List<MenuDTO>> loadByPid(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
-        if (orgId != null && orgId.equals(0)) {
+        Long orgId = systemService.getCurrentOrgId(request);
+        if (orgId != null && orgId == 0) {
             return Result.success(menuService.loadByPid());
         }
         return Result.failMsg("菜单加载失败");

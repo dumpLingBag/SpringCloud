@@ -18,8 +18,8 @@ public class UAUser extends BaseEntity {
 
     private String nickname;
 
-    @Column(columnDefinition= "int default 0")
-    private Integer orgId;
+    @Column(columnDefinition= "long default 0")
+    private Long orgId;
 
     private String avatar;
 
@@ -64,11 +64,11 @@ public class UAUser extends BaseEntity {
         this.nickname = nickname;
     }
 
-    public Integer getOrgId() {
+    public Long getOrgId() {
         return orgId;
     }
 
-    public void setOrgId(Integer orgId) {
+    public void setOrgId(Long orgId) {
         this.orgId = orgId;
     }
 
@@ -102,6 +102,14 @@ public class UAUser extends BaseEntity {
 
     public void setEnable(Integer enable) {
         this.enable = enable;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
 }

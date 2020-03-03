@@ -27,8 +27,8 @@ public class MenuUrlController {
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载所有url")
     public Result<List<UrlDTO>> load(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
-        if (orgId != null && orgId.equals(0)) {
+        Long orgId = systemService.getCurrentOrgId(request);
+        if (orgId != null && orgId == 0) {
             return Result.success(urlService.load());
         }
         return Result.success(null);

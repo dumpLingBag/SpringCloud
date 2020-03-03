@@ -1,7 +1,8 @@
 package com.rngay.service_authority.aspect;
 
-import com.rngay.common.annotation.DataScope;
+import com.rngay.common.aspect.annotation.DataScope;
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.config.JwtConfig;
 import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.exception.BaseException;
 import com.rngay.common.util.JwtUtil;
@@ -38,8 +39,10 @@ public class DataScopeAspect {
     private RedisUtil redisUtil;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private JwtConfig jwtConfig;
 
-    @Pointcut("@annotation(com.rngay.common.annotation.DataScope)")
+    @Pointcut("@annotation(com.rngay.common.aspect.annotation.DataScope)")
     public void dataScopePointCut() {
 
     }
@@ -53,9 +56,9 @@ public class DataScopeAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
             HttpServletRequest request = attributes.getRequest();
-            String token = request.getHeader("token");
+            String token = request.getHeader(jwtConfig.getHeader());
             if (token == null) {
-                token = request.getParameter("token");
+                token = request.getParameter(jwtConfig.getHeader());
             }
             long userId;
             try {

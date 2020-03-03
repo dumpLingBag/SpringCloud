@@ -14,7 +14,7 @@ public interface RoleMenuService extends IService<RoleMenuDTO> {
      * @Author pengcheng
      * @Date 2019/3/30
      **/
-    List<MenuDTO> load(Integer orgId);
+    List<MenuDTO> load(Long orgId);
 
     /**
      * 根据 roleId 加载菜单

@@ -27,7 +27,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
     private MenuService menuService;
 
     @Override
-    public List<MenuDTO> load(Integer orgId) {
+    public List<MenuDTO> load(Long orgId) {
         return menuList(menuService.loadMenuByOrgId(orgId));
     }
 

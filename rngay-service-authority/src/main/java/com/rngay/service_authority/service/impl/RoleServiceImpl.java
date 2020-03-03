@@ -1,7 +1,9 @@
 package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.feign.authority.*;
+import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.dao.*;
 import com.rngay.service_authority.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
@@ -28,21 +30,31 @@ public class RoleServiceImpl implements RoleService {
     private DepartmentRoleDao departmentRoleDao;
 
     @Override
-    public List<RoleDTO> load(Integer orgId) {
+    public List<RoleDTO> load(Long orgId) {
         QueryWrapper<RoleDTO> wrapper = new QueryWrapper<>();
         wrapper.eq("org_id", orgId).orderByAsc("sort");
         return roleList(roleDao.selectList(wrapper));
     }
 
     @Override
-    public List<RoleDTO> loadRole(Integer orgId) {
+    public List<RoleDTO> loadUserRole(UaUserDTO userDTO) {
+        return roleDao.loadUserRole(userDTO);
+    }
+
+    @Override
+    public List<RoleMenuAllDTO> loadAllRole() {
+        return roleDao.loadAllRole();
+    }
+
+    @Override
+    public List<RoleDTO> loadRole(Long orgId) {
         QueryWrapper<RoleDTO> wrapper = new QueryWrapper<>();
         wrapper.eq("org_id", orgId).eq("enabled", 1).orderByAsc("sort");
         return roleList(roleDao.selectList(wrapper));
     }
 
     @Override
-    public List<RoleDTO> loadByPid(Integer orgId) {
+    public List<RoleDTO> loadByPid(Long orgId) {
         List<RoleDTO> roles = new ArrayList<>();
         List<RoleDTO> rolePid = roleDao.selectList(new QueryWrapper<RoleDTO>()
                 .eq("org_id", orgId).eq("pid", 0));
@@ -58,16 +70,6 @@ public class RoleServiceImpl implements RoleService {
             });
         }
         return roles;
-    }
-
-    @Override
-    public Integer save(RoleDTO uaRole) {
-        return roleDao.insert(uaRole);
-    }
-
-    @Override
-    public Integer update(RoleDTO uaRole) {
-        return roleDao.updateById(uaRole);
     }
 
     @Override
@@ -118,6 +120,7 @@ public class RoleServiceImpl implements RoleService {
         roleDTO.setId(role.getId());
         roleDTO.setName(role.getName());
         roleDTO.setLabel(role.getName());
+        roleDTO.setAuthName(role.getAuthName());
         roleDTO.setEnabled(role.getEnabled());
         roleDTO.setCreateTime(role.getCreateTime());
         roleDTO.setOrgId(role.getOrgId());

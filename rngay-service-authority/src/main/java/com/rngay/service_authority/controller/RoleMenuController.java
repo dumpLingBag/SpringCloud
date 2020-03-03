@@ -27,7 +27,7 @@ public class RoleMenuController {
 
     @RequestMapping(value = "load", method = RequestMethod.GET, name = "根据orgId加载关联的菜单")
     public Result<List<MenuDTO>> load(HttpServletRequest request) {
-        Integer orgId = systemService.getCurrentOrgId(request);
+        Long orgId = systemService.getCurrentOrgId(request);
         return Result.success(roleMenuService.load(orgId));
     }
 

@@ -1,6 +1,7 @@
 package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.feign.authority.*;
 import com.rngay.feign.authority.vo.MetaVo;
 import com.rngay.service_authority.dao.*;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class MenuServiceImpl implements MenuService {
+public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements MenuService {
 
     @Autowired
     private MenuDao menuDao;
@@ -30,7 +31,7 @@ public class MenuServiceImpl implements MenuService {
     private UserRoleDao userRoleDao;
 
     @Override
-    public Integer save(MenuDTO uaMenu) {
+    public Integer saveMenu(MenuDTO uaMenu) {
         // 如果添加的菜单是跳转菜单，则判断上级菜单是不是一级菜单
         if (uaMenu.getMenuType() != null && uaMenu.getMenuType() == 1) {
             MenuDTO menuDTO = menuDao.selectById(uaMenu.getPid());
@@ -47,13 +48,9 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public Integer update(MenuDTO uaMenu) {
-        return menuDao.updateById(uaMenu);
-    }
-
-    @Override
     public List<MenuDTO> load() {
         List<MenuDTO> list = new ArrayList<>();
+        menuDao.selectById("");
         List<MenuDTO> menus = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", 0));
         if (!menus.isEmpty()) {
             for (MenuDTO menu : menus) {
@@ -96,7 +93,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<MenuDTO> loadMenuByOrgId(Integer orgId) {
+    public List<MenuDTO> loadMenuByOrgId(Long orgId) {
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> roles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
                     .eq("checked", 1).eq("org_id", orgId));
@@ -109,7 +106,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<MenuDTO> loadMenuByUserId(Integer orgId, Long userId) {
+    public List<MenuDTO> loadMenuByUserId(Long orgId, Long userId) {
         List<UserRoleDTO> roleIds = userRoleDao.getRoleId(userId);
         if (roleIds.isEmpty()) return new ArrayList<>();
         if (orgId != null && orgId > 0) {
