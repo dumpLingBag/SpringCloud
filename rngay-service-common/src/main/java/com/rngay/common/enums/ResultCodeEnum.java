@@ -1,22 +1,29 @@
-package com.rngay.service_authority.security;
+package com.rngay.common.enums;
 
-public enum ErrorCodeEnum {
+public enum ResultCodeEnum {
 
     TOKEN_INVALID(2, "用户信息已过期，请重新登录"),
     TOKEN_OTHER_LOGIN(2, "账号在其他地方登录，请重新登录"),
-    LOGIN_FAIL(1, "登录失败，请重试"),
-    LOGIN_INFO_FAIL(1, "更新用户信息失败");
+    LOGIN_FAIL(2, "登录失败，请重试"),
+    LOGIN_COUNT_FAIL(2, "用户名或密码输入错误，请重新输入"),
+    LOGIN_INFO_FAIL(2, "更新用户信息失败"),
+    COMMON_AUTHORITY_FAIL(2, "公共权限修改失败"),
+    UPLOAD_FAIL(2, "文件上传失败"),
+
+    SUCCESS(0, "success"),
+    FAIL(1, "failed"),
+    FAIL_MSG(2, "fail msg");
 
     private String msg;
     private int code;
 
-    ErrorCodeEnum(int code, String message) {
+    ResultCodeEnum(int code, String msg) {
         this.code = code;
-        this.msg = message;
+        this.msg = msg;
     }
 
     public static String getMessage(int code) {
-        for (ErrorCodeEnum error : ErrorCodeEnum.values()) {
+        for (ResultCodeEnum error : ResultCodeEnum.values()) {
             if (error.getCode() == code) {
                 return error.getMsg();
             }
@@ -39,6 +46,4 @@ public enum ErrorCodeEnum {
     public void setCode(int code) {
         this.code = code;
     }
-
-
 }

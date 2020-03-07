@@ -1,6 +1,7 @@
 package com.rngay.service_authority.security.filter;
 
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.util.ip.IPUtil;
 import com.rngay.common.util.ResultUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -50,23 +51,25 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         // 验证账号密码是否出错次数过多
-        if (!verificationFailCount(request)) {
+        if (verificationFailCount(request) > 5) {
             ResultUtil.writeJson(response, 2, "密码出错次数过多，请两小时后再试");
             return null;
         }
-        // 效验验证码
-        String code = request.getParameter("code");
-        String codeKey = request.getParameter("codeKey");
-        if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(codeKey)) {
-            String text = (String) redisUtil.get(codeKey); // 存在 redis 的验证码
-            if (StringUtils.isNotBlank(text)) {
-                if (!text.equalsIgnoreCase(code)) {
-                    ResultUtil.writeJson(response, 2, "验证码错误");
+        // 出错两次以上则校验验证码
+        if (verificationFailCount(request) > 2) {
+            String code = request.getParameter("code");
+            String codeKey = request.getParameter("codeKey");
+            if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(codeKey)) {
+                String text = (String) redisUtil.get(codeKey); // 存在 redis 的验证码
+                if (StringUtils.isNotBlank(text)) {
+                    if (!text.equalsIgnoreCase(code)) {
+                        ResultUtil.writeJson(response, 2, "验证码错误");
+                        return null;
+                    }
+                } else {
+                    ResultUtil.writeJson(response, 2, "验证码已过期");
                     return null;
                 }
-            } else {
-                ResultUtil.writeJson(response, 2, "验证码已过期");
-                return null;
             }
         }
         // 设置获取 username 的属性字段 js传到后台接收数据的参数名
@@ -76,14 +79,14 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
         return super.attemptAuthentication(request, response);
     }
 
-    private boolean verificationFailCount(HttpServletRequest request) {
+    private int verificationFailCount(HttpServletRequest request) {
         String account = request.getParameter("account");
         String key = request.getServerName() + "_" + IPUtil.getIPAddress(request) + "_" + account;
-        Object value = redisUtil.get(key);
-        if (value != null) {
-            return (int) value <= 5;
+        Object count = redisUtil.get(RedisKeys.getFailCount(key));
+        if (count != null) {
+            return Integer.parseInt(count.toString());
         }
-        return true;
+        return 0;
     }
 
 }

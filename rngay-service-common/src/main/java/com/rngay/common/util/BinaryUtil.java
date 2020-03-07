@@ -9,7 +9,7 @@ public class BinaryUtil {
             'E', 'F' };
 
     public static byte[] calculateMd5(byte[] binaryData) {
-        MessageDigest messageDigest = null;
+        MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
@@ -22,7 +22,7 @@ public class BinaryUtil {
     public static String encodeMD5(byte[] binaryData) {
         byte[] md5Bytes = calculateMd5(binaryData);
         int len = md5Bytes.length;
-        char buf[] = new char[len * 2];
+        char[] buf = new char[len * 2];
         for (int i = 0; i < len; i++) {
             buf[i * 2] = HEX_DIGITS[(md5Bytes[i] >>> 4) & 0x0f];
             buf[i * 2 + 1] = HEX_DIGITS[md5Bytes[i] & 0x0f];

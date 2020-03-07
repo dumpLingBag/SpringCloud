@@ -3,6 +3,7 @@ package com.rngay.service_authority.security.handler;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.config.JwtConfig;
 import com.rngay.common.contants.RedisKeys;
+import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.common.manager.AsyncManager;
 import com.rngay.service_authority.manger.AsyncFactory;
 import com.rngay.common.util.JsonUtil;
@@ -11,7 +12,6 @@ import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.ResultUtil;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
-import com.rngay.service_authority.security.ErrorCodeEnum;
 import com.rngay.service_authority.security.exception.MyAuthenticationException;
 import com.rngay.service_authority.security.jwt.JwtUserDetails;
 import com.rngay.service_authority.service.SystemService;
@@ -72,7 +72,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
             access_token = jwtConfig.getPrefix() + " " + access_token;
             boolean boo = saveToken(access_token, userDetails.getUserInfo());
             if (boo) {
-                throw new MyAuthenticationException(ErrorCodeEnum.LOGIN_FAIL);
+                throw new MyAuthenticationException(ResultCodeEnum.LOGIN_FAIL);
             }
             HashMap<String, Object> map = new HashMap<>();
             map.put("userId", userInfo.getId());
@@ -86,9 +86,9 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
             result.put("userInfo", map);
             result.put("access_token", access_token);
             AsyncManager.me().execute(AsyncFactory.recordLogin(userInfo.getUsername(), "0", MessageUtils.message("user.login.success")));
-            ResultUtil.writeJson(response, 0, "登录成功", result);
+            ResultUtil.writeJson(response, 0, MessageUtils.message("user.login.success"), result);
         }
-        ResultUtil.writeJson(response, 2, "登录失败");
+        ResultUtil.writeJson(response, 2, MessageUtils.message("user.login.fail"));
     }
 
     /**
@@ -101,7 +101,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         try {
             return systemService.insertToken(userDTO, token) <= 0;
         } catch (Exception e) {
-            throw new MyAuthenticationException(ErrorCodeEnum.LOGIN_INFO_FAIL);
+            throw new MyAuthenticationException(ResultCodeEnum.LOGIN_INFO_FAIL);
         }
     }
 

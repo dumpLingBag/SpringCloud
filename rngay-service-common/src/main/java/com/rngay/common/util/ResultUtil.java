@@ -1,5 +1,6 @@
 package com.rngay.common.util;
 
+import com.rngay.common.enums.ResultCodeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +32,14 @@ public class ResultUtil {
 
     public static void writeJson(HttpServletResponse response, int code, String msg) {
         writeJson(response, code, msg, null);
+    }
+
+    public static void writeJson(HttpServletResponse response, ResultCodeEnum codeEnum) {
+        writeJson(response, codeEnum.getCode(), codeEnum.getMsg());
+    }
+
+    public static void writeJson(HttpServletResponse response, ResultCodeEnum codeEnum, Object data) {
+        writeJson(response, codeEnum.getCode(), codeEnum.getMsg(), data);
     }
 
     private static HashMap<String, Object> getMap(int code, String msg, Object data) {

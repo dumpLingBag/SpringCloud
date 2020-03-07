@@ -1,6 +1,6 @@
 package com.rngay.service_authority.security.exception;
 
-import com.rngay.service_authority.security.ErrorCodeEnum;
+import com.rngay.common.enums.ResultCodeEnum;
 import org.springframework.security.core.AuthenticationException;
 
 public class MyAuthenticationException extends AuthenticationException {
@@ -15,10 +15,10 @@ public class MyAuthenticationException extends AuthenticationException {
 
     /**
      * 加入错误状态值
-     * @param exceptionEnum
+     * @param codeEnum
      */
-    public MyAuthenticationException(ErrorCodeEnum exceptionEnum) {
-        super(exceptionEnum.getMsg());
+    public MyAuthenticationException(ResultCodeEnum codeEnum) {
+        super(codeEnum.getMsg());
     }
 
 }

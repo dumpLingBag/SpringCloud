@@ -1,19 +1,16 @@
 package com.rngay.common.util;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
 import com.rngay.common.config.RnGayOSSConfig;
 import com.rngay.common.exception.BaseException;
 import com.rngay.common.vo.Result;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 @Component
 public class UploadUtil {
@@ -22,61 +19,24 @@ public class UploadUtil {
     private RnGayOSSConfig ossConfig;
 
     /**
-    * ftp 文件上传
-    * @Author pengcheng
-    * @Date 2019/5/30
-    **/
-    public String ftpUpload(MultipartFile uploadFile) {
-        String filename = byteLength(uploadFile);
-
-        FTPClient ftpClient = new FTPClient();
-        InputStream inputStream = null;
+     * ftp 文件上传
+     * @Author pengcheng
+     * @Date 2019/5/30
+     **/
+    public String ossUpload(MultipartFile uploadFile) {
+        String fileName = byteLength(uploadFile);
+        // 创建OSSClient实例。
+        OSS ossClient = new OSSClientBuilder().build(ossConfig.getEndpoint(), ossConfig.getAccessKeyId(), ossConfig.getAccessKeySecret());
         try {
-            ftpClient.connect(ossConfig.getAddress(), ossConfig.getPort());
-            boolean login = ftpClient.login(ossConfig.getUserName(), ossConfig.getPassword());
-            if (!login) {
-                throw new BaseException(Result.CODE_FAIL, "图片服务器验证连接失败");
-            }
-            int replyCode = ftpClient.getReplyCode();
-            if (!FTPReply.isPositiveCompletion(replyCode)) {
-                ftpClient.disconnect();
-                throw new BaseException(Result.CODE_FAIL, "图片服务器连接发生异常");
-            }
-            // 切换到上传目录
-            if (!ftpClient.changeWorkingDirectory(ossConfig.getBasePath())) {
-                // 如果目录不存在创建目录
-                if (!ftpClient.makeDirectory(ossConfig.getBasePath())) {
-                    throw new BaseException(Result.CODE_FAIL, "图片服务器连接发生异常");
-                } else {
-                    ftpClient.changeWorkingDirectory(ossConfig.getBasePath());
-                }
-            }
-            boolean fileType = ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            if (fileType) {
-                ftpClient.enterLocalPassiveMode();
-                inputStream = uploadFile.getInputStream();
-                String imgType = filename.substring(filename.lastIndexOf("."));
-                String md5 = BinaryUtil.encodeMD5(input2byte(inputStream));
-                String fileName = md5 + imgType;
-                if (!ftpClient.storeFile(fileName, inputStream)) {
-                    throw new BaseException(Result.CODE_FAIL, "图片上传服务器失败");
-                }
-                ftpClient.logout();
-                return ossConfig.getBaseUrl() + md5 + imgType;
-            }
+            String md5 = BinaryUtil.encodeMD5(input2byte(uploadFile.getInputStream()));
+            String imgType = fileName.substring(fileName.lastIndexOf("."));
+            DateTime dateTime = new DateTime();
+            String filePath = "images/" + dateTime.toString("yyyy") + "/" + dateTime.toString("MM") + "/" +
+                    dateTime.toString("dd") + "/" + md5 + imgType;
+            ossClient.putObject(ossConfig.getBucketName(), filePath, new ByteArrayInputStream(uploadFile.getBytes()));
+            return ossConfig.getBaseUrl() + filePath;
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if (ftpClient.isConnected()) {
-                    ftpClient.disconnect();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }

@@ -2,9 +2,9 @@ package com.rngay.service_authority.security.jwt;
 
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
+import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.common.util.AuthorityUtil;
 import com.rngay.common.util.JwtUtil;
-import com.rngay.service_authority.security.ErrorCodeEnum;
 import com.rngay.service_authority.security.IgnoredUrlsProperties;
 import com.rngay.service_authority.security.exception.MyAuthenticationException;
 import com.rngay.service_authority.security.util.SkipPathRequestMatcher;
@@ -76,24 +76,24 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (StringUtils.isNotBlank(token)) {
             // token 已过期，重新登录
             if (jwtUtil.isExpired(token)) {
-                throw new MyAuthenticationException(ErrorCodeEnum.TOKEN_INVALID);
+                throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
             }
             long userId;
             try {
                 userId = Long.parseLong(jwtUtil.getSubject(token));
             } catch (Exception e) {
-                throw new MyAuthenticationException(ErrorCodeEnum.TOKEN_INVALID);
+                throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
             }
             Object user_token = redisUtil.get(RedisKeys.getTokenKey(userId));
             if (user_token == null || "".equals(user_token)) {
                 user_token = systemService.findToken(userId, new Date());
             }
             if (user_token == null || "".equals(user_token)) {
-                throw new MyAuthenticationException(ErrorCodeEnum.TOKEN_INVALID);
+                throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
             }
             // token 不一致，账号在其他地方登录
             if (!user_token.equals(token)) {
-                throw new MyAuthenticationException(ErrorCodeEnum.TOKEN_OTHER_LOGIN);
+                throw new MyAuthenticationException(ResultCodeEnum.TOKEN_OTHER_LOGIN);
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null || authentication.getPrincipal().equals("anonymousUser")) {
@@ -108,7 +108,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthentication);
             }
         } else {
-            throw new MyAuthenticationException(ErrorCodeEnum.TOKEN_INVALID);
+            throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
         }
         filterChain.doFilter(request, response);
     }

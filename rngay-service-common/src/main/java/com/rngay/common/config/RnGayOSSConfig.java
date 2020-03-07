@@ -7,55 +7,47 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "rngay-oss")
 @PropertySource(value = {
-        "classpath:rngay-oss-${spring.profiles.active}.properties"
+        "classpath:rngay-oss-${spring.profiles.active}.yml"
 }, ignoreResourceNotFound = true)
 public class RnGayOSSConfig {
 
-    private String address;
-    private int port;
-    private String userName;
-    private String password;
-    private String basePath;
+    private String bucketName;
+    private String accessKeyId;
+    private String accessKeySecret;
+    private String endpoint;
     private String baseUrl;
+    private String basePath;
 
-    public String getAddress() {
-        return address;
+    public String getBucketName() {
+        return bucketName;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
     }
 
-    public int getPort() {
-        return port;
+    public String getAccessKeyId() {
+        return accessKeyId;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setAccessKeyId(String accessKeyId) {
+        this.accessKeyId = accessKeyId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAccessKeySecret() {
+        return accessKeySecret;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAccessKeySecret(String accessKeySecret) {
+        this.accessKeySecret = accessKeySecret;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEndpoint() {
+        return endpoint;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getBasePath() {
-        return basePath;
-    }
-
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
     public String getBaseUrl() {
@@ -64,5 +56,13 @@ public class RnGayOSSConfig {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    public String getBasePath() {
+        return basePath;
+    }
+
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
     }
 }

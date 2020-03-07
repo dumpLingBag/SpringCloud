@@ -1,5 +1,6 @@
 package com.rngay.service_authority.controller;
 
+import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.CommonUrlDTO;
 import com.rngay.feign.authority.UrlDTO;
@@ -32,7 +33,7 @@ public class CommonController {
         if (orgId != null && orgId == 0) {
             return Result.success(menuUrlService.load());
         }
-        return Result.success(null);
+        return Result.success();
     }
 
     @RequestMapping(value = "loadOpen", method = RequestMethod.GET, name = "选中的权限")
@@ -41,13 +42,13 @@ public class CommonController {
         if (orgId != null && orgId == 0) {
             return Result.success(commonService.loadOpen());
         }
-        return Result.success(null);
+        return Result.success();
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, name = "选中权限")
     public Result<Integer> update(@RequestBody CommonUrlDTO urlDTO) {
         if (urlDTO.getUrlId() == null || urlDTO.getUrlId().isEmpty()) {
-            return Result.failMsg("公共权限修改失败");
+            return Result.fail(ResultCodeEnum.COMMON_AUTHORITY_FAIL);
         }
         return Result.success(commonService.update(urlDTO));
     }

@@ -43,12 +43,6 @@ public class UaUserDTO extends BaseDTO {
     private Long parentId;
 
     @TableField(exist = false)
-    private List<MenuDTO> menuList;
-
-    @TableField(exist = false)
-    private Set<String> urlSet;
-
-    @TableField(exist = false)
     private Date expireTime;
 
     public Long getId() {
@@ -139,19 +133,4 @@ public class UaUserDTO extends BaseDTO {
         this.expireTime = expireTime;
     }
 
-    public List<MenuDTO> getMenuList() {
-        return menuList;
-    }
-
-    public void setMenuList(List<MenuDTO> menuList) {
-        this.menuList = menuList;
-    }
-
-    public Set<String> getUrlSet() {
-        return urlSet;
-    }
-
-    public void setUrlSet(Set<String> urlSet) {
-        this.urlSet = urlSet;
-    }
 }

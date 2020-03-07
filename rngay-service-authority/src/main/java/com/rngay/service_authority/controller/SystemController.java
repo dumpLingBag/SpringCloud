@@ -28,13 +28,10 @@ public class SystemController {
     public Result<List<MenuDTO>> loadForMenu(HttpServletRequest request) {
         UaUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser == null) {
-            return Result.success(null);
+            return Result.success();
         }
 
         List<MenuDTO> menuList = systemService.loadForMenu(currentUser);
-        currentUser.setMenuList(menuList);
-
-        systemService.updateCurrentUser(request, currentUser);
 
         return Result.success(menuList);
     }

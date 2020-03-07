@@ -1,5 +1,6 @@
 package com.rngay.service_authority.controller;
 
+import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.common.util.UploadUtil;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.UserFileDTO;
@@ -26,7 +27,7 @@ public class FileController {
 
     @RequestMapping(value = "upload")
     public Result<String> upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
-        String path = uploadUtil.upload(file);
+        String path = uploadUtil.ossUpload(file);
         if (path != null) {
             String subStr = path.substring(path.lastIndexOf("/") + 1);
             subStr = subStr.substring(0, subStr.lastIndexOf("."));
@@ -40,7 +41,7 @@ public class FileController {
             userFileDao.insert(userFile);
             return Result.success(path);
         }
-        return Result.failMsg("文件上传失败");
+        return Result.fail(ResultCodeEnum.UPLOAD_FAIL);
     }
 
 }

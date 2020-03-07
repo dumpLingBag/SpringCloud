@@ -2,7 +2,6 @@ package com.rngay.service_authority.controller;
 
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.vo.Result;
-import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.SpecCaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

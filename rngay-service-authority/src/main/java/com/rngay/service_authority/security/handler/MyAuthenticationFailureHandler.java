@@ -2,6 +2,7 @@ package com.rngay.service_authority.security.handler;
 
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
+import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.common.util.ip.IPUtil;
 import com.rngay.common.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,12 +60,17 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
     private void failCount(HttpServletRequest request, HttpServletResponse response, String account) {
         String key = request.getServerName() + "_" + IPUtil.getIPAddress(request) + "_" + account;
         Object value = redisUtil.get(RedisKeys.getFailCount(key));
-        int count = 0;
-        if (value instanceof Integer)
-            count = (int) value;
-        count = count + 1;
-        redisUtil.set(RedisKeys.getFailCount(key), count, 2 * 60 * 60 * 1000);
-        ResultUtil.writeJson(response, 2, "用户名或密码输入错误，请重新输入!");
+        if (value == null) {
+            redisUtil.set(RedisKeys.getFailCount(key), 1, 30 * 60);
+        } else {
+            int i = Integer.parseInt(value.toString());
+            int expire = 30 * 60;
+            if (i > 5) {
+                expire = 2 * 60 * 60;
+            }
+            redisUtil.set(RedisKeys.getFailCount(key), i + 1, expire);
+        }
+        ResultUtil.writeJson(response, ResultCodeEnum.LOGIN_FAIL);
     }
 
 }

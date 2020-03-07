@@ -1,5 +1,7 @@
 package com.rngay.common.vo;
 
+import com.rngay.common.enums.ResultCodeEnum;
+
 import java.io.Serializable;
 
 public class Result<T> implements Serializable {
@@ -49,31 +51,39 @@ public class Result<T> implements Serializable {
         this.msg = msg;
     }
 
+    public static <T> Result<T> fail() {
+        return new Result<>(ResultCodeEnum.FAIL.getCode(), ResultCodeEnum.FAIL.getMsg());
+    }
+
     public static <T> Result<T> fail(String msg) {
-        return new Result<>(CODE_FAIL, msg);
+        return new Result<>(ResultCodeEnum.FAIL.getCode(), msg);
     }
 
     public static <T> Result<T> fail(int code, String msg) {
         return new Result<>(code, msg);
     }
 
-    public static <T> Result<T> failMsg(String msg) {
-        return new Result<>(CODE_FAIL_MSG, msg);
+    public static <T> Result<T> fail(ResultCodeEnum codeEnum) {
+        return new Result<>(codeEnum.getCode(), codeEnum.getMsg());
     }
 
-    public static <T> Result<T> success(int code, String msg) {
-        return new Result<>(code, msg);
+    public static <T> Result<T> failMsg(String msg) {
+        return new Result<>(ResultCodeEnum.FAIL_MSG.getCode(), msg);
+    }
+
+    public static <T> Result<T> success(ResultCodeEnum codeEnum) {
+        return new Result<>(codeEnum.getCode(), codeEnum.getMsg());
     }
 
     public static <T> Result<T> success() {
-        return new Result<>(CODE_SUCCESS);
+        return new Result<>(ResultCodeEnum.SUCCESS.getCode(), ResultCodeEnum.SUCCESS.getMsg());
     }
 
     public static <T> Result<T> success(T data) {
-        return new Result<>(CODE_SUCCESS, data, "ok");
+        return new Result<>(ResultCodeEnum.SUCCESS.getCode(), data, ResultCodeEnum.SUCCESS.getMsg());
     }
 
-    public static <T> Result<T> success(T data, String msg) {
-        return new Result<>(CODE_SUCCESS, data, msg);
+    public static <T> Result<T> success(T data, ResultCodeEnum codeEnum) {
+        return new Result<>(codeEnum.getCode(), data, codeEnum.getMsg());
     }
 }
