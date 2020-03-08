@@ -19,12 +19,15 @@ public class UploadUtil {
     private RnGayOSSConfig ossConfig;
 
     /**
-     * ftp 文件上传
+     * oss 文件上传
      * @Author pengcheng
      * @Date 2019/5/30
      **/
-    public String ossUpload(MultipartFile uploadFile) {
-        String fileName = byteLength(uploadFile);
+    public String ossUpload(String fileName, MultipartFile uploadFile) {
+        byteLength(uploadFile);
+        if (StringUtils.isNoneBlank(fileName) && fileName.lastIndexOf(".") == -1) {
+            return null;
+        }
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(ossConfig.getEndpoint(), ossConfig.getAccessKeyId(), ossConfig.getAccessKeySecret());
         try {
@@ -46,7 +49,7 @@ public class UploadUtil {
     * @Author pengcheng
     * @Date 2019/5/30
     **/
-    public String upload(MultipartFile uploadFile) {
+    /*public String upload(MultipartFile uploadFile) {
         String filename = byteLength(uploadFile);
 
         try {
@@ -65,7 +68,7 @@ public class UploadUtil {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     private byte[] input2byte(InputStream inStream) throws IOException {
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
@@ -77,20 +80,15 @@ public class UploadUtil {
         return swapStream.toByteArray();
     }
 
-    private String byteLength(MultipartFile uploadFile) {
+    private void byteLength(MultipartFile uploadFile) {
         if (uploadFile.getSize() > 10 * 1024 * 1024) {
             throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
         }
         String type = uploadFile.getContentType();
-        String filename = uploadFile.getOriginalFilename();
-        if (type == null || filename == null || filename.lastIndexOf(".") == -1) {
-            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
-        }
 
         if (!"image/jpeg".equals(type) && !"image/png".equals(type)) {
             throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
         }
-        return filename;
     }
 
 }

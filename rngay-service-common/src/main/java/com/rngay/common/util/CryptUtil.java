@@ -93,7 +93,7 @@ public class CryptUtil {
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
         SecretKey sKey = keyFactory.generateSecret(dks);
         cipher.init(Cipher.DECRYPT_MODE, sKey);
-        byte cipherText[] = cipher.doFinal(debase64);
+        byte[] cipherText = cipher.doFinal(debase64);
         return new String(cipherText, StandardCharsets.UTF_16LE);
     }
 

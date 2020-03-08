@@ -15,16 +15,14 @@ public class ServletUtils {
     /**
      * 获取String参数
      */
-    public static String getParameter(String name)
-    {
+    public static String getParameter(String name) {
         return getRequest().getParameter(name);
     }
 
     /**
      * 获取String参数
      */
-    public static String getParameter(String name, String defaultValue)
-    {
+    public static String getParameter(String name, String defaultValue) {
         return Convert.toStr(getRequest().getParameter(name), defaultValue);
     }
 
@@ -39,8 +37,7 @@ public class ServletUtils {
     /**
      * 获取Integer参数
      */
-    public static Integer getParameterToInt(String name, Integer defaultValue)
-    {
+    public static Integer getParameterToInt(String name, Integer defaultValue) {
         return Convert.toInt(getRequest().getParameter(name), defaultValue);
     }
 
@@ -68,8 +65,7 @@ public class ServletUtils {
         return getRequest().getSession();
     }
 
-    public static ServletRequestAttributes getRequestAttributes()
-    {
+    public static ServletRequestAttributes getRequestAttributes() {
         RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
         return (ServletRequestAttributes) attributes;
     }
@@ -83,15 +79,12 @@ public class ServletUtils {
      */
     public static String renderString(HttpServletResponse response, String string)
     {
-        try
-        {
+        try {
             response.setStatus(200);
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(string);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -105,29 +98,22 @@ public class ServletUtils {
     public static boolean isAjaxRequest(HttpServletRequest request)
     {
         String accept = request.getHeader("accept");
-        if (accept != null && accept.indexOf("application/json") != -1)
-        {
+        if (accept != null && accept.contains("application/json")) {
             return true;
         }
 
         String xRequestedWith = request.getHeader("X-Requested-With");
-        if (xRequestedWith != null && xRequestedWith.indexOf("XMLHttpRequest") != -1)
-        {
+        if (xRequestedWith != null && xRequestedWith.contains("XMLHttpRequest")) {
             return true;
         }
 
         String uri = request.getRequestURI();
-        if (StringUtils.inStringIgnoreCase(uri, ".json", ".xml"))
-        {
+        if (StringUtils.inStringIgnoreCase(uri, ".json", ".xml")) {
             return true;
         }
 
         String ajax = request.getParameter("__ajax");
-        if (StringUtils.inStringIgnoreCase(ajax, "json", "xml"))
-        {
-            return true;
-        }
-        return false;
+        return StringUtils.inStringIgnoreCase(ajax, "json", "xml");
     }
 
 }

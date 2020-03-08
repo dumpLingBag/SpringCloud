@@ -5,13 +5,17 @@ import com.rngay.common.aspect.annotation.Log;
 import com.rngay.common.aspect.annotation.RepeatSubmit;
 import com.rngay.common.aspect.enums.BusinessType;
 import com.rngay.common.util.ResMsg;
+import com.rngay.common.util.StringUtils;
+import com.rngay.common.util.UploadUtil;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.service.SystemService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -26,6 +30,8 @@ public class UserController {
     private SystemService systemService;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private UploadUtil uploadUtil;
 
     @RepeatSubmit
     @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
@@ -147,6 +153,17 @@ public class UserController {
             user.setDelFlag(0);
         }
         return pfUserService.update(user);
+    }
+
+    @RequestMapping(value = "uploadAvatar", method = RequestMethod.POST)
+    public Result<String> uploadAvatar(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        String path = uploadUtil.ossUpload(fileName, file);
+        if (StringUtils.isNoneBlank(path)) {
+            Long userId = systemService.getCurrentUserId(request);
+            pfUserService.uploadAvatar(path, userId);
+            return Result.success(path);
+        }
+        return Result.failMsg("上传失败。");
     }
 
 }

@@ -27,21 +27,26 @@ public class FileController {
 
     @RequestMapping(value = "upload")
     public Result<String> upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
-        String path = uploadUtil.ossUpload(file);
+        String fileName = request.getParameter("fileName");
+        String path = uploadUtil.ossUpload(fileName, file);
         if (path != null) {
             String subStr = path.substring(path.lastIndexOf("/") + 1);
             subStr = subStr.substring(0, subStr.lastIndexOf("."));
 
-            UserFileDTO userFile = new UserFileDTO();
-            userFile.setFileId(subStr);
-            userFile.setContentType(file.getContentType());
-            userFile.setOriginalFilename(file.getOriginalFilename());
-            userFile.setUrl(path);
-            userFile.setUserId(systemService.getCurrentUserId(request));
-            userFileDao.insert(userFile);
+            saveFile(file, subStr, path, request);
             return Result.success(path);
         }
         return Result.fail(ResultCodeEnum.UPLOAD_FAIL);
+    }
+
+    protected int saveFile(MultipartFile file, String subStr, String path, HttpServletRequest request) {
+        UserFileDTO userFile = new UserFileDTO();
+        userFile.setFileId(subStr);
+        userFile.setContentType(file.getContentType());
+        userFile.setOriginalFilename(file.getOriginalFilename());
+        userFile.setUrl(path);
+        userFile.setUserId(systemService.getCurrentUserId(request));
+        return userFileDao.insert(userFile);
     }
 
 }

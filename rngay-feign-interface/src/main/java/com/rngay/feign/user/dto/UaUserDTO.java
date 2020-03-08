@@ -5,13 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.BaseDTO;
-import com.rngay.feign.authority.MenuDTO;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 @TableName(value = "ua_user")
 public class UaUserDTO extends BaseDTO {
@@ -20,11 +19,14 @@ public class UaUserDTO extends BaseDTO {
     private Long id;
 
     @NotBlank(message = "用户名不能为空")
+    @Pattern(regexp = "^[A-Za-z0-9_]{3,16}$", message = "用户名只能为字母，数字，下划线长度为3-16个字符")
     private String username;
 
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     @NotBlank(message = "用户昵称不能为空")
+    @Length(min = 2, max = 16, message = "用户昵称为3-16个字符")
     private String nickname;
 
     private Long orgId;
@@ -39,6 +41,8 @@ public class UaUserDTO extends BaseDTO {
     private String mobile;
 
     private Integer enable;
+
+    private Integer sex;
 
     private Long parentId;
 
@@ -115,6 +119,14 @@ public class UaUserDTO extends BaseDTO {
 
     public void setEnable(Integer enable) {
         this.enable = enable;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
     public Long getParentId() {

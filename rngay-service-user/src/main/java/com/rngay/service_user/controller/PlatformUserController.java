@@ -76,4 +76,9 @@ public class PlatformUserController {
         return Result.success(userService.delete(id));
     }
 
+    @RequestMapping(value = "uploadAvatar", method = RequestMethod.POST)
+    public Result<Integer> uploadAvatar(@RequestParam("path") String path, @RequestParam("userId") Long userId) {
+        return Result.success(userService.uploadAvatar(path, userId));
+    }
+
 }

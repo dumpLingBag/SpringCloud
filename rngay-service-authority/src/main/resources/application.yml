@@ -19,6 +19,11 @@ spring:
     allow-bean-definition-overriding: true
   messages:
     basename: i18n/messages
+  mail:
+    host: smtp.163.com
+    username: 15180280150@163.com
+    password: dpc199557
+    default-encoding: UTF-8
 server:
   port: 9090
 

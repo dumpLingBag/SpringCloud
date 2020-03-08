@@ -1,9 +1,9 @@
 package com.rngay.service_authority.listener;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.rngay.common.util.spring.SpringUtils;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.service_authority.dao.MenuDao;
-import com.rngay.service_authority.util.ContextAware;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class MenuStartRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
-        MenuDao menuDao = ContextAware.getService(MenuDao.class);
+        MenuDao menuDao = SpringUtils.getBean(MenuDao.class);
         Integer url = menuDao.selectCount(new QueryWrapper<MenuDTO>().eq("component", "AuthorityMenu"));
         if (url <= 0) {
             MenuDTO systemManage = new MenuDTO();

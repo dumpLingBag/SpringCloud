@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "rngay-oss")
 @PropertySource(value = {
-        "classpath:rngay-oss-${spring.profiles.active}.yml"
+        "classpath:rngay-oss-${spring.profiles.active}.properties"
 }, ignoreResourceNotFound = true)
 public class RnGayOSSConfig {
 

@@ -84,4 +84,11 @@ public interface UserService {
      */
     int delete(Long id);
 
+    /**
+     * 更新用户头像
+     * @author pengcheng
+     * @date 2020-03-07 17:23
+     */
+    int uploadAvatar(String path, Long userId);
+
 }

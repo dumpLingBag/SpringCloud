@@ -30,6 +30,8 @@ public class UAUser extends BaseEntity {
     @Column(columnDefinition= "char(1) default 1")
     private Integer enable;
 
+    private Integer sex;
+
     private Long parentId;
 
     public Long getId() {
@@ -102,6 +104,14 @@ public class UAUser extends BaseEntity {
 
     public void setEnable(Integer enable) {
         this.enable = enable;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
     public Long getParentId() {

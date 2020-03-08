@@ -120,4 +120,12 @@ public interface PFUserService {
     @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.DELETE)
     Result<Integer> delete(@PathVariable Long id);
 
+    /**
+     * 更新用户头像
+     * @author pengcheng
+     * @date 2020-03-07 17:20
+     */
+    @RequestMapping(value = "/user/uploadAvatar", method = RequestMethod.POST)
+    Result<Integer> uploadAvatar(@RequestParam("path") String path, @RequestParam("userId") Long userId);
+
 }

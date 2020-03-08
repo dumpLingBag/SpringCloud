@@ -74,6 +74,11 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             public Result<Integer> delete(Long id) {
                 return Result.failMsg(result);
             }
+
+            @Override
+            public Result<Integer> uploadAvatar(String path, Long userId) {
+                return Result.failMsg(result);
+            }
         };
     }
 }

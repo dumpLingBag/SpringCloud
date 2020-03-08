@@ -95,4 +95,11 @@ public class UserServiceImpl implements UserService {
         return userDao.deleteById(id);
     }
 
+    @Override
+    public int uploadAvatar(String path, Long userId) {
+        UaUserDTO userDTO = new UaUserDTO();
+        userDTO.setAvatar(path);
+        return userDao.update(userDTO, new QueryWrapper<UaUserDTO>().eq("id", userId));
+    }
+
 }
