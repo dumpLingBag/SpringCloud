@@ -84,16 +84,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
             }
-            Object user_token = redisUtil.get(RedisKeys.getTokenKey(userId));
-            if (user_token == null || "".equals(user_token)) {
-                user_token = systemService.findToken(userId, new Date());
-            }
+            Object user_token = redisUtil.getHashVal(RedisKeys.getUserKey(userId), "access_token");
             if (user_token == null || "".equals(user_token)) {
                 throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
             }
             // token 不一致，账号在其他地方登录
             if (!user_token.equals(token)) {
                 throw new MyAuthenticationException(ResultCodeEnum.TOKEN_OTHER_LOGIN);
+            }
+            // 增加 token 过期时间
+            boolean checked = (boolean) redisUtil.getHashVal(RedisKeys.getUserKey(userId), "checked");
+            if (!checked) {
+                // 每次请求延长 token 过期时间
+                redisUtil.expire(RedisKeys.getUserKey(userId), 7200);
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null || authentication.getPrincipal().equals("anonymousUser")) {

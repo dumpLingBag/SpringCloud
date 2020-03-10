@@ -25,7 +25,7 @@ public class JwtUtil {
     public String generateToken(Claims claims){
         Date nowDate = new Date();
         //过期时间
-        Date expireDate = new Date(nowDate.getTime() + jwtConfig.getExpire() * 1000);
+        Date expireDate = new Date(nowDate.getTime() + jwtConfig.getExpire());
 
         return Jwts.builder()
                 .setHeaderParam("typ","JWT")

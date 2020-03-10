@@ -29,14 +29,14 @@ public interface SystemService {
      * @Author: pengcheng
      * @Date: 2018/12/14
      */
-    int insertToken(UaUserDTO userDTO, String token);
+    void insertToken(UaUserDTO userDTO, String token);
 
     /**
      * 从数据库删除 token 并更新 redis 缓存
      * @Author: pengcheng
      * @Date: 2018/12/15
      */
-    int deleteToken(Long userId);
+    Boolean deleteToken(Long userId);
 
     /**
      * 从数据库查询指定用户的有效 token

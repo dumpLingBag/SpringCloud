@@ -73,35 +73,17 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public int insertToken(UaUserDTO userDTO, String token) {
+    public void insertToken(UaUserDTO userDTO, String token) {
         Long userId = userDTO.getId();
-
-        UserTokenDTO userToken = new UserTokenDTO();
-        userToken.setUserId(userId);
-        userToken.setToken(token);
-        Date date = new Date();
-        userToken.setUpdateTime(date);
-
-        Date expireTime = jwtUtil.getExpiration(token);
-        userToken.setExpireTime(expireTime);
-
-        redisUtil.set(RedisKeys.getUserKey(userId), userDTO);
-
-        int user_id = userTokenDao.update(userToken, new QueryWrapper<UserTokenDTO>().eq("user_id", userId));
-        if (user_id > 0) {
-            return user_id;
-        } else {
-            userToken.setCreateTime(date);
-            return userTokenDao.insert(userToken);
-        }
+        redisUtil.zHashPut(RedisKeys.getUserKey(userId), "access_token", token);
+        redisUtil.zHashPut(RedisKeys.getUserKey(userId), "checked", userDTO.getChecked());
+        redisUtil.zHashPut(RedisKeys.getUserKey(userId), "user_info", userDTO);
+        redisUtil.expire(RedisKeys.getUserKey(userId), userDTO.getChecked() ? 604800 : 7200);
     }
 
     @Override
-    public int deleteToken(Long userId) {
-        redisUtil.del(RedisKeys.getUserKey(userId));
-        UserTokenDTO user = userTokenDao.selectOne(new QueryWrapper<UserTokenDTO>().eq("user_id", userId));
-        user.setToken(null);
-        return userTokenDao.updateById(user);
+    public Boolean deleteToken(Long userId) {
+        return redisUtil.del(RedisKeys.getUserKey(userId));
     }
 
     @Override
@@ -116,7 +98,7 @@ public class SystemServiceImpl implements SystemService {
         String token = AuthorityUtil.getRequestToken(request);
         if (token != null) {
             long userId = Long.parseLong(jwtUtil.getSubject(token));
-            Object user = redisUtil.get(RedisKeys.getUserKey(userId));
+            Object user = redisUtil.getHashVal(RedisKeys.getUserKey(userId),"user_info");
             if (user == null) return null;
             return (UaUserDTO) user;
         }
@@ -126,7 +108,7 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public int updateCurrentUser(HttpServletRequest request, UaUserDTO userDTO) {
         if (userDTO != null) {
-            redisUtil.set(RedisKeys.getUserKey(userDTO.getId()), userDTO);
+            redisUtil.zHashPut(RedisKeys.getUserKey(userDTO.getId()), "user_info", userDTO);
             return 1;
         }
         return 0;

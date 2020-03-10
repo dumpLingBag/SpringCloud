@@ -1,7 +1,5 @@
 package com.rngay.service_authority.security.handler;
 
-import com.rngay.common.cache.RedisUtil;
-import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.util.ResultUtil;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.security.jwt.JwtUserDetails;
@@ -31,8 +29,6 @@ import java.io.IOException;
 public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
     private SystemService systemService;
 
     @Override
@@ -40,7 +36,6 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
         JwtUserDetails details = (JwtUserDetails) authentication.getPrincipal();
         UaUserDTO userInfo = details.getUserInfo();
         if (userInfo != null) {
-            redisUtil.del(RedisKeys.getTokenKey(userInfo.getId()));
             systemService.deleteToken(userInfo.getId());
         }
         ResultUtil.writeJson(response, 0, "退出系统成功");

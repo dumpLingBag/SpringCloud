@@ -48,7 +48,7 @@ public class RedisUtil {
         return redisTemplate.opsForValue().get(key);
     }
 
-    public Object getset(String key, Object value) {
+    public Object getSet(String key, Object value) {
         return redisTemplate.opsForValue().getAndSet(key, value);
     }
 
@@ -73,31 +73,31 @@ public class RedisUtil {
         redisTemplate.opsForValue().set(key, value, expireSeconds, TimeUnit.SECONDS);
     }
 
-    public Boolean setnx(String key, Object value) {
+    public Boolean setNx(String key, Object value) {
         return redisTemplate.opsForValue().setIfAbsent(key, value);
     }
 
-    public Boolean setnx(String key, Object value, Date expiredTime) {
-        Boolean flag = setnx(key, value);
+    public Boolean setNx(String key, Object value, Date expiredTime) {
+        Boolean flag = setNx(key, value);
         if (flag) {
             redisTemplate.expireAt(key, expiredTime);
         }
         return flag;
     }
 
-    public Boolean setnx(String key, Object value, int expireSeconds) {
-        Boolean flag = setnx(key, value);
+    public Boolean setNx(String key, Object value, int expireSeconds) {
+        Boolean flag = setNx(key, value);
         if (flag) {
             redisTemplate.expire(key, expireSeconds, TimeUnit.SECONDS);
         }
         return flag;
     }
 
-    public Boolean zadd(String key, double score, Object value) {
+    public Boolean zAdd(String key, double score, Object value) {
         return redisTemplate.opsForZSet().add(key, value, score);
     }
 
-    public Boolean zadd(String key, double score, Object value, int expireSeconds) {
+    public Boolean zAdd(String key, double score, Object value, int expireSeconds) {
         Boolean add = redisTemplate.opsForZSet().add(key, value, score);
         if (add != null && add) {
             redisTemplate.expire(key, expireSeconds, TimeUnit.SECONDS);
@@ -109,7 +109,7 @@ public class RedisUtil {
         return redisTemplate.opsForZSet().zCard(key);
     }
 
-    public Double zincrby(String key, double score, Object value) {
+    public Double zIncrBy(String key, double score, Object value) {
         return redisTemplate.opsForZSet().incrementScore(key, value, score);
     }
 
@@ -126,15 +126,15 @@ public class RedisUtil {
         return redisTemplate.opsForZSet().range(key, start, end);
     }
 
-    public Set<Object> zrangebyscore(String key, double min, double max) {
+    public Set<Object> zRangeByScore(String key, double min, double max) {
         return redisTemplate.opsForZSet().rangeByScore(key, min, max);
     }
 
-    public Long zrank(String key, Object field) {
+    public Long zRank(String key, Object field) {
         return redisTemplate.opsForZSet().rank(key, field);
     }
 
-    public Long zrem(String key, Object... values) {
+    public Long zRem(String key, Object... values) {
         return redisTemplate.opsForZSet().remove(key, values);
     }
 
@@ -151,11 +151,11 @@ public class RedisUtil {
         return redisTemplate.opsForZSet().reverseRange(key, start, end);
     }
 
-    public Long zrevrank(String key, Object field) {
+    public Long zRevRank(String key, Object field) {
         return redisTemplate.opsForZSet().reverseRank(key, field);
     }
 
-    public Double zscore(String key, Object field) {
+    public Double zScore(String key, Object field) {
         return redisTemplate.opsForZSet().score(key, field);
     }
 
@@ -169,6 +169,18 @@ public class RedisUtil {
 
     public Object leftPop(String key) {
         return redisTemplate.opsForList().leftPop(key);
+    }
+
+    public void zHashPut(String key, Object filed, Object value) {
+        redisTemplate.opsForHash().put(key, filed, value);
+    }
+
+    public Long zHashDel(String key, Object... value) {
+        return redisTemplate.opsForHash().delete(key, value);
+    }
+
+    public Object getHashVal(String key, Object filed) {
+        return redisTemplate.opsForHash().get(key, filed);
     }
 
     public Long getExpire(String key) {

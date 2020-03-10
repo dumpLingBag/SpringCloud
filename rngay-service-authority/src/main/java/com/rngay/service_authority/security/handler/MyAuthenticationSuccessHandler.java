@@ -58,22 +58,22 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        String checked = request.getParameter("checked");
         // 获得授权后可得到用户信息(jwt 方式)
         JwtUserDetails userDetails = (JwtUserDetails) authentication.getPrincipal();
         UaUserDTO userInfo = userDetails.getUserInfo();
+        userInfo.setChecked(Boolean.valueOf(checked));
         List<String> authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         // 使用jwt生成 token 用于权限效验
         Claims claims = Jwts.claims();
         claims.put("userInfo", JsonUtil.obj2String(userInfo));
         claims.put("role", authorities);
         claims.put("userId", userInfo.getId());
+        claims.put("checked", checked);
         String access_token = jwtUtil.generateToken(claims);
         if (StringUtils.isNotBlank(access_token)) {
             access_token = jwtConfig.getPrefix() + " " + access_token;
-            boolean boo = saveToken(access_token, userDetails.getUserInfo());
-            if (boo) {
-                throw new MyAuthenticationException(ResultCodeEnum.LOGIN_FAIL);
-            }
+            saveToken(access_token, userInfo);
             HashMap<String, Object> map = new HashMap<>();
             map.put("userId", userInfo.getId());
             map.put("username", userInfo.getUsername());
@@ -96,10 +96,9 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
      * @author pengcheng
      * @date 2020-02-14 11:09
      */
-    private boolean saveToken(String token, UaUserDTO userDTO) {
-        redisUtil.set(RedisKeys.getTokenKey(userDTO.getId()), token);
+    private void saveToken(String token, UaUserDTO userDTO) {
         try {
-            return systemService.insertToken(userDTO, token) <= 0;
+            systemService.insertToken(userDTO, token);
         } catch (Exception e) {
             throw new MyAuthenticationException(ResultCodeEnum.LOGIN_INFO_FAIL);
         }

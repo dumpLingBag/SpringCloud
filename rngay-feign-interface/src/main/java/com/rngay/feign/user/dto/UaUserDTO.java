@@ -49,6 +49,9 @@ public class UaUserDTO extends BaseDTO {
     @TableField(exist = false)
     private Date expireTime;
 
+    @TableField(exist = false)
+    private Boolean checked;
+
     public Long getId() {
         return id;
     }
@@ -145,4 +148,11 @@ public class UaUserDTO extends BaseDTO {
         this.expireTime = expireTime;
     }
 
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
 }
