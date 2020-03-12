@@ -5,6 +5,8 @@ import org.springframework.security.core.AuthenticationException;
 
 public class MyAuthenticationException extends AuthenticationException {
 
+    private int code;
+
     public MyAuthenticationException(String msg, Throwable t) {
         super(msg, t);
     }
@@ -19,6 +21,14 @@ public class MyAuthenticationException extends AuthenticationException {
      */
     public MyAuthenticationException(ResultCodeEnum codeEnum) {
         super(codeEnum.getMsg());
+        this.code = codeEnum.getCode();
     }
 
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 }

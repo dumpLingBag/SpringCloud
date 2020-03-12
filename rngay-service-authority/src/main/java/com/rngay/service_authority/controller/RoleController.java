@@ -8,16 +8,13 @@ import com.rngay.feign.authority.RoleInListDTO;
 import com.rngay.service_authority.service.RoleService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "authorityRole", name = "角色管理")
+@RequestMapping(value = "authorityRole")
 public class RoleController {
 
     @Autowired
@@ -25,7 +22,7 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载角色")
+    @GetMapping(value = "laod")
     public Result<List<RoleDTO>> load(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
@@ -34,7 +31,7 @@ public class RoleController {
         return Result.success(roleService.load(orgId));
     }
 
-    @RequestMapping(value = "loadRole", method = RequestMethod.GET)
+    @GetMapping(value = "loadRole")
     public Result<List<RoleDTO>> loadRole(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
@@ -43,7 +40,7 @@ public class RoleController {
         return Result.success(roleService.loadRole(orgId));
     }
 
-    @RequestMapping(value = "loadByPid", method = RequestMethod.GET, name = "获取pid为0的角色")
+    @GetMapping(value = "loadByPid")
     public Result<List<RoleDTO>> loadByPid(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null) {
@@ -53,7 +50,7 @@ public class RoleController {
     }
 
     @RepeatSubmit
-    @RequestMapping(value = "save", method = RequestMethod.POST, name = "添加角色")
+    @PostMapping(value = "save")
     public Result<Integer> save(HttpServletRequest request, @RequestBody RoleDTO uaRole) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
@@ -67,7 +64,7 @@ public class RoleController {
         return Result.success();
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.PUT, name = "修改角色")
+    @PutMapping(value = "update")
     public Result<Integer> update(@RequestBody RoleDTO uaRole) {
         boolean role = roleService.updateById(uaRole);
         if (!role) {
@@ -76,7 +73,7 @@ public class RoleController {
         return Result.success();
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.DELETE, name = "删除角色")
+    @DeleteMapping(value = "delete")
     public Result<Integer> delete(@RequestBody RoleIdListDTO listDTO) {
         if (listDTO.getRoleIdList() == null || listDTO.getRoleIdList().isEmpty()) {
             return Result.failMsg("删除角色失败");
@@ -84,7 +81,7 @@ public class RoleController {
         return Result.success(roleService.delete(listDTO));
     }
 
-    @RequestMapping(value = "updateInList", method = RequestMethod.PUT)
+    @PutMapping(value = "updateInList")
     public Result<Integer> updateInList(@RequestBody RoleInListDTO roleInList) {
         if (roleInList == null || roleInList.getRoleIdList().isEmpty()) {
             return Result.failMsg("角色更新失败");

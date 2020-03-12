@@ -8,10 +8,7 @@ import com.rngay.service_authority.service.CommonService;
 import com.rngay.service_authority.service.MenuUrlService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,7 +24,7 @@ public class CommonController {
     @Autowired
     private MenuUrlService menuUrlService;
 
-    @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载权限")
+    @GetMapping(value = "load")
     public Result<List<UrlDTO>> load(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId == 0) {
@@ -36,7 +33,7 @@ public class CommonController {
         return Result.success();
     }
 
-    @RequestMapping(value = "loadOpen", method = RequestMethod.GET, name = "选中的权限")
+    @GetMapping(value = "loadOpen")
     public Result<List<UrlDTO>> loadOpen(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId == 0) {
@@ -45,7 +42,7 @@ public class CommonController {
         return Result.success();
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.PUT, name = "选中权限")
+    @PutMapping(value = "update")
     public Result<Integer> update(@RequestBody CommonUrlDTO urlDTO) {
         if (urlDTO.getUrlId() == null || urlDTO.getUrlId().isEmpty()) {
             return Result.fail(ResultCodeEnum.COMMON_AUTHORITY_FAIL);

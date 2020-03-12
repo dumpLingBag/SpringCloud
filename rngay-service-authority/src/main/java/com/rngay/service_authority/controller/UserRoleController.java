@@ -2,13 +2,11 @@ package com.rngay.service_authority.controller;
 
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.UserRoleDTO;
+import com.rngay.feign.authority.UserRoleParamDTO;
 import com.rngay.feign.authority.UserRoleUpdateDTO;
 import com.rngay.service_authority.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,7 +18,7 @@ public class UserRoleController {
     @Autowired
     private UserRoleService userRoleService;
 
-    @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载用户的权限")
+    @GetMapping(value = "load")
     public Result<List<UserRoleDTO>> load(Long userId) {
         if (userId != null) {
             return Result.success(userRoleService.load(userId));
@@ -28,7 +26,13 @@ public class UserRoleController {
         return Result.failMsg("获取用户角色失败");
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.PUT, name = "更新用户角色")
+    @ResponseBody
+    @GetMapping(value = "loadUserByRoleId")
+    public Result<List<UserRoleDTO>> loadUserByRoleId(@RequestBody UserRoleParamDTO userRoleParamDTO) {
+        return Result.success();
+    }
+
+    @PutMapping(value = "update")
     public Result<Integer> update(@Valid @RequestBody UserRoleUpdateDTO updateDTO) {
         return Result.success(userRoleService.update(updateDTO));
     }

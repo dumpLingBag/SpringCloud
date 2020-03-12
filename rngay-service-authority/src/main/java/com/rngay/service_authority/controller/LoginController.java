@@ -4,6 +4,7 @@ import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.vo.Result;
 import com.wf.captcha.SpecCaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ public class LoginController {
     @Autowired
     private RedisUtil redisUtil;
 
-    @RequestMapping(value = "captcha", method = RequestMethod.GET)
+    @GetMapping(value = "captcha")
     public Result<?> captcha() {
         try {
             SpecCaptcha captcha = new SpecCaptcha(130, 42);

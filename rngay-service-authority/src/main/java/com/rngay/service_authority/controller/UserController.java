@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "user", name = "用户管理")
+@RequestMapping(value = "user")
 public class UserController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class UserController {
     private UploadUtil uploadUtil;
 
     @RepeatSubmit
-    @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存用户")
+    @PostMapping(value = "save")
     public Result<Integer> save(@Valid @RequestBody UaUserDTO saveUserDTO) {
         Result<UaUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getUsername());
         if (byAccount.getCode() == 0) {
@@ -59,14 +59,14 @@ public class UserController {
         return pfUserService.save(saveUserDTO);
     }
 
-    @RequestMapping(value = "pageList", method = RequestMethod.POST, name = "分页展示用户")
+    @PostMapping(value = "pageList")
     public Result<Page<UaUserDTO>> pageList(@RequestBody UaUserPageListDTO pageListDTO) {
         return pfUserService.pageList(pageListDTO);
     }
 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @RepeatSubmit
-    @RequestMapping(value = "update", method = RequestMethod.PUT, name = "更新用户")
+    @PutMapping(value = "update")
     public Result<Integer> update(@Valid @RequestBody UaUserDTO updateUserDTO) {
         UaUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
         if (user != null) {
@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @RequestMapping(value = "reset/{id}", method = RequestMethod.PUT, name = "重置密码")
+    @PutMapping(value = "reset/{id}")
     public Result<String> reset(@PathVariable Long id) {
         if (id == null) {
             return Result.failMsg("密码重置失败");
@@ -101,7 +101,7 @@ public class UserController {
     }
 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @RequestMapping(value = "enable/{id}/{enable}", method = RequestMethod.PUT, name = "启用禁用")
+    @PutMapping(value = "enable/{id}/{enable}")
     public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
         UaUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser.getParentId() == 0 && currentUser.getId().equals(id)) {
@@ -115,7 +115,7 @@ public class UserController {
     }
 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @RequestMapping(value = "updatePassword", method = RequestMethod.PUT, name = "修改密码")
+    @PutMapping(value = "updatePassword")
     public Result<Integer> updatePassword(HttpServletRequest request, @RequestBody UpdatePassword password) {
         Long userId = systemService.getCurrentUserId(request);
         UaUserDTO user = pfUserService.findById(userId).getData();
@@ -129,7 +129,7 @@ public class UserController {
         return pfUserService.updatePassword(password);
     }
 
-    @RequestMapping(value = "checkPassword", method = RequestMethod.GET, name = "校验密码")
+    @GetMapping(value = "checkPassword")
     public Result<String> checkPassword(HttpServletRequest request, @RequestParam("password") String password) {
         if (password != null && !"".equals(password)) {
             UaUserDTO currentUser = systemService.getCurrentUser(request);
@@ -143,7 +143,7 @@ public class UserController {
     }
 
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE, name = "删除用户")
+    @DeleteMapping(value = "delete/{id}")
     public Result<Integer> delete(@PathVariable Long id) {
         UaUserDTO user = pfUserService.findById(id).getData();
         if (user != null) {
@@ -155,7 +155,7 @@ public class UserController {
         return pfUserService.update(user);
     }
 
-    @RequestMapping(value = "uploadAvatar", method = RequestMethod.POST)
+    @PostMapping(value = "uploadAvatar")
     public Result<String> uploadAvatar(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         String path = uploadUtil.ossUpload(fileName, file);
         if (StringUtils.isNoneBlank(path)) {

@@ -18,7 +18,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/13
      */
-    @RequestMapping(value = "/user/find", method = RequestMethod.GET)
+    @GetMapping(value = "/user/find")
     Result<UaUserDTO> find(@RequestParam("username") String username, @RequestParam("password") String password);
 
     /**
@@ -27,7 +27,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/1/9
      */
-    @RequestMapping(value = "/user/findById/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/user/findById/{id}")
     Result<UaUserDTO> findById(@PathVariable Long id);
 
     /**
@@ -36,7 +36,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    @RequestMapping(value = "/user/findByAccount", method = RequestMethod.GET)
+    @GetMapping(value = "/user/findByAccount")
     Result<UaUserDTO> findByAccount(@RequestParam("username") String username);
 
     /**
@@ -45,7 +45,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    @RequestMapping(value = "/user/findByMobile", method = RequestMethod.GET)
+    @GetMapping(value = "/user/findByMobile")
     Result<UaUserDTO> findByMobile(@RequestParam("mobile") String mobile);
 
     /**
@@ -54,7 +54,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/16
      */
-    @RequestMapping(value = "/user/save", method = RequestMethod.POST)
+    @PostMapping(value = "/user/save")
     Result<Integer> save(@RequestBody UaUserDTO saveUserDTO);
 
     /**
@@ -63,7 +63,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/28
      */
-    @RequestMapping(value = "/user/update", method = RequestMethod.PUT)
+    @PutMapping(value = "/user/update")
     Result<Integer> update(@RequestBody UaUserDTO updateUserDTO);
 
     /**
@@ -72,7 +72,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/22
      */
-    @RequestMapping(value = "/user/icon", method = RequestMethod.GET)
+    @GetMapping(value = "/user/icon")
     Result<List<UaIconDTO>> loadIcon();
 
     /**
@@ -81,7 +81,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/27
      */
-    @RequestMapping(value = "/user/pageList", method = RequestMethod.POST)
+    @PostMapping(value = "/user/pageList")
     Result<Page<UaUserDTO>> pageList(@RequestBody UaUserPageListDTO pageListDTO);
 
     /**
@@ -90,7 +90,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/29
      */
-    @RequestMapping(value = "/user/reset/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/user/reset/{id}")
     Result<String> reset(@PathVariable Long id);
 
     /**
@@ -99,7 +99,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/1/7
      */
-    @RequestMapping(value = "/user/enable/{id}/{enable}", method = RequestMethod.PUT)
+    @PutMapping(value = "/user/enable/{id}/{enable}")
     Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable);
 
     /**
@@ -108,7 +108,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/1/14
      */
-    @RequestMapping(value = "/user/updatePassword", method = RequestMethod.PUT)
+    @PutMapping(value = "/user/updatePassword")
     Result<Integer> updatePassword(@RequestBody UpdatePassword password);
 
     /**
@@ -117,7 +117,7 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/2/3
      */
-    @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/user/delete/{id}")
     Result<Integer> delete(@PathVariable Long id);
 
     /**
@@ -125,7 +125,7 @@ public interface PFUserService {
      * @author pengcheng
      * @date 2020-03-07 17:20
      */
-    @RequestMapping(value = "/user/uploadAvatar", method = RequestMethod.POST)
+    @PostMapping(value = "/user/uploadAvatar")
     Result<Integer> uploadAvatar(@RequestParam("path") String path, @RequestParam("userId") Long userId);
 
 }

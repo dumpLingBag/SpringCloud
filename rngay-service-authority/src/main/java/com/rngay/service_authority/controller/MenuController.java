@@ -23,7 +23,7 @@ public class MenuController {
     private SystemService systemService;
 
     @RepeatSubmit
-    @RequestMapping(value = "save", method = RequestMethod.POST, name = "保存菜单")
+    @PostMapping(value = "save")
     public Result<Integer> save(@RequestBody MenuDTO uaMenu) {
         Integer menu = menuService.saveMenu(uaMenu);
         if (menu == null || menu == 0) {
@@ -32,7 +32,7 @@ public class MenuController {
         return Result.success(menu);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.PUT, name = "修改菜单")
+    @PutMapping(value = "update")
     public Result<Integer> update(@RequestBody MenuDTO uaMenu) {
         boolean menu = menuService.updateById(uaMenu);
         if (!menu) {
@@ -41,7 +41,7 @@ public class MenuController {
         return Result.success();
     }
 
-    @RequestMapping(value = "load", method = RequestMethod.GET, name = "加载菜单")
+    @GetMapping(value = "load")
     public Result<List<MenuDTO>> load(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId == 0) {
@@ -50,7 +50,7 @@ public class MenuController {
         return Result.failMsg("菜单加载失败");
     }
 
-    @RequestMapping(value = "loadByPid", method = RequestMethod.GET, name = "获取父级菜单")
+    @GetMapping(value = "loadByPid")
     public Result<List<MenuDTO>> loadByPid(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId == 0) {
@@ -59,7 +59,7 @@ public class MenuController {
         return Result.failMsg("菜单加载失败");
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.DELETE, name = "删除菜单")
+    @DeleteMapping(value = "delete")
     public Result<Integer> delete(@RequestBody MenuIdListDTO menuIdList) {
         if (menuIdList == null || menuIdList.getMenuIdList().isEmpty()) {
             return Result.failMsg("删除菜单失败");
@@ -67,7 +67,7 @@ public class MenuController {
         return Result.success(menuService.delete(menuIdList));
     }
 
-    @RequestMapping(value = "updateInList", method = RequestMethod.PUT, name = "显示隐藏")
+    @PutMapping(value = "updateInList")
     public Result<Integer> update(@RequestBody MenuInListDTO menuIdList) {
         if (menuIdList == null || menuIdList.getMenuIdList().isEmpty()) {
             return Result.failMsg("更改状态失败");

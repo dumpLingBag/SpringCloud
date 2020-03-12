@@ -7,9 +7,7 @@ import com.rngay.feign.authority.UserFileDTO;
 import com.rngay.service_authority.dao.UserFileDao;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +23,7 @@ public class FileController {
     @Autowired
     private UserFileDao userFileDao;
 
-    @RequestMapping(value = "upload")
+    @PostMapping(value = "upload")
     public Result<String> upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
         String fileName = request.getParameter("fileName");
         String path = uploadUtil.ossUpload(fileName, file);

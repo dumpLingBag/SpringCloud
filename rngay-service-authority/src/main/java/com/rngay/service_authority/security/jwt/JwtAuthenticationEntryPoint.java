@@ -32,7 +32,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             e.printStackTrace();
             ResultUtil.writeJson(response, 1, "缺少请求头参数，Authorization传递是token值所以参数是必须的");
         } else if (e instanceof MyAuthenticationException) {
-            ResultUtil.writeJson(response, 1, e.getMessage());
+            int code = ((MyAuthenticationException) e).getCode();
+            ResultUtil.writeJson(response, code, e.getMessage());
         } else {
             ResultUtil.writeJson(response, 1, "用户信息错误");
         }
