@@ -16,4 +16,11 @@
             </if>
         </where>
     </select>
+
+    <select id="loadByUserIds" resultType="UAUserDTO">
+        select * from ua_user where id in
+        <foreach collection="roleDTO" item="dto" open="(" close=")" separator=",">
+            #{dto.userId}
+        </foreach>
+    </select>
 </mapper>

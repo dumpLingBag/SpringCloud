@@ -2,6 +2,8 @@ package com.rngay.feign.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
+import com.rngay.feign.authority.RoleDTO;
+import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.fallback.PFUserServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -127,5 +129,13 @@ public interface PFUserService {
      */
     @PostMapping(value = "/user/uploadAvatar")
     Result<Integer> uploadAvatar(@RequestParam("path") String path, @RequestParam("userId") Long userId);
+
+    /**
+     * 根据 userIds 加载指定用户
+     * @Author: pengcheng
+     * @Date: 2020/3/13
+     */
+    @PostMapping(value = "/user/loadByUserIds")
+    Result<List<UaUserDTO>> loadByUserIds(@RequestBody List<UserRoleDTO> roleDTO);
 
 }

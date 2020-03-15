@@ -1,14 +1,18 @@
 package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rngay.feign.authority.OrgRoleDTO;
-import com.rngay.feign.authority.UserRoleDTO;
-import com.rngay.feign.authority.UserRoleUpdateDTO;
+import com.rngay.common.vo.Result;
+import com.rngay.feign.authority.*;
+import com.rngay.feign.user.dto.UaUserDTO;
+import com.rngay.feign.user.dto.UaUserPageListDTO;
+import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.dao.OrgRoleDao;
 import com.rngay.service_authority.dao.UrlDao;
 import com.rngay.service_authority.dao.UserRoleDao;
 import com.rngay.service_authority.service.UserRoleService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +30,8 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     private OrgRoleDao orgRoleDao;
     @Autowired
     private UrlDao urlDao;
+    @Autowired
+    private PFUserService pfUserService;
 
     @Override
     public List<UserRoleDTO> load(Long userId) {
@@ -34,8 +40,22 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     }
 
     @Override
-    public Integer update(UserRoleUpdateDTO updateDTO) {
-        if (!updateDTO.getRoleId().isEmpty() && updateDTO.getUserId() != null) {
+    public Boolean update(UserRoleUpdateDTO updateDTO) {
+        List<UserRoleDTO> list = new ArrayList<>();
+        for (Long userId : updateDTO.getUserIds()) {
+            for (Long roleId : updateDTO.getRoleIds()) {
+                UserRoleDTO userRoleDTO = new UserRoleDTO();
+                userRoleDTO.setUserId(userId);
+                userRoleDTO.setRoleId(roleId);
+                userRoleDTO.setChecked(1);
+                list.add(userRoleDTO);
+            }
+        }
+        if (!list.isEmpty()) {
+            return saveOrUpdateBatch(list);
+        }
+        return false;
+        /*if (!updateDTO.getRoleId().isEmpty() && updateDTO.getUserId() != null) {
             int i = 0;
             List<UserRoleDTO> list = new ArrayList<>();
             for (UserRoleDTO role : updateDTO.getRoleId()) {
@@ -54,7 +74,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
             }
             return i + list.size();
         }
-        return 0;
+        return 0;*/
     }
 
     @Override
@@ -79,5 +99,46 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
             return urlDao.loadUrlByOrgUserId(orgRoles, roleId);
         }
         return urlDao.loadUrlByUserId(roleId);
+    }
+
+    @Override
+    public Page<UaUserDTO> loadUserByRoleId(UserRoleParamDTO userRole) {
+        Page<UserRoleDTO> dtoPage = new Page<>(userRole.getCurrentPage(), userRole.getPageSize());
+        if (userRole.getRoleId() != null) {
+            Page<UserRoleDTO> roleDTOPage = userRoleDao.loadPageUserByRoleId(dtoPage, userRole.getRoleId());
+            if (roleDTOPage.getTotal() <= 0) {
+                return new Page<UaUserDTO>(userRole.getCurrentPage(), userRole.getPageSize()).setRecords(new ArrayList<>());
+            }
+            Result<List<UaUserDTO>> result = pfUserService.loadByUserIds(roleDTOPage.getRecords());
+            if (result.getData() != null && !result.getData().isEmpty()) {
+                List<UaUserDTO> data = result.getData();
+                for (UaUserDTO uaUserDTO : data) {
+                    for (UserRoleDTO roleDTO : roleDTOPage.getRecords()) {
+                        if (!uaUserDTO.getId().equals(roleDTO.getUserId())) {
+                            continue;
+                        }
+                        uaUserDTO.getRoles().add(roleDTO);
+                    }
+                }
+            }
+            return new Page<UaUserDTO>(userRole.getCurrentPage(), userRole.getPageSize(), roleDTOPage.getTotal()).setRecords(result.getData());
+        } else {
+            UaUserPageListDTO uaUserPage = new UaUserPageListDTO();
+            BeanUtils.copyProperties(userRole, uaUserPage);
+            Result<Page<UaUserDTO>> pageResult = pfUserService.pageList(uaUserPage);
+            Page<UaUserDTO> data = pageResult.getData();
+            if (data != null && !data.getRecords().isEmpty()) {
+                List<UserRoleDTO> roleDTOS = userRoleDao.loadRoleByUserId(data.getRecords());
+                for (UaUserDTO uaUserDTO : data.getRecords()) {
+                    for (UserRoleDTO userRoleDTO : roleDTOS) {
+                        if (uaUserDTO.getId().equals(userRoleDTO.getUserId())) {
+                            uaUserDTO.getRoles().add(userRoleDTO);
+                        }
+                    }
+                }
+                return new Page<UaUserDTO>(userRole.getCurrentPage(), userRole.getPageSize(), data.getTotal()).setRecords(data.getRecords());
+            }
+            return new Page<>(userRole.getCurrentPage(), userRole.getPageSize());
+        }
     }
 }

@@ -8,7 +8,6 @@ import com.rngay.common.util.JwtUtil;
 import com.rngay.service_authority.security.IgnoredUrlsProperties;
 import com.rngay.service_authority.security.exception.MyAuthenticationException;
 import com.rngay.service_authority.security.util.SkipPathRequestMatcher;
-import com.rngay.service_authority.service.SystemService;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,8 +49,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private RedisUtil redisUtil;
     @Autowired
     private JwtUtil jwtUtil;
-    @Autowired
-    private SystemService systemService;
     @Autowired
     private IgnoredUrlsProperties ignoredUrlsProperties;
 

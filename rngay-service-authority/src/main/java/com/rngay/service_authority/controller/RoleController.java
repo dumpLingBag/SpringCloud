@@ -22,7 +22,7 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @GetMapping(value = "laod")
+    @GetMapping(value = "load")
     public Result<List<RoleDTO>> load(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {

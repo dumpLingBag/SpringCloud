@@ -2,6 +2,8 @@ package com.rngay.feign.user.fallback;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
+import com.rngay.feign.authority.RoleDTO;
+import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
 import feign.hystrix.FallbackFactory;
@@ -77,6 +79,11 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
 
             @Override
             public Result<Integer> uploadAvatar(String path, Long userId) {
+                return Result.failMsg(result);
+            }
+
+            @Override
+            public Result<List<UaUserDTO>> loadByUserIds(List<UserRoleDTO> roleDTO) {
                 return Result.failMsg(result);
             }
         };

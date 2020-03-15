@@ -1,9 +1,11 @@
 package com.rngay.service_authority.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.authority.UserRoleParamDTO;
 import com.rngay.feign.authority.UserRoleUpdateDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +28,9 @@ public class UserRoleController {
         return Result.failMsg("获取用户角色失败");
     }
 
-    @ResponseBody
     @GetMapping(value = "loadUserByRoleId")
-    public Result<List<UserRoleDTO>> loadUserByRoleId(@RequestBody UserRoleParamDTO userRoleParamDTO) {
-        return Result.success();
+    public Result<Page<UaUserDTO>> loadUserByRoleId(UserRoleParamDTO userRole) {
+        return Result.success(userRoleService.loadUserByRoleId(userRole));
     }
 
     @PutMapping(value = "update")

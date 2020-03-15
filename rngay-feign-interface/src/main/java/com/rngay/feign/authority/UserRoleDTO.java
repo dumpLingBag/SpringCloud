@@ -1,6 +1,7 @@
 package com.rngay.feign.authority;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.CommonDTO;
@@ -13,6 +14,8 @@ public class UserRoleDTO extends CommonDTO {
     private Integer checked;
     private Long userId;
     private Long roleId;
+    @TableField(exist = false)
+    private String name;
 
     public Long getId() {
         return id;
@@ -44,5 +47,13 @@ public class UserRoleDTO extends CommonDTO {
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

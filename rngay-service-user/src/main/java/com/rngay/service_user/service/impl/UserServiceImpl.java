@@ -3,6 +3,7 @@ package com.rngay.service_user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.util.RandomPassUtil;
+import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.dto.UaUserPageListDTO;
 import com.rngay.feign.user.dto.UpdatePassword;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,4 +104,8 @@ public class UserServiceImpl implements UserService {
         return userDao.update(userDTO, new QueryWrapper<UaUserDTO>().eq("id", userId));
     }
 
+    @Override
+    public List<UaUserDTO> loadByUserIds(List<UserRoleDTO> roleDTO) {
+        return null;
+    }
 }

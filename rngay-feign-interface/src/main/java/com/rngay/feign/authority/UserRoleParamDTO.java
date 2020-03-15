@@ -1,25 +1,34 @@
 package com.rngay.feign.authority;
 
-import com.rngay.feign.dto.CommonDTO;
+import com.rngay.feign.dto.PageQueryDTO;
 
-public class UserRoleParamDTO extends CommonDTO {
+public class UserRoleParamDTO extends PageQueryDTO {
 
-    private Long roleIds;
-    private Long userIds;
+    private Long roleId;
+    private String username;
+    private String nickname;
 
-    public Long getRoleIds() {
-        return roleIds;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRoleIds(Long roleIds) {
-        this.roleIds = roleIds;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
-    public Long getUserIds() {
-        return userIds;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserIds(Long userIds) {
-        this.userIds = userIds;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

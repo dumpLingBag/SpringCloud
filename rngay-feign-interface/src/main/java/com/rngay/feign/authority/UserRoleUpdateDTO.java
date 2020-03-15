@@ -8,25 +8,24 @@ import java.util.List;
 
 public class UserRoleUpdateDTO extends CommonDTO {
 
-    @NotNull(message = "用户ID为空")
-    private Long userId;
     @Size(min = 1, message = "最少选择一个角色")
-    private List<UserRoleDTO> roleId;
+    private List<Long> roleIds;
+    @Size(min = 1, message = "最少选择一个用户")
+    private List<Long> userIds;
 
-    public Long getUserId() {
-        return userId;
+    public List<Long> getRoleIds() {
+        return roleIds;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setRoleIds(List<Long> roleIds) {
+        this.roleIds = roleIds;
     }
 
-    public List<UserRoleDTO> getRoleId() {
-        return roleId;
+    public List<Long> getUserIds() {
+        return userIds;
     }
 
-    public void setRoleId(List<UserRoleDTO> roleId) {
-        this.roleId = roleId;
+    public void setUserIds(List<Long> userIds) {
+        this.userIds = userIds;
     }
-
 }

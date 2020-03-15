@@ -2,6 +2,7 @@ package com.rngay.service_user.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
+import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.user.dto.*;
 import com.rngay.service_user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "user")
@@ -79,6 +81,11 @@ public class PlatformUserController {
     @PostMapping(value = "uploadAvatar")
     public Result<Integer> uploadAvatar(@RequestParam("path") String path, @RequestParam("userId") Long userId) {
         return Result.success(userService.uploadAvatar(path, userId));
+    }
+
+    @PostMapping(value = "loadByUserIds")
+    public Result<List<UaUserDTO>> loadByUserIds(@RequestBody List<UserRoleDTO> roleDTO) {
+        return Result.success();
     }
 
 }

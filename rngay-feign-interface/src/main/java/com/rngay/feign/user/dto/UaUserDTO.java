@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rngay.feign.authority.RoleDTO;
+import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.dto.BaseDTO;
 import org.hibernate.validator.constraints.Length;
 
@@ -11,6 +13,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
+import java.util.List;
 
 @TableName(value = "ua_user")
 public class UaUserDTO extends BaseDTO {
@@ -51,6 +54,9 @@ public class UaUserDTO extends BaseDTO {
 
     @TableField(exist = false)
     private Boolean checked;
+
+    @TableField(exist = false)
+    private List<UserRoleDTO> roles;
 
     public Long getId() {
         return id;
@@ -154,5 +160,13 @@ public class UaUserDTO extends BaseDTO {
 
     public void setChecked(Boolean checked) {
         this.checked = checked;
+    }
+
+    public List<UserRoleDTO> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UserRoleDTO> roles) {
+        this.roles = roles;
     }
 }

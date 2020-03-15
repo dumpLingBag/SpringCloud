@@ -1,9 +1,12 @@
 package com.rngay.service_user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.dto.UaUserPageListDTO;
 import com.rngay.feign.user.dto.UpdatePassword;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -90,5 +93,12 @@ public interface UserService {
      * @date 2020-03-07 17:23
      */
     int uploadAvatar(String path, Long userId);
+
+    /**
+     * 通过 userId 加载指定用户
+     * @Author: pengcheng
+     * @Date: 2020/3/13
+     */
+    List<UaUserDTO> loadByUserIds(List<UserRoleDTO> roleDTO);
 
 }
