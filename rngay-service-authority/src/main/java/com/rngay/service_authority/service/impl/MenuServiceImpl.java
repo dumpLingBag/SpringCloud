@@ -50,7 +50,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     @Override
     public List<MenuDTO> load() {
         List<MenuDTO> list = new ArrayList<>();
-        menuDao.selectById("");
         List<MenuDTO> menus = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", 0));
         if (!menus.isEmpty()) {
             for (MenuDTO menu : menus) {
@@ -96,13 +95,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     public List<MenuDTO> loadMenuByOrgId(Long orgId) {
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> roles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
-                    .eq("checked", 1).eq("org_id", orgId));
+                    .eq("del_flag", 1).eq("org_id", orgId));
             if (roles == null || roles.isEmpty()) {
                 return new ArrayList<>();
             }
             return menuDao.loadMenuByOrgId(roles);
         }
-        return menuDao.selectList(new QueryWrapper<MenuDTO>().eq("enabled", 1).orderByAsc("pid").orderByAsc("sort"));
+        return menuDao.selectList(new QueryWrapper<MenuDTO>().eq("enabled", 1).eq("del_flag", 1).orderByAsc("pid").orderByAsc("sort"));
     }
 
     @Override
@@ -111,7 +110,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
         if (roleIds.isEmpty()) return new ArrayList<>();
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> orgRoles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
-            .eq("checked", 1).eq("org_id", orgId));
+            .eq("del_flag", 1).eq("org_id", orgId));
             if (orgRoles == null || orgRoles.isEmpty()) return new ArrayList<>();
             return menuDao.loadMenuByOrgUserId(orgRoles, roleIds);
         }

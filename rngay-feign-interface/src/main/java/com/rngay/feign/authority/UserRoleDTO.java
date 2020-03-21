@@ -4,14 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rngay.feign.dto.BaseDTO;
 import com.rngay.feign.dto.CommonDTO;
 
 @TableName(value = "ua_user_role")
-public class UserRoleDTO extends CommonDTO {
+public class UserRoleDTO extends BaseDTO {
 
     @TableId(type = IdType.ID_WORKER)
     private Long id;
-    private Integer checked;
     private Long userId;
     private Long roleId;
     @TableField(exist = false)
@@ -23,14 +23,6 @@ public class UserRoleDTO extends CommonDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getChecked() {
-        return checked;
-    }
-
-    public void setChecked(Integer checked) {
-        this.checked = checked;
     }
 
     public Long getUserId() {

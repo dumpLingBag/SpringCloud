@@ -12,7 +12,6 @@ public class UAUserRole extends BaseEntity {
 	private Long id;
 	private Long userId;
 	private Long roleId;
-	private Integer checked;
 
 	public Long getId() {
 		return id;
@@ -36,14 +35,6 @@ public class UAUserRole extends BaseEntity {
 
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
-	}
-
-	public Integer getChecked() {
-		return checked;
-	}
-
-	public void setChecked(Integer checked) {
-		this.checked = checked;
 	}
 
 }

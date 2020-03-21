@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.authority.UserRoleParamDTO;
-import com.rngay.feign.authority.UserRoleUpdateDTO;
+import com.rngay.feign.authority.query.UserRoleUpdateQuery;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +33,9 @@ public class UserRoleController {
         return Result.success(userRoleService.loadUserByRoleId(userRole));
     }
 
-    @PutMapping(value = "update")
-    public Result<Integer> update(@Valid @RequestBody UserRoleUpdateDTO updateDTO) {
-        return Result.success(userRoleService.update(updateDTO));
+    @PostMapping(value = "save")
+    public Result<Boolean> save(@Valid @RequestBody UserRoleUpdateQuery query) {
+        return Result.success(userRoleService.save(query));
     }
 
 }

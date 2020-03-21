@@ -106,6 +106,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UaUserDTO> loadByUserIds(List<UserRoleDTO> roleDTO) {
-        return null;
+        return userDao.loadByUserIds(roleDTO);
     }
 }

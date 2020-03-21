@@ -32,7 +32,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
     @Override
     public List<RoleDTO> load(Long orgId) {
         QueryWrapper<RoleDTO> wrapper = new QueryWrapper<>();
-        wrapper.eq("org_id", orgId).orderByAsc("sort");
+        wrapper.eq("org_id", orgId).eq("del_flag", 1).orderByAsc("sort");
         return roleList(roleDao.selectList(wrapper));
     }
 
@@ -49,7 +49,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
     @Override
     public List<RoleDTO> loadRole(Long orgId) {
         QueryWrapper<RoleDTO> wrapper = new QueryWrapper<>();
-        wrapper.eq("org_id", orgId).eq("enabled", 1).orderByAsc("sort");
+        wrapper.eq("org_id", orgId).eq("enabled", 1).eq("del_flag", 1).orderByAsc("sort");
         return roleList(roleDao.selectList(wrapper));
     }
 

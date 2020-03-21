@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.*;
+import com.rngay.feign.authority.query.UserRoleUpdateQuery;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.dto.UaUserPageListDTO;
 import com.rngay.feign.user.service.PFUserService;
@@ -40,41 +41,26 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     }
 
     @Override
-    public Boolean update(UserRoleUpdateDTO updateDTO) {
+    public Boolean save(UserRoleUpdateQuery query) {
         List<UserRoleDTO> list = new ArrayList<>();
-        for (Long userId : updateDTO.getUserIds()) {
-            for (Long roleId : updateDTO.getRoleIds()) {
+        for (Long userId : query.getUserIds()) {
+            for (Long roleId : query.getRoleIds()) {
                 UserRoleDTO userRoleDTO = new UserRoleDTO();
                 userRoleDTO.setUserId(userId);
                 userRoleDTO.setRoleId(roleId);
-                userRoleDTO.setChecked(1);
+                userRoleDTO.setDelFlag(query.getType());
                 list.add(userRoleDTO);
             }
         }
         if (!list.isEmpty()) {
-            return saveOrUpdateBatch(list);
+            if (query.getType() == 0) {
+                userRoleDao.updateBatch(list);
+                return true;
+            } else {
+                return saveBatch(list);
+            }
         }
         return false;
-        /*if (!updateDTO.getRoleId().isEmpty() && updateDTO.getUserId() != null) {
-            int i = 0;
-            List<UserRoleDTO> list = new ArrayList<>();
-            for (UserRoleDTO role : updateDTO.getRoleId()) {
-                int update = userRoleDao.update(role, new QueryWrapper<UserRoleDTO>()
-                        .eq("user_id", updateDTO.getUserId())
-                        .eq("role_id", role.getRoleId()));
-                if (update <= 0) {
-                    role.setUserId(updateDTO.getUserId());
-                    list.add(role);
-                } else {
-                    i += update;
-                }
-            }
-            if (!list.isEmpty()) {
-                saveBatch(list);
-            }
-            return i + list.size();
-        }
-        return 0;*/
     }
 
     @Override
@@ -113,11 +99,15 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
             if (result.getData() != null && !result.getData().isEmpty()) {
                 List<UaUserDTO> data = result.getData();
                 for (UaUserDTO uaUserDTO : data) {
+                    List<UserRoleDTO> list = new ArrayList<>();
                     for (UserRoleDTO roleDTO : roleDTOPage.getRecords()) {
                         if (!uaUserDTO.getId().equals(roleDTO.getUserId())) {
                             continue;
                         }
-                        uaUserDTO.getRoles().add(roleDTO);
+                        list.add(roleDTO);
+                    }
+                    if (!list.isEmpty()) {
+                        uaUserDTO.setRoles(list);
                     }
                 }
             }
@@ -130,10 +120,14 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
             if (data != null && !data.getRecords().isEmpty()) {
                 List<UserRoleDTO> roleDTOS = userRoleDao.loadRoleByUserId(data.getRecords());
                 for (UaUserDTO uaUserDTO : data.getRecords()) {
+                    List<UserRoleDTO> list = new ArrayList<>();
                     for (UserRoleDTO userRoleDTO : roleDTOS) {
                         if (uaUserDTO.getId().equals(userRoleDTO.getUserId())) {
-                            uaUserDTO.getRoles().add(userRoleDTO);
+                            list.add(userRoleDTO);
                         }
+                    }
+                    if (!list.isEmpty()) {
+                        uaUserDTO.setRoles(list);
                     }
                 }
                 return new Page<UaUserDTO>(userRole.getCurrentPage(), userRole.getPageSize(), data.getTotal()).setRecords(data.getRecords());

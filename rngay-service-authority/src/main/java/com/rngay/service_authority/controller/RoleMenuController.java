@@ -3,7 +3,7 @@ package com.rngay.service_authority.controller;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleMenuDTO;
-import com.rngay.feign.authority.UpdateRoleMenuDTO;
+import com.rngay.feign.authority.query.UpdateRoleMenuQuery;
 import com.rngay.service_authority.service.RoleMenuService;
 import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +29,16 @@ public class RoleMenuController {
     }
 
     @GetMapping(value = "loadMenu")
-    public Result<List<RoleMenuDTO>> loadMenu(Integer roleId) {
+    public Result<List<RoleMenuDTO>> loadMenu(Long roleId) {
         if (roleId == null) {
             return Result.failMsg("加载菜单失败");
         }
         return Result.success(roleMenuService.loadMenu(roleId));
     }
 
-    @PutMapping(value = "update")
-    public Result<Integer> update(@Valid @RequestBody UpdateRoleMenuDTO roleMenu) {
-        return Result.success(roleMenuService.update(roleMenu));
+    @PostMapping(value = "save")
+    public Result<Boolean> save(@Valid @RequestBody UpdateRoleMenuQuery query) {
+        return Result.success(roleMenuService.save(query));
     }
 
 }

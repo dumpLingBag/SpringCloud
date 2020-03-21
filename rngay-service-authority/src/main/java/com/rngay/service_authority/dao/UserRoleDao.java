@@ -36,4 +36,6 @@ public interface UserRoleDao extends BaseMapper<UserRoleDTO> {
 
     List<UserRoleDTO> loadRoleByUserId(@Param("userIds") List<UaUserDTO> userDTOS);
 
+    void updateBatch(@Param("userRoleList") List<UserRoleDTO> userRoleList);
+
 }

@@ -41,6 +41,8 @@ public class MenuDTO extends CommonDTO {
 
     private String authority;
 
+    private String menuUrl;
+
     @TableField(exist = false)
     private MetaVo meta;
 
@@ -153,6 +155,14 @@ public class MenuDTO extends CommonDTO {
 
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    public String getMenuUrl() {
+        return menuUrl;
+    }
+
+    public void setMenuUrl(String menuUrl) {
+        this.menuUrl = menuUrl;
     }
 
     public MetaVo getMeta() {

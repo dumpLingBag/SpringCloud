@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleMenuDTO;
-import com.rngay.feign.authority.UpdateRoleMenuDTO;
+import com.rngay.feign.authority.query.UpdateRoleMenuQuery;
 import com.rngay.service_authority.dao.RoleMenuDao;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.RoleMenuService;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -32,32 +31,30 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
     }
 
     @Override
-    public List<RoleMenuDTO> loadMenu(Integer roleId) {
-        return roleMenuDao.selectList(new QueryWrapper<RoleMenuDTO>().eq("checked", 1).eq("role_id", roleId));
+    public List<RoleMenuDTO> loadMenu(Long roleId) {
+        return roleMenuDao.loadMenu(roleId);
     }
 
     @Override
-    public Integer update(UpdateRoleMenuDTO roleMenu) {
-        if (roleMenu.getRoleId() != null && !roleMenu.getRoleMenu().isEmpty()) {
-            int i = 0;
-            List<RoleMenuDTO> list = new ArrayList<>();
-            for (RoleMenuDTO menuDTO : roleMenu.getRoleMenu()) {
-                int roleId = roleMenuDao.update(menuDTO, new QueryWrapper<RoleMenuDTO>()
-                        .eq("role_id", roleMenu.getRoleId())
-                        .eq("menu_id", menuDTO.getMenuId()));
-                if (roleId <= 0) {
-                    menuDTO.setRoleId(roleMenu.getRoleId());
-                    list.add(menuDTO);
-                } else {
-                    i += roleId;
-                }
-            }
-            if (!list.isEmpty()) {
-                saveBatch(list);
-            }
-            return i + list.size();
+    public Boolean save(UpdateRoleMenuQuery query) {
+        List<RoleMenuDTO> list = new ArrayList<>();
+        for (Long menuId : query.getMenuId()) {
+            RoleMenuDTO roleMenuDTO = new RoleMenuDTO();
+            roleMenuDTO.setMenuId(menuId);
+            roleMenuDTO.setRoleId(query.getRoleId());
+            roleMenuDTO.setDelFlag(query.getType());
+            list.add(roleMenuDTO);
         }
-        return 0;
+        if (!list.isEmpty()) {
+            if (query.getType() == 0) {
+                roleMenuDao.updateBatch(list);
+                return true;
+            } else {
+                return saveBatch(list);
+            }
+
+        }
+        return false;
     }
 
     private List<MenuDTO> menuList(List<MenuDTO> menus) {

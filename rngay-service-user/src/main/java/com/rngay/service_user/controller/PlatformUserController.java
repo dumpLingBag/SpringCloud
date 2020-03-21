@@ -85,7 +85,7 @@ public class PlatformUserController {
 
     @PostMapping(value = "loadByUserIds")
     public Result<List<UaUserDTO>> loadByUserIds(@RequestBody List<UserRoleDTO> roleDTO) {
-        return Result.success();
+        return Result.success(userService.loadByUserIds(roleDTO));
     }
 
 }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.authority.UserRoleParamDTO;
-import com.rngay.feign.authority.UserRoleUpdateDTO;
+import com.rngay.feign.authority.query.UserRoleUpdateQuery;
 import com.rngay.feign.user.dto.UaUserDTO;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface UserRoleService extends IService<UserRoleDTO> {
      * @Author pengcheng
      * @Date 2019/4/1
      **/
-    Boolean update(UserRoleUpdateDTO updateDTO);
+    Boolean save(UserRoleUpdateQuery query);
 
     /**
      * 根据 orgId 加载权限
