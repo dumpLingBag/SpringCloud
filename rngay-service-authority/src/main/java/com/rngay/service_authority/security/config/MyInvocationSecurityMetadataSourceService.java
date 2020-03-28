@@ -1,7 +1,13 @@
 package com.rngay.service_authority.security.config;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.contants.RedisKeys;
+import com.rngay.common.util.AuthorityUtil;
+import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleMenuAllDTO;
 import com.rngay.service_authority.security.util.UrlMatcher;
+import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
@@ -41,14 +47,19 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
 
     // 存放资源配置对象
     private Map<String, Collection<ConfigAttribute>> resourceMap = null;
+    private List<MenuDTO> resourceList = null;
     @Autowired
     private UrlMatcher urlMatcher;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private MenuService menuService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-        if (resourceMap == null) {
+        if (resourceList == null) {
             loadResourceDefine();
         }
 
@@ -61,9 +72,17 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
             url = url.substring(0, firstQuestionMarkIndex);
         }
         // 循环已有的角色配置对象 进行url匹配
-        for (String resUrl : resourceMap.keySet()) {
-            if (urlMatcher.pathMatchesUrl(resUrl, url)) {
-                return resourceMap.get(url);
+        for (MenuDTO resUrl : resourceList) {
+            if (urlMatcher.pathMatchesUrl(resUrl.getMenuUrl(), url)) {
+                List<RoleMenuAllDTO> roleByUrl = roleService.loadRoleByUrl(url);
+                if (roleByUrl != null && !roleByUrl.isEmpty()) {
+                    List<ConfigAttribute> attributes = new ArrayList<>();
+                    for (RoleMenuAllDTO roleMenu : roleByUrl) {
+                        ConfigAttribute configAttributes = new SecurityConfig(roleMenu.getId().toString());
+                        attributes.add(configAttributes);
+                    }
+                    return attributes;
+                }
             }
         }
         return SecurityConfig.createList("ROLE_NOT_USER");
@@ -85,9 +104,16 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
      */
     @PostConstruct
     public void loadResourceDefine() {
-        resourceMap = new ConcurrentHashMap<>();
+        //resourceMap = new ConcurrentHashMap<>();
+        QueryWrapper<MenuDTO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("del_flag", 1);
+        queryWrapper.ne("menu_type", 0);
+        resourceList = menuService.list(queryWrapper);
+        /*if (menuList != null && !menuList.isEmpty()) {
+            resourceList = menuList;
+        }*/
         // 获取所有分配的角色
-        List<RoleMenuAllDTO> roles = roleService.loadAllRole();
+        /*List<RoleMenuAllDTO> roles = roleService.loadAllRole();
         if (!CollectionUtils.isEmpty(roles)) {
             for (RoleMenuAllDTO roleMenu : roles) {
                 String authorizedSigns = roleMenu.getName() + ":" + roleMenu.getOrgId();
@@ -102,7 +128,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
                     resourceMap.put(roleMenu.getMenuUrl(), config);
                 }
             }
-        }
+        }*/
     }
 
 }

@@ -24,7 +24,7 @@
         <foreach collection="userRoleList" item="userRole" open="" close="" separator=";">
             update ua_user_role
             <set>
-                del_flag = ${userRole.delFlag}
+                del_flag = #{userRole.delFlag}
             </set>
             where user_id = #{userRole.userId} and role_id =  #{userRole.roleId}
         </foreach>

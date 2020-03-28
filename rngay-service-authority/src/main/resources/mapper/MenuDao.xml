@@ -12,7 +12,7 @@
         <foreach collection="roles" item="role" index="index" separator="union">
             select t.*
             from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
-            and rm.menu_id = m.id and rm.checked = 1 and m.enabled = 1 group by m.id) as t
+            and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
     </select>
 
@@ -21,13 +21,13 @@
         <foreach collection="roles" item="role" separator="union">
             select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
-            and rm.menu_id = m.id and rm.checked = 1 and m.enabled = 1 group by m.id) as t
+            and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
         ) as pm join (
         <foreach collection="userRoles" item="userRole" index="index" separator="union">
             select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId}
-            and rm.menu_id = m.id and rm.checked = 1 and m.enabled = 1 group by m.id) as t
+            and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
         ) as sm on sm.id = pm.id
     </select>
@@ -36,7 +36,7 @@
         <foreach collection="roleIds" item="role" separator="union">
             select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
-            and rm.menu_id = m.id and rm.checked = 1 and m.enabled = 1 group by m.id) as t
+            and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
     </select>
 
@@ -46,4 +46,12 @@
             #{menuId}
         </foreach>
     </update>
+
+    <select id="loadUrlByUser" resultType="java.lang.String">
+        select m.menu_url from ua_menu m
+        left join ua_role_menu rm on m.id = rm.menu_id
+        left join ua_user_role ur on ur.role_id = rm.role_id
+        where ur.user_id = #{userId} and ur.del_flag = '1' and m.menu_type != '0'
+        and rm.del_flag = '1' and m.del_flag = '1' and m.enabled = '1'
+    </select>
 </mapper>

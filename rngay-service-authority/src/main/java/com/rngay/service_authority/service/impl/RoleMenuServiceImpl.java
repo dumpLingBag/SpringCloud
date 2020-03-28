@@ -1,7 +1,7 @@
 package com.rngay.service_authority.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.rngay.common.enums.FiledEnum;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleMenuDTO;
 import com.rngay.feign.authority.query.UpdateRoleMenuQuery;
@@ -58,7 +58,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
     }
 
     private List<MenuDTO> menuList(List<MenuDTO> menus) {
-        return MenuUtil.menuList(menus, 2);
+        return MenuUtil.menuList(menus, FiledEnum.MENU_TYPE_NOT_VO);
     }
 
 }

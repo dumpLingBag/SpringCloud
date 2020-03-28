@@ -77,10 +77,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int enable(Long id, Integer enable) {
+    public int enable(Long id, Integer enabled) {
         UaUserDTO userDTO = new UaUserDTO();
         userDTO.setId(id);
-        userDTO.setEnable(enable);
+        userDTO.setEnabled(enabled);
         return userDao.updateById(userDTO);
     }
 

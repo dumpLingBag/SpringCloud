@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rngay.service_authority.dao.DictTypeDao">
+    <select id="pageList" resultType="DictTypeDTO">
+        select * from dict_type
+        <where>
+            del_flag = ${pageList.delFlag}
+            <if test="pageList.enabled != null">
+                and enable = #{pageList.enabled}
+            </if>
+            <if test="pageList.dictName != null and pageList.dictName != ''">
+                and dict_name like "%"#{pageList.dictName}"%"
+            </if>
+            <if test="pageList.dictType != null and pageList.dictType != ''">
+                and dict_type like "%"#{pageList.dictType}"%"
+            </if>
+        </where>
+    </select>
+</mapper>

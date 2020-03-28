@@ -28,7 +28,7 @@ public class UAUser extends BaseEntity {
     private String mobile;
 
     @Column(columnDefinition= "char(1) default 1")
-    private Integer enable;
+    private Integer enabled;
 
     private Integer sex;
 
@@ -98,12 +98,12 @@ public class UAUser extends BaseEntity {
         this.mobile = mobile;
     }
 
-    public Integer getEnable() {
-        return enable;
+    public Integer getEnabled() {
+        return enabled;
     }
 
-    public void setEnable(Integer enable) {
-        this.enable = enable;
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 
     public Integer getSex() {

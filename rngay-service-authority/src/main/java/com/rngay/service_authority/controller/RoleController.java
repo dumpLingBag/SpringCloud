@@ -3,7 +3,7 @@ package com.rngay.service_authority.controller;
 import com.rngay.common.aspect.annotation.RepeatSubmit;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.RoleDTO;
-import com.rngay.feign.authority.RoleIdListDTO;
+import com.rngay.feign.authority.query.RoleIdListQuery;
 import com.rngay.feign.authority.RoleInListDTO;
 import com.rngay.service_authority.service.RoleService;
 import com.rngay.service_authority.service.SystemService;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -74,10 +75,7 @@ public class RoleController {
     }
 
     @DeleteMapping(value = "delete")
-    public Result<Integer> delete(@RequestBody RoleIdListDTO listDTO) {
-        if (listDTO.getRoleIdList() == null || listDTO.getRoleIdList().isEmpty()) {
-            return Result.failMsg("删除角色失败");
-        }
+    public Result<Integer> delete(@Valid @RequestBody RoleIdListQuery listDTO) {
         return Result.success(roleService.delete(listDTO));
     }
 

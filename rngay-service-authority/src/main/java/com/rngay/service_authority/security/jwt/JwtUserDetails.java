@@ -35,7 +35,7 @@ public class JwtUserDetails implements UserDetails {
             this.userId = userInfo.getId();
             this.username = userInfo.getUsername();
             this.password = userInfo.getPassword();
-            this.enabled = userInfo.getEnable() == 1;
+            this.enabled = userInfo.getEnabled() == 1;
             this.isAccountNonExpired = true;
             this.isAccountNonLocked = true;
             this.isCredentialsNonExpired = true;

@@ -21,7 +21,7 @@ public class ResultUtil {
             out = response.getWriter();
             out.print(JsonUtil.obj2String(getMap(code, msg, data)));
         } catch (Exception e) {
-            log.warn("返回json失败");
+            log.error("返回json失败");
         } finally {
             if (out != null) {
                 out.flush();

@@ -7,12 +7,8 @@
     </select>
 
     <update id="updateBatch">
-        <foreach collection="roleMenuList" item="roleMenu" open="" close="" separator=";">
-            update ua_role_menu
-            <set>
-                del_flag = ${roleMenu.delFlag}
-            </set>
-            where user_id = #{roleMenu.menuId} and role_id =  #{roleMenu.roleId}
+        <foreach collection="roleMenuList" item="roleMenu" index="index" open="" close="" separator=";">
+            update ua_role_menu set del_flag = ${roleMenu.delFlag} where menu_id = #{roleMenu.menuId} and role_id = #{roleMenu.roleId}
         </foreach>
     </update>
 </mapper>

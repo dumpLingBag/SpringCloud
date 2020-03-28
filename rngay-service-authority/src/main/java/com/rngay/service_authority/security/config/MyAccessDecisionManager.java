@@ -1,6 +1,5 @@
 package com.rngay.service_authority.security.config;
 
-import com.rngay.common.util.JsonUtil;
 import com.rngay.feign.user.dto.UaUserDTO;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -46,12 +45,9 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
         // 超级管理员可以访问所有url
-        String principal = (String) authentication.getPrincipal();
-        if (principal != null) {
-            UaUserDTO uaUserDTO = JsonUtil.string2Obj(principal, UaUserDTO.class);
-            if (uaUserDTO != null && uaUserDTO.getParentId() == 0) {
-                return;
-            }
+        UaUserDTO principal = (UaUserDTO) authentication.getPrincipal();
+        if (principal != null && principal.getParentId() == 0) {
+            return;
         }
         // 无权访问
         if (CollectionUtils.isEmpty(configAttributes)) {

@@ -11,7 +11,6 @@ public class RoleMenuDTO extends BaseDTO {
 
     @TableId(type = IdType.ID_WORKER)
     private Long id;
-    private Integer checked;
     private Long menuId;
     private Long roleId;
 
@@ -21,14 +20,6 @@ public class RoleMenuDTO extends BaseDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getChecked() {
-        return checked;
-    }
-
-    public void setChecked(Integer checked) {
-        this.checked = checked;
     }
 
     public Long getMenuId() {

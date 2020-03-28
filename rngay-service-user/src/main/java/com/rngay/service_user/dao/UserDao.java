@@ -15,6 +15,6 @@ public interface UserDao extends BaseMapper<UaUserDTO> {
 
     Page<UaUserDTO> pageList(Page<UaUserDTO> page, @Param("pageList") UaUserPageListDTO pageListDTO);
 
-    public List<UaUserDTO> loadByUserIds(@Param("roleDTO") List<UserRoleDTO> roleDTO);
+    List<UaUserDTO> loadByUserIds(@Param("roleDTO") List<UserRoleDTO> roleDTO);
 
 }

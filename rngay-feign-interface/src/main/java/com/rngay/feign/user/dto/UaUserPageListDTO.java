@@ -6,7 +6,7 @@ public class UaUserPageListDTO extends PageQueryDTO {
 
     private String username;
 
-    private Integer enable;
+    private Integer enabled;
 
     private String nickname;
 
@@ -18,12 +18,12 @@ public class UaUserPageListDTO extends PageQueryDTO {
         this.username = username;
     }
 
-    public Integer getEnable() {
-        return enable;
+    public Integer getEnabled() {
+        return enabled;
     }
 
-    public void setEnable(Integer enable) {
-        this.enable = enable;
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 
     public String getNickname() {

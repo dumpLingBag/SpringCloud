@@ -1,10 +1,12 @@
 package com.rngay.service_authority.security;
 
 import com.rngay.common.vo.Result;
+import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.security.jwt.JwtUserDetails;
+import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,6 +48,8 @@ public class MyUserDetailService implements UserDetailsService {
     private PFUserService pfUserService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private MenuService menuService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -58,8 +62,13 @@ public class MyUserDetailService implements UserDetailsService {
         // 获取用户拥有的角色
         List<RoleDTO> roleList = roleService.loadUserRole(uaUser);
         Set<GrantedAuthority> grantedAuth = new HashSet<>();
-        if (roleList.size() > 0) {
-            roleList.forEach(role -> grantedAuth.add(new SimpleGrantedAuthority(role.getAuthName()+"_"+role.getOrgId())));
+        if (!roleList.isEmpty()) {
+            roleList.forEach(role -> grantedAuth.add(new SimpleGrantedAuthority(role.getId().toString())));
+        }
+        // 获取用户拥有的权限
+        List<String> urlList = menuService.loadUrlByUser(uaUser.getId());
+        if (!urlList.isEmpty()) {
+            urlList.forEach(url -> grantedAuth.add(new SimpleGrantedAuthority(url)));
         }
         return new JwtUserDetails(uaUser, grantedAuth);
     }

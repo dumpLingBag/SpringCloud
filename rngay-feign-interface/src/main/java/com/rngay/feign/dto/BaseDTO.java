@@ -15,6 +15,8 @@ public class BaseDTO implements Serializable {
 
     private Date updateTime;
 
+    private String remark;
+
     @TableField(exist = false)
     private String dataScope;
 
@@ -40,6 +42,14 @@ public class BaseDTO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getDataScope() {

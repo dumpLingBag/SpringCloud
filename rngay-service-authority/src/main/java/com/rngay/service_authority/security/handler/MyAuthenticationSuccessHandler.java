@@ -1,12 +1,9 @@
 package com.rngay.service_authority.security.handler;
 
-import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.config.JwtConfig;
-import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.common.manager.AsyncManager;
 import com.rngay.service_authority.manger.AsyncFactory;
-import com.rngay.common.util.JsonUtil;
 import com.rngay.common.util.JwtUtil;
 import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.ResultUtil;
@@ -15,8 +12,6 @@ import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.security.exception.MyAuthenticationException;
 import com.rngay.service_authority.security.jwt.JwtUserDetails;
 import com.rngay.service_authority.service.SystemService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -50,8 +45,6 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
     private SystemService systemService;
     @Autowired
     private JwtConfig jwtConfig;
@@ -65,15 +58,10 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
         userInfo.setChecked(Boolean.valueOf(checked));
         List<String> authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         // 使用jwt生成 token 用于权限效验
-        Claims claims = Jwts.claims();
-        claims.put("userInfo", JsonUtil.obj2String(userInfo));
-        claims.put("role", authorities);
-        claims.put("userId", userInfo.getId());
-        claims.put("checked", checked);
-        String access_token = jwtUtil.generateToken(claims);
+        String access_token = jwtUtil.generateToken(userInfo.getId());
         if (StringUtils.isNotBlank(access_token)) {
             access_token = jwtConfig.getPrefix() + " " + access_token;
-            saveToken(access_token, userInfo);
+            saveToken(access_token, userInfo, authorities);
             HashMap<String, Object> map = new HashMap<>();
             map.put("userId", userInfo.getId());
             map.put("username", userInfo.getUsername());
@@ -96,9 +84,9 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
      * @author pengcheng
      * @date 2020-02-14 11:09
      */
-    private void saveToken(String token, UaUserDTO userDTO) {
+    private void saveToken(String token, UaUserDTO userDTO, List<String> authorities) {
         try {
-            systemService.insertToken(userDTO, token);
+            systemService.insertToken(userDTO, token, authorities);
         } catch (Exception e) {
             throw new MyAuthenticationException(ResultCodeEnum.LOGIN_INFO_FAIL);
         }

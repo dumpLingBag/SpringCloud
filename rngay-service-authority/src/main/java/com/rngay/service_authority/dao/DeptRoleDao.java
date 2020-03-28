@@ -5,5 +5,5 @@ import com.rngay.feign.authority.DepartmentRoleDTO;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DepartmentRoleDao extends BaseMapper<DepartmentRoleDTO> {
+public interface DeptRoleDao extends BaseMapper<DepartmentRoleDTO> {
 }

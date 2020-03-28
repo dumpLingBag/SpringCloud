@@ -29,7 +29,7 @@ public interface SystemService {
      * @Author: pengcheng
      * @Date: 2018/12/14
      */
-    void insertToken(UaUserDTO userDTO, String token);
+    void insertToken(UaUserDTO userDTO, String token, List<String> authorities);
 
     /**
      * 从数据库删除 token 并更新 redis 缓存

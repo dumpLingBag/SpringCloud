@@ -22,15 +22,14 @@ public class JwtUtil {
     /**
      * 生成jwt token
      * */
-    public String generateToken(Claims claims){
+    public String generateToken(Long userId){
         Date nowDate = new Date();
         //过期时间
         Date expireDate = new Date(nowDate.getTime() + jwtConfig.getExpire());
 
         return Jwts.builder()
                 .setHeaderParam("typ","JWT")
-                .setClaims(claims)
-                .setSubject(String.valueOf(claims.get("userId")))
+                .setSubject(String.valueOf(userId))
                 .setIssuedAt(nowDate)
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS256, jwtConfig.getSecret())

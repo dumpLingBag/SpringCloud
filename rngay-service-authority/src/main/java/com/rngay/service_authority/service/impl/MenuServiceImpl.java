@@ -2,8 +2,8 @@ package com.rngay.service_authority.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.rngay.common.enums.FiledEnum;
 import com.rngay.feign.authority.*;
-import com.rngay.feign.authority.vo.MetaVo;
 import com.rngay.service_authority.dao.*;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.util.MenuUtil;
@@ -122,6 +122,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
         return menuDao.updateInList(menuIdListDTO);
     }
 
+    @Override
+    public List<String> loadUrlByUser(Long userId) {
+        return menuDao.loadUrlByUser(userId);
+    }
+
     private List<MenuDTO> getChildren(Long parentId) {
         List<MenuDTO> list = new ArrayList<>();
         List<MenuDTO> children = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", parentId));
@@ -139,7 +144,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     }
 
     private void children(MenuDTO mu,MenuDTO menu) {
-        MenuUtil.menuDto(mu, menu);
+        MenuUtil.menuDto(mu, menu, FiledEnum.MENU_TYPE_NOT_VO);
         List<MenuDTO> children = getChildren(menu.getId());
         if (!children.isEmpty()) {
             mu.setChildren(children);

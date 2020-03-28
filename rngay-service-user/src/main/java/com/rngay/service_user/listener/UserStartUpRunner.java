@@ -23,7 +23,7 @@ public class UserStartUpRunner implements CommandLineRunner {
         if (orgId <= 0) {
             UaUserDTO userDTO = new UaUserDTO();
             userDTO.setUsername("admin");
-            userDTO.setEnable(1);
+            userDTO.setEnabled(1);
             userDTO.setNickname("超级管理员");
             userDTO.setParentId(0L);
             userDTO.setPassword(BCrypt.hashpw(CryptUtil.MD5encrypt("123456"), BCrypt.gensalt(12)));

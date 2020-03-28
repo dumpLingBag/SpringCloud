@@ -59,4 +59,11 @@ public interface MenuService extends IService<MenuDTO> {
      */
     Integer updateInList(MenuInListDTO menuIdListDTO);
 
+    /**
+     * 根据用户 id 加载权限
+     * @Author: pengcheng
+     * @Date: 2020/3/28
+     */
+    List<String> loadUrlByUser(Long userId);
+
 }

@@ -4,10 +4,19 @@ import com.rngay.feign.dto.CommonDTO;
 
 public class RoleMenuAllDTO extends CommonDTO {
 
+    private Long id;
     private String name;
     private String authName;
     private Long orgId;
     private String menuUrl;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

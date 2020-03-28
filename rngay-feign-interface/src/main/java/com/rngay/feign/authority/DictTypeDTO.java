@@ -5,12 +5,16 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.BaseDTO;
 
+import javax.validation.constraints.NotBlank;
+
 @TableName(value = "dict_type")
 public class DictTypeDTO extends BaseDTO {
 
     @TableId(type = IdType.ID_WORKER)
     private Long id;
+    @NotBlank(message = "字典名称为空")
     private String dictName;
+    @NotBlank(message = "字典类型为空")
     private String dictType;
     private Integer enabled;
 

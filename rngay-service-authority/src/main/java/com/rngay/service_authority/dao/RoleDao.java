@@ -21,4 +21,6 @@ public interface RoleDao extends BaseMapper<RoleDTO> {
 
     List<RoleDTO> loadUserRole(UaUserDTO uaUserDTO);
 
+    List<RoleMenuAllDTO> loadRoleByUrl(@Param("url") String url);
+
 }

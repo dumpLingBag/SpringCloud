@@ -3,6 +3,7 @@ package com.rngay.service_authority.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
+import com.rngay.common.enums.FiledEnum;
 import com.rngay.common.util.AuthorityUtil;
 import com.rngay.common.util.JwtUtil;
 import com.rngay.feign.authority.MenuDTO;
@@ -50,7 +51,7 @@ public class SystemServiceImpl implements SystemService {
             }
         }
         if (allMenus.isEmpty()) return null;
-        return MenuUtil.menuList(allMenus, 1);
+        return MenuUtil.menuList(allMenus, FiledEnum.MENU_TYPE_VO);
     }
 
     @Override
@@ -73,11 +74,12 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public void insertToken(UaUserDTO userDTO, String token) {
+    public void insertToken(UaUserDTO userDTO, String token, List<String> authorities) {
         Long userId = userDTO.getId();
-        redisUtil.zHashPut(RedisKeys.getUserKey(userId), "access_token", token);
-        redisUtil.zHashPut(RedisKeys.getUserKey(userId), "checked", userDTO.getChecked());
-        redisUtil.zHashPut(RedisKeys.getUserKey(userId), "user_info", userDTO);
+        redisUtil.zHashPut(RedisKeys.getUserKey(userId), FiledEnum.ACCESS_TOKEN, token);
+        redisUtil.zHashPut(RedisKeys.getUserKey(userId), FiledEnum.CHECKED, userDTO.getChecked());
+        redisUtil.zHashPut(RedisKeys.getUserKey(userId), FiledEnum.USER_INFO, userDTO);
+        redisUtil.zHashPut(RedisKeys.getUserKey(userId), FiledEnum.AUTHORITIES, authorities);
         redisUtil.expire(RedisKeys.getUserKey(userId), userDTO.getChecked() ? 604800 : 7200);
     }
 
@@ -98,7 +100,7 @@ public class SystemServiceImpl implements SystemService {
         String token = AuthorityUtil.getRequestToken(request);
         if (token != null) {
             long userId = Long.parseLong(jwtUtil.getSubject(token));
-            Object user = redisUtil.getHashVal(RedisKeys.getUserKey(userId),"user_info");
+            Object user = redisUtil.getHashVal(RedisKeys.getUserKey(userId), FiledEnum.USER_INFO);
             if (user == null) return null;
             return (UaUserDTO) user;
         }
@@ -108,7 +110,7 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public int updateCurrentUser(HttpServletRequest request, UaUserDTO userDTO) {
         if (userDTO != null) {
-            redisUtil.zHashPut(RedisKeys.getUserKey(userDTO.getId()), "user_info", userDTO);
+            redisUtil.zHashPut(RedisKeys.getUserKey(userDTO.getId()), FiledEnum.USER_INFO, userDTO);
             return 1;
         }
         return 0;

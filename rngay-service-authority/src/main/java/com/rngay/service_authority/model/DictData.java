@@ -13,7 +13,6 @@ public class DictData extends BaseEntity {
 
     @Id
     private Long id;
-    private Long dictTypeId;
     private String dictSort;
     private String dictLabel;
     private String dictValue;
@@ -27,14 +26,6 @@ public class DictData extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getDictTypeId() {
-        return dictTypeId;
-    }
-
-    public void setDictTypeId(Long dictTypeId) {
-        this.dictTypeId = dictTypeId;
     }
 
     public String getDictSort() {

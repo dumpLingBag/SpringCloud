@@ -43,7 +43,7 @@ public class UaUserDTO extends BaseDTO {
     @NotBlank(message = "手机号码不能为空")
     private String mobile;
 
-    private Integer enable;
+    private Integer enabled;
 
     private Integer sex;
 
@@ -122,12 +122,12 @@ public class UaUserDTO extends BaseDTO {
         this.mobile = mobile;
     }
 
-    public Integer getEnable() {
-        return enable;
+    public Integer getEnabled() {
+        return enabled;
     }
 
-    public void setEnable(Integer enable) {
-        this.enable = enable;
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 
     public Integer getSex() {

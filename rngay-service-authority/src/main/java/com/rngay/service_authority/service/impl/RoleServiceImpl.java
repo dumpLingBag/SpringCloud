@@ -3,6 +3,7 @@ package com.rngay.service_authority.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.feign.authority.*;
+import com.rngay.feign.authority.query.RoleIdListQuery;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.dao.*;
 import com.rngay.service_authority.service.RoleService;
@@ -27,7 +28,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
     @Autowired
     private UserRoleDao userRoleDao;
     @Autowired
-    private DepartmentRoleDao departmentRoleDao;
+    private DeptRoleDao deptRoleDao;
 
     @Override
     public List<RoleDTO> load(Long orgId) {
@@ -44,6 +45,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
     @Override
     public List<RoleMenuAllDTO> loadAllRole() {
         return roleDao.loadAllRole();
+    }
+
+    @Override
+    public List<RoleMenuAllDTO> loadRoleByUrl(String url) {
+        return roleDao.loadRoleByUrl(url);
     }
 
     @Override
@@ -73,13 +79,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
     }
 
     @Override
-    public Integer delete(RoleIdListDTO listDTO) {
+    public Integer delete(RoleIdListQuery listDTO) {
         if (listDTO.getRoleIdList().size() > 1) {
             roleDao.deleteBatchIds(listDTO.getRoleIdList());
             orgRoleDao.delete(new QueryWrapper<OrgRoleDTO>().in("role_id", listDTO.getRoleIdList()));
             roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().in("role_id", listDTO.getRoleIdList()));
             userRoleDao.delete(new QueryWrapper<UserRoleDTO>().in("role_id", listDTO.getRoleIdList()));
-            departmentRoleDao.delete(new QueryWrapper<DepartmentRoleDTO>().in("role_id", listDTO.getRoleIdList()));
+            deptRoleDao.delete(new QueryWrapper<DepartmentRoleDTO>().in("role_id", listDTO.getRoleIdList()));
         }
         RoleDTO role = roleDao.selectById(listDTO.getRoleIdList().get(0));
         if (role != null) {
@@ -87,7 +93,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
             orgRoleDao.delete(new QueryWrapper<OrgRoleDTO>().eq("role_id", role.getId()));
             roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().eq("role_id", role.getId()));
             userRoleDao.delete(new QueryWrapper<UserRoleDTO>().eq("role_id", role.getId()));
-            departmentRoleDao.delete(new QueryWrapper<DepartmentRoleDTO>().eq("role_id", role.getId()));
+            deptRoleDao.delete(new QueryWrapper<DepartmentRoleDTO>().eq("role_id", role.getId()));
             if (role.getPid() != 0) {
                 List<RoleDTO> roles = roleDao.selectList(new QueryWrapper<RoleDTO>()
                 .eq("pid", role.getPid()).gt("sort", role.getSort()));

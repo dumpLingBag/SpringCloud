@@ -2,13 +2,12 @@ package com.rngay.service_authority.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rngay.feign.authority.RoleDTO;
-import com.rngay.feign.authority.RoleIdListDTO;
+import com.rngay.feign.authority.query.RoleIdListQuery;
 import com.rngay.feign.authority.RoleInListDTO;
 import com.rngay.feign.authority.RoleMenuAllDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
 
 import java.util.List;
-import java.util.Set;
 
 public interface RoleService extends IService<RoleDTO> {
 
@@ -34,6 +33,13 @@ public interface RoleService extends IService<RoleDTO> {
     List<RoleMenuAllDTO> loadAllRole();
 
     /**
+     * 根据权限加载角色
+     * @Author: pengcheng
+     * @Date: 2020/3/27
+     */
+    List<RoleMenuAllDTO> loadRoleByUrl(String url);
+
+    /**
      * 根据 orgId 加载出未被禁用的角色
      * @author pengcheng
      * @date 2020-01-05 18:00
@@ -52,7 +58,7 @@ public interface RoleService extends IService<RoleDTO> {
      * @Author pengcheng
      * @Date 2019/4/1
      **/
-    Integer delete(RoleIdListDTO listDTO);
+    Integer delete(RoleIdListQuery listDTO);
 
     /**
      * 批量更新角色状态

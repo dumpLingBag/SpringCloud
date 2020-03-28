@@ -2,13 +2,14 @@ package com.rngay.service_authority.security.jwt;
 
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
+import com.rngay.common.enums.FiledEnum;
 import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.common.util.AuthorityUtil;
 import com.rngay.common.util.JwtUtil;
+import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.security.IgnoredUrlsProperties;
 import com.rngay.service_authority.security.exception.MyAuthenticationException;
 import com.rngay.service_authority.security.util.SkipPathRequestMatcher;
-import io.jsonwebtoken.Claims;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,7 +81,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
             }
-            Object user_token = redisUtil.getHashVal(RedisKeys.getUserKey(userId), "access_token");
+            Object user_token = redisUtil.getHashVal(RedisKeys.getUserKey(userId), FiledEnum.ACCESS_TOKEN);
             if (user_token == null || "".equals(user_token)) {
                 throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
             }
@@ -89,16 +90,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 throw new MyAuthenticationException(ResultCodeEnum.TOKEN_OTHER_LOGIN);
             }
             // 增加 token 过期时间
-            boolean checked = (boolean) redisUtil.getHashVal(RedisKeys.getUserKey(userId), "checked");
+            boolean checked = (boolean) redisUtil.getHashVal(RedisKeys.getUserKey(userId), FiledEnum.CHECKED);
             if (!checked) {
                 // 每次请求延长 token 过期时间
                 redisUtil.expire(RedisKeys.getUserKey(userId), 7200);
             }
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null || authentication.getPrincipal().equals("anonymousUser")) {
-                Claims claims = jwtUtil.getClaimByToken(jwtUtil.getToken(token));
-                List<String> roles = claims.get("role", List.class);
-                String userInfo = claims.get("userInfo", String.class);
+                List<String> roles = (List<String>) redisUtil.getHashVal(RedisKeys.getUserKey(userId), FiledEnum.AUTHORITIES);
+                UaUserDTO userInfo = (UaUserDTO) redisUtil.getHashVal(RedisKeys.getUserKey(userId), FiledEnum.USER_INFO);
                 List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
                 // 生成authentication身份信息
                 UsernamePasswordAuthenticationToken usernamePasswordAuthentication = new UsernamePasswordAuthenticationToken(

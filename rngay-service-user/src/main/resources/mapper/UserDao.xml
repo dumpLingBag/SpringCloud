@@ -5,8 +5,8 @@
         select * from ua_user
         <where>
             del_flag = ${pageList.delFlag}
-            <if test="pageList.enable != null">
-                and enable = #{pageList.enable}
+            <if test="pageList.enabled != null">
+                and enabled = #{pageList.enabled}
             </if>
             <if test="pageList.nickName != null and pageList.nickName != ''">
                 and nick_name like "%"#{pageList.nickName}"%"
