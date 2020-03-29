@@ -1,5 +1,6 @@
 package com.rngay.service_authority.security;
 
+import com.rngay.common.util.StringUtils;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleDTO;
@@ -68,7 +69,11 @@ public class MyUserDetailService implements UserDetailsService {
         // 获取用户拥有的权限
         List<String> urlList = menuService.loadUrlByUser(uaUser.getId());
         if (!urlList.isEmpty()) {
-            urlList.forEach(url -> grantedAuth.add(new SimpleGrantedAuthority(url)));
+            urlList.forEach(url -> {
+                if (StringUtils.isNoneBlank(url)) {
+                    grantedAuth.add(new SimpleGrantedAuthority(url));
+                }
+            });
         }
         return new JwtUserDetails(uaUser, grantedAuth);
     }

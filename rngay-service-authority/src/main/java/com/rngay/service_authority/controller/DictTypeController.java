@@ -1,6 +1,5 @@
 package com.rngay.service_authority.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.util.StringUtils;
 import com.rngay.common.vo.Result;
