@@ -101,8 +101,8 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/1/7
      */
-    @PutMapping(value = "/user/enable/{id}/{enable}")
-    Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable);
+    @PutMapping(value = "/user/enabled/{id}/{enabled}")
+    Result<Integer> enabled(@PathVariable Long id, @PathVariable Integer enabled);
 
     /**
      * 修改用户密码

@@ -62,9 +62,9 @@ public class PlatformUserController {
         return Result.success(userService.reset(id));
     }
 
-    @PutMapping(value = "enable/{id}/{enable}")
-    public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
-        return Result.success(userService.enable(id, enable));
+    @PutMapping(value = "enabled/{id}/{enabled}")
+    public Result<Integer> enabled(@PathVariable Long id, @PathVariable Integer enabled) {
+        return Result.success(userService.enabled(id, enabled));
     }
 
     @PutMapping(value = "updatePassword")

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.util.AuthorityUtil;
+import com.rngay.common.util.StringUtils;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleMenuAllDTO;
 import com.rngay.service_authority.security.util.UrlMatcher;
@@ -73,7 +74,8 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         }
         // 循环已有的角色配置对象 进行url匹配
         for (MenuDTO resUrl : resourceList) {
-            if (urlMatcher.pathMatchesUrl(resUrl.getMenuUrl(), url)) {
+            String menuUrl = resUrl.getMenuUrl();
+            if (StringUtils.isNoneBlank(menuUrl) && urlMatcher.pathMatchesUrl(resUrl.getMenuUrl(), url)) {
                 List<RoleMenuAllDTO> roleByUrl = roleService.loadRoleByUrl(url);
                 if (roleByUrl != null && !roleByUrl.isEmpty()) {
                     List<ConfigAttribute> attributes = new ArrayList<>();

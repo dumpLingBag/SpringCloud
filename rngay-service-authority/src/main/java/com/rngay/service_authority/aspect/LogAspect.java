@@ -71,37 +71,34 @@ public class LogAspect {
 
             // 获取当前的用户
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String principal = (String) authentication.getPrincipal();
-            if (principal != null) {
-                UaUserDTO uaUserDTO = JsonUtil.string2Obj(principal, UaUserDTO.class);
+            UaUserDTO uaUserDTO = (UaUserDTO) authentication.getPrincipal();
+            if (uaUserDTO != null) {
                 // *========数据库日志=========*//
-                OperLogDTO operLog = new OperLogDTO();
-                operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
+                OperLogDTO opLog = new OperLogDTO();
+                opLog.setStatus(BusinessStatus.SUCCESS.ordinal());
                 // 请求的地址
                 String ip = IPUtil.getIPAddress(ServletUtils.getRequest());
-                operLog.setOperIp(ip);
+                opLog.setOperIp(ip);
                 // 返回参数
-                operLog.setJsonResult(JsonUtil.obj2String(jsonResult));
+                opLog.setJsonResult(JsonUtil.obj2String(jsonResult));
 
-                operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
-                if (uaUserDTO != null) {
-                    operLog.setOperName(uaUserDTO.getUsername());
-                }
+                opLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
+                opLog.setOperName(uaUserDTO.getUsername());
 
                 if (e != null) {
-                    operLog.setStatus(BusinessStatus.FAIL.ordinal());
-                    operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
+                    opLog.setStatus(BusinessStatus.FAIL.ordinal());
+                    opLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
                 }
                 // 设置方法名称
                 String className = joinPoint.getTarget().getClass().getName();
                 String methodName = joinPoint.getSignature().getName();
-                operLog.setMethod(className + "." + methodName + "()");
+                opLog.setMethod(className + "." + methodName + "()");
                 // 设置请求方式
-                operLog.setRequestMethod(ServletUtils.getRequest().getMethod());
+                opLog.setRequestMethod(ServletUtils.getRequest().getMethod());
                 // 处理设置注解上的参数
-                getControllerMethodDescription(joinPoint, controllerLog, operLog);
+                getControllerMethodDescription(joinPoint, controllerLog, opLog);
                 // 保存数据库
-                AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+                AsyncManager.me().execute(AsyncFactory.recordOper(opLog));
             }
         } catch (Exception exp) {
             // 记录本地异常日志
@@ -115,20 +112,20 @@ public class LogAspect {
      * 获取注解中对方法的描述信息 用于Controller层注解
      *
      * @param log 日志
-     * @param operLog 操作日志
+     * @param opLog 操作日志
      * @throws Exception
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, OperLogDTO operLog) throws Exception {
+    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, OperLogDTO opLog) throws Exception {
         // 设置action动作
-        operLog.setBusinessType(log.businessType().ordinal());
+        opLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
-        operLog.setTitle(log.title());
+        opLog.setTitle(log.title());
         // 设置操作人类别
-        operLog.setOperatorType(log.operatorType().ordinal());
+        opLog.setOperatorType(log.operatorType().ordinal());
         // 是否需要保存request，参数和值
         if (log.isSaveRequestData()) {
             // 获取参数的信息，传入到数据库中。
-            setRequestValue(joinPoint, operLog);
+            setRequestValue(joinPoint, opLog);
         }
     }
 

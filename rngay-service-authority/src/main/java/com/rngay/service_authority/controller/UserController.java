@@ -101,14 +101,14 @@ public class UserController {
     }
 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @PutMapping(value = "enable/{id}/{enable}")
-    public Result<Integer> enable(@PathVariable Long id, @PathVariable Integer enable) {
+    @PutMapping(value = "enabled/{id}/{enabled}")
+    public Result<Integer> enabled(@PathVariable Long id, @PathVariable Integer enabled) {
         UaUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser.getParentId() == 0 && currentUser.getId().equals(id)) {
             return Result.failMsg("禁止修改超级用户状态");
         }
-        if (id != null && enable != null) {
-            return pfUserService.enable(id, enable);
+        if (id != null && enabled != null) {
+            return pfUserService.enabled(id, enabled);
         } else {
             return Result.failMsg("操作失败，请联系管理员");
         }

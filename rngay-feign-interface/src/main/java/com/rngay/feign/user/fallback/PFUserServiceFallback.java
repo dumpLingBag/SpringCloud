@@ -63,7 +63,7 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<Integer> enable(Long id, Integer enable) {
+            public Result<Integer> enabled(Long id, Integer enabled) {
                 return Result.failMsg(result);
             }
 

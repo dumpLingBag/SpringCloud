@@ -71,7 +71,7 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2019/1/7
      */
-    int enable(Long id, Integer enable);
+    int enabled(Long id, Integer enable);
 
     /**
      * 修改用户密码
