@@ -56,8 +56,8 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/16
      */
-    @PostMapping(value = "/user/save")
-    Result<Integer> save(@RequestBody UaUserDTO saveUserDTO);
+    @PostMapping(value = "/user/insert")
+    Result<Integer> insert(@RequestBody UaUserDTO saveUserDTO);
 
     /**
      * 修改用户信息
@@ -75,7 +75,7 @@ public interface PFUserService {
      * @Date: 2018/12/22
      */
     @GetMapping(value = "/user/icon")
-    Result<List<UaIconDTO>> loadIcon();
+    Result<List<UaIconDTO>> listIcon();
 
     /**
      * 分页加载用户信息
@@ -83,8 +83,8 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/27
      */
-    @PostMapping(value = "/user/pageList")
-    Result<Page<UaUserDTO>> pageList(@RequestBody UaUserPageListDTO pageListDTO);
+    @PostMapping(value = "/user/page")
+    Result<Page<UaUserDTO>> page(@RequestBody UaUserPageListDTO pageListDTO);
 
     /**
      * 重置用户密码

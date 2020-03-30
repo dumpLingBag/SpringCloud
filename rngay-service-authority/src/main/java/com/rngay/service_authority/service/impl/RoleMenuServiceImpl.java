@@ -26,17 +26,17 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
     private MenuService menuService;
 
     @Override
-    public List<MenuDTO> load(Long orgId) {
+    public List<MenuDTO> list(Long orgId) {
         return menuList(menuService.loadMenuByOrgId(orgId));
     }
 
     @Override
-    public List<RoleMenuDTO> loadMenu(Long roleId) {
+    public List<RoleMenuDTO> listMenu(Long roleId) {
         return roleMenuDao.loadMenu(roleId);
     }
 
     @Override
-    public Boolean save(UpdateRoleMenuQuery query) {
+    public Boolean insert(UpdateRoleMenuQuery query) {
         List<RoleMenuDTO> list = new ArrayList<>();
         for (Long menuId : query.getMenuId()) {
             RoleMenuDTO roleMenuDTO = new RoleMenuDTO();

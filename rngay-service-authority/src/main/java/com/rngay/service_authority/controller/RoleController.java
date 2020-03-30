@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "authorityRole")
+@RequestMapping(value = "role")
 public class RoleController {
 
     @Autowired
@@ -23,36 +23,36 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @GetMapping(value = "load")
-    public Result<List<RoleDTO>> load(HttpServletRequest request) {
+    @GetMapping(value = "list")
+    public Result<List<RoleDTO>> list(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
             return Result.failMsg("角色查询失败");
         }
-        return Result.success(roleService.load(orgId));
+        return Result.success(roleService.list(orgId));
     }
 
-    @GetMapping(value = "loadRole")
-    public Result<List<RoleDTO>> loadRole(HttpServletRequest request) {
+    @GetMapping(value = "listRole")
+    public Result<List<RoleDTO>> listRole(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
             return Result.failMsg("角色查询失败");
         }
-        return Result.success(roleService.loadRole(orgId));
+        return Result.success(roleService.listRole(orgId));
     }
 
-    @GetMapping(value = "loadByPid")
-    public Result<List<RoleDTO>> loadByPid(HttpServletRequest request) {
+    @GetMapping(value = "listByPid")
+    public Result<List<RoleDTO>> listByPid(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null) {
-            return Result.success(roleService.loadByPid(orgId));
+            return Result.success(roleService.listByPid(orgId));
         }
         return Result.failMsg("角色加载失败");
     }
 
     @RepeatSubmit
-    @PostMapping(value = "save")
-    public Result<Integer> save(HttpServletRequest request, @RequestBody RoleDTO uaRole) {
+    @PostMapping(value = "insert")
+    public Result<Integer> insert(HttpServletRequest request, @RequestBody RoleDTO uaRole) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId == null) {
             return Result.failMsg("角色添加失败");

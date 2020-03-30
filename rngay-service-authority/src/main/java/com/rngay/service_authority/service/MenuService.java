@@ -14,21 +14,21 @@ public interface MenuService extends IService<MenuDTO> {
      * @Author: pengcheng
      * @Date: 2018/12/17
      */
-    Integer saveMenu(MenuDTO uaMenu);
+    Integer insertMenu(MenuDTO uaMenu);
 
     /**
      * 获取全部菜单
      * @Author: pengcheng
      * @Date: 2018/12/18
      */
-    List<MenuDTO> load();
+    List<MenuDTO> list();
 
     /**
      *
      * @Author: pengcheng
      * @Date: 2019/4/2
      */
-    List<MenuDTO> loadByPid();
+    List<MenuDTO> listByPid();
 
     /**
      * 删除指定菜单，同时删除关联信息，角色菜单数据，菜单 URL 数据。
@@ -57,7 +57,7 @@ public interface MenuService extends IService<MenuDTO> {
      * @Author: pengcheng
      * @Date: 2019/12/30
      */
-    Integer updateInList(MenuInListDTO menuIdListDTO);
+    Integer updateInMenu(MenuInListDTO menuIdListDTO);
 
     /**
      * 根据用户 id 加载权限

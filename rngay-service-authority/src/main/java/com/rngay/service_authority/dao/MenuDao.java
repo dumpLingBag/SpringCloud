@@ -21,7 +21,7 @@ public interface MenuDao extends BaseMapper<MenuDTO> {
 
     List<MenuDTO> loadMenuByUserId(@Param("roleIds") List<UserRoleDTO> roleIds);
 
-    int updateInList(@Param("menuList") MenuInListDTO menuList);
+    int updateInMenu(@Param("menuList") MenuInListDTO menuList);
 
     List<String> loadUrlByUser(@Param("userId") Long userId);
 

@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "authorityMenuUrl")
+@RequestMapping(value = "menuUrl")
 public class MenuUrlController {
 
     @Autowired
@@ -22,18 +22,18 @@ public class MenuUrlController {
     @Autowired
     private SystemService systemService;
 
-    @GetMapping(value = "load")
-    public Result<List<UrlDTO>> load(HttpServletRequest request) {
+    @GetMapping(value = "list")
+    public Result<List<UrlDTO>> list(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId == 0) {
             return Result.success(urlService.load());
         }
-        return Result.success(null);
+        return Result.success();
     }
 
-    @PostMapping(value = "loadUrl")
-    public Result<List<MenuUrlDTO>> loadUrl(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
-        List<MenuUrlDTO> menuUrls = urlService.loadUrl(updateUrlDTO.getMenuId());
+    @PostMapping(value = "listUrl")
+    public Result<List<MenuUrlDTO>> listUrl(@Valid @RequestBody UpdateUrlDTO updateUrlDTO) {
+        List<MenuUrlDTO> menuUrls = urlService.listUrl(updateUrlDTO.getMenuId());
         return Result.success(menuUrls);
     }
 

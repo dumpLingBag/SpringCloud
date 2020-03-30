@@ -35,7 +35,7 @@ public class SystemServiceImpl implements SystemService {
     private UserTokenDao userTokenDao;
 
     @Override
-    public List<MenuDTO> loadForMenu(UaUserDTO userDTO) {
+    public List<MenuDTO> listForMenu(UaUserDTO userDTO) {
         if (userDTO == null) return null;
 
         List<MenuDTO> allMenus = new ArrayList<>();

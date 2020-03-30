@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "authorityRoleMenu")
+@RequestMapping(value = "roleMenu")
 public class RoleMenuController {
 
     @Autowired
@@ -22,23 +22,23 @@ public class RoleMenuController {
     @Autowired
     private RoleMenuService roleMenuService;
 
-    @GetMapping(value = "load")
-    public Result<List<MenuDTO>> load(HttpServletRequest request) {
+    @GetMapping(value = "list")
+    public Result<List<MenuDTO>> list(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
-        return Result.success(roleMenuService.load(orgId));
+        return Result.success(roleMenuService.list(orgId));
     }
 
-    @GetMapping(value = "loadMenu")
-    public Result<List<RoleMenuDTO>> loadMenu(Long roleId) {
+    @GetMapping(value = "listMenu")
+    public Result<List<RoleMenuDTO>> listMenu(Long roleId) {
         if (roleId == null) {
             return Result.failMsg("加载菜单失败");
         }
-        return Result.success(roleMenuService.loadMenu(roleId));
+        return Result.success(roleMenuService.listMenu(roleId));
     }
 
-    @PostMapping(value = "save")
+    @PostMapping(value = "insert")
     public Result<Boolean> save(@Valid @RequestBody UpdateRoleMenuQuery query) {
-        return Result.success(roleMenuService.save(query));
+        return Result.success(roleMenuService.insert(query));
     }
 
 }

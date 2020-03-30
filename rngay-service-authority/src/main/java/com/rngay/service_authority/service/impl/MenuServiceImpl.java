@@ -31,7 +31,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     private UserRoleDao userRoleDao;
 
     @Override
-    public Integer saveMenu(MenuDTO uaMenu) {
+    public Integer insertMenu(MenuDTO uaMenu) {
         // 如果添加的菜单是跳转菜单，则判断上级菜单是不是一级菜单
         if (uaMenu.getMenuType() != null && uaMenu.getMenuType() == 1) {
             MenuDTO menuDTO = menuDao.selectById(uaMenu.getPid());
@@ -48,7 +48,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     }
 
     @Override
-    public List<MenuDTO> load() {
+    public List<MenuDTO> list() {
         List<MenuDTO> list = new ArrayList<>();
         List<MenuDTO> menus = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", 0));
         if (!menus.isEmpty()) {
@@ -63,7 +63,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     }
 
     @Override
-    public List<MenuDTO> loadByPid() {
+    public List<MenuDTO> listByPid() {
         return menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid",0).isNull("component"));
     }
 
@@ -101,7 +101,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
             }
             return menuDao.loadMenuByOrgId(roles);
         }
-        return menuDao.selectList(new QueryWrapper<MenuDTO>().eq("enabled", 1).eq("del_flag", 1).orderByAsc("pid").orderByAsc("sort"));
+        QueryWrapper<MenuDTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("enabled", "1").eq("del_flag", "1").ne("menu_type", "2");
+        wrapper.orderByAsc("pid").orderByAsc("sort");
+        return menuDao.selectList(wrapper);
     }
 
     @Override
@@ -118,8 +121,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     }
 
     @Override
-    public Integer updateInList(MenuInListDTO menuIdListDTO) {
-        return menuDao.updateInList(menuIdListDTO);
+    public Integer updateInMenu(MenuInListDTO menuIdListDTO) {
+        return menuDao.updateInMenu(menuIdListDTO);
     }
 
     @Override

@@ -4,7 +4,7 @@ public enum ResultCodeEnum {
 
     TOKEN_INVALID(401, "用户信息已过期，请重新登录"),
     TOKEN_OTHER_LOGIN(2, "账号在其他地方登录，请重新登录"),
-    LOGIN_FAIL(2, "登录失败，请重试"),
+    LOGIN_FAIL(2, "账号或密码错误，请重试"),
     LOGIN_COUNT_FAIL(2, "用户名或密码输入错误，请重新输入"),
     LOGIN_INFO_FAIL(2, "更新用户信息失败"),
     COMMON_AUTHORITY_FAIL(2, "公共权限修改失败"),

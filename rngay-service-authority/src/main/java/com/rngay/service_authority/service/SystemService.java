@@ -15,7 +15,7 @@ public interface SystemService {
      * @Author pengcheng
      * @Date 2019/3/27
      **/
-    List<MenuDTO> loadForMenu(UaUserDTO userDTO);
+    List<MenuDTO> listForMenu(UaUserDTO userDTO);
 
     /**
      * 查询指定用户允许访问的 url地址

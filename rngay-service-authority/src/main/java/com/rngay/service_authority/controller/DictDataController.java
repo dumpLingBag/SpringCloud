@@ -37,8 +37,8 @@ public class DictDataController {
         return Result.success(dictDataService.list(wrapper));
     }
 
-    @PostMapping(value = "save")
-    public Result<Boolean> save(@Valid @RequestBody DictDataDTO dictDataDTO) {
+    @PostMapping(value = "insert")
+    public Result<Boolean> insert(@Valid @RequestBody DictDataDTO dictDataDTO) {
         return Result.success(dictDataService.save(dictDataDTO));
     }
 

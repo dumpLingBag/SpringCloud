@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.rngay.service_user.dao.UserDao">
-    <select id="pageList" resultType="UAUserDTO">
+    <select id="page" resultType="UAUserDTO">
         select * from ua_user
         <where>
             del_flag = ${pageList.delFlag}

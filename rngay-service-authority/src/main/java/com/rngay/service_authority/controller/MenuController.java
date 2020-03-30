@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "authorityMenu", name = "菜单管理")
+@RequestMapping(value = "menu", name = "菜单管理")
 public class MenuController {
 
     @Autowired
@@ -23,15 +23,16 @@ public class MenuController {
     private SystemService systemService;
 
     @RepeatSubmit
-    @PostMapping(value = "save")
-    public Result<Integer> save(@RequestBody MenuDTO uaMenu) {
-        Integer menu = menuService.saveMenu(uaMenu);
+    @PostMapping(value = "insert")
+    public Result<Integer> insert(@RequestBody MenuDTO uaMenu) {
+        Integer menu = menuService.insertMenu(uaMenu);
         if (menu == null || menu == 0) {
             return Result.failMsg("保存失败");
         }
         return Result.success(menu);
     }
 
+    @RepeatSubmit
     @PutMapping(value = "update")
     public Result<Integer> update(@RequestBody MenuDTO uaMenu) {
         boolean menu = menuService.updateById(uaMenu);
@@ -41,20 +42,20 @@ public class MenuController {
         return Result.success();
     }
 
-    @GetMapping(value = "load")
-    public Result<List<MenuDTO>> load(HttpServletRequest request) {
+    @GetMapping(value = "list")
+    public Result<List<MenuDTO>> list(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId == 0) {
-            return Result.success(menuService.load());
+            return Result.success(menuService.list());
         }
         return Result.failMsg("菜单加载失败");
     }
 
-    @GetMapping(value = "loadByPid")
-    public Result<List<MenuDTO>> loadByPid(HttpServletRequest request) {
+    @GetMapping(value = "listByPid")
+    public Result<List<MenuDTO>> listByPid(HttpServletRequest request) {
         Long orgId = systemService.getCurrentOrgId(request);
         if (orgId != null && orgId == 0) {
-            return Result.success(menuService.loadByPid());
+            return Result.success(menuService.listByPid());
         }
         return Result.failMsg("菜单加载失败");
     }
@@ -67,12 +68,12 @@ public class MenuController {
         return Result.success(menuService.delete(menuIdList));
     }
 
-    @PutMapping(value = "updateInList")
-    public Result<Integer> update(@RequestBody MenuInListDTO menuIdList) {
+    @PutMapping(value = "updateInMenu")
+    public Result<Integer> updateInMenu(@RequestBody MenuInListDTO menuIdList) {
         if (menuIdList == null || menuIdList.getMenuIdList().isEmpty()) {
             return Result.failMsg("更改状态失败");
         }
-        return Result.success(menuService.updateInList(menuIdList));
+        return Result.success(menuService.updateInMenu(menuIdList));
     }
 
 }

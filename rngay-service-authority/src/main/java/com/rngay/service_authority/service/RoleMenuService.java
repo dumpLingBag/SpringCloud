@@ -14,20 +14,20 @@ public interface RoleMenuService extends IService<RoleMenuDTO> {
      * @Author pengcheng
      * @Date 2019/3/30
      **/
-    List<MenuDTO> load(Long orgId);
+    List<MenuDTO> list(Long orgId);
 
     /**
      * 根据 roleId 加载菜单
      * @Author: pengcheng
      * @Date: 2019/3/31
      */
-    List<RoleMenuDTO> loadMenu(Long roleId);
+    List<RoleMenuDTO> listMenu(Long roleId);
 
     /**
      * 根据 roleId 插入或更新所选的菜单
      * @Author pengcheng
      * @Date 2019/4/1
      **/
-    Boolean save(UpdateRoleMenuQuery query);
+    Boolean insert(UpdateRoleMenuQuery query);
 
 }

@@ -2,15 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.rngay.service_authority.dao.UserRoleDao">
     <select id="getRoleId" resultType="UserRoleDTO">
-        select role_id from ua_user_role where checked = 1 and user_id = #{userId} and del_flag = 1
+        select role_id from ua_user_role as ur where ur.user_id = #{userId} and ur.del_flag = '1'
         union select dr.role_id from ua_dept_user as du, ua_dept_role as dr
-        where du.checked = 1 and dr.checked = 1 and dr.dept_id = du.dept_id
-        and du.user_id = #{userId}
+        where dr.dept_id = du.dept_id and du.user_id = #{userId} and du.del_flag = '1' and dr.del_flag = '1'
     </select>
 
     <select id="loadPageUserByRoleId" resultType="UserRoleDTO">
         select uur.*, ur.name from ua_user_role uur left join ua_role ur on uur.role_id = ur.id
-        where uur.role_id = #{roleId} and uur.del_flag = 1
+        where uur.role_id = #{roleId} and uur.del_flag = '1'
     </select>
 
     <select id="loadRoleByUserId" resultType="UserRoleDTO">

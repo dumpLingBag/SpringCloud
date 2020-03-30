@@ -68,7 +68,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
             map.put("nickname", userInfo.getNickname());
             map.put("avatar", userInfo.getAvatar());
             map.put("authorities", authentication.getAuthorities());
-            List<MenuDTO> menuList = systemService.loadForMenu(userInfo);
+            List<MenuDTO> menuList = systemService.listForMenu(userInfo);
             map.put("menuList", menuList);
             Map<String, Object> result = new HashMap<>();
             result.put("userInfo", map);

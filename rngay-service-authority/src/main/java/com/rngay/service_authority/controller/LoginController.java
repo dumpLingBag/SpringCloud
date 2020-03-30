@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "authorityLogin", name = "登录")
+@RequestMapping(value = "login", name = "登录")
 public class LoginController {
 
     @Autowired

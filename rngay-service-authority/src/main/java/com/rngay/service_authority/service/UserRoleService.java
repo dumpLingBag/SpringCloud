@@ -16,14 +16,14 @@ public interface UserRoleService extends IService<UserRoleDTO> {
      * @Author pengcheng
      * @Date 2019/4/1
      **/
-    List<UserRoleDTO> load(Long userId);
+    List<UserRoleDTO> list(Long userId);
 
     /**
      * 插入或更新用户角色，支持更新多个角色
      * @Author pengcheng
      * @Date 2019/4/1
      **/
-    Boolean save(UserRoleUpdateQuery query);
+    Boolean insert(UserRoleUpdateQuery query);
 
     /**
      * 根据 orgId 加载权限
@@ -44,6 +44,6 @@ public interface UserRoleService extends IService<UserRoleDTO> {
      * @Author: pengcheng
      * @Date: 2020/3/12
      */
-    Page<UaUserDTO> loadUserByRoleId(UserRoleParamDTO userRoleParamDTO);
+    Page<UaUserDTO> pageUserByRoleId(UserRoleParamDTO userRoleParamDTO);
 
 }

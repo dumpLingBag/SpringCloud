@@ -37,7 +37,7 @@ public class MenuUrlServiceImpl extends ServiceImpl<MenuUrlDao, MenuUrlDTO> impl
     }
 
     @Override
-    public List<MenuUrlDTO> loadUrl(Long id) {
+    public List<MenuUrlDTO> listUrl(Long id) {
         return menuUrlDao.selectList(new QueryWrapper<MenuUrlDTO>().eq("menu_id", id).eq("checked", 1));
     }
 

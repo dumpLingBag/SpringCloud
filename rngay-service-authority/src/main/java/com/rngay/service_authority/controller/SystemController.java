@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping(value = "authoritySys")
+@RequestMapping(value = "system")
 public class SystemController {
 
     @Autowired
@@ -25,21 +25,21 @@ public class SystemController {
     @Autowired
     private PFUserService userService;
 
-    @GetMapping(value = "loadForMenu")
-    public Result<List<MenuDTO>> loadForMenu(HttpServletRequest request) {
+    @GetMapping(value = "listForMenu")
+    public Result<List<MenuDTO>> listForMenu(HttpServletRequest request) {
         UaUserDTO currentUser = systemService.getCurrentUser(request);
         if (currentUser == null) {
             return Result.success();
         }
 
-        List<MenuDTO> menuList = systemService.loadForMenu(currentUser);
+        List<MenuDTO> menuList = systemService.listForMenu(currentUser);
 
         return Result.success(menuList);
     }
 
-    @GetMapping(value = "loadIcon")
-    public Result<List<UaIconDTO>> loadIcon() {
-        return userService.loadIcon();
+    @GetMapping(value = "listIcon")
+    public Result<List<UaIconDTO>> listIcon() {
+        return userService.listIcon();
     }
 
 }

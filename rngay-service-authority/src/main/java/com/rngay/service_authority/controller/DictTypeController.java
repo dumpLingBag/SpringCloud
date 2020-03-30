@@ -24,13 +24,13 @@ public class DictTypeController {
         return Result.success(dictTypeService.list());
     }
 
-    @GetMapping(value = "pageList")
-    public Result<Page<DictTypeDTO>> pageList(DictTypeQuery dictTypeQuery) {
-        return Result.success(dictTypeService.pageList(dictTypeQuery));
+    @GetMapping(value = "page")
+    public Result<Page<DictTypeDTO>> page(DictTypeQuery dictTypeQuery) {
+        return Result.success(dictTypeService.page(dictTypeQuery));
     }
 
-    @PostMapping(value = "save")
-    public Result<Boolean> save(@Valid @RequestBody DictTypeDTO dictTypeDTO) {
+    @PostMapping(value = "insert")
+    public Result<Boolean> insert(@Valid @RequestBody DictTypeDTO dictTypeDTO) {
         DictTypeDTO dictType = dictTypeService.getDictType(dictTypeDTO.getDictType());
         if (dictType != null) {
             return Result.fail("存在相同字典类型");

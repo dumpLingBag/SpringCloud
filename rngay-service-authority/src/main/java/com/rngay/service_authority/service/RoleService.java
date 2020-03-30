@@ -16,7 +16,7 @@ public interface RoleService extends IService<RoleDTO> {
      * @Author: pengcheng
      * @Date: 2019/3/30
      */
-    List<RoleDTO> load(Long orgId);
+    List<RoleDTO> list(Long orgId);
 
     /**
      * 根据用户加载角色
@@ -44,14 +44,14 @@ public interface RoleService extends IService<RoleDTO> {
      * @author pengcheng
      * @date 2020-01-05 18:00
      */
-    List<RoleDTO> loadRole(Long orgId);
+    List<RoleDTO> listRole(Long orgId);
 
     /**
      * 根据 orgId 加载关联角色除去 pid 为零的信息
      * @Author pengcheng
      * @Date 2019/4/1
      **/
-    List<RoleDTO> loadByPid(Long orgId);
+    List<RoleDTO> listByPid(Long orgId);
 
     /**
      * 根据 roleId 删除关联菜单

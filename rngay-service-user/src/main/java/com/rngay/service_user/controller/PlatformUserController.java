@@ -39,8 +39,8 @@ public class PlatformUserController {
         return Result.success(userService.findByMobile(mobile));
     }
 
-    @PostMapping(value = "save")
-    public Result<Integer> save(@RequestBody UaUserDTO saveUserDTO) {
+    @PostMapping(value = "insert")
+    public Result<Integer> insert(@RequestBody UaUserDTO saveUserDTO) {
         saveUserDTO.setPassword(BCrypt.hashpw(saveUserDTO.getPassword(), BCrypt.gensalt(12)));
         saveUserDTO.setCreateTime(new Date());
         saveUserDTO.setUpdateTime(new Date());
@@ -52,9 +52,9 @@ public class PlatformUserController {
         return Result.success(userService.updateUser(updateUserDTO));
     }
 
-    @PostMapping(value = "pageList")
+    @PostMapping(value = "page")
     public Result<Page<UaUserDTO>> pageList(@RequestBody UaUserPageListDTO pageListDTO) {
-        return Result.success(userService.pageList(pageListDTO));
+        return Result.success(userService.page(pageListDTO));
     }
 
     @PutMapping(value = "reset/{id}")

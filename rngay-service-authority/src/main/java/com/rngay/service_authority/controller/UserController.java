@@ -34,7 +34,7 @@ public class UserController {
     private UploadUtil uploadUtil;
 
     @RepeatSubmit
-    @PostMapping(value = "save")
+    @PostMapping(value = "insert")
     public Result<Integer> save(@Valid @RequestBody UaUserDTO saveUserDTO) {
         Result<UaUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getUsername());
         if (byAccount.getCode() == 0) {
@@ -56,12 +56,12 @@ public class UserController {
             return Result.fail(ResMsg.getBuilder());
         }
         saveUserDTO.setParentId(systemService.getCurrentUserId(request));
-        return pfUserService.save(saveUserDTO);
+        return pfUserService.insert(saveUserDTO);
     }
 
-    @PostMapping(value = "pageList")
-    public Result<Page<UaUserDTO>> pageList(@RequestBody UaUserPageListDTO pageListDTO) {
-        return pfUserService.pageList(pageListDTO);
+    @PostMapping(value = "page")
+    public Result<Page<UaUserDTO>> page(@RequestBody UaUserPageListDTO pageListDTO) {
+        return pfUserService.page(pageListDTO);
     }
 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
@@ -72,13 +72,13 @@ public class UserController {
         if (user != null) {
             if (!user.getUsername().equals(updateUserDTO.getUsername())) {
                 Result<UaUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getUsername());
-                if (byAccount.getCode() == 0 || byAccount.getData() != null) {
+                if (byAccount.getCode() != 0 || byAccount.getData() != null) {
                     ResMsg.builder("username", "此账号名称已经存在");
                 }
             }
             if (user.getMobile() != null && !user.getMobile().equals(updateUserDTO.getMobile())) {
                 Result<UaUserDTO> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
-                if (byMobile.getCode() == 0 || byMobile.getData() != null) {
+                if (byMobile.getCode() != 0 || byMobile.getData() != null) {
                     ResMsg.builder("mobile", "此手机号码已经存在");
                 }
             }

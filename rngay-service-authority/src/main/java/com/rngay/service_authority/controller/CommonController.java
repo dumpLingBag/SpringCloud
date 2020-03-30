@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "authorityCommonUrl", name = "公共权限")
+@RequestMapping(value = "commonUrl", name = "公共权限")
 public class CommonController {
 
     @Autowired

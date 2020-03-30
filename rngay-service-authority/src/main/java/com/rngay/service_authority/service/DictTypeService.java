@@ -7,7 +7,7 @@ import com.rngay.feign.authority.query.DictTypeQuery;
 
 public interface DictTypeService extends IService<DictTypeDTO> {
 
-    Page<DictTypeDTO> pageList(DictTypeQuery dictTypeQuery);
+    Page<DictTypeDTO> page(DictTypeQuery dictTypeQuery);
 
     Boolean deleteDictType(Long id);
 

@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface UserDao extends BaseMapper<UaUserDTO> {
 
-    Page<UaUserDTO> pageList(Page<UaUserDTO> page, @Param("pageList") UaUserPageListDTO pageListDTO);
+    Page<UaUserDTO> page(Page<UaUserDTO> page, @Param("pageList") UaUserPageListDTO pageListDTO);
 
     List<UaUserDTO> loadByUserIds(@Param("roleDTO") List<UserRoleDTO> roleDTO);
 

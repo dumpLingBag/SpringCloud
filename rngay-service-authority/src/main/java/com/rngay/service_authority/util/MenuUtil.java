@@ -54,6 +54,7 @@ public class MenuUtil {
         menuDto.setEnabled(menu.getEnabled());
         menuDto.setAuthority(menu.getAuthority());
         menuDto.setMenuType(menu.getMenuType());
+        menuDto.setMenuUrl(menu.getMenuUrl());
         menuDto.setCreateTime(menu.getCreateTime());
         menuDto.setUpdateTime(menu.getUpdateTime());
         if (codeEnum.ordinal() == FiledEnum.MENU_TYPE_VO.ordinal()) {

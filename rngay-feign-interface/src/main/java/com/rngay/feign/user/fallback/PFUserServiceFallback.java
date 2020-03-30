@@ -38,7 +38,7 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<Integer> save(UaUserDTO saveUserDTO) {
+            public Result<Integer> insert(UaUserDTO saveUserDTO) {
                 return Result.failMsg(result);
             }
 
@@ -48,12 +48,12 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<List<UaIconDTO>> loadIcon() {
+            public Result<List<UaIconDTO>> listIcon() {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<Page<UaUserDTO>> pageList(UaUserPageListDTO pageListDTO) {
+            public Result<Page<UaUserDTO>> page(UaUserPageListDTO pageListDTO) {
                 return Result.failMsg(result);
             }
 

@@ -20,9 +20,9 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeDao, DictTypeDTO> i
     private DictDataDao dictDataDao;
 
     @Override
-    public Page<DictTypeDTO> pageList(DictTypeQuery dictTypeQuery) {
+    public Page<DictTypeDTO> page(DictTypeQuery dictTypeQuery) {
         Page<DictTypeDTO> page = new Page<>(dictTypeQuery.getCurrentPage(), dictTypeQuery.getPageSize());
-        return dictTypeDao.pageList(page, dictTypeQuery);
+        return dictTypeDao.page(page, dictTypeQuery);
     }
 
     @Override

@@ -11,7 +11,7 @@
     <select id="loadMenuByOrgId" resultType="MenuDTO">
         <foreach collection="roles" item="role" index="index" separator="union">
             select t.*
-            from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId} and m.menu_type != '2'
             and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
     </select>
@@ -20,13 +20,13 @@
         select sm.* from (
         <foreach collection="roles" item="role" separator="union">
             select t.* from (
-            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId} and m.menu_type != '2'
             and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
         ) as pm join (
         <foreach collection="userRoles" item="userRole" index="index" separator="union">
             select t.* from (
-            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId}
+            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId} and m.menu_type != '2'
             and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
         ) as sm on sm.id = pm.id
@@ -40,7 +40,7 @@
         </foreach>
     </select>
 
-    <update id="updateInList" parameterType="MenuInListDTO">
+    <update id="updateInMenu" parameterType="MenuInListDTO">
         update ua_menu set enabled = #{menuList.enabled} where id in
         <foreach collection="menuList.menuIdList" item="menuId" open="(" close=")" separator=",">
             #{menuId}

@@ -21,7 +21,7 @@ public interface MenuUrlService extends IService<MenuUrlDTO> {
      * @Author pengcheng
      * @Date 2019/3/30
      **/
-    List<MenuUrlDTO> loadUrl(Long id);
+    List<MenuUrlDTO> listUrl(Long id);
 
     /**
      * 根据 menuId 插入或更新所选菜单的 url 地址

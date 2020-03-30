@@ -57,7 +57,7 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2018/12/27
      */
-    Page<UaUserDTO> pageList(UaUserPageListDTO pageListDTO);
+    Page<UaUserDTO> page(UaUserPageListDTO pageListDTO);
 
     /**
      * 重置用户密码

@@ -14,28 +14,28 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "authorityUserRole", name = "用户角色")
+@RequestMapping(value = "userRole", name = "用户角色")
 public class UserRoleController {
 
     @Autowired
     private UserRoleService userRoleService;
 
-    @GetMapping(value = "load")
-    public Result<List<UserRoleDTO>> load(Long userId) {
+    @GetMapping(value = "list")
+    public Result<List<UserRoleDTO>> list(Long userId) {
         if (userId != null) {
-            return Result.success(userRoleService.load(userId));
+            return Result.success(userRoleService.list(userId));
         }
         return Result.failMsg("获取用户角色失败");
     }
 
-    @GetMapping(value = "loadUserByRoleId")
-    public Result<Page<UaUserDTO>> loadUserByRoleId(UserRoleParamDTO userRole) {
-        return Result.success(userRoleService.loadUserByRoleId(userRole));
+    @GetMapping(value = "pageUserByRoleId")
+    public Result<Page<UaUserDTO>> pageUserByRoleId(UserRoleParamDTO userRole) {
+        return Result.success(userRoleService.pageUserByRoleId(userRole));
     }
 
-    @PostMapping(value = "save")
-    public Result<Boolean> save(@Valid @RequestBody UserRoleUpdateQuery query) {
-        return Result.success(userRoleService.save(query));
+    @PostMapping(value = "insert")
+    public Result<Boolean> insert(@Valid @RequestBody UserRoleUpdateQuery query) {
+        return Result.success(userRoleService.insert(query));
     }
 
 }

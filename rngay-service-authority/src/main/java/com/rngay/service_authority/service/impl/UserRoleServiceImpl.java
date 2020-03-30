@@ -35,13 +35,13 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     private PFUserService pfUserService;
 
     @Override
-    public List<UserRoleDTO> load(Long userId) {
+    public List<UserRoleDTO> list(Long userId) {
         return userRoleDao.selectList(new QueryWrapper<UserRoleDTO>()
                 .eq("checked", 1).eq("user_id", userId));
     }
 
     @Override
-    public Boolean save(UserRoleUpdateQuery query) {
+    public Boolean insert(UserRoleUpdateQuery query) {
         List<UserRoleDTO> list = new ArrayList<>();
         for (Long userId : query.getUserIds()) {
             for (Long roleId : query.getRoleIds()) {
@@ -88,7 +88,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     }
 
     @Override
-    public Page<UaUserDTO> loadUserByRoleId(UserRoleParamDTO userRole) {
+    public Page<UaUserDTO> pageUserByRoleId(UserRoleParamDTO userRole) {
         Page<UserRoleDTO> dtoPage = new Page<>(userRole.getCurrentPage(), userRole.getPageSize());
         if (userRole.getRoleId() != null) {
             Page<UserRoleDTO> roleDTOPage = userRoleDao.loadPageUserByRoleId(dtoPage, userRole.getRoleId());
@@ -115,7 +115,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
         } else {
             UaUserPageListDTO uaUserPage = new UaUserPageListDTO();
             BeanUtils.copyProperties(userRole, uaUserPage);
-            Result<Page<UaUserDTO>> pageResult = pfUserService.pageList(uaUserPage);
+            Result<Page<UaUserDTO>> pageResult = pfUserService.page(uaUserPage);
             Page<UaUserDTO> data = pageResult.getData();
             if (data != null && !data.getRecords().isEmpty()) {
                 List<UserRoleDTO> roleDTOS = userRoleDao.loadRoleByUserId(data.getRecords());

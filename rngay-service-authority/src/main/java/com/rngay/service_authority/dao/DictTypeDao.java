@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DictTypeDao extends BaseMapper<DictTypeDTO> {
 
-    Page<DictTypeDTO> pageList(Page<DictTypeDTO> page, @Param("pageList") DictTypeQuery dictTypeQuery);
+    Page<DictTypeDTO> page(Page<DictTypeDTO> page, @Param("pageList") DictTypeQuery dictTypeQuery);
 
 }

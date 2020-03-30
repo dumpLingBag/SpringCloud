@@ -62,9 +62,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UaUserDTO> pageList(UaUserPageListDTO pageListDTO) {
+    public Page<UaUserDTO> page(UaUserPageListDTO pageListDTO) {
         Page<UaUserDTO> page = new Page<>(pageListDTO.getCurrentPage(), pageListDTO.getPageSize());
-        return userDao.pageList(page, pageListDTO);
+        return userDao.page(page, pageListDTO);
     }
 
     @Override
