@@ -6,9 +6,9 @@ import com.rngay.common.util.ip.AddressUtils;
 import com.rngay.common.util.ip.IPUtil;
 import com.rngay.common.util.spring.SpringUtils;
 import com.rngay.feign.authority.LoginInfoDTO;
-import com.rngay.feign.authority.OperLogDTO;
+import com.rngay.feign.authority.OperationLogDTO;
 import com.rngay.service_authority.service.LoginInfoService;
-import com.rngay.service_authority.service.OperLogService;
+import com.rngay.service_authority.service.OperationLogService;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class AsyncFactory {
 
     private static final Logger sys_user_logger = LoggerFactory.getLogger(AsyncFactory.class);
 
-    public static TimerTask recordLogin(final String username, final String status, final String message, final Object... args) {
+    public static TimerTask recordLogin(final String username, final Integer status, final String message, final Object... args) {
         final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
         final String ip = IPUtil.getIPAddress(ServletUtils.getRequest());
         return new TimerTask() {
@@ -38,7 +38,7 @@ public class AsyncFactory {
                     loginInfo.setBrowser(browser);
                     loginInfo.setOs(os);
                     loginInfo.setMessage(message);
-                    loginInfo.setStatus(Integer.parseInt(status));
+                    loginInfo.setStatus(status);
                     SpringUtils.getBean(LoginInfoService.class).save(loginInfo);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
@@ -53,7 +53,7 @@ public class AsyncFactory {
      * @param operLog 操作日志信息
      * @return 任务task
      */
-    public static TimerTask recordOper(final OperLogDTO operLog)
+    public static TimerTask recordOper(final OperationLogDTO operLog)
     {
         return new TimerTask()
         {
@@ -63,7 +63,7 @@ public class AsyncFactory {
                 // 远程查询操作地点
                 try {
                     operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
-                    SpringUtils.getBean(OperLogService.class).save(operLog);
+                    SpringUtils.getBean(OperationLogService.class).save(operLog);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }

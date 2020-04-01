@@ -1,16 +1,18 @@
-package com.rngay.feign.authority;
+package com.rngay.service_authority.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.rngay.feign.dto.BaseDTO;
+import com.rngay.jpa.model.BaseEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
-@TableName(value = "oper_log")
-public class OperLogDTO extends BaseDTO {
+@Entity
+@Table(name = "operation_log")
+public class OperationLog extends BaseEntity {
 
-    @TableId(type = IdType.ID_WORKER)
+    @Id
     private Long id;
 
     // 操作模块
@@ -47,9 +49,11 @@ public class OperLogDTO extends BaseDTO {
     private String operLocation;
 
     // 请求参数
+    @Column(columnDefinition = "text")
     private String operParam;
 
     // 返回参数
+    @Column(columnDefinition = "text")
     private String jsonResult;
 
     // 状态

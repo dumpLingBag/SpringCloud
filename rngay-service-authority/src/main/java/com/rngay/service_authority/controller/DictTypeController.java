@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.util.StringUtils;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.DictTypeDTO;
+import com.rngay.feign.authority.query.DictTypesQuery;
 import com.rngay.feign.authority.query.DictTypeQuery;
 import com.rngay.service_authority.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,9 @@ public class DictTypeController {
         return Result.success(dictTypeService.updateById(dictTypeDTO));
     }
 
-    @DeleteMapping(value = "delete/{dictTypeId}")
-    public Result<Boolean> delete(@PathVariable Long dictTypeId) {
-        return Result.success(dictTypeService.deleteDictType(dictTypeId));
+    @DeleteMapping(value = "delete")
+    public Result<Boolean> delete(@Valid @RequestBody DictTypesQuery idsQuery) {
+        return Result.success(dictTypeService.deleteDictType(idsQuery));
     }
 
     @GetMapping(value = "getDictType/{dictType}")

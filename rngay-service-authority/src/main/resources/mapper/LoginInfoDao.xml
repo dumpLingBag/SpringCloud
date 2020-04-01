@@ -21,5 +21,6 @@
                 <![CDATA[and create_time <= #{pageList.endTime}]]>
             </if>
         </where>
+        order by create_time desc
     </select>
 </mapper>

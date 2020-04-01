@@ -1,6 +1,7 @@
 package com.rngay.service_authority.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rngay.common.enums.FiledEnum;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.MenuIdListDTO;
 import com.rngay.feign.authority.MenuInListDTO;
@@ -43,7 +44,7 @@ public interface MenuService extends IService<MenuDTO> {
      * @Author: pengcheng
      * @Date: 2019/12/30
      */
-    List<MenuDTO> loadMenuByOrgId(Long orgId);
+    List<MenuDTO> loadMenuByOrgId(Long orgId, FiledEnum filedEnum);
 
     /**
      * 根据 orgId 和 userId 查询菜单列表

@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.feign.authority.DictTypeDTO;
+import com.rngay.feign.authority.query.DictTypesQuery;
 import com.rngay.feign.authority.query.DictTypeQuery;
 import com.rngay.service_authority.dao.DictDataDao;
 import com.rngay.service_authority.dao.DictTypeDao;
 import com.rngay.service_authority.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DictTypeServiceImpl extends ServiceImpl<DictTypeDao, DictTypeDTO> implements DictTypeService {
@@ -25,13 +27,12 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeDao, DictTypeDTO> i
         return dictTypeDao.page(page, dictTypeQuery);
     }
 
+    @Transactional
     @Override
-    public Boolean deleteDictType(Long id) {
-        DictTypeDTO dictTypeDTO = dictTypeDao.selectById(id);
-        if (dictTypeDTO != null) {
-            dictTypeDTO.setDelFlag(0);
-            dictTypeDao.updateById(dictTypeDTO);
-            dictDataDao.deleteDict(dictTypeDTO.getDictType());
+    public Boolean deleteDictType(DictTypesQuery idsQuery) {
+        if (!idsQuery.getDictTypes().isEmpty()) {
+            dictTypeDao.deleteBatchDictType(idsQuery.getDictTypes());
+            dictDataDao.deleteBatchDictData(idsQuery.getDictTypes());
             return true;
         }
         return false;

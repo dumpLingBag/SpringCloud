@@ -40,7 +40,7 @@ public class SystemServiceImpl implements SystemService {
 
         List<MenuDTO> allMenus = new ArrayList<>();
         if (userDTO.getParentId() != null && userDTO.getParentId() == 0) {
-            List<MenuDTO> menuList = menuService.loadMenuByOrgId(userDTO.getOrgId());
+            List<MenuDTO> menuList = menuService.loadMenuByOrgId(userDTO.getOrgId(), FiledEnum.ASIDE_MENU);
             if (menuList != null && !menuList.isEmpty()) {
                 allMenus.addAll(menuList);
             }

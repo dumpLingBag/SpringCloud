@@ -1,17 +1,16 @@
-package com.rngay.service_authority.model;
+package com.rngay.feign.authority;
 
-import com.rngay.jpa.model.BaseEntity;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.rngay.feign.dto.BaseDTO;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
-@Entity
-@Table(name = "oper_log")
-public class OperLog extends BaseEntity {
+@TableName(value = "operation_log")
+public class OperationLogDTO extends BaseDTO {
 
-    @Id
+    @TableId(type = IdType.ID_WORKER)
     private Long id;
 
     // 操作模块

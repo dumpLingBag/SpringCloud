@@ -37,6 +37,14 @@ public class DictDataController {
         return Result.success(dictDataService.list(wrapper));
     }
 
+    @GetMapping(value = "listDictData")
+    public Result<List<DictDataDTO>> listDictData(String dictType) {
+        QueryWrapper<DictDataDTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("dict_type", dictType);
+        wrapper.eq("del_flag", "1");
+        return Result.success(dictDataService.list(wrapper));
+    }
+
     @PostMapping(value = "insert")
     public Result<Boolean> insert(@Valid @RequestBody DictDataDTO dictDataDTO) {
         return Result.success(dictDataService.save(dictDataDTO));

@@ -15,7 +15,7 @@ public interface MenuDao extends BaseMapper<MenuDTO> {
 
     int updateSort(@Param("sorts") List<MenuDTO> sort);
 
-    List<MenuDTO> loadMenuByOrgId(@Param("roles") List<OrgRoleDTO> roles);
+    List<MenuDTO> loadMenuByOrgId(@Param("roles") List<OrgRoleDTO> roles, @Param("code") int code);
 
     List<MenuDTO> loadMenuByOrgUserId(@Param("roles") List<OrgRoleDTO> roles, @Param("userRoles") List<UserRoleDTO> userRoleIds);
 

@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rngay.service_authority.dao.DictDataDao">
-    <update id="deleteDict">
+    <update id="deleteDictData">
         update dict_data set del_falg = '0' where dict_type = #{dictType}
+    </update>
+
+    <update id="deleteBatchDictData">
+        update dict_data set del_flag = '0' where dict_type in
+        <foreach collection="dictTypes" item="dictType" open="(" close=")" separator=",">
+            #{dictType}
+        </foreach>
     </update>
 </mapper>

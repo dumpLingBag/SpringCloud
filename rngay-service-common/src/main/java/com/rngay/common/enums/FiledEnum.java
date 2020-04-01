@@ -6,7 +6,9 @@ public enum FiledEnum {
     CHECKED(100, "checked"),
     ACCESS_TOKEN(101, "access_token"),
     AUTHORITIES(102, "authorities"),
-    USER_INFO(103, "user_info")
+    USER_INFO(103, "user_info"),
+    ASIDE_MENU(201, "aside_menu"),
+    AUTHORITY_MENU(202, "authority_menu")
     ;
 
     private String msg;

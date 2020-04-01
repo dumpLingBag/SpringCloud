@@ -3,8 +3,11 @@ package com.rngay.service_authority.security.handler;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.enums.ResultCodeEnum;
+import com.rngay.common.manager.AsyncManager;
+import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.ip.IPUtil;
 import com.rngay.common.util.ResultUtil;
+import com.rngay.service_authority.manger.AsyncFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
@@ -38,17 +41,22 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
         String account = request.getParameter("account");
         //用户登录时身份认证未通过
         if (e instanceof LockedException) {
-            ResultUtil.writeJson(response,2, "账户被锁定，请联系管理员!");
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.blocked")));
+            ResultUtil.writeJson(response,2, MessageUtils.message("user.blocked"));
         } else if (e instanceof CredentialsExpiredException) {
-            ResultUtil.writeJson(response,2, "密码过期，请联系管理员!");
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.expire")));
+            ResultUtil.writeJson(response,2, MessageUtils.message("user.password.expire"));
         } else if (e instanceof AccountExpiredException) {
-            ResultUtil.writeJson(response, 2, "账户过期，请联系管理员!");
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.account.expire")));
+            ResultUtil.writeJson(response, 2, MessageUtils.message("user.account.expire"));
         } else if (e instanceof DisabledException) {
-            ResultUtil.writeJson(response, 2, "账户被禁用，请联系管理员!");
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.account.enabled")));
+            ResultUtil.writeJson(response, 2, MessageUtils.message("user.account.enabled"));
         } else if (e instanceof BadCredentialsException) {
             failCount(request, response, account);
         } else {
-            ResultUtil.writeJson(response, 2, "登录失败!");
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.login.fail")));
+            ResultUtil.writeJson(response, 2, MessageUtils.message("user.login.fail"));
         }
     }
 
@@ -65,11 +73,9 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
         } else {
             int i = Integer.parseInt(value.toString());
             int expire = 30 * 60;
-            if (i > 5) {
-                expire = 2 * 60 * 60;
-            }
             redisUtil.set(RedisKeys.getFailCount(key), i + 1, expire);
         }
+        AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.not.match")));
         ResultUtil.writeJson(response, ResultCodeEnum.LOGIN_FAIL);
     }
 

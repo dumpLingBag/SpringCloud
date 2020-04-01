@@ -2,8 +2,12 @@ package com.rngay.service_authority.security.filter;
 
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
+import com.rngay.common.enums.ResultCodeEnum;
+import com.rngay.common.manager.AsyncManager;
+import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.ip.IPUtil;
 import com.rngay.common.util.ResultUtil;
+import com.rngay.service_authority.manger.AsyncFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,9 +54,11 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        String account = request.getParameter("account");
         // 验证账号密码是否出错次数过多
         if (verificationFailCount(request) > 5) {
-            ResultUtil.writeJson(response, 2, "密码出错次数过多，请两小时后再试");
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.retry.limit.exceed", 5)));
+            ResultUtil.writeJson(response, 2, MessageUtils.message("user.password.retry.limit.exceed", 5));
             return null;
         }
         // 出错两次以上则校验验证码
@@ -63,11 +69,13 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
                 String text = (String) redisUtil.get(codeKey); // 存在 redis 的验证码
                 if (StringUtils.isNotBlank(text)) {
                     if (!text.equalsIgnoreCase(code)) {
-                        ResultUtil.writeJson(response, 2, "验证码错误");
+                        AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.captcha.error")));
+                        ResultUtil.writeJson(response, 2, MessageUtils.message("user.captcha.error"));
                         return null;
                     }
                 } else {
-                    ResultUtil.writeJson(response, 2, "验证码已过期");
+                    AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.captcha.expire")));
+                    ResultUtil.writeJson(response, 2, MessageUtils.message("user.captcha.expire"));
                     return null;
                 }
             }

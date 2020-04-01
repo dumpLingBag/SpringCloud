@@ -1,16 +1,19 @@
-package com.rngay.feign.authority;
+package com.rngay.feign.authority.query;
 
 import com.rngay.feign.dto.PageQueryDTO;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class OperLogPageDTO extends PageQueryDTO {
+public class OperationLogPageQuery extends PageQueryDTO {
 
     private String title;
     private String operName;
     private Integer businessType;
     private Integer status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     public String getTitle() {

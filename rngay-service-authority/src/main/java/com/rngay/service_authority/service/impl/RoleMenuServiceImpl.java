@@ -27,7 +27,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
 
     @Override
     public List<MenuDTO> list(Long orgId) {
-        return menuList(menuService.loadMenuByOrgId(orgId));
+        return menuList(menuService.loadMenuByOrgId(orgId, FiledEnum.AUTHORITY_MENU));
     }
 
     @Override

@@ -12,7 +12,7 @@ public class MenuStartRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         MenuDao menuDao = SpringUtils.getBean(MenuDao.class);
-        Integer url = menuDao.selectCount(new QueryWrapper<MenuDTO>().eq("component", "AuthorityMenu"));
+        Integer url = menuDao.selectCount(new QueryWrapper<MenuDTO>().eq("component", "Menu"));
         if (url <= 0) {
             MenuDTO systemManage = new MenuDTO();
             systemManage.setName("系统管理");
@@ -29,7 +29,7 @@ public class MenuStartRunner implements CommandLineRunner {
                 menuManage.setMenuType(1);
                 menuManage.setPid(systemManage.getId());
                 menuManage.setPath("/authority");
-                menuManage.setComponent("AuthorityMenu");
+                menuManage.setComponent("Menu");
                 menuManage.setIcon("iconfont icon-xingzhuang-tuoyuanxing");
                 menuDao.insert(menuManage);
             }

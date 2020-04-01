@@ -92,17 +92,20 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     }
 
     @Override
-    public List<MenuDTO> loadMenuByOrgId(Long orgId) {
+    public List<MenuDTO> loadMenuByOrgId(Long orgId, FiledEnum filedEnum) {
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> roles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
                     .eq("del_flag", 1).eq("org_id", orgId));
             if (roles == null || roles.isEmpty()) {
                 return new ArrayList<>();
             }
-            return menuDao.loadMenuByOrgId(roles);
+            return menuDao.loadMenuByOrgId(roles, filedEnum.getCode());
         }
         QueryWrapper<MenuDTO> wrapper = new QueryWrapper<>();
-        wrapper.eq("enabled", "1").eq("del_flag", "1").ne("menu_type", "2");
+        wrapper.eq("enabled", "1").eq("del_flag", "1");
+        if (filedEnum.getCode() == FiledEnum.ASIDE_MENU.getCode()) {
+            wrapper.ne("menu_type", "2");
+        }
         wrapper.orderByAsc("pid").orderByAsc("sort");
         return menuDao.selectList(wrapper);
     }

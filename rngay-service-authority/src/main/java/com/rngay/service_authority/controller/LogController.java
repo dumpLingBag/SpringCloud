@@ -2,12 +2,12 @@ package com.rngay.service_authority.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
-import com.rngay.feign.authority.LogPageDTO;
+import com.rngay.feign.authority.query.LoginInfoPageQuery;
 import com.rngay.feign.authority.LoginInfoDTO;
-import com.rngay.feign.authority.OperLogDTO;
-import com.rngay.feign.authority.OperLogPageDTO;
+import com.rngay.feign.authority.OperationLogDTO;
+import com.rngay.feign.authority.query.OperationLogPageQuery;
 import com.rngay.service_authority.service.LoginInfoService;
-import com.rngay.service_authority.service.OperLogService;
+import com.rngay.service_authority.service.OperationLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,18 +20,18 @@ public class LogController {
     @Autowired
     private LoginInfoService loginInfoService;
     @Autowired
-    private OperLogService operLogService;
+    private OperationLogService operationLogService;
 
-    @GetMapping(value = "loginInfoIndex")
-    public Result<Page<LoginInfoDTO>> loginInfoIndex(LogPageDTO logPageDTO) {
-        Page<LoginInfoDTO> page = new Page<>(logPageDTO.getCurrentPage(), logPageDTO.getPageSize());
-        return Result.success(loginInfoService.pageList(page, logPageDTO));
+    @GetMapping(value = "loginInfo")
+    public Result<Page<LoginInfoDTO>> loginInfo(LoginInfoPageQuery loginInfoPageQuery) {
+        Page<LoginInfoDTO> page = new Page<>(loginInfoPageQuery.getCurrentPage(), loginInfoPageQuery.getPageSize());
+        return Result.success(loginInfoService.pageList(page, loginInfoPageQuery));
     }
 
-    @GetMapping(value = "operLogIndex")
-    public Result<Page<OperLogDTO>> operLogIndex(OperLogPageDTO logPageDTO) {
-        Page<OperLogDTO> page = new Page<>(logPageDTO.getCurrentPage(), logPageDTO.getPageSize());
-        return Result.success(operLogService.pageList(page, logPageDTO));
+    @GetMapping(value = "operation")
+    public Result<Page<OperationLogDTO>> operation(OperationLogPageQuery logPageQuery) {
+        Page<OperationLogDTO> page = new Page<>(logPageQuery.getCurrentPage(), logPageQuery.getPageSize());
+        return Result.success(operationLogService.pageList(page, logPageQuery));
     }
 
 }

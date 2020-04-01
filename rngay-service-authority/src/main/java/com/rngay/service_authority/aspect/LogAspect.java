@@ -7,7 +7,7 @@ import com.rngay.common.util.JsonUtil;
 import com.rngay.common.util.ServletUtils;
 import com.rngay.common.util.StringUtils;
 import com.rngay.common.util.ip.IPUtil;
-import com.rngay.feign.authority.OperLogDTO;
+import com.rngay.feign.authority.OperationLogDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.manger.AsyncFactory;
 import org.aspectj.lang.JoinPoint;
@@ -74,7 +74,7 @@ public class LogAspect {
             UaUserDTO uaUserDTO = (UaUserDTO) authentication.getPrincipal();
             if (uaUserDTO != null) {
                 // *========数据库日志=========*//
-                OperLogDTO opLog = new OperLogDTO();
+                OperationLogDTO opLog = new OperationLogDTO();
                 opLog.setStatus(BusinessStatus.SUCCESS.ordinal());
                 // 请求的地址
                 String ip = IPUtil.getIPAddress(ServletUtils.getRequest());
@@ -115,7 +115,7 @@ public class LogAspect {
      * @param opLog 操作日志
      * @throws Exception
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, OperLogDTO opLog) throws Exception {
+    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, OperationLogDTO opLog) throws Exception {
         // 设置action动作
         opLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
@@ -135,7 +135,7 @@ public class LogAspect {
      * @param operLog 操作日志
      * @throws Exception 异常
      */
-    private void setRequestValue(JoinPoint joinPoint, OperLogDTO operLog) throws Exception {
+    private void setRequestValue(JoinPoint joinPoint, OperationLogDTO operLog) throws Exception {
         String requestMethod = operLog.getRequestMethod();
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
             String params = argsArrayToString(joinPoint.getArgs());

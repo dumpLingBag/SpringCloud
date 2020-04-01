@@ -1,15 +1,18 @@
-package com.rngay.feign.authority;
+package com.rngay.feign.authority.query;
 
 import com.rngay.feign.dto.PageQueryDTO;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class LogPageDTO extends PageQueryDTO {
+public class LoginInfoPageQuery extends PageQueryDTO {
 
     private String username;
     private Integer status;
     private String loginLocation;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     public String getUsername() {

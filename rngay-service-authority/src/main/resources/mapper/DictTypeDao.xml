@@ -16,4 +16,11 @@
             </if>
         </where>
     </select>
+
+    <update id="deleteBatchDictType">
+        update dict_type set del_flag = '0' where dict_type in
+        <foreach collection="dictTypes" item="dictType" open="(" close=")" separator=",">
+            #{dictType}
+        </foreach>
+    </update>
 </mapper>

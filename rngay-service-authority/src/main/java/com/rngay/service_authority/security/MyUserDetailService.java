@@ -60,21 +60,28 @@ public class MyUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("用户不存在");
         }
 
-        // 获取用户拥有的角色
-        List<RoleDTO> roleList = roleService.loadUserRole(uaUser);
         Set<GrantedAuthority> grantedAuth = new HashSet<>();
-        if (!roleList.isEmpty()) {
-            roleList.forEach(role -> grantedAuth.add(new SimpleGrantedAuthority(role.getId().toString())));
+        if (uaUser.getParentId() != null && uaUser.getParentId() == 0) {
+            // 超级管理员拥有所有权限
+            grantedAuth.add(new SimpleGrantedAuthority("*:*:*"));
+        } else {
+            // 获取用户拥有的角色
+            List<RoleDTO> roleList = roleService.loadUserRole(uaUser);
+
+            if (!roleList.isEmpty()) {
+                roleList.forEach(role -> grantedAuth.add(new SimpleGrantedAuthority(role.getId().toString())));
+            }
+            // 获取用户拥有的权限
+            List<String> urlList = menuService.loadUrlByUser(uaUser.getId());
+            if (!urlList.isEmpty()) {
+                urlList.forEach(url -> {
+                    if (StringUtils.isNoneBlank(url)) {
+                        grantedAuth.add(new SimpleGrantedAuthority(url));
+                    }
+                });
+            }
         }
-        // 获取用户拥有的权限
-        List<String> urlList = menuService.loadUrlByUser(uaUser.getId());
-        if (!urlList.isEmpty()) {
-            urlList.forEach(url -> {
-                if (StringUtils.isNoneBlank(url)) {
-                    grantedAuth.add(new SimpleGrantedAuthority(url));
-                }
-            });
-        }
+
         return new JwtUserDetails(uaUser, grantedAuth);
     }
 }
