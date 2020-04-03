@@ -41,21 +41,21 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
         String account = request.getParameter("account");
         //用户登录时身份认证未通过
         if (e instanceof LockedException) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.blocked")));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.blocked")));
             ResultUtil.writeJson(response,2, MessageUtils.message("user.blocked"));
         } else if (e instanceof CredentialsExpiredException) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.expire")));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.expire")));
             ResultUtil.writeJson(response,2, MessageUtils.message("user.password.expire"));
         } else if (e instanceof AccountExpiredException) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.account.expire")));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.account.expire")));
             ResultUtil.writeJson(response, 2, MessageUtils.message("user.account.expire"));
         } else if (e instanceof DisabledException) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.account.enabled")));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.account.enabled")));
             ResultUtil.writeJson(response, 2, MessageUtils.message("user.account.enabled"));
         } else if (e instanceof BadCredentialsException) {
             failCount(request, response, account);
         } else {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.login.fail")));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.login.fail")));
             ResultUtil.writeJson(response, 2, MessageUtils.message("user.login.fail"));
         }
     }
@@ -75,7 +75,7 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
             int expire = 30 * 60;
             redisUtil.set(RedisKeys.getFailCount(key), i + 1, expire);
         }
-        AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.not.match")));
+        AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.not.match")));
         ResultUtil.writeJson(response, ResultCodeEnum.LOGIN_FAIL);
     }
 

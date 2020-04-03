@@ -1,6 +1,7 @@
 package com.rngay.service_authority.security.handler;
 
 import com.rngay.common.config.JwtConfig;
+import com.rngay.common.enums.FiledEnum;
 import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.common.manager.AsyncManager;
 import com.rngay.service_authority.manger.AsyncFactory;
@@ -68,12 +69,12 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
             map.put("nickname", userInfo.getNickname());
             map.put("avatar", userInfo.getAvatar());
             map.put("authorities", authorities);
-            List<MenuDTO> menuList = systemService.listForMenu(userInfo);
+            List<MenuDTO> menuList = systemService.listForMenu(userInfo, FiledEnum.POWER);
             map.put("menuList", menuList);
             Map<String, Object> result = new HashMap<>();
             result.put("userInfo", map);
             result.put("access_token", access_token);
-            AsyncManager.me().execute(AsyncFactory.recordLogin(userInfo.getUsername(), ResultCodeEnum.SUCCESS.getCode(), MessageUtils.message("user.login.success")));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(userInfo.getUsername(), userInfo.getOrgId(), ResultCodeEnum.SUCCESS.getCode(), MessageUtils.message("user.login.success")));
             ResultUtil.writeJson(response, 0, MessageUtils.message("user.login.success"), result);
         }
         ResultUtil.writeJson(response, 2, MessageUtils.message("user.login.fail"));

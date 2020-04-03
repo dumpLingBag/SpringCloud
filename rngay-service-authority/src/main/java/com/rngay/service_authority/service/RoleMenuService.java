@@ -1,6 +1,7 @@
 package com.rngay.service_authority.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rngay.common.enums.FiledEnum;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleMenuDTO;
 import com.rngay.feign.authority.query.UpdateRoleMenuQuery;
@@ -14,7 +15,7 @@ public interface RoleMenuService extends IService<RoleMenuDTO> {
      * @Author pengcheng
      * @Date 2019/3/30
      **/
-    List<MenuDTO> list(Long orgId);
+    List<MenuDTO> list(Long orgId, FiledEnum filedEnum);
 
     /**
      * 根据 roleId 加载菜单
@@ -29,5 +30,12 @@ public interface RoleMenuService extends IService<RoleMenuDTO> {
      * @Date 2019/4/1
      **/
     Boolean insert(UpdateRoleMenuQuery query);
+
+    /**
+     * 根据 roleId 加载权限
+     * @Author: pengcheng
+     * @Date: 2020/4/3
+     */
+    List<MenuDTO> listAuth(List<Long> menuId);
 
 }

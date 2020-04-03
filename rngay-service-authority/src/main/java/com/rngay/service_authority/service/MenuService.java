@@ -51,7 +51,7 @@ public interface MenuService extends IService<MenuDTO> {
      * @Author: pengcheng
      * @Date: 2019/12/30
      */
-    List<MenuDTO> loadMenuByUserId(Long orgId, Long userId);
+    List<MenuDTO> loadMenuByUserId(Long orgId, Long userId, FiledEnum filedEnum);
 
     /**
      * 根据菜单 id 批量或单个隐藏显示菜单
@@ -66,5 +66,12 @@ public interface MenuService extends IService<MenuDTO> {
      * @Date: 2020/3/28
      */
     List<String> loadUrlByUser(Long userId);
+
+    /**
+     * 根据 roleId 加载权限
+     * @Author: pengcheng
+     * @Date: 2020/4/3
+     */
+    List<MenuDTO> listAuth(List<Long> menuId);
 
 }

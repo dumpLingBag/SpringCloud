@@ -54,7 +54,7 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Result<UaUserDTO> result = pfUserService.findByAccount(username);
+        Result<UaUserDTO> result = pfUserService.getUserByUsername(username);
         UaUserDTO uaUser = result.getData();
         if (result.getCode() == 1 || result.getData() == null) {
             throw new UsernameNotFoundException("用户不存在");

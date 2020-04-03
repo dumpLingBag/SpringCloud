@@ -32,22 +32,22 @@ public class OperationLogDTO extends BaseDTO {
     private Integer operatorType;
 
     // 操作人员
-    private String operName;
+    private String operationName;
 
     // 部门名称
     private String deptName;
 
     // 请求地址
-    private String operUrl;
+    private String url;
 
     // 操作地址
-    private String operIp;
+    private String operationIp;
 
     // 操作地点
-    private String operLocation;
+    private String operationLocation;
 
     // 请求参数
-    private String operParam;
+    private String params;
 
     // 返回参数
     private String jsonResult;
@@ -59,7 +59,9 @@ public class OperationLogDTO extends BaseDTO {
     private String errorMsg;
 
     // 操作时间
-    private Date operTime;
+    private Date operationTime;
+
+    private Long orgId;
 
     public Long getId() {
         return id;
@@ -117,12 +119,12 @@ public class OperationLogDTO extends BaseDTO {
         this.operatorType = operatorType;
     }
 
-    public String getOperName() {
-        return operName;
+    public String getOperationName() {
+        return operationName;
     }
 
-    public void setOperName(String operName) {
-        this.operName = operName;
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
     }
 
     public String getDeptName() {
@@ -133,36 +135,36 @@ public class OperationLogDTO extends BaseDTO {
         this.deptName = deptName;
     }
 
-    public String getOperUrl() {
-        return operUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setOperUrl(String operUrl) {
-        this.operUrl = operUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getOperIp() {
-        return operIp;
+    public String getOperationIp() {
+        return operationIp;
     }
 
-    public void setOperIp(String operIp) {
-        this.operIp = operIp;
+    public void setOperationIp(String operationIp) {
+        this.operationIp = operationIp;
     }
 
-    public String getOperLocation() {
-        return operLocation;
+    public String getOperationLocation() {
+        return operationLocation;
     }
 
-    public void setOperLocation(String operLocation) {
-        this.operLocation = operLocation;
+    public void setOperationLocation(String operationLocation) {
+        this.operationLocation = operationLocation;
     }
 
-    public String getOperParam() {
-        return operParam;
+    public String getParams() {
+        return params;
     }
 
-    public void setOperParam(String operParam) {
-        this.operParam = operParam;
+    public void setParams(String params) {
+        this.params = params;
     }
 
     public String getJsonResult() {
@@ -189,11 +191,19 @@ public class OperationLogDTO extends BaseDTO {
         this.errorMsg = errorMsg;
     }
 
-    public Date getOperTime() {
-        return operTime;
+    public Date getOperationTime() {
+        return operationTime;
     }
 
-    public void setOperTime(Date operTime) {
-        this.operTime = operTime;
+    public void setOperationTime(Date operationTime) {
+        this.operationTime = operationTime;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
     }
 }

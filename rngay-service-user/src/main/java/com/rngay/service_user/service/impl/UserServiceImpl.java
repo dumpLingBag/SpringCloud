@@ -25,19 +25,19 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public UaUserDTO findUserById(Long id) {
+    public UaUserDTO getUserById(Long id) {
         return userDao.selectOne(new QueryWrapper<UaUserDTO>().eq("id", id).eq("del_flag", 1));
     }
 
     @Override
-    public UaUserDTO findUser(String username, String password) {
+    public UaUserDTO getUser(String username, String password) {
         QueryWrapper<UaUserDTO> wrapper = new QueryWrapper<>();
         wrapper.eq("username", username).eq("password", password).eq("del_flag", 1);
         return userDao.selectOne(wrapper);
     }
 
     @Override
-    public UaUserDTO findByAccount(String username) {
+    public UaUserDTO getUserByUsername(String username) {
         String reg = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
         Matcher matcher = Pattern.compile(reg).matcher(username);
         if (matcher.matches()) {
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UaUserDTO findByMobile(String mobile) {
+    public UaUserDTO getUserByMobile(String mobile) {
         return userDao.selectOne(new QueryWrapper<UaUserDTO>().eq("mobile", mobile).eq("del_flag", 1));
     }
 

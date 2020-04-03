@@ -20,8 +20,8 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2018/12/13
      */
-    @GetMapping(value = "/user/find")
-    Result<UaUserDTO> find(@RequestParam("username") String username, @RequestParam("password") String password);
+    @GetMapping(value = "/user/getUser")
+    Result<UaUserDTO> getUser(@RequestParam("username") String username, @RequestParam("password") String password);
 
     /**
      * 通过id查询用户信息
@@ -29,8 +29,8 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/1/9
      */
-    @GetMapping(value = "/user/findById/{id}")
-    Result<UaUserDTO> findById(@PathVariable Long id);
+    @GetMapping(value = "/user/getUserById/{id}")
+    Result<UaUserDTO> getUserById(@PathVariable Long id);
 
     /**
      * 通过账号查询信息
@@ -38,8 +38,8 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    @GetMapping(value = "/user/findByAccount")
-    Result<UaUserDTO> findByAccount(@RequestParam("username") String username);
+    @GetMapping(value = "/user/getUserByUsername")
+    Result<UaUserDTO> getUserByUsername(@RequestParam("username") String username);
 
     /**
      * 通过手机号查询信息
@@ -47,8 +47,8 @@ public interface PFUserService {
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    @GetMapping(value = "/user/findByMobile")
-    Result<UaUserDTO> findByMobile(@RequestParam("mobile") String mobile);
+    @GetMapping(value = "/user/getUserByMobile")
+    Result<UaUserDTO> getUserByMobile(@RequestParam("mobile") String mobile);
 
     /**
      * 添加一个用户

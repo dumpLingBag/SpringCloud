@@ -43,7 +43,7 @@ public class FileController {
         userFile.setContentType(file.getContentType());
         userFile.setOriginalFilename(file.getOriginalFilename());
         userFile.setUrl(path);
-        userFile.setUserId(systemService.getCurrentUserId(request));
+        userFile.setUserId(systemService.getCurrentUserId());
         return userFileDao.insert(userFile);
     }
 

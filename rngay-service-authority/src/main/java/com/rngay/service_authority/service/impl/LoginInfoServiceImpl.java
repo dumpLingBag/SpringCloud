@@ -9,6 +9,8 @@ import com.rngay.service_authority.service.LoginInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LoginInfoServiceImpl extends ServiceImpl<LoginInfoDao, LoginInfoDTO> implements LoginInfoService {
 
@@ -18,5 +20,15 @@ public class LoginInfoServiceImpl extends ServiceImpl<LoginInfoDao, LoginInfoDTO
     @Override
     public Page<LoginInfoDTO> pageList(Page<LoginInfoDTO> page, LoginInfoPageQuery loginInfoPageQuery) {
         return loginInfoDao.pageList(page, loginInfoPageQuery);
+    }
+
+    @Override
+    public int delete(List<Long> arrayQuery, Long orgId) {
+        return loginInfoDao.delete(arrayQuery, orgId);
+    }
+
+    @Override
+    public int clear(Long orgId) {
+        return loginInfoDao.clear(orgId);
     }
 }

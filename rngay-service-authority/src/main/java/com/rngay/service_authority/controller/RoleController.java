@@ -10,7 +10,6 @@ import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -24,8 +23,8 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping(value = "list")
-    public Result<List<RoleDTO>> list(HttpServletRequest request) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<List<RoleDTO>> list() {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId == null) {
             return Result.failMsg("角色查询失败");
         }
@@ -33,8 +32,8 @@ public class RoleController {
     }
 
     @GetMapping(value = "listRole")
-    public Result<List<RoleDTO>> listRole(HttpServletRequest request) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<List<RoleDTO>> listRole() {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId == null) {
             return Result.failMsg("角色查询失败");
         }
@@ -42,8 +41,8 @@ public class RoleController {
     }
 
     @GetMapping(value = "listByPid")
-    public Result<List<RoleDTO>> listByPid(HttpServletRequest request) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<List<RoleDTO>> listByPid() {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId != null) {
             return Result.success(roleService.listByPid(orgId));
         }
@@ -52,8 +51,8 @@ public class RoleController {
 
     @RepeatSubmit
     @PostMapping(value = "insert")
-    public Result<Integer> insert(HttpServletRequest request, @RequestBody RoleDTO uaRole) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<Integer> insert(@RequestBody RoleDTO uaRole) {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId == null) {
             return Result.failMsg("角色添加失败");
         }

@@ -7,6 +7,7 @@ import com.rngay.common.util.ip.IPUtil;
 import com.rngay.common.util.spring.SpringUtils;
 import com.rngay.feign.authority.LoginInfoDTO;
 import com.rngay.feign.authority.OperationLogDTO;
+import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.service.LoginInfoService;
 import com.rngay.service_authority.service.OperationLogService;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -19,7 +20,7 @@ public class AsyncFactory {
 
     private static final Logger sys_user_logger = LoggerFactory.getLogger(AsyncFactory.class);
 
-    public static TimerTask recordLogin(final String username, final Integer status, final String message, final Object... args) {
+    public static TimerTask recordLogin(final String username, final Long orgId, final Integer status, final String message, final Object... args) {
         final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
         final String ip = IPUtil.getIPAddress(ServletUtils.getRequest());
         return new TimerTask() {
@@ -33,12 +34,13 @@ public class AsyncFactory {
                     String browser = userAgent.getBrowser().getName();
                     LoginInfoDTO loginInfo = new LoginInfoDTO();
                     loginInfo.setUsername(username);
-                    loginInfo.setIpaddr(ip);
+                    loginInfo.setIpAddress(ip);
                     loginInfo.setLoginLocation(address);
                     loginInfo.setBrowser(browser);
                     loginInfo.setOs(os);
                     loginInfo.setMessage(message);
                     loginInfo.setStatus(status);
+                    loginInfo.setOrgId(orgId != null ? orgId : 0L);
                     SpringUtils.getBean(LoginInfoService.class).save(loginInfo);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
@@ -53,7 +55,7 @@ public class AsyncFactory {
      * @param operLog 操作日志信息
      * @return 任务task
      */
-    public static TimerTask recordOper(final OperationLogDTO operLog)
+    public static TimerTask recordOperation(final OperationLogDTO operLog)
     {
         return new TimerTask()
         {
@@ -62,7 +64,7 @@ public class AsyncFactory {
             {
                 // 远程查询操作地点
                 try {
-                    operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+                    operLog.setOperationLocation(AddressUtils.getRealAddressByIP(operLog.getOperationIp()));
                     SpringUtils.getBean(OperationLogService.class).save(operLog);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();

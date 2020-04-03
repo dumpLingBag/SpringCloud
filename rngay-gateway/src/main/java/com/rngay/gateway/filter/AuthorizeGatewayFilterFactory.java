@@ -71,7 +71,9 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
     private boolean isExcludeUrl(String actionName) {
         if (actionName.equals("/favicon.ico"))
             return true;
-        if (actionName.contains("/authorityLogin/"))
+        if (actionName.contains("/login"))
+            return true;
+        if (actionName.contains("/login/captcha"))
             return true;
         return actionName.contains("/error");
     }

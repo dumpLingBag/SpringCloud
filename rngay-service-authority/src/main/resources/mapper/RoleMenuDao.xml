@@ -11,4 +11,8 @@
             update ua_role_menu set del_flag = ${roleMenu.delFlag} where menu_id = #{roleMenu.menuId} and role_id = #{roleMenu.roleId}
         </foreach>
     </update>
+
+    <update id="update">
+        update ua_role_menu set del_flag = '0' where role_id = #{roleId}
+    </update>
 </mapper>

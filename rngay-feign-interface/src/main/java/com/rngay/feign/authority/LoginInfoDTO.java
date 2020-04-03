@@ -12,11 +12,12 @@ public class LoginInfoDTO extends BaseDTO {
     private Long id;
     private String username;
     private Integer status;
-    private String ipaddr;
+    private String ipAddress;
     private String loginLocation;
     private String browser;
     private String os;
     private String message;
+    private Long orgId;
 
     public Long getId() {
         return id;
@@ -42,12 +43,12 @@ public class LoginInfoDTO extends BaseDTO {
         this.status = status;
     }
 
-    public String getIpaddr() {
-        return ipaddr;
+    public String getIpAddress() {
+        return ipAddress;
     }
 
-    public void setIpaddr(String ipaddr) {
-        this.ipaddr = ipaddr;
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     public String getLoginLocation() {
@@ -80,5 +81,13 @@ public class LoginInfoDTO extends BaseDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
     }
 }

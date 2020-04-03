@@ -1,16 +1,15 @@
 package com.rngay.common.enums;
 
-import com.rngay.common.util.MessageUtils;
-
 public enum ResultCodeEnum {
 
     TOKEN_INVALID(401, "用户信息已过期，请重新登录"),
     TOKEN_OTHER_LOGIN(401, "账号在其他地方登录，请重新登录"),
-    LOGIN_FAIL(2, MessageUtils.message("user.password.not.match")),
+    LOGIN_FAIL(2, "用户不存在或密码错误"),
     LOGIN_COUNT_FAIL(2, "用户名或密码输入错误，请重新输入"),
     LOGIN_INFO_FAIL(2, "更新用户信息失败"),
     COMMON_AUTHORITY_FAIL(2, "公共权限修改失败"),
     UPLOAD_FAIL(2, "文件上传失败"),
+    ACCESS_DENIED(403, "无权访问，请重新登录或联系管理员"),
 
     SUCCESS(0, "success"),
     FAIL(1, "failed"),

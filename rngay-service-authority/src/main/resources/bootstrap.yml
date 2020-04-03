@@ -2,10 +2,10 @@
 ignored:
   # 不验证 url
   urls:
-    - /authorityLogin/captcha
+    - /login/captcha
     - /favicon.ico
   # 不验证 token
   pathsToSkip:
-    - /authorityLogin/captcha
+    - /login/captcha
 token:
   processingPath: /**

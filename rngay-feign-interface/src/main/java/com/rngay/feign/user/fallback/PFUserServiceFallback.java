@@ -18,22 +18,22 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
         String result = "用户服务异常，请稍后再试";
         return new PFUserService() {
             @Override
-            public Result<UaUserDTO> find(String account, String password) {
+            public Result<UaUserDTO> getUser(String account, String password) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<UaUserDTO> findById(Long id) {
+            public Result<UaUserDTO> getUserById(Long id) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<UaUserDTO> findByAccount(String account) {
+            public Result<UaUserDTO> getUserByUsername(String username) {
                 return Result.failMsg(result);
             }
 
             @Override
-            public Result<UaUserDTO> findByMobile(String mobile) {
+            public Result<UaUserDTO> getUserByMobile(String mobile) {
                 return Result.failMsg(result);
             }
 

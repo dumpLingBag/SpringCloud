@@ -26,4 +26,16 @@
         </where>
         order by create_time desc
     </select>
+
+    <update id="delete">
+        update operation_log set del_flag = '0' where id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        and org_id = #{orgId}
+    </update>
+
+    <update id="clear">
+        update operation_log set del_flag = '0' where org_id = #{orgId}
+    </update>
 </mapper>

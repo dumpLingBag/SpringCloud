@@ -1,6 +1,8 @@
 package com.rngay.service_authority.security.config;
 
+import com.rngay.common.enums.ResultCodeEnum;
 import com.rngay.feign.user.dto.UaUserDTO;
+import com.rngay.service_authority.security.exception.MyAuthenticationException;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -56,10 +58,7 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
         for (ConfigAttribute configAttribute : configAttributes) {
             String needRole = configAttribute.getAttribute();
             if (needRole.equals("ROLE_NOT_USER")) {
-                if (authentication instanceof AnonymousAuthenticationToken) {
-                    throw new BadCredentialsException("请登录");
-                }
-                return;
+                throw new MyAuthenticationException(ResultCodeEnum.ACCESS_DENIED);
             }
             for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
                 // grantedAuthority 为用户所被赋予的权限。 needRole 为访问相应的资源应该具有的权限。

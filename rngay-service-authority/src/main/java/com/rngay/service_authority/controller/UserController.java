@@ -11,13 +11,11 @@ import com.rngay.common.vo.Result;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.service.SystemService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -29,14 +27,12 @@ public class UserController {
     @Autowired
     private SystemService systemService;
     @Autowired
-    private HttpServletRequest request;
-    @Autowired
     private UploadUtil uploadUtil;
 
     @RepeatSubmit
     @PostMapping(value = "insert")
     public Result<Integer> save(@Valid @RequestBody UaUserDTO saveUserDTO) {
-        Result<UaUserDTO> byAccount = pfUserService.findByAccount(saveUserDTO.getUsername());
+        Result<UaUserDTO> byAccount = pfUserService.getUserByUsername(saveUserDTO.getUsername());
         if (byAccount.getCode() == 0) {
             if (byAccount.getData() != null) {
                 ResMsg.builder("username", "此账号名称已经存在");
@@ -44,7 +40,7 @@ public class UserController {
         } else {
             return Result.fail(byAccount.getMsg());
         }
-        Result<UaUserDTO> byMobile = pfUserService.findByMobile(saveUserDTO.getMobile());
+        Result<UaUserDTO> byMobile = pfUserService.getUserByMobile(saveUserDTO.getMobile());
         if (byMobile.getCode() == 0) {
             if (byMobile.getData() != null) {
                 ResMsg.builder("mobile", "此手机号码已经存在");
@@ -55,7 +51,7 @@ public class UserController {
         if (ResMsg.getLength()) {
             return Result.fail(ResMsg.getBuilder());
         }
-        saveUserDTO.setParentId(systemService.getCurrentUserId(request));
+        saveUserDTO.setParentId(systemService.getCurrentUserId());
         return pfUserService.insert(saveUserDTO);
     }
 
@@ -68,16 +64,16 @@ public class UserController {
     @RepeatSubmit
     @PutMapping(value = "update")
     public Result<Integer> update(@Valid @RequestBody UaUserDTO updateUserDTO) {
-        UaUserDTO user = pfUserService.findById(updateUserDTO.getId()).getData();
+        UaUserDTO user = pfUserService.getUserById(updateUserDTO.getId()).getData();
         if (user != null) {
             if (!user.getUsername().equals(updateUserDTO.getUsername())) {
-                Result<UaUserDTO> byAccount = pfUserService.findByAccount(updateUserDTO.getUsername());
+                Result<UaUserDTO> byAccount = pfUserService.getUserByUsername(updateUserDTO.getUsername());
                 if (byAccount.getCode() != 0 || byAccount.getData() != null) {
                     ResMsg.builder("username", "此账号名称已经存在");
                 }
             }
             if (user.getMobile() != null && !user.getMobile().equals(updateUserDTO.getMobile())) {
-                Result<UaUserDTO> byMobile = pfUserService.findByMobile(updateUserDTO.getMobile());
+                Result<UaUserDTO> byMobile = pfUserService.getUserByMobile(updateUserDTO.getMobile());
                 if (byMobile.getCode() != 0 || byMobile.getData() != null) {
                     ResMsg.builder("mobile", "此手机号码已经存在");
                 }
@@ -103,7 +99,7 @@ public class UserController {
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping(value = "enabled/{id}/{enabled}")
     public Result<Integer> enabled(@PathVariable Long id, @PathVariable Integer enabled) {
-        UaUserDTO currentUser = systemService.getCurrentUser(request);
+        UaUserDTO currentUser = systemService.getCurrentUser();
         if (currentUser.getParentId() == 0 && currentUser.getId().equals(id)) {
             return Result.failMsg("禁止修改超级用户状态");
         }
@@ -116,9 +112,9 @@ public class UserController {
 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping(value = "updatePassword")
-    public Result<Integer> updatePassword(HttpServletRequest request, @RequestBody UpdatePassword password) {
-        Long userId = systemService.getCurrentUserId(request);
-        UaUserDTO user = pfUserService.findById(userId).getData();
+    public Result<Integer> updatePassword(@RequestBody UpdatePassword password) {
+        Long userId = systemService.getCurrentUserId();
+        UaUserDTO user = pfUserService.getUserById(userId).getData();
         if (user == null) {
             return Result.failMsg("不存在该用户，修改失败");
         }
@@ -130,9 +126,9 @@ public class UserController {
     }
 
     @GetMapping(value = "checkPassword")
-    public Result<String> checkPassword(HttpServletRequest request, @RequestParam("password") String password) {
+    public Result<String> checkPassword(@RequestParam("password") String password) {
         if (password != null && !"".equals(password)) {
-            UaUserDTO currentUser = systemService.getCurrentUser(request);
+            UaUserDTO currentUser = systemService.getCurrentUser();
             if (BCrypt.checkpw(password, currentUser.getPassword())) {
                 return Result.success("密码验证通过");
             } else {
@@ -145,7 +141,7 @@ public class UserController {
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @DeleteMapping(value = "delete/{id}")
     public Result<Integer> delete(@PathVariable Long id) {
-        UaUserDTO user = pfUserService.findById(id).getData();
+        UaUserDTO user = pfUserService.getUserById(id).getData();
         if (user != null) {
             if (user.getParentId() == 0) {
                 return Result.failMsg("不能删除超级用户");
@@ -159,7 +155,7 @@ public class UserController {
     public Result<String> uploadAvatar(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         String path = uploadUtil.ossUpload(fileName, file);
         if (StringUtils.isNoneBlank(path)) {
-            Long userId = systemService.getCurrentUserId(request);
+            Long userId = systemService.getCurrentUserId();
             pfUserService.uploadAvatar(path, userId);
             return Result.success(path);
         }

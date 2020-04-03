@@ -3,6 +3,9 @@ package com.rngay.common.enums;
 public enum FiledEnum {
     MENU_TYPE_VO(1, "menu_type_vo"),
     MENU_TYPE_NOT_VO(2, "menu_type_not_vo"),
+    CATALOG(0, ""),
+    MENU(1, ""),
+    POWER(2, ""),
     CHECKED(100, "checked"),
     ACCESS_TOKEN(101, "access_token"),
     AUTHORITIES(102, "authorities"),

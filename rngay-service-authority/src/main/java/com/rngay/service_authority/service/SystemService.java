@@ -1,5 +1,6 @@
 package com.rngay.service_authority.service;
 
+import com.rngay.common.enums.FiledEnum;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
 
@@ -15,7 +16,7 @@ public interface SystemService {
      * @Author pengcheng
      * @Date 2019/3/27
      **/
-    List<MenuDTO> listForMenu(UaUserDTO userDTO);
+    List<MenuDTO> listForMenu(UaUserDTO userDTO, FiledEnum filedEnum);
 
     /**
      * 查询指定用户允许访问的 url地址
@@ -50,27 +51,27 @@ public interface SystemService {
      * @Author: pengcheng
      * @Date: 2018/12/16
      */
-    UaUserDTO getCurrentUser(HttpServletRequest request);
+    UaUserDTO getCurrentUser();
 
     /**
      * 更新当前用户 redis 缓存
      * @Author pengcheng
      * @Date 2019/3/27
      **/
-    int updateCurrentUser(HttpServletRequest request, UaUserDTO userDTO);
+    int updateCurrentUser(UaUserDTO userDTO);
 
     /**
      * 获取当前登录用户 id
      * @Author: pengcheng
      * @Date: 2018/12/19
      */
-    Long getCurrentUserId(HttpServletRequest request);
+    Long getCurrentUserId();
 
     /**
      * 获取当前登录用户的 orgId
      * @Author pengcheng
      * @Date 2019/3/30
      **/
-    Long getCurrentOrgId(HttpServletRequest request);
+    Long getCurrentOrgId();
 
 }

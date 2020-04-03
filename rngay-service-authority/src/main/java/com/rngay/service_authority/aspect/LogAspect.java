@@ -78,13 +78,14 @@ public class LogAspect {
                 opLog.setStatus(BusinessStatus.SUCCESS.ordinal());
                 // 请求的地址
                 String ip = IPUtil.getIPAddress(ServletUtils.getRequest());
-                opLog.setOperIp(ip);
+                opLog.setOperationIp(ip);
                 // 返回参数
                 opLog.setJsonResult(JsonUtil.obj2String(jsonResult));
 
-                opLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
-                opLog.setOperName(uaUserDTO.getUsername());
+                opLog.setUrl(ServletUtils.getRequest().getRequestURI());
+                opLog.setOperationName(uaUserDTO.getUsername());
 
+                opLog.setOrgId(uaUserDTO.getOrgId());
                 if (e != null) {
                     opLog.setStatus(BusinessStatus.FAIL.ordinal());
                     opLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
@@ -98,7 +99,7 @@ public class LogAspect {
                 // 处理设置注解上的参数
                 getControllerMethodDescription(joinPoint, controllerLog, opLog);
                 // 保存数据库
-                AsyncManager.me().execute(AsyncFactory.recordOper(opLog));
+                AsyncManager.me().execute(AsyncFactory.recordOperation(opLog));
             }
         } catch (Exception exp) {
             // 记录本地异常日志
@@ -139,10 +140,10 @@ public class LogAspect {
         String requestMethod = operLog.getRequestMethod();
         if (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
             String params = argsArrayToString(joinPoint.getArgs());
-            operLog.setOperParam(StringUtils.substring(params, 0, 2000));
+            operLog.setParams(StringUtils.substring(params, 0, 2000));
         } else {
             Map<?, ?> paramsMap = (Map<?, ?>) ServletUtils.getRequest().getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-            operLog.setOperParam(StringUtils.substring(paramsMap.toString(), 0, 2000));
+            operLog.setParams(StringUtils.substring(paramsMap.toString(), 0, 2000));
         }
     }
 

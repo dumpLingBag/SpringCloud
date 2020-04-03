@@ -12,8 +12,8 @@
         <foreach collection="roles" item="role" index="index" separator="union">
             select t.*
             from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
-            <if test="code == 201">
-                and m.menu_type != '2'
+            <if test="code == null">
+                and m.menu_type != #{code}
             </if>
             and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
@@ -23,13 +23,19 @@
         select sm.* from (
         <foreach collection="roles" item="role" separator="union">
             select t.* from (
-            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId} and m.menu_type != '2'
+            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            <if test="code == null">
+                and m.menu_type != #{code}
+            </if>
             and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
         ) as pm join (
         <foreach collection="userRoles" item="userRole" index="index" separator="union">
             select t.* from (
-            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId} and m.menu_type != '2'
+            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{userRole.roleId}
+            <if test="code == null">
+                and m.menu_type != #{code}
+            </if>
             and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
         ) as sm on sm.id = pm.id
@@ -38,7 +44,10 @@
     <select id="loadMenuByUserId" resultType="MenuDTO">
         <foreach collection="roleIds" item="role" separator="union">
             select t.* from (
-            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId} and m.menu_type != '2'
+            select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
+            <if test="code == null">
+                and m.menu_type != #{code}
+            </if>
             and rm.menu_id = m.id and m.enabled = '1' and m.del_flag = '1' and rm.del_flag = '1' group by m.id) as t
         </foreach>
     </select>
@@ -56,5 +65,19 @@
         left join ua_user_role ur on ur.role_id = rm.role_id
         where ur.user_id = #{userId} and ur.del_flag = '1' and m.menu_type != '0'
         and rm.del_flag = '1' and m.del_flag = '1' and m.enabled = '1'
+    </select>
+
+    <select id="listAuth" resultType="MenuDTO">
+        select m.* from ua_menu m where m.del_flag = '1' and m.enabled = '1' and id in
+        <foreach collection="menuIds" item="menuId" open="(" close=")" separator=",">
+            #{menuId}
+        </foreach>
+        union
+        select * from (
+        select m.* from ua_menu m where m.del_flag = '1' and m.enabled = '1' and pid in
+        <foreach collection="menuIds" item="menuId" open="(" close=")" separator=",">
+            #{menuId}
+        </foreach>
+        )
     </select>
 </mapper>

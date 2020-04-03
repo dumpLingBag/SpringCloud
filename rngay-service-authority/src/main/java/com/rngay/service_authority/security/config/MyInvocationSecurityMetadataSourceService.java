@@ -65,7 +65,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         }
 
         String url = ((FilterInvocation) o).getRequestUrl();
-        if (urlMatcher.pathMatchesUrl("/authorityLogin/captcha", url)) {
+        if (urlMatcher.pathMatchesUrl("/login/captcha", url)) {
             return null;
         }
         int firstQuestionMarkIndex = url.indexOf("?");
@@ -106,31 +106,10 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
      */
     @PostConstruct
     public void loadResourceDefine() {
-        //resourceMap = new ConcurrentHashMap<>();
         QueryWrapper<MenuDTO> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("del_flag", 1);
         queryWrapper.ne("menu_type", 0);
         resourceList = menuService.list(queryWrapper);
-        /*if (menuList != null && !menuList.isEmpty()) {
-            resourceList = menuList;
-        }*/
-        // 获取所有分配的角色
-        /*List<RoleMenuAllDTO> roles = roleService.loadAllRole();
-        if (!CollectionUtils.isEmpty(roles)) {
-            for (RoleMenuAllDTO roleMenu : roles) {
-                String authorizedSigns = roleMenu.getName() + ":" + roleMenu.getOrgId();
-                ConfigAttribute configAttributes = new SecurityConfig(authorizedSigns);
-                if (resourceMap.containsKey(roleMenu.getMenuUrl())) {
-                    Collection<ConfigAttribute> attributes = resourceMap.get(roleMenu.getMenuUrl());
-                    attributes.add(configAttributes);
-                    resourceMap.put(roleMenu.getMenuUrl(), attributes);
-                } else {
-                    Collection<ConfigAttribute> config = new ArrayList<>();
-                    config.add(configAttributes);
-                    resourceMap.put(roleMenu.getMenuUrl(), config);
-                }
-            }
-        }*/
     }
 
 }

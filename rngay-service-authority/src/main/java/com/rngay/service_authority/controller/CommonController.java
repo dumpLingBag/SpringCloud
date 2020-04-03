@@ -7,15 +7,9 @@ import com.rngay.feign.authority.UrlDTO;
 import com.rngay.service_authority.service.CommonService;
 import com.rngay.service_authority.service.MenuUrlService;
 import com.rngay.service_authority.service.SystemService;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.concurrent.FutureCallback;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,8 +24,8 @@ public class CommonController {
     private MenuUrlService menuUrlService;
 
     @GetMapping(value = "load")
-    public Result<List<UrlDTO>> load(HttpServletRequest request) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<List<UrlDTO>> load() {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId != null && orgId == 0) {
             return Result.success(menuUrlService.load());
         }
@@ -39,8 +33,8 @@ public class CommonController {
     }
 
     @GetMapping(value = "loadOpen")
-    public Result<List<UrlDTO>> loadOpen(HttpServletRequest request) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<List<UrlDTO>> loadOpen() {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId != null && orgId == 0) {
             return Result.success(commonService.loadOpen());
         }

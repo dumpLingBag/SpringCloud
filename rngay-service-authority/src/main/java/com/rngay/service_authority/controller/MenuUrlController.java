@@ -9,7 +9,6 @@ import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class MenuUrlController {
     private SystemService systemService;
 
     @GetMapping(value = "list")
-    public Result<List<UrlDTO>> list(HttpServletRequest request) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<List<UrlDTO>> list() {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId != null && orgId == 0) {
             return Result.success(urlService.load());
         }

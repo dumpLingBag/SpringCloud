@@ -15,28 +15,28 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2018/12/13
      */
-    UaUserDTO findUserById(Long id);
+    UaUserDTO getUserById(Long id);
 
     /**
      * 根据用户名或手机号查询用户数据
      * @Author: pengcheng
      * @Date: 2018/12/13
      */
-    UaUserDTO findUser(String account, String password);
+    UaUserDTO getUser(String account, String password);
 
     /**
      * 通过账号查询信息
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    UaUserDTO findByAccount(String username);
+    UaUserDTO getUserByUsername(String username);
 
     /**
      * 通过手机号查询信息
      * @Author: pengcheng
      * @Date: 2019/2/2
      */
-    UaUserDTO findByMobile(String mobile);
+    UaUserDTO getUserByMobile(String mobile);
 
     /**
      * 添加一个用户

@@ -33,19 +33,21 @@ public class SystemServiceImpl implements SystemService {
     private RedisUtil redisUtil;
     @Autowired
     private UserTokenDao userTokenDao;
+    @Autowired
+    private HttpServletRequest request;
 
     @Override
-    public List<MenuDTO> listForMenu(UaUserDTO userDTO) {
+    public List<MenuDTO> listForMenu(UaUserDTO userDTO, FiledEnum filedEnum) {
         if (userDTO == null) return null;
 
         List<MenuDTO> allMenus = new ArrayList<>();
         if (userDTO.getParentId() != null && userDTO.getParentId() == 0) {
-            List<MenuDTO> menuList = menuService.loadMenuByOrgId(userDTO.getOrgId(), FiledEnum.ASIDE_MENU);
+            List<MenuDTO> menuList = menuService.loadMenuByOrgId(userDTO.getOrgId(), filedEnum);
             if (menuList != null && !menuList.isEmpty()) {
                 allMenus.addAll(menuList);
             }
         } else {
-            List<MenuDTO> menuList = menuService.loadMenuByUserId(userDTO.getOrgId(), userDTO.getId());
+            List<MenuDTO> menuList = menuService.loadMenuByUserId(userDTO.getOrgId(), userDTO.getId(), filedEnum);
             if (menuList != null && !menuList.isEmpty()) {
                 allMenus.addAll(menuList);
             }
@@ -96,7 +98,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public UaUserDTO getCurrentUser(HttpServletRequest request) {
+    public UaUserDTO getCurrentUser() {
         String token = AuthorityUtil.getRequestToken(request);
         if (token != null) {
             long userId = Long.parseLong(jwtUtil.getSubject(token));
@@ -108,7 +110,7 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public int updateCurrentUser(HttpServletRequest request, UaUserDTO userDTO) {
+    public int updateCurrentUser(UaUserDTO userDTO) {
         if (userDTO != null) {
             redisUtil.zHashPut(RedisKeys.getUserKey(userDTO.getId()), FiledEnum.USER_INFO, userDTO);
             return 1;
@@ -117,8 +119,8 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public Long getCurrentUserId(HttpServletRequest request) {
-        UaUserDTO currentUser = getCurrentUser(request);
+    public Long getCurrentUserId() {
+        UaUserDTO currentUser = getCurrentUser();
         if (currentUser != null) {
             return currentUser.getId();
         }
@@ -126,8 +128,8 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public Long getCurrentOrgId(HttpServletRequest request) {
-        UaUserDTO currentUser = getCurrentUser(request);
+    public Long getCurrentOrgId() {
+        UaUserDTO currentUser = getCurrentUser();
         if (currentUser != null && currentUser.getOrgId() != null) {
             return currentUser.getOrgId();
         }

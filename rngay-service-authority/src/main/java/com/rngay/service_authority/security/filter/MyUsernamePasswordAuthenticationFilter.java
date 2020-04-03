@@ -43,7 +43,7 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
         * 如果不配置则无法执行 重写的attemptAuthentication
         * 方法里面而是执行了父类UsernamePasswordAuthenticationFilter的attemptAuthentication()
         * */
-        this.setFilterProcessesUrl("/authorityLogin/login");
+        this.setFilterProcessesUrl("/login");
         // AuthenticationManager 是必须的
         this.setAuthenticationManager(authenticationManager);
         // 设置自定义登陆成功后的业务处理
@@ -56,8 +56,8 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String account = request.getParameter("account");
         // 验证账号密码是否出错次数过多
-        if (verificationFailCount(request) > 5) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.retry.limit.exceed", 5)));
+        if (verificationFailCount(request) >= 5) {
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.password.retry.limit.exceed", 5)));
             ResultUtil.writeJson(response, 2, MessageUtils.message("user.password.retry.limit.exceed", 5));
             return null;
         }
@@ -69,12 +69,12 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
                 String text = (String) redisUtil.get(codeKey); // 存在 redis 的验证码
                 if (StringUtils.isNotBlank(text)) {
                     if (!text.equalsIgnoreCase(code)) {
-                        AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.captcha.error")));
+                        AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.captcha.error")));
                         ResultUtil.writeJson(response, 2, MessageUtils.message("user.captcha.error"));
                         return null;
                     }
                 } else {
-                    AsyncManager.me().execute(AsyncFactory.recordLogin(account, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.captcha.expire")));
+                    AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCodeEnum.FAIL.getCode(), MessageUtils.message("user.captcha.expire")));
                     ResultUtil.writeJson(response, 2, MessageUtils.message("user.captcha.expire"));
                     return null;
                 }

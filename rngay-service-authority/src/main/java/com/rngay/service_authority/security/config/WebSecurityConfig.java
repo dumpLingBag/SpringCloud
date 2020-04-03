@@ -154,7 +154,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 // 登录 url
-                .loginProcessingUrl("/authorityLogin/login")
+                .loginProcessingUrl("/login")
                 .usernameParameter("account")
                 .passwordParameter("password")
                 // 登录成功后 MyAuthenticationSuccessHandler类中onAuthenticationSuccess（）被调用
@@ -164,7 +164,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 // 退出系统url
-                .logoutUrl("/authorityLogin/logout")
+                .logoutUrl("/logout")
                 // 退出系统后的业务处理
                 .logoutSuccessHandler(myLogoutSuccessHandler());
         // 加入自定义UsernamePasswordAuthenticationFilter替代原有Filter

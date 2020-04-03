@@ -26,8 +26,8 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
     private MenuService menuService;
 
     @Override
-    public List<MenuDTO> list(Long orgId) {
-        return menuList(menuService.loadMenuByOrgId(orgId, FiledEnum.AUTHORITY_MENU));
+    public List<MenuDTO> list(Long orgId, FiledEnum filedEnum) {
+        return menuList(menuService.loadMenuByOrgId(orgId, filedEnum));
     }
 
     @Override
@@ -55,6 +55,11 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
 
         }
         return false;
+    }
+
+    @Override
+    public List<MenuDTO> listAuth(List<Long> menuId) {
+        return menuList(menuService.listAuth(menuId));
     }
 
     private List<MenuDTO> menuList(List<MenuDTO> menus) {

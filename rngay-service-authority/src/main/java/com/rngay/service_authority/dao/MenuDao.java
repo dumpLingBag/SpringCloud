@@ -17,12 +17,14 @@ public interface MenuDao extends BaseMapper<MenuDTO> {
 
     List<MenuDTO> loadMenuByOrgId(@Param("roles") List<OrgRoleDTO> roles, @Param("code") int code);
 
-    List<MenuDTO> loadMenuByOrgUserId(@Param("roles") List<OrgRoleDTO> roles, @Param("userRoles") List<UserRoleDTO> userRoleIds);
+    List<MenuDTO> loadMenuByOrgUserId(@Param("roles") List<OrgRoleDTO> roles, @Param("userRoles") List<UserRoleDTO> userRoleIds, @Param("code") int code);
 
-    List<MenuDTO> loadMenuByUserId(@Param("roleIds") List<UserRoleDTO> roleIds);
+    List<MenuDTO> loadMenuByUserId(@Param("roleIds") List<UserRoleDTO> roleIds, @Param("code") int code);
 
     int updateInMenu(@Param("menuList") MenuInListDTO menuList);
 
     List<String> loadUrlByUser(@Param("userId") Long userId);
+
+    List<MenuDTO> listAuth(@Param("menuIds") List<Long> menuId);
 
 }

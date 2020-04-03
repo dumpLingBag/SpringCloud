@@ -7,9 +7,15 @@ import com.rngay.feign.authority.LoginInfoDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface LoginInfoDao extends BaseMapper<LoginInfoDTO> {
 
     Page<LoginInfoDTO> pageList(Page<LoginInfoDTO> page, @Param("pageList") LoginInfoPageQuery loginInfoPageQuery);
+
+    int delete(@Param("array") List<Long> arrayQuery, @Param("orgId") Long orgId);
+
+    int clear(@Param("orgId") Long orgId);
 
 }

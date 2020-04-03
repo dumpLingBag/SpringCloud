@@ -10,7 +10,6 @@ import com.rngay.service_authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -43,8 +42,8 @@ public class MenuController {
     }
 
     @GetMapping(value = "list")
-    public Result<List<MenuDTO>> list(HttpServletRequest request) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<List<MenuDTO>> list() {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId != null && orgId == 0) {
             return Result.success(menuService.list());
         }
@@ -52,8 +51,8 @@ public class MenuController {
     }
 
     @GetMapping(value = "listByPid")
-    public Result<List<MenuDTO>> listByPid(HttpServletRequest request) {
-        Long orgId = systemService.getCurrentOrgId(request);
+    public Result<List<MenuDTO>> listByPid() {
+        Long orgId = systemService.getCurrentOrgId();
         if (orgId != null && orgId == 0) {
             return Result.success(menuService.listByPid());
         }

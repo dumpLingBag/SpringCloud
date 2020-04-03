@@ -19,24 +19,24 @@ public class PlatformUserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "find")
-    public Result<UaUserDTO> find(@RequestParam("username") String account, @RequestParam("password") String password) {
-        return Result.success(userService.findUser(account, password));
+    @GetMapping(value = "getUser")
+    public Result<UaUserDTO> getUser(@RequestParam("username") String account, @RequestParam("password") String password) {
+        return Result.success(userService.getUser(account, password));
     }
 
-    @GetMapping(value = "findById/{id}")
-    public Result<UaUserDTO> findById(@PathVariable Long id) {
-        return Result.success(userService.findUserById(id));
+    @GetMapping(value = "getUserById/{id}")
+    public Result<UaUserDTO> getUserById(@PathVariable Long id) {
+        return Result.success(userService.getUserById(id));
     }
 
-    @GetMapping(value = "findByAccount")
-    public Result<UaUserDTO> findByAccount(@RequestParam("username") String username) {
-        return Result.success(userService.findByAccount(username));
+    @GetMapping(value = "getUserByUsername")
+    public Result<UaUserDTO> getUserByUsername(@RequestParam("username") String username) {
+        return Result.success(userService.getUserByUsername(username));
     }
 
-    @GetMapping(value = "findByMobile")
-    public Result<UaUserDTO> findByMobile(@RequestParam("mobile") String mobile) {
-        return Result.success(userService.findByMobile(mobile));
+    @GetMapping(value = "getUserByMobile")
+    public Result<UaUserDTO> getUserByMobile(@RequestParam("mobile") String mobile) {
+        return Result.success(userService.getUserByMobile(mobile));
     }
 
     @PostMapping(value = "insert")
@@ -53,7 +53,7 @@ public class PlatformUserController {
     }
 
     @PostMapping(value = "page")
-    public Result<Page<UaUserDTO>> pageList(@RequestBody UaUserPageListDTO pageListDTO) {
+    public Result<Page<UaUserDTO>> page(@RequestBody UaUserPageListDTO pageListDTO) {
         return Result.success(userService.page(pageListDTO));
     }
 
