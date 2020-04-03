@@ -59,7 +59,7 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
 
     @Override
     public List<MenuDTO> listAuth(List<Long> menuId) {
-        return menuList(menuService.listAuth(menuId));
+        return MenuUtil.authList(menuService.listAuth(menuId), FiledEnum.MENU_TYPE_NOT_VO);
     }
 
     private List<MenuDTO> menuList(List<MenuDTO> menus) {

@@ -21,6 +21,17 @@ public class MenuUtil {
         return arrList;
     }
 
+    public static List<MenuDTO> authList(List<MenuDTO> menuList, FiledEnum codeEnum) {
+        List<MenuDTO> arrList = new ArrayList<>();
+        for (MenuDTO menu : menuList) {
+            if (menu.getMenuType() != null && menu.getMenuType() == 1)  {
+                arrList.add(menuDtoToMenu(menuList, menu, codeEnum));
+            }
+        }
+        arrList.sort(Comparator.comparing(MenuDTO::getSort));
+        return arrList;
+    }
+
     private static List<MenuDTO> menuListChildren(List<MenuDTO> menuList, MenuDTO menu, FiledEnum codeEnum) {
         List<MenuDTO> children = new ArrayList<>();
         for (MenuDTO pid : menuList) {
