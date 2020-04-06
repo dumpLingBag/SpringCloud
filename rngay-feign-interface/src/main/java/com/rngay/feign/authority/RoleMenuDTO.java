@@ -1,6 +1,7 @@
 package com.rngay.feign.authority;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rngay.feign.dto.BaseDTO;
@@ -13,6 +14,8 @@ public class RoleMenuDTO extends BaseDTO {
     private Long id;
     private Long menuId;
     private Long roleId;
+    @TableField(exist = false)
+    private Integer menuType;
 
     public Long getId() {
         return id;
@@ -36,5 +39,13 @@ public class RoleMenuDTO extends BaseDTO {
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public Integer getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(Integer menuType) {
+        this.menuType = menuType;
     }
 }

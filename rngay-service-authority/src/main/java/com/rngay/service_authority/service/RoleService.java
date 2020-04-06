@@ -67,4 +67,11 @@ public interface RoleService extends IService<RoleDTO> {
      */
     Integer updateInList(RoleInListDTO roleInList);
 
+    /**
+     * 添加角色信息
+     * @author pengcheng
+     * @date 2020-04-06 19:31
+     */
+    Integer insert(RoleDTO uaRole);
+
 }

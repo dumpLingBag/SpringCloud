@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.*;
+import com.rngay.feign.authority.query.UserRoleClearQuery;
 import com.rngay.feign.authority.query.UserRoleUpdateQuery;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.dto.UaUserPageListDTO;
@@ -37,37 +38,27 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     @Override
     public List<UserRoleDTO> list(Long userId) {
         return userRoleDao.selectList(new QueryWrapper<UserRoleDTO>()
-                .eq("checked", 1).eq("user_id", userId));
+                .eq("del_flag", "1").eq("user_id", userId));
     }
 
     @Override
     public Boolean insert(UserRoleUpdateQuery query) {
+        userRoleDao.delete(new QueryWrapper<UserRoleDTO>().eq("user_id", query.getUserId()));
         List<UserRoleDTO> list = new ArrayList<>();
-        for (Long userId : query.getUserIds()) {
-            for (Long roleId : query.getRoleIds()) {
-                UserRoleDTO userRoleDTO = new UserRoleDTO();
-                userRoleDTO.setUserId(userId);
-                userRoleDTO.setRoleId(roleId);
-                userRoleDTO.setDelFlag(query.getType());
-                list.add(userRoleDTO);
-            }
+        for (Long roleId : query.getRoleIds()) {
+            UserRoleDTO userRoleDTO = new UserRoleDTO();
+            userRoleDTO.setUserId(query.getUserId());
+            userRoleDTO.setRoleId(roleId);
+            list.add(userRoleDTO);
         }
-        if (!list.isEmpty()) {
-            if (query.getType() == 0) {
-                userRoleDao.updateBatch(list);
-                return true;
-            } else {
-                return saveBatch(list);
-            }
-        }
-        return false;
+        return saveBatch(list);
     }
 
     @Override
     public List<String> loadUrlByOrgId(Long orgId) {
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> orgRoles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
-                    .eq("checked", 1).eq("org_id", orgId));
+                    .eq("del_flag", "1").eq("org_id", orgId));
             if (orgRoles == null || orgRoles.isEmpty()) return new ArrayList<>();
             return urlDao.loadUrlByOrgId(orgRoles);
         }
@@ -80,7 +71,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
         if (roleId == null || roleId.isEmpty()) return new ArrayList<>();
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> orgRoles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
-                    .eq("checked", 1).eq("org_id", orgId));
+                    .eq("del_flag", "1").eq("org_id", orgId));
             if (orgRoles == null || orgRoles.isEmpty()) return new ArrayList<>();
             return urlDao.loadUrlByOrgUserId(orgRoles, roleId);
         }
@@ -134,5 +125,10 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
             }
             return new Page<>(userRole.getCurrentPage(), userRole.getPageSize());
         }
+    }
+
+    @Override
+    public Integer clearRole(UserRoleClearQuery clearQuery) {
+        return userRoleDao.updateUserRole(clearQuery);
     }
 }

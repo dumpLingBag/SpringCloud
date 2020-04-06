@@ -57,11 +57,7 @@ public class RoleController {
             return Result.failMsg("角色添加失败");
         }
         uaRole.setOrgId(orgId);
-        boolean save = roleService.save(uaRole);
-        if (!save) {
-            return Result.failMsg("角色添加失败");
-        }
-        return Result.success();
+        return Result.success(roleService.insert(uaRole));
     }
 
     @PutMapping(value = "update")

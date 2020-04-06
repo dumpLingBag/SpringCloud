@@ -61,21 +61,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
 
     @Override
     public List<RoleDTO> listByPid(Long orgId) {
-        List<RoleDTO> roles = new ArrayList<>();
-        List<RoleDTO> rolePid = roleDao.selectList(new QueryWrapper<RoleDTO>()
-                .eq("org_id", orgId).eq("pid", 0));
-        if (rolePid != null && !rolePid.isEmpty()) {
-            rolePid.forEach(k -> {
-                List<RoleDTO> role = roleDao.selectList(new QueryWrapper<RoleDTO>()
-                        .eq("org_id", orgId).eq("pid", k.getPid()));
-                RoleDTO roleDTO = new RoleDTO();
-                roleDTO.setId(k.getId());
-                roleDTO.setName(k.getName());
-                roleDTO.setChildren(role);
-                roles.add(roleDTO);
-            });
-        }
-        return roles;
+        QueryWrapper<RoleDTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("org_id", orgId).eq("del_flag", "1");
+        wrapper.ne("pid", "0");
+        return roleDao.selectList(wrapper);
     }
 
     @Override
@@ -110,10 +99,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
         return roleDao.updateInList(roleInList);
     }
 
+    @Override
+    public Integer insert(RoleDTO uaRole) {
+        if (uaRole.getPid() != null && uaRole.getPid() != 1) {
+            RoleDTO byId = roleDao.selectById(uaRole.getPid());
+            if (byId != null) {
+                byId.setPid(0L);
+                roleDao.updateById(byId);
+            }
+        }
+        return roleDao.insert(uaRole);
+    }
+
     private List<RoleDTO> roleList(List<RoleDTO> roles) {
         List<RoleDTO> arrList = new ArrayList<>();
         for (RoleDTO role : roles) {
-            if (role.getPid() == null || role.getPid() == 0) {
+            if (role.getPid() == null || role.getPid() == 0 || role.getPid() == 1) {
                 arrList.add(arrToRole(roles, role));
             }
         }

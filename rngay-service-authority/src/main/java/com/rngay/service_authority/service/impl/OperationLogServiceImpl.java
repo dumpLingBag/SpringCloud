@@ -24,7 +24,7 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogDao, Operat
 
     @Override
     public int delete(List<Long> arrayQuery, Long orgId) {
-        return operationLogDao.delete(arrayQuery, orgId);
+        return operationLogDao.deleteOperationLog(arrayQuery, orgId);
     }
 
     @Override

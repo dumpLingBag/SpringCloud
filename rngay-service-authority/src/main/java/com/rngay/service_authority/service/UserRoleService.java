@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.authority.UserRoleParamDTO;
+import com.rngay.feign.authority.query.UserRoleClearQuery;
 import com.rngay.feign.authority.query.UserRoleUpdateQuery;
 import com.rngay.feign.user.dto.UaUserDTO;
 
@@ -45,5 +46,12 @@ public interface UserRoleService extends IService<UserRoleDTO> {
      * @Date: 2020/3/12
      */
     Page<UaUserDTO> pageUserByRoleId(UserRoleParamDTO userRoleParamDTO);
+
+    /**
+     * 批量删除角色
+     * @author pengcheng
+     * @date 2020-04-06 22:13
+     */
+    Integer clearRole(UserRoleClearQuery clearQuery);
 
 }

@@ -1,5 +1,6 @@
 package com.rngay.service_authority.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rngay.common.enums.FiledEnum;
 import com.rngay.feign.authority.MenuDTO;
@@ -37,24 +38,15 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
 
     @Override
     public Boolean insert(UpdateRoleMenuQuery query) {
+        roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().eq("role_id", query.getRoleId()));
         List<RoleMenuDTO> list = new ArrayList<>();
         for (Long menuId : query.getMenuId()) {
             RoleMenuDTO roleMenuDTO = new RoleMenuDTO();
             roleMenuDTO.setMenuId(menuId);
             roleMenuDTO.setRoleId(query.getRoleId());
-            roleMenuDTO.setDelFlag(query.getType());
             list.add(roleMenuDTO);
         }
-        if (!list.isEmpty()) {
-            if (query.getType() == 0) {
-                roleMenuDao.updateBatch(list);
-                return true;
-            } else {
-                return saveBatch(list);
-            }
-
-        }
-        return false;
+        return saveBatch(list);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class LoginInfoServiceImpl extends ServiceImpl<LoginInfoDao, LoginInfoDTO
 
     @Override
     public int delete(List<Long> arrayQuery, Long orgId) {
-        return loginInfoDao.delete(arrayQuery, orgId);
+        return loginInfoDao.deleteLoginInfo(arrayQuery, orgId);
     }
 
     @Override

@@ -12,8 +12,6 @@ public class UpdateRoleMenuQuery extends BaseDTO {
     private Long roleId;
     @Size(min = 1, message = "至少选择一个菜单")
     private List<Long> menuId;
-    @NotNull(message = "请求类型为空") // 0 修改 1 增加
-    private Integer type;
 
     public Long getRoleId() {
         return roleId;
@@ -31,11 +29,4 @@ public class UpdateRoleMenuQuery extends BaseDTO {
         this.menuId = menuId;
     }
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
 }

@@ -10,9 +10,8 @@ public class UserRoleUpdateQuery extends CommonDTO {
 
     @Size(min = 1, message = "最少选择一个角色")
     private List<Long> roleIds;
-    @Size(min = 1, message = "最少选择一个用户")
-    private List<Long> userIds;
-    private Integer type;
+    @NotNull(message = "缺少用户id")
+    private Long userId;
 
     public List<Long> getRoleIds() {
         return roleIds;
@@ -22,19 +21,11 @@ public class UserRoleUpdateQuery extends CommonDTO {
         this.roleIds = roleIds;
     }
 
-    public List<Long> getUserIds() {
-        return userIds;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserIds(List<Long> userIds) {
-        this.userIds = userIds;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rngay.service_authority.dao.RoleMenuDao">
     <select id="loadMenu" resultType="RoleMenuDTO">
-        select urm.* from ua_role_menu urm left join ua_menu um on urm.menu_id = um.id and um.menu_type != '0'
+        select urm.*,um.menu_type from ua_role_menu urm left join ua_menu um on urm.menu_id = um.id and um.menu_type != '0'
         where urm.role_id = #{roleId} and urm.del_flag = '1' and um.del_flag = '1'
     </select>
 
@@ -12,7 +12,7 @@
         </foreach>
     </update>
 
-    <update id="update">
+    <update id="updateMenu">
         update ua_role_menu set del_flag = '0' where role_id = #{roleId}
     </update>
 </mapper>

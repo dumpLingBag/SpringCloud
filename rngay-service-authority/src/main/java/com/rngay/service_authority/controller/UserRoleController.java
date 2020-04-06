@@ -1,9 +1,11 @@
 package com.rngay.service_authority.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.UserRoleDTO;
 import com.rngay.feign.authority.UserRoleParamDTO;
+import com.rngay.feign.authority.query.UserRoleClearQuery;
 import com.rngay.feign.authority.query.UserRoleUpdateQuery;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.service_authority.service.UserRoleService;
@@ -36,6 +38,21 @@ public class UserRoleController {
     @PostMapping(value = "insert")
     public Result<Boolean> insert(@Valid @RequestBody UserRoleUpdateQuery query) {
         return Result.success(userRoleService.insert(query));
+    }
+
+    @GetMapping(value = "listRoleByUserId")
+    public Result<List<UserRoleDTO>> listRoleByUserId(Long userId) {
+        if (userId != null) {
+            QueryWrapper<UserRoleDTO> wrapper = new QueryWrapper<>();
+            wrapper.eq("del_flag", "1").eq("user_id", userId);
+            return Result.success(userRoleService.list(wrapper));
+        }
+        return Result.failMsg("请求失败");
+    }
+
+    @DeleteMapping(value = "clearRole")
+    public Result<Integer> clearRole(@Valid @RequestBody UserRoleClearQuery clearQuery) {
+        return Result.success(userRoleService.clearRole(clearQuery));
     }
 
 }

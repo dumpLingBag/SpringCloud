@@ -14,7 +14,7 @@ public interface LoginInfoDao extends BaseMapper<LoginInfoDTO> {
 
     Page<LoginInfoDTO> pageList(Page<LoginInfoDTO> page, @Param("pageList") LoginInfoPageQuery loginInfoPageQuery);
 
-    int delete(@Param("array") List<Long> arrayQuery, @Param("orgId") Long orgId);
+    int deleteLoginInfo(@Param("array") List<Long> arrayQuery, @Param("orgId") Long orgId);
 
     int clear(@Param("orgId") Long orgId);
 

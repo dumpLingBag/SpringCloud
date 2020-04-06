@@ -15,6 +15,6 @@ public interface RoleMenuDao extends BaseMapper<RoleMenuDTO> {
 
     void updateBatch(@Param("roleMenuList") List<RoleMenuDTO> roleMenu);
 
-    int update(@Param("roleId") Long roleId);
+    int updateMenu(@Param("roleId") Long roleId);
 
 }

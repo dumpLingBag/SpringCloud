@@ -9,7 +9,7 @@
 
     <select id="loadPageUserByRoleId" resultType="UserRoleDTO">
         select uur.*, ur.name from ua_user_role uur left join ua_role ur on uur.role_id = ur.id
-        where uur.role_id = #{roleId} and uur.del_flag = '1'
+        where uur.role_id = #{roleId} and uur.del_flag = '1' and ur.del_flag = '1'
     </select>
 
     <select id="loadRoleByUserId" resultType="UserRoleDTO">
@@ -17,6 +17,7 @@
         <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
             #{userId.id}
         </foreach>
+        and uur.del_flag = '1' and ur.del_flag = '1'
     </select>
 
     <update id="updateBatch">
@@ -27,5 +28,19 @@
             </set>
             where user_id = #{userRole.userId} and role_id =  #{userRole.roleId}
         </foreach>
+    </update>
+
+    <update id="updateUserRole">
+        update ua_user_role
+        <set>
+            del_flag = '0'
+        </set>
+        where user_id in
+        <foreach collection="clearQuery.userIds" item="userRole" open="(" close=")" separator=",">
+            #{userRole}
+        </foreach>
+        <if test="clearQuery.roleId != null">
+            and role_id = #{clearQuery.roleId}
+        </if>
     </update>
 </mapper>

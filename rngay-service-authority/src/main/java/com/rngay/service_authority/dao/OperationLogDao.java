@@ -14,7 +14,7 @@ public interface OperationLogDao extends BaseMapper<OperationLogDTO> {
 
     Page<OperationLogDTO> pageList(Page<OperationLogDTO> page, @Param("pageList") OperationLogPageQuery operationLogPageQuery);
 
-    int delete(@Param("array") List<Long> arrayQuery, @Param("orgId") Long orgId);
+    int deleteOperationLog(@Param("array") List<Long> arrayQuery, @Param("orgId") Long orgId);
 
     int clear(@Param("orgId") Long orgId);
 
