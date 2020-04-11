@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface OperationLogDao extends BaseMapper<OperationLogDTO> {
 
-    Page<OperationLogDTO> pageList(Page<OperationLogDTO> page, @Param("pageList") OperationLogPageQuery operationLogPageQuery);
+    Page<OperationLogDTO> pageOperationLog(Page<OperationLogDTO> page, @Param("pageList") OperationLogPageQuery operationLogPageQuery);
 
     int deleteOperationLog(@Param("array") List<Long> arrayQuery, @Param("orgId") Long orgId);
 

@@ -18,8 +18,8 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogDao, Operat
     private OperationLogDao operationLogDao;
 
     @Override
-    public Page<OperationLogDTO> pageList(Page<OperationLogDTO> page, OperationLogPageQuery operationLogPageQuery) {
-        return operationLogDao.pageList(page, operationLogPageQuery);
+    public Page<OperationLogDTO> pageOperationLog(Page<OperationLogDTO> page, OperationLogPageQuery operationLogPageQuery) {
+        return operationLogDao.pageOperationLog(page, operationLogPageQuery);
     }
 
     @Override

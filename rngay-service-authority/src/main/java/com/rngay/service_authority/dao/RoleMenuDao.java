@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface RoleMenuDao extends BaseMapper<RoleMenuDTO> {
 
-    List<RoleMenuDTO> loadMenu(@Param("roleId") Long roleId);
+    List<RoleMenuDTO> listMenu(@Param("roleId") Long roleId);
 
     void updateBatch(@Param("roleMenuList") List<RoleMenuDTO> roleMenu);
 

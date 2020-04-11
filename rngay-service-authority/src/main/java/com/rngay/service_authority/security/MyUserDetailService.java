@@ -66,13 +66,13 @@ public class MyUserDetailService implements UserDetailsService {
             grantedAuth.add(new SimpleGrantedAuthority("*:*:*"));
         } else {
             // 获取用户拥有的角色
-            List<RoleDTO> roleList = roleService.loadUserRole(uaUser);
+            List<RoleDTO> roleList = roleService.listUserRole(uaUser);
 
             if (!roleList.isEmpty()) {
                 roleList.forEach(role -> grantedAuth.add(new SimpleGrantedAuthority(role.getId().toString())));
             }
             // 获取用户拥有的权限
-            List<String> urlList = menuService.loadUrlByUser(uaUser.getId());
+            List<String> urlList = menuService.listUrlByUser(uaUser.getId());
             if (!urlList.isEmpty()) {
                 urlList.forEach(url -> {
                     if (StringUtils.isNoneBlank(url)) {

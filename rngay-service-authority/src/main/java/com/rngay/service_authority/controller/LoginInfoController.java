@@ -22,7 +22,7 @@ public class LoginInfoController {
     @GetMapping(value = "page")
     public Result<Page<LoginInfoDTO>> page(LoginInfoPageQuery loginInfoPageQuery) {
         Page<LoginInfoDTO> page = new Page<>(loginInfoPageQuery.getCurrentPage(), loginInfoPageQuery.getPageSize());
-        return Result.success(loginInfoService.pageList(page, loginInfoPageQuery));
+        return Result.success(loginInfoService.pageLoginInfo(page, loginInfoPageQuery));
     }
 
     @DeleteMapping(value = "delete")

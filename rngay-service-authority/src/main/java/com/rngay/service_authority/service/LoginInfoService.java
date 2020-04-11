@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LoginInfoService extends IService<LoginInfoDTO> {
 
-    Page<LoginInfoDTO> pageList(Page<LoginInfoDTO> page, LoginInfoPageQuery loginInfoPageQuery);
+    Page<LoginInfoDTO> pageLoginInfo(Page<LoginInfoDTO> page, LoginInfoPageQuery loginInfoPageQuery);
 
     int delete(List<Long> arrayQuery, Long orgId);
 

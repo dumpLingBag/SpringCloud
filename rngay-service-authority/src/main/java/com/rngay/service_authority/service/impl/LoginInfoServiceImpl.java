@@ -18,8 +18,8 @@ public class LoginInfoServiceImpl extends ServiceImpl<LoginInfoDao, LoginInfoDTO
     private LoginInfoDao loginInfoDao;
 
     @Override
-    public Page<LoginInfoDTO> pageList(Page<LoginInfoDTO> page, LoginInfoPageQuery loginInfoPageQuery) {
-        return loginInfoDao.pageList(page, loginInfoPageQuery);
+    public Page<LoginInfoDTO> pageLoginInfo(Page<LoginInfoDTO> page, LoginInfoPageQuery loginInfoPageQuery) {
+        return loginInfoDao.pageLoginInfo(page, loginInfoPageQuery);
     }
 
     @Override

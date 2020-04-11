@@ -8,7 +8,7 @@
         </foreach>
     </update>
 
-    <select id="loadMenuByOrgId" resultType="MenuDTO">
+    <select id="listMenuByOrgId" resultType="MenuDTO">
         <foreach collection="roles" item="role" index="index" separator="union">
             select t.*
             from (select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
@@ -19,7 +19,7 @@
         </foreach>
     </select>
 
-    <select id="loadMenuByOrgUserId" resultType="MenuDTO">
+    <select id="listMenuByOrgUserId" resultType="MenuDTO">
         select sm.* from (
         <foreach collection="roles" item="role" separator="union">
             select t.* from (
@@ -41,7 +41,7 @@
         ) as sm on sm.id = pm.id
     </select>
 
-    <select id="loadMenuByUserId" resultType="MenuDTO">
+    <select id="listMenuByUserId" resultType="MenuDTO">
         <foreach collection="roleIds" item="role" separator="union">
             select t.* from (
             select m.* from ua_role_menu as rm, ua_menu as m where rm.role_id = #{role.roleId}
@@ -59,7 +59,7 @@
         </foreach>
     </update>
 
-    <select id="loadUrlByUser" resultType="java.lang.String">
+    <select id="listUrlByUser" resultType="java.lang.String">
         select m.menu_url from ua_menu m
         left join ua_role_menu rm on m.id = rm.menu_id
         left join ua_user_role ur on ur.role_id = rm.role_id

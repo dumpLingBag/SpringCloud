@@ -12,14 +12,14 @@ import java.util.List;
 @Repository
 public interface UrlDao extends BaseMapper<UrlDTO> {
 
-    List<String> loadUrlByOrgId(@Param("roleIds") List<OrgRoleDTO> roleIds);
+    List<String> listUrlByOrgId(@Param("roleIds") List<OrgRoleDTO> roleIds);
 
-    List<String> loadUrlByUserId(@Param("roleIds") List<UserRoleDTO> roleIds);
+    List<String> listUrlByUserId(@Param("roleIds") List<UserRoleDTO> roleIds);
 
-    List<String> loadUrlByOrgUserId(@Param("orgRoles") List<OrgRoleDTO> orgRoles, @Param("userRoleIds")List<UserRoleDTO> userRoleIds);
+    List<String> listUrlByOrgUserId(@Param("orgRoles") List<OrgRoleDTO> orgRoles, @Param("userRoleIds")List<UserRoleDTO> userRoleIds);
 
     int updateSql();
 
-    List<String> loadUrlByList();
+    List<String> listUrl();
 
 }

@@ -42,12 +42,12 @@ public class SystemServiceImpl implements SystemService {
 
         List<MenuDTO> allMenus = new ArrayList<>();
         if (userDTO.getParentId() != null && userDTO.getParentId() == 0) {
-            List<MenuDTO> menuList = menuService.loadMenuByOrgId(userDTO.getOrgId(), filedEnum);
+            List<MenuDTO> menuList = menuService.listMenuByOrgId(userDTO.getOrgId(), filedEnum);
             if (menuList != null && !menuList.isEmpty()) {
                 allMenus.addAll(menuList);
             }
         } else {
-            List<MenuDTO> menuList = menuService.loadMenuByUserId(userDTO.getOrgId(), userDTO.getId(), filedEnum);
+            List<MenuDTO> menuList = menuService.listMenuByUserId(userDTO.getOrgId(), userDTO.getId(), filedEnum);
             if (menuList != null && !menuList.isEmpty()) {
                 allMenus.addAll(menuList);
             }
@@ -62,12 +62,12 @@ public class SystemServiceImpl implements SystemService {
         Set<String> urlSet = new HashSet<>();
 
         if (userDTO.getParentId() != null && userDTO.getParentId() == 0) {
-            List<String> urlList = userRoleService.loadUrlByOrgId(userDTO.getOrgId());
+            List<String> urlList = userRoleService.listUrlByOrgId(userDTO.getOrgId());
             if (urlList != null && !urlList.isEmpty()) {
                 urlSet.addAll(urlList);
             }
         } else {
-            List<String> urlList = userRoleService.loadUrlByUserId(userDTO.getOrgId(), userDTO.getId());
+            List<String> urlList = userRoleService.listUrlByUserId(userDTO.getOrgId(), userDTO.getId());
             if (urlList != null && !urlList.isEmpty()) {
                 urlSet.addAll(urlList);
             }

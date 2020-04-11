@@ -31,14 +31,14 @@ public interface UserRoleService extends IService<UserRoleDTO> {
      * @Author: pengcheng
      * @Date: 2020/3/12
      */
-    List<String> loadUrlByOrgId(Long orgId);
+    List<String> listUrlByOrgId(Long orgId);
 
     /**
      * 根据 orgId 和 userId 加载权限
      * @Author: pengcheng
      * @Date: 2020/3/12
      */
-    List<String> loadUrlByUserId(Long orgId, Long userId);
+    List<String> listUrlByUserId(Long orgId, Long userId);
 
     /**
      * 根据 roleId 加载用户

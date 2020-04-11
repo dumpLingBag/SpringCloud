@@ -23,21 +23,21 @@ public interface RoleService extends IService<RoleDTO> {
      * @author pengcheng
      * @date 2020-02-12 15:51
      */
-    List<RoleDTO> loadUserRole(UaUserDTO userDTO);
+    List<RoleDTO> listUserRole(UaUserDTO userDTO);
 
     /**
      * 加载出所有没被禁用的角色
      * @author pengcheng
      * @date 2020-02-12 12:12
      */
-    List<RoleMenuAllDTO> loadAllRole();
+    List<RoleMenuAllDTO> listAllRole();
 
     /**
      * 根据权限加载角色
      * @Author: pengcheng
      * @Date: 2020/3/27
      */
-    List<RoleMenuAllDTO> loadRoleByUrl(String url);
+    List<RoleMenuAllDTO> listRoleByUrl(String url);
 
     /**
      * 根据 orgId 加载出未被禁用的角色

@@ -22,8 +22,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     @Autowired
     private MenuDao menuDao;
     @Autowired
-    private MenuUrlDao menuUrlDao;
-    @Autowired
     private RoleMenuDao roleMenuDao;
     @Autowired
     private OrgRoleDao orgRoleDao;
@@ -70,14 +68,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     @Override
     public Integer delete(MenuIdListDTO menuIdList) {
         if (menuIdList.getMenuIdList().size() > 1) {
-            menuUrlDao.delete(new QueryWrapper<MenuUrlDTO>().in("menu_id", menuIdList.getMenuIdList()));
             roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().in("menu_id", menuIdList.getMenuIdList()));
             menuDao.deleteBatchIds(menuIdList.getMenuIdList());
             return menuIdList.getMenuIdList().size();
         }
         MenuDTO menu = menuDao.selectById(menuIdList.getMenuIdList().get(0));
         if (menu != null) {
-            menuUrlDao.delete(new QueryWrapper<MenuUrlDTO>().eq("menu_id", menu.getId()));
             roleMenuDao.delete(new QueryWrapper<RoleMenuDTO>().eq("menu_id", menu.getId()));
             menuDao.deleteById(menu.getId());
             if (menu.getPid() != 0) {
@@ -92,14 +88,14 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     }
 
     @Override
-    public List<MenuDTO> loadMenuByOrgId(Long orgId, FiledEnum filedEnum) {
+    public List<MenuDTO> listMenuByOrgId(Long orgId, FiledEnum filedEnum) {
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> roles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
                     .eq("del_flag", 1).eq("org_id", orgId));
             if (roles == null || roles.isEmpty()) {
                 return new ArrayList<>();
             }
-            return menuDao.loadMenuByOrgId(roles, filedEnum.getCode());
+            return menuDao.listMenuByOrgId(roles, filedEnum.getCode());
         }
         QueryWrapper<MenuDTO> wrapper = new QueryWrapper<>();
         wrapper.eq("enabled", "1").eq("del_flag", "1");
@@ -111,16 +107,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     }
 
     @Override
-    public List<MenuDTO> loadMenuByUserId(Long orgId, Long userId, FiledEnum filedEnum) {
-        List<UserRoleDTO> roleIds = userRoleDao.getRoleId(userId);
+    public List<MenuDTO> listMenuByUserId(Long orgId, Long userId, FiledEnum filedEnum) {
+        List<UserRoleDTO> roleIds = userRoleDao.listRoleId(userId);
         if (roleIds.isEmpty()) return new ArrayList<>();
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> orgRoles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
             .eq("del_flag", 1).eq("org_id", orgId));
             if (orgRoles == null || orgRoles.isEmpty()) return new ArrayList<>();
-            return menuDao.loadMenuByOrgUserId(orgRoles, roleIds, filedEnum.getCode());
+            return menuDao.listMenuByOrgUserId(orgRoles, roleIds, filedEnum.getCode());
         }
-        return menuDao.loadMenuByUserId(roleIds, filedEnum.getCode());
+        return menuDao.listMenuByUserId(roleIds, filedEnum.getCode());
     }
 
     @Override
@@ -129,8 +125,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
     }
 
     @Override
-    public List<String> loadUrlByUser(Long userId) {
-        return menuDao.loadUrlByUser(userId);
+    public List<String> listUrlByUser(Long userId) {
+        return menuDao.listUrlByUser(userId);
     }
 
     @Override

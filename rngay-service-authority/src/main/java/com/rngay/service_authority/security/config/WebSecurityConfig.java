@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @FileName: WebSecurityConfig
  * @Company:
- * @author    ljy
+ * @author    pengcheng
  * @Date      2020年02月12日
  * @version   1.0.0
  * @remark:   web 安全性配置

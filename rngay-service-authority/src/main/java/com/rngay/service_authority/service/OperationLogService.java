@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface OperationLogService extends IService<OperationLogDTO> {
 
-    Page<OperationLogDTO> pageList(Page<OperationLogDTO> page, OperationLogPageQuery operationLogPageQuery);
+    Page<OperationLogDTO> pageOperationLog(Page<OperationLogDTO> page, OperationLogPageQuery operationLogPageQuery);
 
     int delete(List<Long> arrayQuery, Long orgId);
 

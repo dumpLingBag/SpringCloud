@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface OrgRoleDao extends BaseMapper<OrgRoleDTO> {
 
-    List<UrlDTO> loadUrlByOrgId(@Param("roleIds") List<OrgRoleDTO> roleIds);
+    List<UrlDTO> listUrlByOrgId(@Param("roleIds") List<OrgRoleDTO> roleIds);
 
 }

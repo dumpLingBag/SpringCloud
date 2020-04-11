@@ -38,18 +38,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, RoleDTO> implements Ro
     }
 
     @Override
-    public List<RoleDTO> loadUserRole(UaUserDTO userDTO) {
-        return roleDao.loadUserRole(userDTO);
+    public List<RoleDTO> listUserRole(UaUserDTO userDTO) {
+        return roleDao.listUserRole(userDTO);
     }
 
     @Override
-    public List<RoleMenuAllDTO> loadAllRole() {
-        return roleDao.loadAllRole();
+    public List<RoleMenuAllDTO> listAllRole() {
+        return roleDao.listAllRole();
     }
 
     @Override
-    public List<RoleMenuAllDTO> loadRoleByUrl(String url) {
-        return roleDao.loadRoleByUrl(url);
+    public List<RoleMenuAllDTO> listRoleByUrl(String url) {
+        return roleDao.listRoleByUrl(url);
     }
 
     @Override

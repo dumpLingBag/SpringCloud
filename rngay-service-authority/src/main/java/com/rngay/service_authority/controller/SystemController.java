@@ -43,7 +43,7 @@ public class SystemController {
             hashSet.add("*:*:*");
             menuAuthDTO.setAuthorities(hashSet);
         } else {
-            List<String> urlList = menuService.loadUrlByUser(currentUser.getId());
+            List<String> urlList = menuService.listUrlByUser(currentUser.getId());
             Set<String> grantedAuth = new HashSet<>(urlList);
             menuAuthDTO.setAuthorities(grantedAuth);
         }

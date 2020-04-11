@@ -44,14 +44,14 @@ public interface MenuService extends IService<MenuDTO> {
      * @Author: pengcheng
      * @Date: 2019/12/30
      */
-    List<MenuDTO> loadMenuByOrgId(Long orgId, FiledEnum filedEnum);
+    List<MenuDTO> listMenuByOrgId(Long orgId, FiledEnum filedEnum);
 
     /**
      * 根据 orgId 和 userId 查询菜单列表
      * @Author: pengcheng
      * @Date: 2019/12/30
      */
-    List<MenuDTO> loadMenuByUserId(Long orgId, Long userId, FiledEnum filedEnum);
+    List<MenuDTO> listMenuByUserId(Long orgId, Long userId, FiledEnum filedEnum);
 
     /**
      * 根据菜单 id 批量或单个隐藏显示菜单
@@ -65,7 +65,7 @@ public interface MenuService extends IService<MenuDTO> {
      * @Author: pengcheng
      * @Date: 2020/3/28
      */
-    List<String> loadUrlByUser(Long userId);
+    List<String> listUrlByUser(Long userId);
 
     /**
      * 根据 roleId 加载权限

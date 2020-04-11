@@ -8,6 +8,7 @@ import com.rngay.common.util.ResMsg;
 import com.rngay.common.util.StringUtils;
 import com.rngay.common.util.UploadUtil;
 import com.rngay.common.vo.Result;
+import com.rngay.feign.authority.vo.UserInfoVo;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.service_authority.service.SystemService;
@@ -160,6 +161,16 @@ public class UserController {
             return Result.success(path);
         }
         return Result.failMsg("上传失败。");
+    }
+
+    @GetMapping(value = "getUserInfo")
+    public Result<UserInfoVo> getUserInfo() {
+        Long userId = systemService.getCurrentUserId();
+        Result<UaUserDTO> user = pfUserService.getUserById(userId);
+        UserInfoVo infoVo = new UserInfoVo();
+        infoVo.setUaUserDTO(user.getData());
+
+        return Result.success(infoVo);
     }
 
 }

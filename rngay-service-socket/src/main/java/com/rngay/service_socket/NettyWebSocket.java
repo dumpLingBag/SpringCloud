@@ -1,6 +1,5 @@
 package com.rngay.service_socket;
 
-import com.alibaba.fastjson.JSON;
 import com.rngay.service_socket.util.SocketSmsMapUtil;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +49,7 @@ public class NettyWebSocket {
     public void onMessage(Session session, String message) throws IOException {
         logger.info("收到消息：" + message);
         if (message != null && message.equals("socket:rngay:ping")) {
-            JSON.parseArray(message);
+
             session.sendText("socket:rngay:pong");
         }
     }

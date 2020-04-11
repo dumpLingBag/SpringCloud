@@ -19,28 +19,28 @@ public interface UserRoleDao extends BaseMapper<UserRoleDTO> {
      * @Author: pengcheng
      * @Date: 2020/3/12
      */
-    List<UserRoleDTO> getRoleId(@Param("userId") Long userId);
+    List<UserRoleDTO> listRoleId(@Param("userId") Long userId);
 
     /**
      * 根据 roleId 加载用户
      * @Author: pengcheng
      * @Date: 2020/3/12
      */
-    List<UaUserDTO> loadUserByRoleId(List<Long> roleIds);
+    List<UaUserDTO> listUserByRoleId(List<Long> roleIds);
 
     /**
      * 根据 roles 查询用户
      * @Author: pengcheng
      * @Date: 2020/3/13
      */
-    Page<UserRoleDTO> loadPageUserByRoleId(Page<UserRoleDTO> page, Long roleId);
+    Page<UserRoleDTO> pageUserByRoleId(Page<UserRoleDTO> page, Long roleId);
 
     /**
      * 通过 userId 加载角色
      * @author pengcheng
      * @date 2020-04-06 22:23
      */
-    List<UserRoleDTO> loadRoleByUserId(@Param("userIds") List<UaUserDTO> userDTOS);
+    List<UserRoleDTO> listRoleByUserId(@Param("userIds") List<UaUserDTO> userDTOS);
 
     /**
      *

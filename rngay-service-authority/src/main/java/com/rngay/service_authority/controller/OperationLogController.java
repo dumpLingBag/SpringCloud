@@ -22,7 +22,7 @@ public class OperationLogController {
     @GetMapping(value = "page")
     public Result<Page<OperationLogDTO>> page(OperationLogPageQuery logPageQuery) {
         Page<OperationLogDTO> page = new Page<>(logPageQuery.getCurrentPage(), logPageQuery.getPageSize());
-        return Result.success(operationLogService.pageList(page, logPageQuery));
+        return Result.success(operationLogService.pageOperationLog(page, logPageQuery));
     }
 
     @DeleteMapping(value = "delete")

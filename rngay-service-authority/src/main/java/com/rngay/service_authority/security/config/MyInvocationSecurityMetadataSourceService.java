@@ -1,12 +1,11 @@
 package com.rngay.service_authority.security.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rngay.common.cache.RedisUtil;
-import com.rngay.common.contants.RedisKeys;
-import com.rngay.common.util.AuthorityUtil;
 import com.rngay.common.util.StringUtils;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleMenuAllDTO;
+import com.rngay.service_authority.security.IgnoredUrlsProperties;
+import com.rngay.service_authority.security.util.SkipPathRequestMatcher;
 import com.rngay.service_authority.security.util.UrlMatcher;
 import com.rngay.service_authority.service.MenuService;
 import com.rngay.service_authority.service.RoleService;
@@ -16,14 +15,12 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /***
  *
@@ -56,7 +53,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
     @Autowired
     private MenuService menuService;
     @Autowired
-    private RedisUtil redisUtil;
+    private IgnoredUrlsProperties ignoredUrlsProperties;
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
@@ -65,7 +62,9 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         }
 
         String url = ((FilterInvocation) o).getRequestUrl();
-        if (urlMatcher.pathMatchesUrl("/login/captcha", url)) {
+        List<String> urls = ignoredUrlsProperties.getUrls();
+        SkipPathRequestMatcher requestMatcher = new SkipPathRequestMatcher(urls, url);
+        if (!requestMatcher.matches(((FilterInvocation) o).getRequest())) {
             return null;
         }
         int firstQuestionMarkIndex = url.indexOf("?");
@@ -76,7 +75,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         for (MenuDTO resUrl : resourceList) {
             String menuUrl = resUrl.getMenuUrl();
             if (StringUtils.isNoneBlank(menuUrl) && urlMatcher.pathMatchesUrl(resUrl.getMenuUrl(), url)) {
-                List<RoleMenuAllDTO> roleByUrl = roleService.loadRoleByUrl(url);
+                List<RoleMenuAllDTO> roleByUrl = roleService.listRoleByUrl(url);
                 if (roleByUrl != null && !roleByUrl.isEmpty()) {
                     List<ConfigAttribute> attributes = new ArrayList<>();
                     for (RoleMenuAllDTO roleMenu : roleByUrl) {

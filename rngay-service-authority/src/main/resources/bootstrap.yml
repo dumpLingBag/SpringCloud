@@ -3,6 +3,7 @@ ignored:
   # 不验证 url
   urls:
     - /login/captcha
+    - /system/listForMenu
     - /favicon.ico
   # 不验证 token
   pathsToSkip:

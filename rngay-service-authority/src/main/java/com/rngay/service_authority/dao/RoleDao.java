@@ -17,10 +17,10 @@ public interface RoleDao extends BaseMapper<RoleDTO> {
 
     int updateInList(@Param("roleList") RoleInListDTO roleInList);
 
-    List<RoleMenuAllDTO> loadAllRole();
+    List<RoleMenuAllDTO> listAllRole();
 
-    List<RoleDTO> loadUserRole(UaUserDTO uaUserDTO);
+    List<RoleDTO> listUserRole(UaUserDTO uaUserDTO);
 
-    List<RoleMenuAllDTO> loadRoleByUrl(@Param("url") String url);
+    List<RoleMenuAllDTO> listRoleByUrl(@Param("url") String url);
 
 }

@@ -55,34 +55,34 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
     }
 
     @Override
-    public List<String> loadUrlByOrgId(Long orgId) {
+    public List<String> listUrlByOrgId(Long orgId) {
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> orgRoles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
                     .eq("del_flag", "1").eq("org_id", orgId));
             if (orgRoles == null || orgRoles.isEmpty()) return new ArrayList<>();
-            return urlDao.loadUrlByOrgId(orgRoles);
+            return urlDao.listUrlByOrgId(orgRoles);
         }
-        return urlDao.loadUrlByList();
+        return urlDao.listUrl();
     }
 
     @Override
-    public List<String> loadUrlByUserId(Long orgId, Long userId) {
-        List<UserRoleDTO> roleId = userRoleDao.getRoleId(userId);
+    public List<String> listUrlByUserId(Long orgId, Long userId) {
+        List<UserRoleDTO> roleId = userRoleDao.listRoleId(userId);
         if (roleId == null || roleId.isEmpty()) return new ArrayList<>();
         if (orgId != null && orgId > 0) {
             List<OrgRoleDTO> orgRoles = orgRoleDao.selectList(new QueryWrapper<OrgRoleDTO>()
                     .eq("del_flag", "1").eq("org_id", orgId));
             if (orgRoles == null || orgRoles.isEmpty()) return new ArrayList<>();
-            return urlDao.loadUrlByOrgUserId(orgRoles, roleId);
+            return urlDao.listUrlByOrgUserId(orgRoles, roleId);
         }
-        return urlDao.loadUrlByUserId(roleId);
+        return urlDao.listUrlByUserId(roleId);
     }
 
     @Override
     public Page<UaUserDTO> pageUserByRoleId(UserRoleParamDTO userRole) {
         Page<UserRoleDTO> dtoPage = new Page<>(userRole.getCurrentPage(), userRole.getPageSize());
         if (userRole.getRoleId() != null) {
-            Page<UserRoleDTO> roleDTOPage = userRoleDao.loadPageUserByRoleId(dtoPage, userRole.getRoleId());
+            Page<UserRoleDTO> roleDTOPage = userRoleDao.pageUserByRoleId(dtoPage, userRole.getRoleId());
             if (roleDTOPage.getTotal() <= 0) {
                 return new Page<UaUserDTO>(userRole.getCurrentPage(), userRole.getPageSize()).setRecords(new ArrayList<>());
             }
@@ -109,7 +109,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
             Result<Page<UaUserDTO>> pageResult = pfUserService.page(uaUserPage);
             Page<UaUserDTO> data = pageResult.getData();
             if (data != null && !data.getRecords().isEmpty()) {
-                List<UserRoleDTO> roleDTOS = userRoleDao.loadRoleByUserId(data.getRecords());
+                List<UserRoleDTO> roleDTOS = userRoleDao.listRoleByUserId(data.getRecords());
                 for (UaUserDTO uaUserDTO : data.getRecords()) {
                     List<UserRoleDTO> list = new ArrayList<>();
                     for (UserRoleDTO userRoleDTO : roleDTOS) {

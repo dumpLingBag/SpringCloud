@@ -7,12 +7,12 @@
         where dr.dept_id = du.dept_id and du.user_id = #{userId} and du.del_flag = '1' and dr.del_flag = '1'
     </select>
 
-    <select id="loadPageUserByRoleId" resultType="UserRoleDTO">
+    <select id="pageUserByRoleId" resultType="UserRoleDTO">
         select uur.*, ur.name from ua_user_role uur left join ua_role ur on uur.role_id = ur.id
         where uur.role_id = #{roleId} and uur.del_flag = '1' and ur.del_flag = '1'
     </select>
 
-    <select id="loadRoleByUserId" resultType="UserRoleDTO">
+    <select id="listRoleByUserId" resultType="UserRoleDTO">
         select uur.*, ur.name from ua_user_role uur left join ua_role ur on uur.role_id = ur.id where user_id in
         <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
             #{userId.id}

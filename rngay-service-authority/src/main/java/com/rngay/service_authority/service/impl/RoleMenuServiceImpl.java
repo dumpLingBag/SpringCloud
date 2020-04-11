@@ -28,12 +28,12 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
 
     @Override
     public List<MenuDTO> list(Long orgId, FiledEnum filedEnum) {
-        return menuList(menuService.loadMenuByOrgId(orgId, filedEnum));
+        return menuList(menuService.listMenuByOrgId(orgId, filedEnum));
     }
 
     @Override
     public List<RoleMenuDTO> listMenu(Long roleId) {
-        return roleMenuDao.loadMenu(roleId);
+        return roleMenuDao.listMenu(roleId);
     }
 
     @Override

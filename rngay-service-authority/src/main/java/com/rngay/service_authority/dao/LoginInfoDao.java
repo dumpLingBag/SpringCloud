@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface LoginInfoDao extends BaseMapper<LoginInfoDTO> {
 
-    Page<LoginInfoDTO> pageList(Page<LoginInfoDTO> page, @Param("pageList") LoginInfoPageQuery loginInfoPageQuery);
+    Page<LoginInfoDTO> pageLoginInfo(Page<LoginInfoDTO> page, @Param("pageList") LoginInfoPageQuery loginInfoPageQuery);
 
     int deleteLoginInfo(@Param("array") List<Long> arrayQuery, @Param("orgId") Long orgId);
 
