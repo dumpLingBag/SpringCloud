@@ -31,13 +31,16 @@ public class FileController {
             String subStr = path.substring(path.lastIndexOf("/") + 1);
             subStr = subStr.substring(0, subStr.lastIndexOf("."));
 
-            saveFile(file, subStr, path, request);
-            return Result.success(path);
+            int i = saveFile(file, subStr, path, request);
+            if (i > 0) {
+                return Result.success(path);
+            }
+            return Result.fail(ResultCodeEnum.UPLOAD_FAIL);
         }
         return Result.fail(ResultCodeEnum.UPLOAD_FAIL);
     }
 
-    protected int saveFile(MultipartFile file, String subStr, String path, HttpServletRequest request) {
+    private int saveFile(MultipartFile file, String subStr, String path, HttpServletRequest request) {
         UserFileDTO userFile = new UserFileDTO();
         userFile.setFileId(subStr);
         userFile.setContentType(file.getContentType());

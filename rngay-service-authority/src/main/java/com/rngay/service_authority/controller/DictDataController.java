@@ -2,6 +2,7 @@ package com.rngay.service_authority.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.StringUtils;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.DictDataDTO;
@@ -26,7 +27,7 @@ public class DictDataController {
         if (StringUtils.isNotBlank(dictDataQuery.getDictType())) {
             wrapper.eq("dict_type", dictDataQuery.getDictType());
         } else {
-            return Result.failMsg("查询字典数据错误");
+            return Result.failMsg(MessageUtils.message("query.dict.fail"));
         }
         if (StringUtils.isNotBlank(dictDataQuery.getDictDataLabel())) {
             wrapper.eq("dict_label", dictDataQuery.getDictDataLabel());
@@ -62,7 +63,7 @@ public class DictDataController {
             dictDataDTO.setDelFlag(0);
             return Result.success(dictDataService.updateById(dictDataDTO));
         }
-        return Result.failMsg("不存在该数据字典");
+        return Result.failMsg(MessageUtils.message("not.dict.data"));
     }
 
 }

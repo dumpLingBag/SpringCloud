@@ -1,6 +1,7 @@
 package com.rngay.service_authority.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.StringUtils;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.DictTypeDTO;
@@ -34,7 +35,7 @@ public class DictTypeController {
     public Result<Boolean> insert(@Valid @RequestBody DictTypeDTO dictTypeDTO) {
         DictTypeDTO dictType = dictTypeService.getDictType(dictTypeDTO.getDictType());
         if (dictType != null) {
-            return Result.fail("存在相同字典类型");
+            return Result.fail(MessageUtils.message("identical.dict.type"));
         }
         return Result.success(dictTypeService.save(dictTypeDTO));
     }
@@ -54,7 +55,7 @@ public class DictTypeController {
         if (StringUtils.isNotBlank(dictType)) {
             return Result.success(dictTypeService.getDictType(dictType));
         }
-        return Result.failMsg("查询失败");
+        return Result.failMsg(MessageUtils.message("lack.dict.type"));
     }
 
 }
