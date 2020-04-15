@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.rngay.service_authority.dao.UserRoleDao">
+<mapper namespace="com.rngay.authority.dao.UserRoleDao">
     <select id="getRoleId" resultType="UserRoleDTO">
         select role_id from ua_user_role as ur where ur.user_id = #{userId} and ur.del_flag = '1'
         union select dr.role_id from ua_dept_user as du, ua_dept_role as dr

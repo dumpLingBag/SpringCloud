@@ -13,8 +13,9 @@ public class MapUtil {
     **/
     public static Map<String, Object> entityToMap(Object obj){
         Map<String, Object> reMap = new HashMap<>();
-        if (obj == null)
+        if (obj == null) {
             return null;
+        }
 
         Field[] fields = obj.getClass().getDeclaredFields();
         try {

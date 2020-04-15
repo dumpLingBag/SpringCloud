@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients
 @SpringCloudApplication
-@MapperScan("com.rngay.service_user.dao")
+@MapperScan("com.rngay.user.dao")
 public class UserApplication {
 
     public static void main(String[] args) {

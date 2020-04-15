@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.rngay.service_authority.dao.RoleMenuDao">
+<mapper namespace="com.rngay.authority.dao.RoleMenuDao">
     <select id="listMenu" resultType="RoleMenuDTO">
         select urm.*,um.menu_type from ua_role_menu urm left join ua_menu um on urm.menu_id = um.id and um.menu_type != '0'
         where urm.role_id = #{roleId} and urm.del_flag = '1' and um.del_flag = '1'

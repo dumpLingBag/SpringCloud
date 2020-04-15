@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.rngay.service_authority.dao.MenuDao">
+<mapper namespace="com.rngay.authority.dao.MenuDao">
     <update id="updateSort" parameterType="java.util.List">
         update ua_menu set sort = sort - 1 where id in
         <foreach collection="sorts" item="sort" index="index" open="(" close=")" separator=",">

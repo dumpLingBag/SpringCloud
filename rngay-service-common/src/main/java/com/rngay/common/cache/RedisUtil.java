@@ -1,6 +1,5 @@
 package com.rngay.common.cache;
 
-import com.rngay.common.enums.FiledEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -176,9 +175,9 @@ public class RedisUtil {
         redisTemplate.opsForHash().put(key, filed, value);
     }
 
-    public void zHashPut(String key, FiledEnum filedEnum, Object value) {
+    /*public void zHashPut(String key, FiledEnum filedEnum, Object value) {
         zHashPut(key, filedEnum.getMsg(), value);
-    }
+    }*/
 
     public Long zHashDel(String key, Object... value) {
         return redisTemplate.opsForHash().delete(key, value);
@@ -188,9 +187,9 @@ public class RedisUtil {
         return redisTemplate.opsForHash().get(key, filed);
     }
 
-    public Object getHashVal(String key, FiledEnum filedEnum) {
+    /*public Object getHashVal(String key, FiledEnum filedEnum) {
         return getHashVal(key, filedEnum.getMsg());
-    }
+    }*/
 
     public Long getExpire(String key) {
         return redisTemplate.getExpire(key);

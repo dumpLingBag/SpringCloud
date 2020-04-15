@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients
 @SpringCloudApplication
-@MapperScan("com.rngay.service_authority.dao")
+@MapperScan("com.rngay.authority.dao")
 public class AuthorityApplication {
 
     public static void main(String[] args) {
