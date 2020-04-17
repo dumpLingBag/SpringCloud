@@ -9,6 +9,7 @@ import com.rngay.feign.authority.query.UserRoleClearQuery;
 import com.rngay.feign.authority.query.UserRoleUpdateQuery;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.dto.UaUserPageListDTO;
+import com.rngay.feign.user.query.PageUserQuery;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.authority.dao.OrgRoleDao;
 import com.rngay.authority.dao.UrlDao;
@@ -110,9 +111,9 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRoleDTO> i
             }
             return new Page<UaUserDTO>(userRole.getCurrentPage(), userRole.getPageSize(), roleDTOPage.getTotal()).setRecords(result.getData());
         } else {
-            UaUserPageListDTO uaUserPage = new UaUserPageListDTO();
-            BeanUtils.copyProperties(userRole, uaUserPage);
-            Result<Page<UaUserDTO>> pageResult = pfUserService.page(uaUserPage);
+            PageUserQuery userQuery = new PageUserQuery();
+            BeanUtils.copyProperties(userRole, userQuery);
+            Result<Page<UaUserDTO>> pageResult = pfUserService.page(userQuery);
             Page<UaUserDTO> data = pageResult.getData();
             if (data != null && !data.getRecords().isEmpty()) {
                 List<UserRoleDTO> roleDTOS = userRoleDao.listRoleByUserId(data.getRecords());

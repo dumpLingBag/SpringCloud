@@ -3,7 +3,10 @@ package com.rngay.user.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.UserRoleDTO;
+import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.user.dto.*;
+import com.rngay.feign.user.query.PageUserQuery;
+import com.rngay.feign.user.query.UserQuery;
 import com.rngay.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -12,12 +15,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 用户请求类
+ * @Author: pengcheng
+ * @Date: 2020/4/15
+ */
 @RestController
 @RequestMapping(value = "user")
 public class PlatformUserController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping(value = "list")
+    public Result<List<UaUserDTO>> list(@RequestBody UserQuery userQuery) {
+        return Result.success(userService.list(userQuery));
+    }
 
     @GetMapping(value = "getUser")
     public Result<UaUserDTO> getUser(@RequestParam("username") String account, @RequestParam("password") String password) {
@@ -53,8 +66,8 @@ public class PlatformUserController {
     }
 
     @PostMapping(value = "page")
-    public Result<Page<UaUserDTO>> page(@RequestBody UaUserPageListDTO pageListDTO) {
-        return Result.success(userService.page(pageListDTO));
+    public Result<Page<UaUserDTO>> page(@RequestBody PageUserQuery userQuery) {
+        return Result.success(userService.page(userQuery));
     }
 
     @PutMapping(value = "reset/{id}")

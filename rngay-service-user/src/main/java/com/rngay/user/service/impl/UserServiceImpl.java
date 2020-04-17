@@ -4,10 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.util.CryptUtil;
 import com.rngay.common.util.RandomPassUtil;
+import com.rngay.common.util.StringUtils;
 import com.rngay.feign.authority.UserRoleDTO;
+import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.dto.UaUserPageListDTO;
 import com.rngay.feign.user.dto.UpdatePassword;
+import com.rngay.feign.user.query.PageUserQuery;
+import com.rngay.feign.user.query.UserQuery;
 import com.rngay.user.dao.UserDao;
 import com.rngay.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,21 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Override
+    public List<UaUserDTO> list(UserQuery userQuery) {
+        QueryWrapper<UaUserDTO> wrapper = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(userQuery.getNickname())) {
+            wrapper.like("nickname", userQuery.getNickname());
+        }
+        if (StringUtils.isNotBlank(userQuery.getUsername())) {
+            wrapper.like("username", userQuery.getUsername());
+        }
+        if (StringUtils.isNotNull(userQuery.getEnabled())) {
+            wrapper.eq("enabled", userQuery.getEnabled());
+        }
+        return userDao.selectList(wrapper);
+    }
 
     @Override
     public UaUserDTO getUserById(Long id) {
@@ -62,9 +81,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UaUserDTO> page(UaUserPageListDTO pageListDTO) {
-        Page<UaUserDTO> page = new Page<>(pageListDTO.getCurrentPage(), pageListDTO.getPageSize());
-        return userDao.page(page, pageListDTO);
+    public Page<UaUserDTO> page(PageUserQuery userQuery) {
+        Page<UaUserDTO> page = new Page<>(userQuery.getCurrentPage(), userQuery.getPageSize());
+        return userDao.page(page, userQuery);
     }
 
     @Override

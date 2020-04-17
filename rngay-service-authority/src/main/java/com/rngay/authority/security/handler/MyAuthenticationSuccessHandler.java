@@ -3,6 +3,7 @@ package com.rngay.authority.security.handler;
 import com.rngay.authority.constant.Constant;
 import com.rngay.common.config.JwtConfig;
 import com.rngay.authority.enums.ResultCodeEnum;
+import com.rngay.common.contants.ResultCode;
 import com.rngay.common.manager.AsyncManager;
 import com.rngay.authority.manger.AsyncFactory;
 import com.rngay.common.util.JwtUtil;
@@ -75,10 +76,10 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
             Map<String, Object> result = new HashMap<>();
             result.put("userInfo", map);
             result.put("access_token", accessToken);
-            AsyncManager.me().execute(AsyncFactory.recordLogin(userInfo.getUsername(), userInfo.getOrgId(), Result.CODE_SUCCESS, MessageUtils.message("user.login.success")));
-            ResultUtil.writeJson(response, Result.CODE_SUCCESS, MessageUtils.message("user.login.success"), result);
+            AsyncManager.me().execute(AsyncFactory.recordLogin(userInfo.getUsername(), userInfo.getOrgId(), ResultCode.SUCCESS, MessageUtils.message("user.login.success")));
+            ResultUtil.writeJson(response, ResultCode.SUCCESS, MessageUtils.message("user.login.success"), result);
         }
-        ResultUtil.writeJson(response, Result.CODE_FAIL_MSG, MessageUtils.message("user.login.fail"));
+        ResultUtil.writeJson(response, ResultCode.FAIL_MSG, MessageUtils.message("user.login.fail"));
     }
 
     /**

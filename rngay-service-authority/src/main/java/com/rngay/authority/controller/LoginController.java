@@ -1,6 +1,7 @@
 package com.rngay.authority.controller;
 
 import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.util.MessageUtils;
 import com.rngay.common.vo.Result;
 import com.wf.captcha.SpecCaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class LoginController {
             map.put("code", captcha.toBase64());
             return Result.success(map);
         } catch (Exception e) {
-            return Result.failMsg("获取验证码失败");
+            return Result.failMsg(MessageUtils.message("user.captcha.fail"));
         }
     }
 

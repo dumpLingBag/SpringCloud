@@ -27,7 +27,8 @@ public class MyLocalResovel implements LocaleResolver {
 
     }
 
-    @Bean//8.把该配置文件配置成容器的Bean,就可以起作用。
+    // 8.把该配置文件配置成容器的Bean,就可以起作用
+    @Bean
     public LocaleResolver localeResolver(){
         return new MyLocalResovel();
     }

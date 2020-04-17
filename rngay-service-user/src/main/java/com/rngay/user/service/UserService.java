@@ -2,13 +2,23 @@ package com.rngay.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.feign.authority.UserRoleDTO;
+import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.user.dto.UaUserDTO;
 import com.rngay.feign.user.dto.UaUserPageListDTO;
 import com.rngay.feign.user.dto.UpdatePassword;
+import com.rngay.feign.user.query.PageUserQuery;
+import com.rngay.feign.user.query.UserQuery;
 
 import java.util.List;
 
 public interface UserService {
+
+    /**
+     * 查询用户列表
+     * @Author: pengcheng
+     * @Date: 2020/4/15
+     */
+    List<UaUserDTO> list(UserQuery userQuery);
 
     /**
      * 根据用户id查询用户数据
@@ -57,7 +67,7 @@ public interface UserService {
      * @Author: pengcheng
      * @Date: 2018/12/27
      */
-    Page<UaUserDTO> page(UaUserPageListDTO pageListDTO);
+    Page<UaUserDTO> page(PageUserQuery userQuery);
 
     /**
      * 重置用户密码

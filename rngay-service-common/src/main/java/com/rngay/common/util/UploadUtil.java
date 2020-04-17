@@ -3,8 +3,9 @@ package com.rngay.common.util;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.rngay.common.config.RnGayOSSConfig;
+import com.rngay.common.contants.ResultCode;
+import com.rngay.common.contants.Symbol;
 import com.rngay.common.exception.BaseException;
-import com.rngay.common.vo.Result;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
+/**
+ * 文件上传工具类
+ * @Author: pengcheng
+ * @Date: 2020/4/15
+ */
 @Component
 public class UploadUtil {
 
@@ -19,20 +25,29 @@ public class UploadUtil {
     private RnGayOSSConfig ossConfig;
 
     /**
+     * 不传上传大小限制默认为 2M
+     * @Author: pengcheng
+     * @Date: 2020/4/15
+     */
+    public String ossUpload(String fileName, MultipartFile uploadFile) {
+        return ossUpload(fileName, uploadFile, 2 * 1024 *  1024);
+    }
+
+    /**
      * oss 文件上传
      * @Author pengcheng
      * @Date 2019/5/30
      **/
-    public String ossUpload(String fileName, MultipartFile uploadFile) {
-        byteLength(uploadFile);
-        if (StringUtils.isNoneBlank(fileName) && fileName.lastIndexOf(".") == -1) {
+    public String ossUpload(String fileName, MultipartFile uploadFile, int uploadSize) {
+        byteLength(uploadFile, uploadSize);
+        if (StringUtils.isNoneBlank(fileName) && fileName.lastIndexOf(Symbol.POINT) == -1) {
             return null;
         }
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(ossConfig.getEndpoint(), ossConfig.getAccessKeyId(), ossConfig.getAccessKeySecret());
         try {
             String md5 = BinaryUtil.encodeMD5(input2byte(uploadFile.getInputStream()));
-            String imgType = fileName.substring(fileName.lastIndexOf("."));
+            String imgType = fileName.substring(fileName.lastIndexOf(Symbol.POINT));
             DateTime dateTime = new DateTime();
             String filePath = "images/" + dateTime.toString("yyyy") + "/" + dateTime.toString("MM") + "/" +
                     dateTime.toString("dd") + "/" + md5 + imgType;
@@ -80,14 +95,14 @@ public class UploadUtil {
         return swapStream.toByteArray();
     }
 
-    private void byteLength(MultipartFile uploadFile) {
-        if (uploadFile.getSize() > 10 * 1024 * 1024) {
-            throw new BaseException(Result.CODE_FAIL, "文件大小不能超过10M");
+    private void byteLength(MultipartFile uploadFile, int uploadSize) {
+        if (uploadFile.getSize() > uploadSize) {
+            throw new BaseException(ResultCode.FAIL, MessageUtils.message("upload.exceed.maxSize", uploadSize / 1024));
         }
         String type = uploadFile.getContentType();
 
         if (!"image/jpeg".equals(type) && !"image/png".equals(type)) {
-            throw new BaseException(Result.CODE_FAIL, "文件格式不正确");
+            throw new BaseException(ResultCode.FAIL, MessageUtils.message("upload.file.format"));
         }
     }
 

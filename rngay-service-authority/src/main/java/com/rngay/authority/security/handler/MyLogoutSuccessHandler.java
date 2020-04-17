@@ -1,5 +1,6 @@
 package com.rngay.authority.security.handler;
 
+import com.rngay.common.contants.ResultCode;
 import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.ResultUtil;
 import com.rngay.common.vo.Result;
@@ -40,6 +41,6 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
         if (userInfo != null) {
             systemService.deleteToken(userInfo.getId());
         }
-        ResultUtil.writeJson(response, Result.CODE_SUCCESS, MessageUtils.message("user.logout.success"));
+        ResultUtil.writeJson(response, ResultCode.SUCCESS, MessageUtils.message("user.logout.success"));
     }
 }

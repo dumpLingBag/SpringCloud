@@ -7,6 +7,11 @@ import com.rngay.authority.dao.MenuDao;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ * 系统启动时检查有无菜单管理，没有则添加
+ * @Author: pengcheng
+ * @Date: 2020/4/15
+ */
 @Component
 public class MenuStartRunner implements CommandLineRunner {
     @Override

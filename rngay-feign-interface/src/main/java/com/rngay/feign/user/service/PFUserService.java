@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.RoleDTO;
 import com.rngay.feign.authority.UserRoleDTO;
+import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.fallback.PFUserServiceFallback;
+import com.rngay.feign.user.query.PageUserQuery;
+import com.rngay.feign.user.query.UserQuery;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,9 @@ import java.util.List;
 
 @FeignClient(value = "service-user", fallbackFactory = PFUserServiceFallback.class)
 public interface PFUserService {
+
+    @PostMapping(value = "/user/list")
+    Result<List<UaUserDTO>> list(@RequestBody UserQuery userQuery);
 
     /**
      * 通过账号密码查询用户信息
@@ -84,7 +90,7 @@ public interface PFUserService {
      * @Date: 2018/12/27
      */
     @PostMapping(value = "/user/page")
-    Result<Page<UaUserDTO>> page(@RequestBody UaUserPageListDTO pageListDTO);
+    Result<Page<UaUserDTO>> page(@RequestBody PageUserQuery userQuery);
 
     /**
      * 重置用户密码

@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.aspect.annotation.Log;
 import com.rngay.common.aspect.annotation.RepeatSubmit;
 import com.rngay.common.aspect.enums.BusinessType;
-import com.rngay.common.util.ResMsg;
-import com.rngay.common.util.StringUtils;
-import com.rngay.common.util.UploadUtil;
+import com.rngay.common.util.*;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.vo.UserInfoVo;
+import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.user.dto.*;
+import com.rngay.feign.user.query.PageUserQuery;
+import com.rngay.feign.user.query.UserQuery;
 import com.rngay.feign.user.service.PFUserService;
 import com.rngay.authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,15 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
+/**
+ * 用户请求类
+ * @Author: pengcheng
+ * @Date: 2020/4/15
+ */
 @RestController
 @RequestMapping(value = "user")
 public class UserController {
@@ -57,8 +65,8 @@ public class UserController {
     }
 
     @PostMapping(value = "page")
-    public Result<Page<UaUserDTO>> page(@RequestBody UaUserPageListDTO pageListDTO) {
-        return pfUserService.page(pageListDTO);
+    public Result<Page<UaUserDTO>> page(@RequestBody PageUserQuery userQuery) {
+        return pfUserService.page(userQuery);
     }
 
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
@@ -171,6 +179,20 @@ public class UserController {
         infoVo.setUaUserDTO(user.getData());
 
         return Result.success(infoVo);
+    }
+
+    @PostMapping(value = "export")
+    public void exportUser(@RequestBody UserQuery userQuery, HttpServletResponse response) {
+        List<UaUserDTO> list = pfUserService.list(userQuery).getData();
+        if (list != null && !list.isEmpty()) {
+            ExcelUtil.exportExcel(list, UaUserDTO.class, MessageUtils.message("user.list") + ".xls", response);
+        }
+    }
+
+    @PostMapping(value = "importUser")
+    public Result<List<UaUserDTO>> importUser(@RequestParam("file") MultipartFile file) {
+        List<UaUserDTO> userList = ExcelUtil.importExcel(file, UaUserDTO.class);
+        return Result.success(userList);
     }
 
 }

@@ -69,7 +69,7 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
      * 判断是否是开放的访问地址
      */
     private boolean isExcludeUrl(String actionName) {
-        if (actionName.equals("/favicon.ico")) {
+        if ("/favicon.ico".equals(actionName)) {
             return true;
         }
         if (actionName.contains("/login")) {

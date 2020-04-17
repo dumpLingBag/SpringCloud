@@ -1,5 +1,6 @@
 package com.rngay.feign.user.dto;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -18,9 +19,11 @@ import java.util.List;
 @TableName(value = "ua_user")
 public class UaUserDTO extends BaseDTO {
 
+    @Excel(name = "用户id")
     @TableId(type = IdType.ID_WORKER)
     private Long id;
 
+    @Excel(name = "用户名")
     @NotBlank(message = "用户名不能为空")
     @Pattern(regexp = "^[A-Za-z0-9_]{3,16}$", message = "用户名只能为字母，数字，下划线长度为3-16个字符")
     private String username;
@@ -28,25 +31,33 @@ public class UaUserDTO extends BaseDTO {
     @NotBlank(message = "密码不能为空")
     private String password;
 
+    @Excel(name = "用户密码")
     @NotBlank(message = "用户昵称不能为空")
     @Length(min = 2, max = 16, message = "用户昵称为3-16个字符")
     private String nickname;
 
+    @Excel(name = "机构id")
     private Long orgId;
 
+    @Excel(name = "头像")
     private String avatar;
 
+    @Excel(name = "邮箱")
     @Email(message = "邮箱格式不对")
     @NotBlank(message = "邮箱不能为空")
     private String email;
 
+    @Excel(name = "手机号")
     @NotBlank(message = "手机号码不能为空")
     private String mobile;
 
+    @Excel(name = "用户状态", replace = {"启用_1", "禁用_0"})
     private Integer enabled;
 
+    @Excel(name = "性别", replace = {"男_0", "女_1"})
     private Integer sex;
 
+    @Excel(name = "父级id")
     private Long parentId;
 
     @TableField(exist = false)

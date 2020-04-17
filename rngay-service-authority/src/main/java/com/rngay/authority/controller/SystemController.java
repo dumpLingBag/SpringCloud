@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
+/**
+ * 系统功能请求类
+ * @Author: pengcheng
+ * @Date: 2020/4/15
+ */
 @RestController
 @RequestMapping(value = "system")
 public class SystemController {

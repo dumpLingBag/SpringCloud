@@ -1,16 +1,15 @@
 package com.rngay.common.vo;
 
+import com.rngay.common.contants.ResultCode;
+
 import java.io.Serializable;
 
+/**
+ * 返回结果封装
+ * @Author: pengcheng
+ * @Date: 2020/4/15
+ */
 public class Result<T> implements Serializable {
-
-    public static final int CODE_NOT_LOGIN = -1;
-    public static final int CODE_SUCCESS = 0;
-    public static final int CODE_FAIL = 1;
-    public static final int CODE_FAIL_MSG = 2;
-
-    public static final String MSG_SUCCESS = "success";
-    public static final String MSG_FAIL = "fail";
 
     private int code;
     private T data;
@@ -46,6 +45,11 @@ public class Result<T> implements Serializable {
         this.msg = msg;
     }
 
+    private Result(int code, T data) {
+        this.code = code;
+        this.data = data;
+    }
+
     private Result(int code, T data, String msg) {
         this.code = code;
         this.data = data;
@@ -53,11 +57,11 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> fail() {
-        return new Result<>(CODE_FAIL, MSG_FAIL);
+        return new Result<>(ResultCode.FAIL);
     }
 
     public static <T> Result<T> fail(String msg) {
-        return new Result<>(CODE_FAIL, msg);
+        return new Result<>(ResultCode.FAIL, msg);
     }
 
     public static <T> Result<T> fail(int code, String msg) {
@@ -65,18 +69,18 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> failMsg(String msg) {
-        return new Result<>(CODE_FAIL_MSG, msg);
+        return new Result<>(ResultCode.FAIL_MSG, msg);
     }
 
     public static <T> Result<T> success() {
-        return new Result<>(CODE_SUCCESS, MSG_SUCCESS);
+        return new Result<>(ResultCode.SUCCESS);
     }
 
     public static <T> Result<T> success(T data) {
-        return new Result<>(CODE_SUCCESS, data, MSG_SUCCESS);
+        return new Result<>(ResultCode.SUCCESS, data);
     }
 
     public static <T> Result<T> success(T data, String msg) {
-        return new Result<>(CODE_SUCCESS, data, msg);
+        return new Result<>(ResultCode.SUCCESS, data, msg);
     }
 }

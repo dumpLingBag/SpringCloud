@@ -26,11 +26,15 @@ public class ExcelUtil {
     public static void exportExcel(List<?> list, String title, String sheetName, Class<?> pojoClass, String fileName, boolean isCreateHeader, HttpServletResponse response) {
         ExportParams exportParams = new ExportParams(title, sheetName);
         exportParams.setCreateHeadRows(isCreateHeader);
-
+        defaultExport(list, pojoClass, fileName, response, exportParams);
     }
 
     public static void exportExcel(List<?> list, String title, String sheetName, Class<?> pojoClass,String fileName, HttpServletResponse response){
         defaultExport(list, pojoClass, fileName, response, new ExportParams(title, sheetName));
+    }
+
+    public static void exportExcel(List<?> list, Class<?> pojoClass, String fileName, HttpServletResponse response) {
+        defaultExport(list, pojoClass, fileName, response, new ExportParams());
     }
 
     public static void exportExcel(List<Map<String, Object>> list, String fileName, HttpServletResponse response){
@@ -38,7 +42,14 @@ public class ExcelUtil {
     }
 
     private static void defaultExport(List<?> list, Class<?> pojoClass, String fileName, HttpServletResponse response, ExportParams exportParams) {
-        Workbook workbook = ExcelExportUtil.exportExcel(exportParams,pojoClass,list);
+        Workbook workbook = ExcelExportUtil.exportExcel(exportParams, pojoClass, list);
+        if (workbook != null) {
+            downLoadExcel(fileName, response, workbook);
+        }
+    }
+
+    private static void defaultExport(List<Map<String, Object>> list, String fileName, HttpServletResponse response) {
+        Workbook workbook = ExcelExportUtil.exportExcel(list, ExcelType.HSSF);
         if (workbook != null) {
             downLoadExcel(fileName, response, workbook);
         }
@@ -50,16 +61,10 @@ public class ExcelUtil {
             response.setHeader("content-Type", "application/vnd.ms-excel");
             response.setHeader("Content-Disposition",
                     "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            response.addHeader("Access-Control-Expose-Headers", "Content-Disposition");
             workbook.write(response.getOutputStream());
         } catch (IOException e) {
             throw new BaseException(500, e.getMessage());
-        }
-    }
-
-    private static void defaultExport(List<Map<String, Object>> list, String fileName, HttpServletResponse response) {
-        Workbook workbook = ExcelExportUtil.exportExcel(list, ExcelType.HSSF);
-        if (workbook != null) {
-            downLoadExcel(fileName, response, workbook);
         }
     }
 
@@ -70,6 +75,17 @@ public class ExcelUtil {
         ImportParams params = new ImportParams();
         params.setTitleRows(titleRows);
         params.setHeadRows(headerRows);
+        return list(file, pojoClass, params);
+    }
+
+    public static <T> List<T> importExcel(MultipartFile file, Class<T> pojoClass) {
+        if (file == null){
+            return null;
+        }
+        return list(file, pojoClass, new ImportParams());
+    }
+
+    private static <T> List<T> list(MultipartFile file, Class<T> pojoClass, ImportParams params) {
         List<T> list;
         try {
             list = ExcelImportUtil.importExcel(file.getInputStream(), pojoClass, params);

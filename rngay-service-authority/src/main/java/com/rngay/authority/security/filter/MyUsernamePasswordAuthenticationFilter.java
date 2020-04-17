@@ -3,6 +3,7 @@ package com.rngay.authority.security.filter;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
 import com.rngay.authority.enums.ResultCodeEnum;
+import com.rngay.common.contants.ResultCode;
 import com.rngay.common.manager.AsyncManager;
 import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.ip.IPUtil;
@@ -59,7 +60,7 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
         String account = request.getParameter("account");
         // 验证账号密码是否出错次数过多
         if (verificationFailCount(request) >= 5) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.password.retry.limit.exceed", 5)));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.password.retry.limit.exceed", 5)));
             ResultUtil.writeJson(response, 2, MessageUtils.message("user.password.retry.limit.exceed", 5));
             return null;
         }
@@ -72,12 +73,12 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
                 String text = (String) redisUtil.get(codeKey);
                 if (StringUtils.isNotBlank(text)) {
                     if (!text.equalsIgnoreCase(code)) {
-                        AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.captcha.error")));
+                        AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.captcha.error")));
                         ResultUtil.writeJson(response, 2, MessageUtils.message("user.captcha.error"));
                         return null;
                     }
                 } else {
-                    AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.captcha.expire")));
+                    AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.captcha.expire")));
                     ResultUtil.writeJson(response, 2, MessageUtils.message("user.captcha.expire"));
                     return null;
                 }

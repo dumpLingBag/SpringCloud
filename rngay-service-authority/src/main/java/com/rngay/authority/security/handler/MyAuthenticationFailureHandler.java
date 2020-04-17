@@ -4,6 +4,7 @@ import com.rngay.authority.model.Message;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
 import com.rngay.authority.enums.ResultCodeEnum;
+import com.rngay.common.contants.ResultCode;
 import com.rngay.common.manager.AsyncManager;
 import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.ip.IPUtil;
@@ -43,22 +44,22 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
         String account = request.getParameter("account");
         //用户登录时身份认证未通过
         if (e instanceof LockedException) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.blocked")));
-            ResultUtil.writeJson(response,Result.CODE_FAIL_MSG, MessageUtils.message("user.blocked"));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.blocked")));
+            ResultUtil.writeJson(response, ResultCode.FAIL_MSG, MessageUtils.message("user.blocked"));
         } else if (e instanceof CredentialsExpiredException) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.password.expire")));
-            ResultUtil.writeJson(response,Result.CODE_FAIL_MSG, MessageUtils.message("user.password.expire"));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.password.expire")));
+            ResultUtil.writeJson(response, ResultCode.FAIL_MSG, MessageUtils.message("user.password.expire"));
         } else if (e instanceof AccountExpiredException) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.account.expire")));
-            ResultUtil.writeJson(response, Result.CODE_FAIL_MSG, MessageUtils.message("user.account.expire"));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.account.expire")));
+            ResultUtil.writeJson(response, ResultCode.FAIL_MSG, MessageUtils.message("user.account.expire"));
         } else if (e instanceof DisabledException) {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.account.enabled")));
-            ResultUtil.writeJson(response, Result.CODE_FAIL_MSG, MessageUtils.message("user.account.enabled"));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.account.enabled")));
+            ResultUtil.writeJson(response, ResultCode.FAIL_MSG, MessageUtils.message("user.account.enabled"));
         } else if (e instanceof BadCredentialsException) {
             failCount(request, response, account);
         } else {
-            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.login.fail")));
-            ResultUtil.writeJson(response, Result.CODE_FAIL_MSG, MessageUtils.message("user.login.fail"));
+            AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.login.fail")));
+            ResultUtil.writeJson(response, ResultCode.FAIL_MSG, MessageUtils.message("user.login.fail"));
         }
     }
 
@@ -77,8 +78,8 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
             int expire = 30 * 60;
             redisUtil.set(RedisKeys.getFailCount(key), i + 1, expire);
         }
-        AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, Result.CODE_FAIL, MessageUtils.message("user.password.not.match")));
-        ResultUtil.writeJson(response, Result.CODE_FAIL_MSG, MessageUtils.message("user.password.not.match"));
+        AsyncManager.me().execute(AsyncFactory.recordLogin(account, 0L, ResultCode.FAIL, MessageUtils.message("user.password.not.match")));
+        ResultUtil.writeJson(response, ResultCode.FAIL_MSG, MessageUtils.message("user.password.not.match"));
     }
 
 }

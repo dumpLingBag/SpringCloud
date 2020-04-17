@@ -4,15 +4,15 @@
     <select id="page" resultType="UAUserDTO">
         select * from ua_user
         <where>
-            del_flag = ${pageList.delFlag}
-            <if test="pageList.enabled != null">
-                and enabled = #{pageList.enabled}
+            del_flag = ${query.delFlag}
+            <if test="query.enabled != null">
+                and enabled = #{query.enabled}
             </if>
-            <if test="pageList.nickName != null and pageList.nickName != ''">
-                and nick_name like "%"#{pageList.nickName}"%"
+            <if test="query.nickName != null and query.nickName != ''">
+                and nick_name like "%"#{query.nickName}"%"
             </if>
-            <if test="pageList.username != null and pageList.username != ''">
-                and username like "%"#{pageList.username}"%"
+            <if test="query.username != null and query.username != ''">
+                and username like "%"#{query.username}"%"
             </if>
         </where>
     </select>

@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.RoleDTO;
 import com.rngay.feign.authority.UserRoleDTO;
+import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.user.dto.*;
+import com.rngay.feign.user.query.PageUserQuery;
+import com.rngay.feign.user.query.UserQuery;
 import com.rngay.feign.user.service.PFUserService;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,11 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
     public PFUserService create(Throwable throwable) {
         String result = "用户服务异常，请稍后再试";
         return new PFUserService() {
+            @Override
+            public Result<List<UaUserDTO>> list(UserQuery userQuery) {
+                return Result.failMsg(result);
+            }
+
             @Override
             public Result<UaUserDTO> getUser(String account, String password) {
                 return Result.failMsg(result);
@@ -53,7 +61,7 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             }
 
             @Override
-            public Result<Page<UaUserDTO>> page(UaUserPageListDTO pageListDTO) {
+            public Result<Page<UaUserDTO>> page(PageUserQuery userQuery) {
                 return Result.failMsg(result);
             }
 
