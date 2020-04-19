@@ -2,9 +2,8 @@ package com.rngay.feign.user.fallback;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.vo.Result;
-import com.rngay.feign.authority.RoleDTO;
 import com.rngay.feign.authority.UserRoleDTO;
-import com.rngay.feign.dto.PageQueryDTO;
+import com.rngay.feign.exection.RestException;
 import com.rngay.feign.user.dto.*;
 import com.rngay.feign.user.query.PageUserQuery;
 import com.rngay.feign.user.query.UserQuery;
@@ -18,7 +17,7 @@ import java.util.List;
 public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
     @Override
     public PFUserService create(Throwable throwable) {
-        String result = "用户服务异常，请稍后再试";
+        String result = RestException.getMessage(throwable);
         return new PFUserService() {
             @Override
             public Result<List<UaUserDTO>> list(UserQuery userQuery) {
