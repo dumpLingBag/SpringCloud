@@ -76,7 +76,6 @@ public class MenuUtil {
         if (field.equals(Constant.MENU_TYPE_VO)) {
             MetaVo metaVo = new MetaVo();
             metaVo.setKeepAlive(menu.getKeepAlive());
-            metaVo.setAuth(menu.getAuth());
             metaVo.setTitle(menu.getName());
             menuDto.setMeta(metaVo);
         }

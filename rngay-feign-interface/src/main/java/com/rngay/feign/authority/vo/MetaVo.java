@@ -2,17 +2,17 @@ package com.rngay.feign.authority.vo;
 
 public class MetaVo {
 
-    private Integer keepAlive;
+    private String keepAlive;
 
     private Integer auth;
 
     private String title;
 
-    public Integer getKeepAlive() {
+    public String getKeepAlive() {
         return keepAlive;
     }
 
-    public void setKeepAlive(Integer keepAlive) {
+    public void setKeepAlive(String keepAlive) {
         this.keepAlive = keepAlive;
     }
 

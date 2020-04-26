@@ -19,9 +19,8 @@ public class UAMenu extends BaseEntity {
 
     private String component;
 
-    private Integer keepAlive = 0;
-
-    private Integer auth = 1;
+    @Column(columnDefinition = "char(1) default 0")
+    private String keepAlive;
 
     private Integer sort = 0;
 
@@ -76,20 +75,12 @@ public class UAMenu extends BaseEntity {
         this.component = component;
     }
 
-    public Integer getKeepAlive() {
+    public String getKeepAlive() {
         return keepAlive;
     }
 
-    public void setKeepAlive(Integer keepAlive) {
+    public void setKeepAlive(String keepAlive) {
         this.keepAlive = keepAlive;
-    }
-
-    public Integer getAuth() {
-        return auth;
-    }
-
-    public void setAuth(Integer auth) {
-        this.auth = auth;
     }
 
     public Integer getSort() {

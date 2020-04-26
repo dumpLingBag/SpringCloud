@@ -45,7 +45,6 @@ import java.util.Map;
 public class MyInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
 
     // 存放资源配置对象
-    private Map<String, Collection<ConfigAttribute>> resourceMap = null;
     private List<MenuDTO> resourceList = null;
     @Autowired
     private UrlMatcher urlMatcher;

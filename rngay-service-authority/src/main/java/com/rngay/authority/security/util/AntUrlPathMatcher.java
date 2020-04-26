@@ -4,14 +4,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
+/**
+ * 路径通配符匹配
+ * @Author: pengcheng
+ * @Date: 2020/4/22
+ */
 @Component
 public class AntUrlPathMatcher implements UrlMatcher {
 
     private boolean requiresLowerCaseUrl;
+
     private PathMatcher pathMatcher;
+
     public AntUrlPathMatcher()   {
         this(true);
     }
+
     public AntUrlPathMatcher(boolean requiresLowerCaseUrl) {
         this.requiresLowerCaseUrl = true;
         this.pathMatcher = new AntPathMatcher();

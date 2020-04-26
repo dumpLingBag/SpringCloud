@@ -1,16 +1,13 @@
 package com.rngay.authority.security.handler;
 
-import com.rngay.authority.model.Message;
 import com.rngay.common.cache.RedisUtil;
 import com.rngay.common.contants.RedisKeys;
-import com.rngay.authority.enums.ResultCodeEnum;
 import com.rngay.common.contants.ResultCode;
 import com.rngay.common.manager.AsyncManager;
 import com.rngay.common.util.MessageUtils;
 import com.rngay.common.util.ip.IPUtil;
 import com.rngay.common.util.ResultUtil;
 import com.rngay.authority.manger.AsyncFactory;
-import com.rngay.common.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;

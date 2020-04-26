@@ -27,9 +27,7 @@ public class MenuDTO extends CommonDTO {
 
     private String component;
 
-    private Integer keepAlive;
-
-    private Integer auth;
+    private String keepAlive;
 
     private Integer sort;
 
@@ -101,20 +99,12 @@ public class MenuDTO extends CommonDTO {
         this.component = component;
     }
 
-    public Integer getKeepAlive() {
+    public String getKeepAlive() {
         return keepAlive;
     }
 
-    public void setKeepAlive(Integer keepAlive) {
+    public void setKeepAlive(String keepAlive) {
         this.keepAlive = keepAlive;
-    }
-
-    public Integer getAuth() {
-        return auth;
-    }
-
-    public void setAuth(Integer auth) {
-        this.auth = auth;
     }
 
     public Integer getSort() {
