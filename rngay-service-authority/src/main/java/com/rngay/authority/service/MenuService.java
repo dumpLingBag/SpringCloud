@@ -67,11 +67,4 @@ public interface MenuService extends IService<MenuDTO> {
      */
     List<String> listUrlByUser(Long userId);
 
-    /**
-     * 根据 roleId 加载权限
-     * @Author: pengcheng
-     * @Date: 2020/4/3
-     */
-    List<MenuDTO> listAuth(List<Long> menuId);
-
 }

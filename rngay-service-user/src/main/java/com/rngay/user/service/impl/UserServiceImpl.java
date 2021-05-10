@@ -128,4 +128,11 @@ public class UserServiceImpl implements UserService {
     public List<UaUserDTO> loadByUserIds(List<UserRoleDTO> roleDTO) {
         return userDao.loadByUserIds(roleDTO);
     }
+
+    @Override
+    public UaUserDTO getUserByEmail(String email) {
+        QueryWrapper<UaUserDTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("email", email).eq("del_flag", "1");
+        return userDao.selectOne(wrapper);
+    }
 }

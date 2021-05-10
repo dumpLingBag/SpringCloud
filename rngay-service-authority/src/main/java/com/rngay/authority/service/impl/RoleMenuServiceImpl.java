@@ -16,9 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> implements RoleMenuService {
 
     @Autowired
@@ -50,8 +51,10 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuDao, RoleMenuDTO> i
     }
 
     @Override
-    public List<MenuDTO> listAuth(List<Long> menuId) {
-        return MenuUtil.authList(menuService.listAuth(menuId), Constant.MENU_TYPE_NOT_VO);
+    public List<RoleMenuDTO> listCheckMenu(Long roleId) {
+        QueryWrapper<RoleMenuDTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_id", roleId);
+        return roleMenuDao.selectList(wrapper);
     }
 
     private List<MenuDTO> menuList(List<MenuDTO> menus) {

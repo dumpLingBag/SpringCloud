@@ -1,13 +1,13 @@
-eureka:
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance-id}:${server.port}
-    hostname: ${spring.cloud.client.ip-address}
-    lease-renewal-interval-in-seconds: 1
-    lease-expiration-duration-in-seconds: 2
-  client:
-    serviceUrl:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9009/eureka/
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance-id}:${server.port}
+#    hostname: ${spring.cloud.client.ip-address}
+#    lease-renewal-interval-in-seconds: 1
+#    lease-expiration-duration-in-seconds: 2
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:9009/eureka/
 
 spring:
   security:

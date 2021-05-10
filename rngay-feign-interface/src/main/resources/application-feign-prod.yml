@@ -1,7 +1,9 @@
 feign:
   httpclient:
-    enabled: true # 服务熔断配置
-#  client:
+    enabled: false # 服务熔断配置
+  okhttp:
+    enabled: true
+  #  client:
 #    config:
 #      default: #服务名，填写default为所有服务
 #        connect-timeout: 1000

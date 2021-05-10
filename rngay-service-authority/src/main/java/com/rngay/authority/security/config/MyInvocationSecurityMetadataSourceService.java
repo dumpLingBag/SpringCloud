@@ -10,6 +10,7 @@ import com.rngay.authority.security.util.SkipPathRequestMatcher;
 import com.rngay.authority.security.util.UrlMatcher;
 import com.rngay.authority.service.MenuService;
 import com.rngay.authority.service.RoleService;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -21,7 +22,6 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /***
  *

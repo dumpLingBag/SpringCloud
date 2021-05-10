@@ -111,4 +111,11 @@ public interface UserService {
      */
     List<UaUserDTO> loadByUserIds(List<UserRoleDTO> roleDTO);
 
+    /**
+     * 通过邮箱获取用户
+     * @author pengcheng
+     * @date 2020-04-26 21:42
+     */
+    UaUserDTO getUserByEmail(String email);
+
 }

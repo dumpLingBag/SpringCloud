@@ -12,8 +12,6 @@ import com.rngay.authority.security.jwt.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,8 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private MyUserDetailService myUserDetailService;
-    @Autowired
-    private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
     @Autowired
     private IgnoredUrlsProperties ignoredUrlsProperties;
     @Autowired
@@ -85,17 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 需要将密码加密后写入数据库
         // myUserDetailService 类中获取了用户的用户名、密码以及是否启用的信息，查询用户所授予的权限，用来进行鉴权，查询用户作为群组成员所授予的权限
         auth.userDetailsService(myUserDetailService).passwordEncoder(bCryptPasswordEncoder());
-    }
-
-    /**
-     *  解决 无法直接注入 AuthenticationManager
-     * @return
-     * @throws Exception
-     */
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 
     /**
@@ -168,8 +153,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterAt(myUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加JWT filter 验证其他请求的Token是否合法
         http.addFilterBefore(authenticationTokenFilterBean(), FilterSecurityInterceptor.class);
-        // 在 beforeFilter 之前添加 自定义 filter
-        http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
     }
 
     /**

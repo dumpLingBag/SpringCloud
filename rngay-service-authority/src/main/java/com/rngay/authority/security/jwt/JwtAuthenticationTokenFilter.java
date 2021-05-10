@@ -93,17 +93,16 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 // 每次请求延长 token 过期时间
                 redisUtil.expire(RedisKeys.getUserKey(userId), 7200);
             }
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || Constant.ANONYMOUS_USER.equals(authentication.getPrincipal())) {
-                List<String> roles = (List<String>) redisUtil.getHashVal(RedisKeys.getUserKey(userId), Constant.AUTHORITIES);
-                UaUserDTO userInfo = (UaUserDTO) redisUtil.getHashVal(RedisKeys.getUserKey(userId), Constant.USER_INFO);
-                List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-                // 生成authentication身份信息
-                UsernamePasswordAuthenticationToken usernamePasswordAuthentication = new UsernamePasswordAuthenticationToken(
-                        userInfo, null, authorities);
-                usernamePasswordAuthentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthentication);
-            }
+            // 获取角色信息
+            List<String> roles = (List<String>) redisUtil.getHashVal(RedisKeys.getUserKey(userId), Constant.AUTHORITIES);
+            UaUserDTO userInfo = (UaUserDTO) redisUtil.getHashVal(RedisKeys.getUserKey(userId), Constant.USER_INFO);
+            List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+            // 生成authentication身份信息
+            UsernamePasswordAuthenticationToken usernamePasswordAuthentication = new UsernamePasswordAuthenticationToken(
+                    userInfo, null, authorities);
+            usernamePasswordAuthentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            // 设置认证信息
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthentication);
         } else {
             throw new MyAuthenticationException(ResultCodeEnum.TOKEN_INVALID);
         }

@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.98.232.27:18848
+  application:
+    name: service-user

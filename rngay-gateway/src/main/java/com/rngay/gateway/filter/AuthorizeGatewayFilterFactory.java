@@ -78,6 +78,9 @@ public class AuthorizeGatewayFilterFactory extends AbstractGatewayFilterFactory<
         if (actionName.contains("/login/captcha")) {
             return true;
         }
+        if (actionName.contains("/user/retrieve")) {
+            return true;
+        }
         return actionName.contains("/error");
     }
 

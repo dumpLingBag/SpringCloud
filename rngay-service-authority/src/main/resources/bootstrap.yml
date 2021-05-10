@@ -2,11 +2,22 @@
 ignored:
   # 不验证 url
   urls:
+    - /favicon.ico
     - /login/captcha
     - /system/listForMenu
-    - /favicon.ico
+    - /login/verify
+    - /user/retrieve
   # 不验证 token
   pathsToSkip:
     - /login/captcha
+    - /login/verify
+    - /user/retrieve
 token:
   processingPath: /**
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.98.232.27:18848
+  application:
+    name: service-authority

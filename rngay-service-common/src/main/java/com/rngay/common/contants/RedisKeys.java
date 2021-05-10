@@ -22,4 +22,8 @@ public class RedisKeys {
         return String.format("formCommit:%s", key);
     }
 
+    public static String getVerify(Object key) {
+        return String.format("loginVerify:%s", key);
+    }
+
 }

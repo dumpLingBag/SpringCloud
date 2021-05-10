@@ -101,4 +101,9 @@ public class PlatformUserController {
         return Result.success(userService.loadByUserIds(roleDTO));
     }
 
+    @GetMapping(value = "getUserByEmail")
+    public Result<UaUserDTO> getUserByEmail(@RequestParam("email") String email) {
+        return Result.success(userService.getUserByEmail(email));
+    }
+
 }

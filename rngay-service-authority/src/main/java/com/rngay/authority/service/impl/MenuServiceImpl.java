@@ -138,11 +138,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuDao, MenuDTO> implements Me
         return menuDao.listUrlByUser(userId);
     }
 
-    @Override
-    public List<MenuDTO> listAuth(List<Long> menuId) {
-        return menuDao.listAuth(menuId);
-    }
-
     private List<MenuDTO> getChildren(Long parentId) {
         List<MenuDTO> list = new ArrayList<>();
         List<MenuDTO> children = menuDao.selectList(new QueryWrapper<MenuDTO>().eq("pid", parentId));

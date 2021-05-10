@@ -93,6 +93,11 @@ public class PFUserServiceFallback implements FallbackFactory<PFUserService> {
             public Result<List<UaUserDTO>> loadByUserIds(List<UserRoleDTO> roleDTO) {
                 return Result.failMsg(result);
             }
+
+            @Override
+            public Result<UaUserDTO> getUserByEmail(String email) {
+                return Result.failMsg(result);
+            }
         };
     }
 }

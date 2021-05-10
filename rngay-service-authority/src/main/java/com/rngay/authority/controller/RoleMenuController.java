@@ -4,9 +4,7 @@ import com.rngay.authority.constant.Constant;
 import com.rngay.common.vo.Result;
 import com.rngay.feign.authority.MenuDTO;
 import com.rngay.feign.authority.RoleMenuDTO;
-import com.rngay.feign.authority.query.ArrayQuery;
 import com.rngay.feign.authority.query.UpdateRoleMenuQuery;
-import com.rngay.feign.authority.vo.RoleMenuVo;
 import com.rngay.authority.service.RoleMenuService;
 import com.rngay.authority.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "roleMenu")
@@ -32,46 +29,22 @@ public class RoleMenuController {
         return Result.success(roleMenuService.list(orgId, Constant.POWER));
     }
 
-    @GetMapping(value = "listMenu")
-    public Result<RoleMenuVo> listMenu(Long roleId) {
-        if (roleId == null) {
-            return Result.failMsg("加载菜单失败");
+    @GetMapping(value = "listCheckMenu")
+    public Result<List<Long>> listCheckMenu(Long roleId) {
+        if(roleId == null) {
+            return Result.failMsg("缺少参数");
         }
-        RoleMenuVo menuVo = new RoleMenuVo();
-        List<RoleMenuDTO> roleMenu = roleMenuService.listMenu(roleId);
+        List<Long> checked = new ArrayList<>();
+        List<RoleMenuDTO> roleMenu = roleMenuService.listCheckMenu(roleId);
         if (roleMenu != null && !roleMenu.isEmpty()) {
-            List<Long> menuId = new ArrayList<>();
-            List<Long> checked = new ArrayList<>();
-            roleMenu.forEach(key -> menuId.add(key.getMenuId()));
-            roleMenu.forEach(key -> {
-                if (key.getMenuType() == 1) {
-                    menuId.add(key.getMenuId());
-                }
-                if (key.getMenuType() == 2) {
-                    checked.add(key.getMenuId());
-                }
-            });
-            menuVo.setRoleMenu(menuId);
-            List<MenuDTO> menu = roleMenuService.listAuth(menuId);
-            menu = menu.stream().filter(m -> m.getChildren() != null && !m.getChildren().isEmpty())
-                    .collect(Collectors.toList());
-            menuVo.setMenu(menu);
-            menuVo.setChecked(checked);
+            roleMenu.forEach(key -> checked.add(key.getMenuId()));
         }
-        return Result.success(menuVo);
+        return Result.success(checked);
     }
 
     @PostMapping(value = "insert")
     public Result<Boolean> save(@Valid @RequestBody UpdateRoleMenuQuery query) {
         return Result.success(roleMenuService.insert(query));
-    }
-
-    @PostMapping(value = "listAuth")
-    public Result<List<MenuDTO>> listAuth(@Valid @RequestBody ArrayQuery arrayQuery) {
-        List<MenuDTO> menu = roleMenuService.listAuth(arrayQuery.getIds());
-        menu = menu.stream().filter(m -> m.getChildren() != null && !m.getChildren().isEmpty())
-                .collect(Collectors.toList());
-        return Result.success(menu);
     }
 
 }

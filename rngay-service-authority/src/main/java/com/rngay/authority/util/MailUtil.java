@@ -60,7 +60,7 @@ public class MailUtil {
             mimeMessageHelper.setFrom(mailSender);
             mimeMessageHelper.setTo(mailDTO.getRecipient());
             mimeMessageHelper.setSubject(mailDTO.getSubject());
-            mimeMessageHelper.setText(mailDTO.getContent());
+            mimeMessageHelper.setText(mailDTO.getContent(), true);
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
             e.printStackTrace();

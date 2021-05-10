@@ -144,4 +144,12 @@ public interface PFUserService {
     @PostMapping(value = "/user/loadByUserIds")
     Result<List<UaUserDTO>> loadByUserIds(@RequestBody List<UserRoleDTO> roleDTO);
 
+    /**
+     * 通过邮件查找用户
+     * @author pengcheng
+     * @date 2020-04-26 21:34
+     */
+    @GetMapping(value = "/user/getUserByEmail")
+    Result<UaUserDTO> getUserByEmail(@RequestParam("email") String email);
+
 }

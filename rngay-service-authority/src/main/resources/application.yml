@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: service-authority
   profiles:
     active: dev
   datasource:

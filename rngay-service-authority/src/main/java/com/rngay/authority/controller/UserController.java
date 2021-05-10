@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rngay.common.aspect.annotation.Log;
 import com.rngay.common.aspect.annotation.RepeatSubmit;
 import com.rngay.common.aspect.enums.BusinessType;
+import com.rngay.common.cache.RedisUtil;
+import com.rngay.common.contants.RedisKeys;
 import com.rngay.common.util.*;
 import com.rngay.common.vo.Result;
+import com.rngay.feign.authority.query.RetrieveQuery;
 import com.rngay.feign.authority.vo.UserInfoVo;
 import com.rngay.feign.dto.PageQueryDTO;
 import com.rngay.feign.user.dto.*;
@@ -37,6 +40,8 @@ public class UserController {
     private SystemService systemService;
     @Autowired
     private UploadUtil uploadUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @RepeatSubmit
     @PostMapping(value = "insert")
@@ -177,8 +182,28 @@ public class UserController {
         Result<UaUserDTO> user = pfUserService.getUserById(userId);
         UserInfoVo infoVo = new UserInfoVo();
         infoVo.setUaUserDTO(user.getData());
-
         return Result.success(infoVo);
+    }
+
+    @PutMapping(value = "retrieve")
+    public Result<Boolean> retrieve(@RequestBody RetrieveQuery retrieveQuery) {
+        String code = (String) redisUtil.get(RedisKeys.getVerify(retrieveQuery.getEmail()));
+        if (StringUtils.isNoneBlank(code)) {
+            if (code.equals(retrieveQuery.getCode())) {
+                UaUserDTO user = pfUserService.getUserByEmail(retrieveQuery.getEmail()).getData();
+                if (user != null) {
+                    UpdatePassword password = new UpdatePassword();
+                    password.setUserId(user.getId());
+                    password.setPassword(retrieveQuery.getPassword());
+                    Integer data = pfUserService.updatePassword(password).getData();
+                    if (data != null && data > 0) {
+                        return Result.success(true);
+                    }
+                }
+            }
+            return Result.failMsg("验证码不正确");
+        }
+        return Result.failMsg("密码更新失败");
     }
 
     @PostMapping(value = "export")

@@ -31,10 +31,12 @@ public interface RoleMenuService extends IService<RoleMenuDTO> {
     Boolean insert(UpdateRoleMenuQuery query);
 
     /**
-     * 根据 roleId 加载权限
-     * @Author: pengcheng
-     * @Date: 2020/4/3
+     * 查询用户角色列表
+     * @param roleId: 角色id
+     * @return: java.util.List<com.rngay.feign.authority.RoleMenuDTO>
+     * @date 2021/5/10 上午10:30
+     * @auther dongpengcheng
      */
-    List<MenuDTO> listAuth(List<Long> menuId);
+    List<RoleMenuDTO> listCheckMenu(Long roleId);
 
 }
