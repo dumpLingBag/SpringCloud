@@ -3,15 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>service-authority</artifactId>
-    <version>1.0.0</version>
-
-    <name>rngay-service-authority</name>
-    <description>权限管理服务</description>
+    <artifactId>service-quartz</artifactId>
+    <description>定时器服务</description>
 
     <parent>
         <groupId>com.rngay</groupId>
-        <artifactId>rngay</artifactId>
+        <artifactId>rngay-modules</artifactId>
         <version>1.0.0</version>
     </parent>
 
@@ -20,6 +17,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.rngay</groupId>
             <artifactId>service-common</artifactId>
@@ -32,22 +34,19 @@
             <groupId>com.rngay</groupId>
             <artifactId>service-common-jpa</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz-jobs</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <version>0.2.2.RELEASE</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -55,11 +54,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-
                 <configuration>
-                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
-                    <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.rngay.AuthorityApplication</mainClass>
+                    <fork>true</fork>
+                    <mainClass>com.rngay.QuartzApplication</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
@@ -72,6 +69,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
