@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    generate-ddl: true
+    database: mysql
+    hibernate:
+      ddl-auto: update
+  resources:
+    static-locations: classpath:/static/, classpath:/views/
+  mvc:
+    dispatch-options-request: true
+
+server:
+  port: 8090
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.rngay.feign.user.dto
+  global-config:
+    db-config:
+      id-type: id_worker
+    worker-id: 1
+    datacenter-id: 18
