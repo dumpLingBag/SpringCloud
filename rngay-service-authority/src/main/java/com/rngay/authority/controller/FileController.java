@@ -9,6 +9,8 @@ import com.rngay.feign.authority.DictDataDTO;
 import com.rngay.feign.authority.UserFileDTO;
 import com.rngay.authority.dao.UserFileDao;
 import com.rngay.authority.service.SystemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "file")
 public class FileController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private UploadUtil uploadUtil;
     @Autowired
@@ -36,6 +40,7 @@ public class FileController {
     @PostMapping(value = "upload")
     public Result<String> upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
         String fileName = request.getParameter("fileName");
+        logger.info("upload fileName:{}", fileName);
         DictDataDTO one = dictDataService.getOne(new QueryWrapper<DictDataDTO>().eq("dict_type", "sys_upload_size"));
         String path = uploadUtil.ossUpload(fileName, file, Integer.parseInt(one.getDictValue()));
         if (path != null) {
